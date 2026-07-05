@@ -7,10 +7,10 @@
     var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
     var MODEL = 'llama-3.3-70b-versatile';
 
-    /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
         { name: 'Ed Sheeran - Perfect', file: 'assets/music/Ed Sheeran - Perfect (Official Music Video).mp3', artist: 'Ed Sheeran', genre: 'Pop/Romance' },
-        { name: 'Justin Bieber - Never Say Never ft. Jaden', file: 'assets/music/Justin Bieber - Never Say Never ft. Jaden.mp3', artist: 'Justin Bieber & Jaden Smith', genre: 'Pop/Motivational' }
+        { name: 'Justin Bieber - Never Say Never ft. Jaden', file: 'assets/music/Justin Bieber - Never Say Never ft. Jaden.mp3', artist: 'Justin Bieber & Jaden Smith', genre: 'Pop/Motivational' },
+        { name: 'Wadih Mrad - Amar Al Zaman', file: 'assets/music/Wadih Mrad - Amar Al Zaman  \u0648\u062f\u064a\u0639 \u0645\u0631\u0627\u062f - \u0642\u0645\u0631 \u0627\u0644\u0632\u0645\u0627\u0646.mp3', artist: '\u0648\u062f\u064a\u0639 \u0645\u0631\u0627\u062f', genre: 'Arabic/Classic' }
     ];
 
     function findMusic(text) {
@@ -58,9 +58,10 @@
         '- لا تقل "بالتأكيد!" أو "بكل سرور!" أو عبارات مجاملة فارغة. ادخل في الموضوع مباشرة.',
         '',
         '## الأغاني:',
-        'لديك أغنيتان فقط:',
+        'لديك 3 أغاني فقط:',
         '1. Ed Sheeran - Perfect (رومانسية)',
         '2. Justin Bieber - Never Say Never ft. Jaden (تحفيزية)',
+        '3. Wadih Mrad - Amar Al Zaman / وديع مراد - قمر الزمان (عربية كلاسيكية)',
         '',
         'قواعد صارمة:',
         '- أرسل أغنية واحدة فقط في كل رد. لا ترسل أغنيتين أبداً.',
