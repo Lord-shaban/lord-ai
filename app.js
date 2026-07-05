@@ -28,17 +28,22 @@
     }
 
     function musicPlayerHTML(m) {
-        return '<div class="music-player">'
-            + '<div class="music-info">'
-            + '<div class="music-icon">🎵</div>'
-            + '<div class="music-meta">'
-            + '<span class="music-title">' + esc(m.name) + '</span>'
-            + '<span class="music-artist">' + esc(m.artist) + ' · ' + esc(m.genre) + '</span>'
-            + '</div></div>'
-            + '<audio controls preload="none" src="' + m.file + '"></audio>'
-            + '<a href="' + m.file + '" download class="music-dl" title="تحميل">'
-            + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
-            + ' تحميل</a></div>';
+        var id = 'audio_' + Math.random().toString(36).substr(2,9);
+        return '<div class="music-player" id="' + id + '">'
+            + '<audio src="' + m.file + '" preload="metadata" ontimeupdate="LORD.audioUpdate(\'' + id + '\')" onloadedmetadata="LORD.audioLoaded(\'' + id + '\')" onended="LORD.audioEnded(\'' + id + '\')"></audio>'
+            + '<div class="mp-art"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>'
+            + '<div class="mp-body">'
+            +   '<div class="mp-head">'
+            +     '<div class="mp-info"><div class="mp-title">' + esc(m.name) + '</div><div class="mp-artist">' + esc(m.artist) + '</div></div>'
+            +     '<a href="' + m.file + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            +   '</div>'
+            +   '<div class="mp-ctrls">'
+            +     '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
+            +     '<div class="mp-progress" onclick="LORD.audioSeek(event, \'' + id + '\')"><div class="mp-bar"></div></div>'
+            +     '<div class="mp-time">0:00 / 0:00</div>'
+            +   '</div>'
+            + '</div>'
+            + '</div>';
     }
 
     var SYSTEM_PROMPT = [
@@ -268,6 +273,63 @@
 
     /* ═══════ GLOBAL ACTIONS ═══════ */
     window.LORD = {
+        audioToggle: function(id) {
+            var p = document.getElementById(id);
+            if (!p) return;
+            var a = p.querySelector('audio');
+            var btn = p.querySelector('.mp-play');
+            if (a.paused) {
+                // Pause all others
+                document.querySelectorAll('.music-player audio').forEach(function(o) {
+                    if(o !== a) { 
+                        o.pause(); 
+                        var ob = o.parentElement.querySelector('.mp-play');
+                        if (ob) ob.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>'; 
+                    }
+                });
+                a.play();
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+            } else {
+                a.pause();
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            }
+        },
+        audioUpdate: function(id) {
+            var p = document.getElementById(id);
+            if (!p) return;
+            var a = p.querySelector('audio');
+            var bar = p.querySelector('.mp-bar');
+            var time = p.querySelector('.mp-time');
+            if (!a.duration) return;
+            var pct = (a.currentTime / a.duration) * 100;
+            bar.style.width = pct + '%';
+            
+            var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s%60); return m+':'+(ss<10?'0'+ss:ss); };
+            time.textContent = fm(a.currentTime) + ' / ' + fm(a.duration);
+        },
+        audioLoaded: function(id) {
+            this.audioUpdate(id);
+        },
+        audioEnded: function(id) {
+            var p = document.getElementById(id);
+            if (!p) return;
+            p.querySelector('.mp-play').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            p.querySelector('audio').currentTime = 0;
+            this.audioUpdate(id);
+        },
+        audioSeek: function(e, id) {
+            var p = document.getElementById(id);
+            if (!p) return;
+            var a = p.querySelector('audio');
+            var prog = p.querySelector('.mp-progress');
+            var rect = prog.getBoundingClientRect();
+            var x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            var pct = x / rect.width;
+            if (a.duration) {
+                a.currentTime = pct * a.duration;
+                this.audioUpdate(id);
+            }
+        },
         copyCode: function(btn) {
             var code = btn.closest('pre').querySelector('code');
             navigator.clipboard.writeText(code.textContent).then(function() {
