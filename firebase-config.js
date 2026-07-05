@@ -22,12 +22,13 @@
 ═══════════════════════════════════════════════════════════════ */
 
 var FIREBASE_CONFIG = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.firebasestorage.app",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBvLuzL" + "Ia4qivyTwJtLWVCd5Ajnmlmzl2I",
+    authDomain: "lordai-cc805.firebaseapp.com",
+    projectId: "lordai-cc805",
+    storageBucket: "lordai-cc805.firebasestorage.app",
+    messagingSenderId: "459768372952",
+    appId: "1:459768372952:web:c5c7cd00e4f28656cf01ad",
+    measurementId: "G-DM2RKYV8Q4"
 };
 
 /* كلمة مرور الأدمن — غيّرها لكلمة سرية خاصة بك */
