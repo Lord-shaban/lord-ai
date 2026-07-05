@@ -5,7 +5,7 @@
     /* ═══════ CONFIG ═══════ */
     var API_KEY = 'sk-or-v1-' + '2578b59779f88226913' + '722f04bfbc633f91e2ebc0' + '9532e85f3fb137180f77e2f';
     var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-    var MODEL = 'openai/gpt-4o';
+    var MODEL = 'meta-llama/llama-3.3-70b-instruct:free';
 
     /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
