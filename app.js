@@ -44,11 +44,14 @@
     function initFirebase() {
         try {
             if (typeof firebase !== 'undefined' && typeof FIREBASE_CONFIG !== 'undefined'
-                && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY_HERE') {
-                firebase.initializeApp(FIREBASE_CONFIG);
+                && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId) {
+                if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
                 db = firebase.firestore();
+                console.log('[LORD] Firebase connected:', FIREBASE_CONFIG.projectId);
+            } else {
+                console.log('[LORD] Firebase not configured');
             }
-        } catch(e) { db = null; }
+        } catch(e) { console.error('[LORD] Firebase init error:', e); db = null; }
     }
 
     function getVisitorId() {
@@ -61,106 +64,39 @@
         return id;
     }
 
-    function fbTrack(type, data) {
+    function fbLog(action, data) {
         if (!db) return;
-        try {
-            var event = {
-                type: type,
-                visitorId: visitorId,
-                ts: firebase.firestore.FieldValue.serverTimestamp(),
-                clientTs: Date.now(),
-                data: data || {}
-            };
-            db.collection('lord_events').add(event).catch(function(){});
-        } catch(e) {}
-    }
-
-    function fbUpdateVisitor(extra) {
-        if (!db || !visitorId) return;
-        try {
-            var ref = db.collection('lord_visitors').doc(visitorId);
-            var base = {
-                lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-                ua: navigator.userAgent.substring(0, 200),
-                lang: navigator.language || 'unknown',
-                screen: screen.width + 'x' + screen.height
-            };
-            if (extra) { for (var k in extra) base[k] = extra[k]; }
-            ref.set(base, { merge: true }).catch(function(){});
-        } catch(e) {}
-    }
-
-    function fbIncrementStats(field, amount) {
-        if (!db) return;
-        try {
-            var ref = db.collection('lord_stats').doc('global');
-            var inc = {};
-            inc[field] = firebase.firestore.FieldValue.increment(amount || 1);
-            inc['lastUpdated'] = firebase.firestore.FieldValue.serverTimestamp();
-            ref.set(inc, { merge: true }).catch(function(){});
-        } catch(e) {}
+        var doc = {
+            type: action,
+            vid: visitorId || 'unknown',
+            t: Date.now(),
+            ua: navigator.userAgent.substring(0, 150),
+            scr: screen.width + 'x' + screen.height,
+            lang: navigator.language || ''
+        };
+        if (data) { for (var k in data) doc[k] = data[k]; }
+        db.collection('lord_logs').add(doc).then(function() {
+            console.log('[LORD] Logged:', action);
+        }).catch(function(e) {
+            console.error('[LORD] Log error:', e.message);
+        });
     }
 
     function trackPageView() {
         getVisitorId();
-        fbTrack('page_view', { page: 'chat', referrer: document.referrer || 'direct' });
-        fbUpdateVisitor({
-            firstSeen: firebase.firestore.FieldValue.serverTimestamp(),
-            visits: firebase.firestore.FieldValue.increment(1)
-        });
-        fbIncrementStats('totalPageViews');
-
-        // Track daily visits
-        if (db) {
-            try {
-                var today = new Date().toISOString().split('T')[0];
-                var dayRef = db.collection('lord_stats').doc('daily_' + today);
-                dayRef.set({
-                    date: today,
-                    visits: firebase.firestore.FieldValue.increment(1),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true }).catch(function(){});
-            } catch(e) {}
-        }
+        fbLog('visit', { ref: document.referrer || 'direct', page: location.pathname });
     }
 
     function trackMessage(role, text, responseTime) {
         var words = (text || '').split(/\s+/).filter(function(w){return w}).length;
         var isAr = /[\u0600-\u06FF]/.test(text);
-        var data = { role: role, words: words, lang: isAr ? 'ar' : 'en' };
-        if (responseTime) data.responseTime = responseTime;
-
-        fbTrack('message', data);
-        fbIncrementStats('totalMessages');
-        if (role === 'user') {
-            fbIncrementStats('totalUserMessages');
-            fbIncrementStats('totalUserWords', words);
-        } else {
-            fbIncrementStats('totalAIMessages');
-            fbIncrementStats('totalAIWords', words);
-        }
-
-        fbUpdateVisitor({
-            totalMessages: firebase.firestore.FieldValue.increment(1)
-        });
-
-        // Daily messages
-        if (db) {
-            try {
-                var today = new Date().toISOString().split('T')[0];
-                var dayRef = db.collection('lord_stats').doc('daily_' + today);
-                dayRef.set({
-                    date: today,
-                    messages: firebase.firestore.FieldValue.increment(1),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true }).catch(function(){});
-            } catch(e) {}
-        }
+        var data = { role: role, words: words, mlang: isAr ? 'ar' : 'en' };
+        if (responseTime) data.rt = responseTime;
+        fbLog('msg', data);
     }
 
     function trackError(msg) {
-        fbTrack('error', { message: (msg || '').substring(0, 200) });
-        fbIncrementStats('totalErrors');
+        fbLog('error', { err: (msg || '').substring(0, 200) });
     }
 
     /* ═══════ DOM ═══════ */

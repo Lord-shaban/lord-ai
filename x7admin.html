@@ -3,611 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LORD AI — لوحة تحكم الأدمن</title>
+    <title>LORD AI — Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23333'/><text x='50' y='67' font-size='48' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,sans-serif'>L</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23333'/><text x='50' y='67' font-size='48' font-weight='bold' fill='white' text-anchor='middle'>L</text></svg>">
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{
-            --bg-0:#09090b;--bg-1:#111113;--bg-2:#18181b;--bg-3:#222225;--bg-4:#2a2a2e;
-            --border:#27272a;--border-2:#3f3f46;
-            --text-1:#fafafa;--text-2:#a1a1aa;--text-3:#52525b;
-            --accent:#6366f1;--accent-2:#818cf8;
-            --green:#22c55e;--green-bg:rgba(34,197,94,.12);
-            --red:#ef4444;--red-bg:rgba(239,68,68,.12);
-            --blue:#3b82f6;--blue-bg:rgba(59,130,246,.12);
-            --orange:#f59e0b;--orange-bg:rgba(245,158,11,.12);
-            --purple:#a855f7;--purple-bg:rgba(168,85,247,.12);
-            --cyan:#06b6d4;--cyan-bg:rgba(6,182,212,.12);
-            --r:12px;--rs:8px;
-            --font:'Inter','Noto Sans Arabic',system-ui,sans-serif;
-            --mono:'JetBrains Mono',monospace;
-        }
-        body{font-family:var(--font);background:var(--bg-0);color:var(--text-1);min-height:100vh;line-height:1.6}
+        :root{--bg0:#09090b;--bg1:#111113;--bg2:#18181b;--bg3:#27272a;--bg4:#3f3f46;--tx1:#fafafa;--tx2:#a1a1aa;--tx3:#52525b;--ac:#6366f1;--ac2:#818cf8;--gn:#22c55e;--rd:#ef4444;--bl:#3b82f6;--or:#f59e0b;--pu:#a855f7;--cy:#06b6d4;--r:12px;--rs:8px;--f:'Inter','Noto Sans Arabic',sans-serif;--m:'JetBrains Mono',monospace}
+        body{font-family:var(--f);background:var(--bg0);color:var(--tx1);min-height:100vh}
 
-        /* ═══ LOGIN ═══ */
-        .login-overlay{position:fixed;inset:0;background:var(--bg-0);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
-        .login-overlay.hidden{opacity:0;pointer-events:none}
-        .login-box{background:var(--bg-1);border:1px solid var(--border);border-radius:16px;padding:40px;width:380px;max-width:90vw;text-align:center}
-        .login-logo{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;color:#fff;margin-bottom:20px}
-        .login-box h2{font-size:20px;margin-bottom:6px}
-        .login-box p{font-size:13px;color:var(--text-3);margin-bottom:24px}
-        .login-input{width:100%;padding:12px 16px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg-2);color:var(--text-1);font-family:var(--font);font-size:14px;outline:none;transition:border .2s;margin-bottom:16px;text-align:center;letter-spacing:2px}
-        .login-input:focus{border-color:var(--accent)}
-        .login-input.err{border-color:var(--red);animation:shake .4s}
-        .login-btn{width:100%;padding:12px;border-radius:var(--rs);border:none;background:var(--accent);color:#fff;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
-        .login-btn:hover{background:var(--accent-2)}
-        @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+        /* LOGIN */
+        .login-o{position:fixed;inset:0;background:var(--bg0);display:flex;align-items:center;justify-content:center;z-index:999}
+        .login-o.off{display:none}
+        .login-b{background:var(--bg1);border:1px solid var(--bg3);border-radius:16px;padding:40px;width:380px;max-width:90vw;text-align:center}
+        .login-i{width:56px;height:56px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;color:#fff;margin-bottom:16px}
+        .login-b h2{font-size:18px;margin-bottom:4px}
+        .login-b p{font-size:12px;color:var(--tx3);margin-bottom:20px}
+        .lin{width:100%;padding:12px;border-radius:var(--rs);border:1px solid var(--bg3);background:var(--bg2);color:var(--tx1);font-family:var(--f);font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:14px}
+        .lin:focus{border-color:var(--ac)}
+        .lin.err{border-color:var(--rd);animation:shake .4s}
+        .lbtn{width:100%;padding:11px;border-radius:var(--rs);border:none;background:var(--ac);color:#fff;font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer}
+        .lbtn:hover{background:var(--ac2)}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-6px)}50%{transform:translateX(6px)}}
 
-        /* ═══ LAYOUT ═══ */
-        .dash{max-width:1440px;margin:0 auto;padding:20px 24px}
+        /* LAYOUT */
+        .d{max-width:1400px;margin:0 auto;padding:20px}
 
-        /* ═══ HEADER ═══ */
-        .hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
-        .logo{display:flex;align-items:center;gap:12px}
-        .logo-i{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;color:#fff}
-        .logo h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
-        .logo span{font-size:11px;color:var(--text-3);display:block}
-        .hdr-btns{display:flex;gap:8px;flex-wrap:wrap}
-        .btn{padding:8px 16px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
-        .btn:hover{background:var(--bg-3);color:var(--text-1);border-color:var(--border-2)}
-        .btn-d:hover{background:var(--red-bg);color:var(--red);border-color:rgba(239,68,68,.3)}
+        /* HEADER */
+        .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 0 18px;border-bottom:1px solid var(--bg3);margin-bottom:20px;flex-wrap:wrap;gap:12px}
+        .lo{display:flex;align-items:center;gap:12px}
+        .lo-i{width:38px;height:38px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
+        .lo h1{font-size:17px;font-weight:700}.lo span{font-size:10px;color:var(--tx3);display:block}
+        .hb{display:flex;gap:8px;flex-wrap:wrap}
+        .bt{padding:7px 14px;border-radius:var(--rs);border:1px solid var(--bg3);background:var(--bg2);color:var(--tx2);font-family:var(--f);font-size:11px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none;transition:all .15s}
+        .bt:hover{background:var(--bg3);color:var(--tx1)}
 
-        /* ═══ STATUS ═══ */
-        .status{display:flex;align-items:center;gap:16px;padding:12px 18px;background:var(--bg-1);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;font-size:12px;color:var(--text-2);flex-wrap:wrap}
-        .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulse 2s ease infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-        .sep{width:1px;height:14px;background:var(--border)}
+        /* STATUS */
+        .st{display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);margin-bottom:18px;font-size:11px;color:var(--tx2);flex-wrap:wrap}
+        .dt{width:7px;height:7px;background:var(--gn);border-radius:50%;box-shadow:0 0 6px var(--gn);animation:pu 2s ease infinite}
+        @keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+        .sp{width:1px;height:12px;background:var(--bg3)}
 
-        /* ═══ GRID ═══ */
-        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:22px}
-        .card{background:var(--bg-1);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:all .3s;position:relative;overflow:hidden}
-        .card:hover{border-color:var(--border-2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25)}
-        .card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-        .card.g::after{background:linear-gradient(90deg,var(--green),transparent)}
-        .card.b::after{background:linear-gradient(90deg,var(--blue),transparent)}
-        .card.p::after{background:linear-gradient(90deg,var(--purple),transparent)}
-        .card.o::after{background:linear-gradient(90deg,var(--orange),transparent)}
-        .card.r::after{background:linear-gradient(90deg,var(--red),transparent)}
-        .card.c::after{background:linear-gradient(90deg,var(--cyan),transparent)}
-        .card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-        .card-l{font-size:11px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-        .card-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
-        .card-ic.g{background:var(--green-bg)}.card-ic.b{background:var(--blue-bg)}.card-ic.p{background:var(--purple-bg)}
-        .card-ic.o{background:var(--orange-bg)}.card-ic.r{background:var(--red-bg)}.card-ic.c{background:var(--cyan-bg)}
-        .card-v{font-size:28px;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:4px;font-family:var(--mono)}
-        .card-s{font-size:11px;color:var(--text-3)}
+        /* CARDS */
+        .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+        .cd{background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);padding:16px;transition:all .25s;position:relative;overflow:hidden}
+        .cd:hover{border-color:var(--bg4);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.2)}
+        .cd::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+        .cd.cg1::before{background:var(--gn)}.cd.cb::before{background:var(--bl)}.cd.cp::before{background:var(--pu)}
+        .cd.co::before{background:var(--or)}.cd.cr::before{background:var(--rd)}.cd.cc::before{background:var(--cy)}
+        .cd-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+        .cd-l{font-size:10px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+        .cd-e{font-size:15px}
+        .cd-v{font-size:26px;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:3px;font-family:var(--m)}
+        .cd-s{font-size:10px;color:var(--tx3)}
 
-        /* ═══ SECTIONS ═══ */
-        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-        .full{grid-column:1/-1}
-        .sec{background:var(--bg-1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-        .sec-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
-        .sec-t{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-        .sec-b{padding:18px}
+        /* SECTIONS */
+        .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+        .fw{grid-column:1/-1}
+        .sc{background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);overflow:hidden}
+        .sh{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bg3)}
+        .stl{font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
+        .sb{padding:16px}
 
-        /* ═══ BAR CHART ═══ */
-        .bars{display:flex;align-items:flex-end;gap:6px;height:160px}
-        .bar-c{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
-        .bar{width:100%;min-height:3px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--accent),rgba(99,102,241,.25));transition:height .8s cubic-bezier(.4,0,.2,1)}
-        .bar:hover{background:linear-gradient(180deg,var(--accent-2),rgba(129,140,248,.35))}
-        .bar-l{font-size:9px;color:var(--text-3);font-family:var(--mono)}
-        .bar-v{font-size:9px;color:var(--text-2);font-family:var(--mono);font-weight:600}
+        /* BARS */
+        .brs{display:flex;align-items:flex-end;gap:5px;height:140px}
+        .brc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+        .br{width:100%;min-height:3px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--ac),rgba(99,102,241,.2));transition:height .6s ease}
+        .bl2{font-size:8px;color:var(--tx3);font-family:var(--m)}
+        .bv{font-size:8px;color:var(--tx2);font-family:var(--m);font-weight:600}
 
-        /* ═══ TABLE ═══ */
+        /* TABLE */
+        .tw{overflow-x:auto}
         table{width:100%;border-collapse:collapse}
-        th{text-align:right;padding:10px 14px;font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
-        td{padding:10px 14px;font-size:12px;color:var(--text-2);border-bottom:1px solid var(--border)}
+        th{text-align:right;padding:8px 12px;font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bg3)}
+        td{padding:8px 12px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bg3)}
         tr:last-child td{border:none}
-        tr:hover td{background:var(--bg-2)}
-        .badge{display:inline-flex;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600}
-        .badge-g{background:var(--green-bg);color:var(--green)}.badge-b{background:var(--blue-bg);color:var(--blue)}
-        .badge-o{background:var(--orange-bg);color:var(--orange)}.badge-p{background:var(--purple-bg);color:var(--purple)}
+        tr:hover td{background:var(--bg2)}
+        .bg{display:inline-flex;padding:2px 8px;border-radius:12px;font-size:9px;font-weight:600}
+        .bg-g{background:rgba(34,197,94,.12);color:var(--gn)}.bg-b{background:rgba(59,130,246,.12);color:var(--bl)}
+        .bg-o{background:rgba(245,158,11,.12);color:var(--or)}
 
-        /* ═══ PROGRESS BARS ═══ */
-        .prog-item{margin-bottom:14px}
-        .prog-item:last-child{margin-bottom:0}
-        .prog-item label{font-size:12px;color:var(--text-2);display:flex;justify-content:space-between;margin-bottom:5px}
-        .prog-track{width:100%;height:7px;background:var(--bg-3);border-radius:4px;overflow:hidden}
-        .prog-fill{height:100%;border-radius:4px;transition:width 1s ease}
+        /* PROGRESS */
+        .pi{margin-bottom:12px}.pi:last-child{margin-bottom:0}
+        .pi label{font-size:11px;color:var(--tx2);display:flex;justify-content:space-between;margin-bottom:4px}
+        .pt{width:100%;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+        .pf{height:100%;border-radius:3px;transition:width .8s ease}
 
-        /* ═══ PERF ROW ═══ */
-        .perf-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--bg-2);border-radius:var(--rs);margin-bottom:8px}
-        .perf-row:last-child{margin-bottom:0}
-        .perf-row span:first-child{font-size:12px;color:var(--text-2)}
-        .perf-row span:last-child{font-size:13px;font-weight:700;font-family:var(--mono)}
+        /* PERF */
+        .pr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg2);border-radius:var(--rs);margin-bottom:6px}
+        .pr:last-child{margin-bottom:0}
+        .pr span:first-child{font-size:11px;color:var(--tx2)}
+        .pr span:last-child{font-size:12px;font-weight:700;font-family:var(--m)}
 
-        /* ═══ LIVE FEED ═══ */
-        .feed{max-height:340px;overflow-y:auto}
-        .feed-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-        .feed-item:last-child{border:none}
-        .feed-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
-        .feed-dot.pv{background:var(--blue)}.feed-dot.msg{background:var(--green)}.feed-dot.err{background:var(--red)}
-        .feed-txt{flex:1}
-        .feed-txt p{font-size:12px;color:var(--text-2)}
-        .feed-txt small{font-size:10px;color:var(--text-3)}
+        /* FEED */
+        .fd{max-height:300px;overflow-y:auto}
+        .fi{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--bg3)}
+        .fi:last-child{border:none}
+        .fd2{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
+        .fd2.v{background:var(--bl)}.fd2.m{background:var(--gn)}.fd2.e{background:var(--rd)}
+        .ft{flex:1}.ft p{font-size:11px;color:var(--tx2)}.ft small{font-size:9px;color:var(--tx3)}
 
-        /* ═══ EMPTY ═══ */
-        .empty{display:flex;flex-direction:column;align-items:center;padding:40px;color:var(--text-3);gap:10px}
-        .empty svg{opacity:.3}
-        .empty p{font-size:12px}
+        /* LOADING / EMPTY */
+        .ld{display:flex;align-items:center;justify-content:center;padding:30px;gap:8px;color:var(--tx3);font-size:12px}
+        .sn{width:16px;height:16px;border:2px solid var(--bg3);border-top-color:var(--ac);border-radius:50%;animation:sp .6s linear infinite}
+        @keyframes sp{to{transform:rotate(360deg)}}
+        .em{text-align:center;padding:30px;color:var(--tx3);font-size:12px}
 
-        /* ═══ LOADING ═══ */
-        .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:8px;color:var(--text-3);font-size:13px}
-        .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
+        /* DEBUG */
+        .dbg{margin-top:16px;background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);padding:14px;font-family:var(--m);font-size:10px;color:var(--tx3);white-space:pre-wrap;max-height:200px;overflow-y:auto;display:none}
+        .dbg.on{display:block}
 
-        /* ═══ TOAST ═══ */
-        .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-3);color:var(--text-1);padding:10px 22px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border);opacity:0;transition:all .3s;z-index:1000}
+        /* TOAST */
+        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);color:var(--tx1);padding:9px 20px;border-radius:var(--rs);font-size:12px;border:1px solid var(--bg4);opacity:0;transition:all .3s;z-index:100}
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-        /* ═══ ANIMATIONS ═══ */
-        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-        .card{animation:fadeUp .5s ease both}
-        .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}
-        .card:nth-child(3){animation-delay:.15s}.card:nth-child(4){animation-delay:.2s}
-        .card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.3s}
-        .sec{animation:fadeUp .5s ease .35s both}
+        /* ANIM */
+        @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        .cd{animation:fu .4s ease both}
+        .cd:nth-child(1){animation-delay:.03s}.cd:nth-child(2){animation-delay:.06s}
+        .cd:nth-child(3){animation-delay:.09s}.cd:nth-child(4){animation-delay:.12s}
+        .cd:nth-child(5){animation-delay:.15s}.cd:nth-child(6){animation-delay:.18s}
+        .cd:nth-child(7){animation-delay:.21s}.cd:nth-child(8){animation-delay:.24s}
 
-        /* ═══ RESPONSIVE ═══ */
-        @media(max-width:900px){.grid2{grid-template-columns:1fr}.dash{padding:14px}}
-        @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);gap:10px}.hdr{flex-direction:column;align-items:flex-start}.card-v{font-size:22px}.card{padding:14px}}
-
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+        @media(max-width:900px){.g2{grid-template-columns:1fr}}
+        @media(max-width:600px){.cg{grid-template-columns:repeat(2,1fr);gap:8px}.hd{flex-direction:column;align-items:flex-start}.cd-v{font-size:20px}}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px}
     </style>
 </head>
 <body>
 
-    <!-- LOGIN SCREEN -->
-    <div class="login-overlay" id="loginOverlay">
-        <div class="login-box">
-            <div class="login-logo">L</div>
-            <h2>لوحة تحكم الأدمن</h2>
-            <p>أدخل كلمة المرور للوصول</p>
-            <input type="password" class="login-input" id="loginPass" placeholder="••••••••" autofocus>
-            <button class="login-btn" id="loginBtn">دخول</button>
+<!-- LOGIN -->
+<div class="login-o" id="loginO">
+    <div class="login-b">
+        <div class="login-i">L</div>
+        <h2>لوحة تحكم الأدمن</h2>
+        <p>أدخل كلمة المرور</p>
+        <input type="password" class="lin" id="lp" placeholder="••••••••" autofocus>
+        <button class="lbtn" id="lb">دخول</button>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="d" id="dc" style="display:none">
+    <header class="hd">
+        <div class="lo"><div class="lo-i">L</div><div><h1>لوحة تحكم الأدمن</h1><span>LORD AI Dashboard</span></div></div>
+        <div class="hb">
+            <button class="bt" onclick="load()">🔄 تحديث</button>
+            <a href="index.html" class="bt">💬 الشات</a>
+            <button class="bt" onclick="exprt()">📥 تصدير</button>
+            <button class="bt" onclick="toggleDbg()">🐛 Debug</button>
+            <button class="bt" onclick="logoutA()">🚪 خروج</button>
         </div>
+    </header>
+    <div class="st">
+        <div class="dt"></div><span>النظام يعمل</span><div class="sp"></div>
+        <span>النموذج: <b>Llama 3.3 70B</b></span><div class="sp"></div>
+        <span id="fbs">Firebase: ⏳</span><div class="sp"></div>
+        <span id="lr">آخر تحديث: —</span><div class="sp"></div>
+        <span id="lc">السجلات: —</span>
     </div>
 
-    <!-- DASHBOARD -->
-    <div class="dash" id="dashContent" style="display:none">
-        <header class="hdr">
-            <div class="logo">
-                <div class="logo-i">L</div>
-                <div>
-                    <h1>لوحة تحكم الأدمن</h1>
-                    <span>LORD AI Admin Dashboard</span>
-                </div>
-            </div>
-            <div class="hdr-btns">
-                <button class="btn" onclick="refreshData()">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-                    تحديث
-                </button>
-                <a href="index.html" class="btn">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    العودة للشات
-                </a>
-                <button class="btn" onclick="exportAll()">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    تصدير
-                </button>
-                <button class="btn btn-d" onclick="logout()">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    خروج
-                </button>
-            </div>
-        </header>
+    <div class="cg" id="cards"></div>
 
-        <!-- STATUS BAR -->
-        <div class="status">
-            <div class="dot"></div>
-            <span>النظام يعمل</span>
-            <div class="sep"></div>
-            <span>النموذج: <strong>Llama 3.3 70B</strong></span>
-            <div class="sep"></div>
-            <span>المزود: <strong>Groq</strong></span>
-            <div class="sep"></div>
-            <span id="fbStatus">Firebase: جاري الاتصال...</span>
-            <div class="sep"></div>
-            <span id="lastRefresh">آخر تحديث: —</span>
-        </div>
-
-        <!-- STATS CARDS -->
-        <div class="stats" id="statsGrid"></div>
-
-        <!-- CHARTS & SECTIONS -->
-        <div class="grid2">
-            <!-- Messages Chart -->
-            <div class="sec full">
-                <div class="sec-h">
-                    <div class="sec-t">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                        نشاط الرسائل — آخر 14 يوم
-                    </div>
-                </div>
-                <div class="sec-b"><div class="bars" id="chartBars"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div></div>
-            </div>
-
-            <!-- Live Events Feed -->
-            <div class="sec">
-                <div class="sec-h">
-                    <div class="sec-t">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                        آخر الأحداث (مباشر)
-                    </div>
-                </div>
-                <div class="sec-b"><div class="feed" id="liveFeed"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div></div>
-            </div>
-
-            <!-- Performance -->
-            <div class="sec">
-                <div class="sec-h">
-                    <div class="sec-t">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-                        الأداء والسرعة
-                    </div>
-                </div>
-                <div class="sec-b" id="perfSection"><div class="loading"><div class="spinner"></div></div></div>
-            </div>
-
-            <!-- Language Distribution -->
-            <div class="sec">
-                <div class="sec-h">
-                    <div class="sec-t">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        توزيع اللغات
-                    </div>
-                </div>
-                <div class="sec-b" id="langSection"><div class="loading"><div class="spinner"></div></div></div>
-            </div>
-
-            <!-- Top Devices -->
-            <div class="sec">
-                <div class="sec-h">
-                    <div class="sec-t">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                        الأجهزة والشاشات
-                    </div>
-                </div>
-                <div class="sec-b" id="devicesSection"><div class="loading"><div class="spinner"></div></div></div>
-            </div>
-
-            <!-- Users Table -->
-            <div class="sec full">
-                <div class="sec-h">
-                    <div class="sec-t">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        المستخدمون
-                    </div>
-                    <span style="font-size:11px;color:var(--text-3)" id="usersCount"></span>
-                </div>
-                <div class="sec-b" style="padding:0"><div class="table-wrap" id="usersTable"><div class="loading"><div class="spinner"></div>جاري تحميل المستخدمين...</div></div></div>
-            </div>
-        </div>
+    <div class="g2">
+        <div class="sc fw"><div class="sh"><div class="stl">📈 نشاط آخر 14 يوم</div></div><div class="sb"><div class="brs" id="chart"><div class="ld"><div class="sn"></div></div></div></div></div>
+        <div class="sc"><div class="sh"><div class="stl">⚡ آخر الأحداث</div></div><div class="sb"><div class="fd" id="feed"><div class="ld"><div class="sn"></div></div></div></div></div>
+        <div class="sc"><div class="sh"><div class="stl">🚀 الأداء</div></div><div class="sb" id="perf"><div class="ld"><div class="sn"></div></div></div></div>
+        <div class="sc"><div class="sh"><div class="stl">🌐 اللغات</div></div><div class="sb" id="langs"><div class="ld"><div class="sn"></div></div></div></div>
+        <div class="sc"><div class="sh"><div class="stl">💻 الأجهزة</div></div><div class="sb" id="devs"><div class="ld"><div class="sn"></div></div></div></div>
+        <div class="sc fw"><div class="sh"><div class="stl">👤 المستخدمون</div><span style="font-size:10px;color:var(--tx3)" id="uc"></span></div><div class="sb" style="padding:0"><div class="tw" id="utbl"><div class="ld"><div class="sn"></div></div></div></div></div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script>
-    (function() {
-        'use strict';
+    <div class="dbg" id="dbg"></div>
+</div>
 
-        var db = null;
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(function(){
+    var db=null, logs=[], dbgEl, dbgOn=false;
 
-        /* ═══ HELPERS ═══ */
-        function toast(m){var o=document.querySelector('.toast');if(o)o.remove();var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);requestAnimationFrame(function(){t.classList.add('show')});setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)},2500)}
+    function dbg(m){if(dbgEl){dbgEl.textContent+=new Date().toLocaleTimeString()+' '+m+'\n';dbgEl.scrollTop=dbgEl.scrollHeight}}
+    function toast(m){var o=document.querySelector('.toast');if(o)o.remove();var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);requestAnimationFrame(function(){t.classList.add('show')});setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)},2500)}
+    function fN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return(n||0).toString()}
+    function tAgo(ts){if(!ts)return'—';var d=(Date.now()-ts)/1000;if(d<60)return'الآن';if(d<3600)return Math.floor(d/60)+' دقيقة';if(d<86400)return Math.floor(d/3600)+' ساعة';return Math.floor(d/86400)+' يوم'}
+    function pUA(ua){if(!ua)return'غير معروف';if(/iPhone|iPad/.test(ua))return'📱 iOS';if(/Android/.test(ua))return'📱 Android';if(/Windows/.test(ua))return'💻 Windows';if(/Mac/.test(ua))return'💻 macOS';if(/Linux/.test(ua))return'🐧 Linux';return'🌐 آخر'}
 
-        function timeAgo(ts){
-            if(!ts)return '—';
-            var d=Date.now()-ts,s=Math.floor(d/1000);
-            if(s<60)return 'الآن';
-            var m=Math.floor(s/60);if(m<60)return m+' دقيقة';
-            var h=Math.floor(m/60);if(h<24)return h+' ساعة';
-            var dy=Math.floor(h/24);return dy+' يوم';
+    /* AUTH */
+    var lp=document.getElementById('lp'),lb=document.getElementById('lb');
+    function doLogin(){
+        if(typeof ADMIN_PASSWORD!=='undefined'&&lp.value.trim()===ADMIN_PASSWORD){
+            sessionStorage.setItem('la','1');show();
+        }else{lp.classList.add('err');setTimeout(function(){lp.classList.remove('err')},500)}
+    }
+    lb.onclick=doLogin;lp.onkeydown=function(e){if(e.key==='Enter')doLogin()};
+    window.logoutA=function(){sessionStorage.removeItem('la');location.reload()};
+    window.toggleDbg=function(){dbgOn=!dbgOn;dbgEl.classList.toggle('on',dbgOn)};
+
+    function show(){
+        document.getElementById('loginO').classList.add('off');
+        document.getElementById('dc').style.display='';
+        dbgEl=document.getElementById('dbg');
+        initFB();
+    }
+
+    if(sessionStorage.getItem('la')==='1')show();
+
+    /* FIREBASE */
+    function initFB(){
+        dbg('Initializing Firebase...');
+        try{
+            if(typeof firebase==='undefined'){dbg('ERROR: firebase SDK not loaded');document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--rd)">SDK غير محمّل</b>';return}
+            if(typeof FIREBASE_CONFIG==='undefined'||!FIREBASE_CONFIG.projectId){dbg('ERROR: FIREBASE_CONFIG missing');document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--rd)">غير مُعد</b>';return}
+            if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
+            db=firebase.firestore();
+            dbg('Firebase connected: '+FIREBASE_CONFIG.projectId);
+            document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--gn)">متصل ✓</b>';
+            load();
+        }catch(e){
+            dbg('ERROR: '+e.message);
+            document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--rd)">خطأ</b>';
         }
-        function fmtN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return(n||0).toString()}
+    }
 
-        function parseUA(ua){
-            if(!ua)return 'غير معروف';
-            if(/iPhone|iPad/.test(ua))return '📱 iOS';
-            if(/Android/.test(ua))return '📱 Android';
-            if(/Windows/.test(ua))return '💻 Windows';
-            if(/Mac/.test(ua))return '💻 macOS';
-            if(/Linux/.test(ua))return '💻 Linux';
-            return '🌐 آخر';
+    /* LOAD ALL DATA */
+    window.load=function(){
+        if(!db){toast('Firebase غير متصل');return}
+        dbg('Loading logs from lord_logs...');
+        document.getElementById('lr').textContent='آخر تحديث: الآن';
+
+        db.collection('lord_logs').orderBy('t','desc').limit(2000).get().then(function(snap){
+            logs=[];
+            snap.forEach(function(doc){logs.push(doc.data())});
+            dbg('Loaded '+logs.length+' logs');
+            document.getElementById('lc').textContent='السجلات: '+logs.length;
+            render();
+        }).catch(function(e){
+            dbg('ERROR loading: '+e.message);
+            toast('خطأ: '+e.message);
+            document.getElementById('lc').textContent='السجلات: خطأ!';
+        });
+    };
+
+    /* RENDER */
+    function render(){
+        var visits=0, msgs=0, userMsgs=0, aiMsgs=0, errors=0;
+        var userWords=0, aiWords=0;
+        var visitors={}, arC=0, enC=0, rts=[], devices={}, screens={};
+        var daily={}, hourly=new Array(24).fill(0);
+
+        // Init 14 days
+        for(var i=13;i>=0;i--){var dt=new Date();dt.setDate(dt.getDate()-i);daily[dt.toISOString().split('T')[0]]={v:0,m:0}}
+
+        for(var j=0;j<logs.length;j++){
+            var L=logs[j];
+            var vid=L.vid||'unknown';
+            var day=new Date(L.t).toISOString().split('T')[0];
+            var hr=new Date(L.t).getHours();
+            hourly[hr]++;
+
+            if(!visitors[vid])visitors[vid]={msgs:0,visits:0,last:0,ua:L.ua||'',scr:L.scr||'',lang:L.lang||''};
+            if(L.t>visitors[vid].last)visitors[vid].last=L.t;
+            if(L.ua){visitors[vid].ua=L.ua}
+            if(L.scr){visitors[vid].scr=L.scr}
+
+            if(L.type==='visit'){
+                visits++;
+                visitors[vid].visits++;
+                if(day in daily)daily[day].v++;
+            }
+            else if(L.type==='msg'){
+                msgs++;
+                if(L.role==='user'){userMsgs++;userWords+=(L.words||0);visitors[vid].msgs++}
+                else{aiMsgs++;aiWords+=(L.words||0)}
+                if(L.mlang==='ar')arC++;else if(L.mlang==='en')enC++;
+                if(L.rt)rts.push(L.rt);
+                if(day in daily)daily[day].m++;
+            }
+            else if(L.type==='error'){errors++}
+
+            var dev=pUA(L.ua);
+            devices[dev]=(devices[dev]||0)+1;
+            if(L.scr)screens[L.scr]=(screens[L.scr]||0)+1;
         }
 
-        /* ═══ AUTH ═══ */
-        var loginOverlay = document.getElementById('loginOverlay');
-        var dashContent = document.getElementById('dashContent');
-        var loginPass = document.getElementById('loginPass');
-        var loginBtn = document.getElementById('loginBtn');
+        var uCount=Object.keys(visitors).length;
+        var avgRT=rts.length?Math.round(rts.reduce(function(a,b){return a+b},0)/rts.length):0;
+        var minRT=rts.length?Math.min.apply(null,rts):0;
+        var maxRT=rts.length?Math.max.apply(null,rts):0;
 
-        function checkAuth(){
-            var s = sessionStorage.getItem('lord_admin');
-            if(s==='1'){showDash();return true;}
-            return false;
+        // Active today
+        var today=new Date().toISOString().split('T')[0];
+        var activeToday=0;
+        for(var vk in visitors){
+            if(new Date(visitors[vk].last).toISOString().split('T')[0]===today)activeToday++;
         }
 
-        function doLogin(){
-            var pass = loginPass.value.trim();
-            if(typeof ADMIN_PASSWORD!=='undefined' && pass===ADMIN_PASSWORD){
-                sessionStorage.setItem('lord_admin','1');
-                showDash();
-            } else {
-                loginPass.classList.add('err');
-                setTimeout(function(){loginPass.classList.remove('err')},500);
+        dbg('Stats: visitors='+uCount+' visits='+visits+' msgs='+msgs+' errors='+errors);
+
+        /* CARDS */
+        var cards=[
+            {l:'الزوار الفريدين',v:fN(uCount),e:'👥',c:'cb',s:'مستخدم مختلف'},
+            {l:'مشاهدات الصفحة',v:fN(visits),e:'👁️',c:'cc',s:'إجمالي الزيارات'},
+            {l:'نشطون اليوم',v:fN(activeToday),e:'🟢',c:'cg1',s:'مستخدمون نشطون اليوم'},
+            {l:'إجمالي الرسائل',v:fN(msgs),e:'💬',c:'cb',s:'مستخدم: '+fN(userMsgs)+' · ذكاء: '+fN(aiMsgs)},
+            {l:'أسئلة المستخدمين',v:fN(userMsgs),e:'❓',c:'co',s:'إجمالي الأسئلة المرسلة'},
+            {l:'ردود الذكاء',v:fN(aiMsgs),e:'🤖',c:'cp',s:fN(aiWords)+' كلمة مولّدة'},
+            {l:'الكلمات',v:fN(userWords+aiWords),e:'📝',c:'cp',s:'مستخدم: '+fN(userWords)+' · ذكاء: '+fN(aiWords)},
+            {l:'الأخطاء',v:fN(errors),e:'⚠️',c:'cr',s:errors===0?'لا أخطاء ✓':'أخطاء API'},
+        ];
+        var ch='';
+        for(var ci=0;ci<cards.length;ci++){
+            var c=cards[ci];
+            ch+='<div class="cd '+c.c+'"><div class="cd-h"><span class="cd-l">'+c.l+'</span><span class="cd-e">'+c.e+'</span></div><div class="cd-v">'+c.v+'</div><div class="cd-s">'+c.s+'</div></div>';
+        }
+        document.getElementById('cards').innerHTML=ch;
+
+        /* DAILY CHART */
+        var dKeys=Object.keys(daily);
+        var maxD=1;
+        for(var dk in daily){var tot=daily[dk].v+daily[dk].m;if(tot>maxD)maxD=tot}
+        var barH='';
+        for(var bi=0;bi<dKeys.length;bi++){
+            var bk=dKeys[bi],bTotal=daily[bk].v+daily[bk].m;
+            var h=Math.max(3,(bTotal/maxD)*120);
+            barH+='<div class="brc"><span class="bv">'+(bTotal||'')+'</span><div class="br" style="height:'+h+'px" title="'+bk+'&#10;زيارات: '+daily[bk].v+'&#10;رسائل: '+daily[bk].m+'"></div><span class="bl2">'+bk.slice(8)+'</span></div>';
+        }
+        document.getElementById('chart').innerHTML=barH;
+
+        /* FEED */
+        var feedH='';
+        var recent=logs.slice(0,30);
+        if(!recent.length){feedH='<div class="em">لا أحداث بعد</div>'}
+        else{
+            for(var fi=0;fi<recent.length;fi++){
+                var F=recent[fi];
+                var dc=F.type==='visit'?'v':F.type==='msg'?'m':'e';
+                var desc='';
+                if(F.type==='visit')desc='🔵 زيارة صفحة';
+                else if(F.type==='msg')desc=(F.role==='user'?'🟢 رسالة مستخدم':'🟢 رد ذكاء')+' ('+fN(F.words||0)+' كلمة)';
+                else desc='🔴 خطأ: '+(F.err||'').substring(0,50);
+                feedH+='<div class="fi"><div class="fd2 '+dc+'"></div><div class="ft"><p>'+desc+'</p><small>'+tAgo(F.t)+' · '+(F.vid||'').substring(0,10)+'</small></div></div>';
             }
         }
+        document.getElementById('feed').innerHTML=feedH;
 
-        function showDash(){
-            loginOverlay.classList.add('hidden');
-            dashContent.style.display='';
-            initDB();
+        /* PERFORMANCE */
+        document.getElementById('perf').innerHTML=
+            '<div class="pr"><span>متوسط وقت الاستجابة</span><span style="color:var(--gn)">'+(avgRT?(avgRT/1000).toFixed(1)+' ثانية':'غير متوفر')+'</span></div>'
+            +'<div class="pr"><span>أسرع استجابة</span><span style="color:var(--bl)">'+(minRT?(minRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
+            +'<div class="pr"><span>أبطأ استجابة</span><span style="color:var(--or)">'+(maxRT?(maxRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
+            +'<div class="pr"><span>عدد القياسات</span><span style="color:var(--tx2)">'+rts.length+'</span></div>'
+            +'<div class="pr"><span>نسبة النجاح</span><span style="color:var(--gn)">'+(msgs>0?Math.round((msgs/(msgs+errors))*100)+'%':'—')+'</span></div>';
+
+        /* LANGUAGES */
+        var tL=arC+enC||1;
+        var arP=Math.round((arC/tL)*100),enP=100-arP;
+        document.getElementById('langs').innerHTML=
+            '<div class="pi"><label><span>🇸🇦 العربية</span><b>'+arP+'% ('+arC+')</b></label><div class="pt"><div class="pf" style="width:'+arP+'%;background:linear-gradient(90deg,var(--ac),var(--pu))"></div></div></div>'
+            +'<div class="pi"><label><span>🇺🇸 الإنجليزية</span><b>'+enP+'% ('+enC+')</b></label><div class="pt"><div class="pf" style="width:'+enP+'%;background:linear-gradient(90deg,var(--bl),var(--cy))"></div></div></div>';
+
+        /* DEVICES */
+        var devArr=Object.entries(devices).sort(function(a,b){return b[1]-a[1]});
+        var devT=devArr.reduce(function(s,e){return s+e[1]},0)||1;
+        var colors=['var(--ac)','var(--gn)','var(--bl)','var(--or)','var(--pu)','var(--cy)'];
+        var devH='';
+        for(var di=0;di<devArr.length;di++){
+            var dp=Math.round((devArr[di][1]/devT)*100);
+            devH+='<div class="pi"><label><span>'+devArr[di][0]+'</span><b>'+dp+'% ('+devArr[di][1]+')</b></label><div class="pt"><div class="pf" style="width:'+dp+'%;background:'+colors[di%6]+'"></div></div></div>';
         }
+        document.getElementById('devs').innerHTML=devH||'<div class="em">لا بيانات</div>';
 
-        loginBtn.addEventListener('click',doLogin);
-        loginPass.addEventListener('keydown',function(e){if(e.key==='Enter')doLogin()});
-
-        window.logout=function(){
-            sessionStorage.removeItem('lord_admin');
-            location.reload();
-        };
-
-        /* ═══ FIREBASE INIT ═══ */
-        function initDB(){
-            try{
-                if(typeof firebase!=='undefined'&&typeof FIREBASE_CONFIG!=='undefined'
-                    &&FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.apiKey!=='YOUR_API_KEY_HERE'){
-                    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-                    db=firebase.firestore();
-                    document.getElementById('fbStatus').innerHTML='Firebase: <strong style="color:var(--green)">متصل ✓</strong>';
-                    loadAllData();
-                } else {
-                    document.getElementById('fbStatus').innerHTML='Firebase: <strong style="color:var(--red)">غير مُهيأ</strong>';
-                    showNoFirebase();
-                }
-            }catch(e){
-                document.getElementById('fbStatus').innerHTML='Firebase: <strong style="color:var(--red)">خطأ</strong>';
-                showNoFirebase();
-            }
+        /* USERS TABLE */
+        var vArr=Object.entries(visitors).sort(function(a,b){return b[1].last-a[1].last});
+        document.getElementById('uc').textContent='إجمالي: '+vArr.length;
+        if(!vArr.length){document.getElementById('utbl').innerHTML='<div class="em">لا مستخدمون بعد</div>';return}
+        var tbl='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>الرسائل</th><th>الزيارات</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
+        for(var ui=0;ui<Math.min(vArr.length,50);ui++){
+            var uid=vArr[ui][0],uv=vArr[ui][1];
+            var online=(Date.now()-uv.last)<300000;
+            tbl+='<tr><td style="font-family:var(--m);font-size:10px;color:var(--tx1)">'+uid.substring(0,14)+'</td>'
+                +'<td>'+pUA(uv.ua)+'</td>'
+                +'<td style="font-family:var(--m);font-size:10px">'+(uv.scr||'—')+'</td>'
+                +'<td style="font-weight:600">'+uv.msgs+'</td>'
+                +'<td>'+uv.visits+'</td>'
+                +'<td style="font-size:10px">'+tAgo(uv.last)+'</td>'
+                +'<td>'+(online?'<span class="bg bg-g">متصل</span>':'<span class="bg bg-b">غير متصل</span>')+'</td></tr>';
         }
+        tbl+='</tbody></table>';
+        document.getElementById('utbl').innerHTML=tbl;
+    }
 
-        function showNoFirebase(){
-            document.getElementById('statsGrid').innerHTML='<div class="card full" style="grid-column:1/-1;text-align:center;padding:40px"><h3 style="margin-bottom:8px">⚠️ Firebase غير مُهيأ</h3><p style="color:var(--text-3);font-size:13px">قم بتحديث ملف <code>firebase-config.js</code> بإعدادات مشروع Firebase الخاص بك.</p></div>';
-        }
+    /* EXPORT */
+    window.exprt=function(){
+        var data={exportDate:new Date().toISOString(),logsCount:logs.length,logs:logs};
+        var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+        a.download='lord-admin-'+new Date().toISOString().split('T')[0]+'.json';a.click();
+        toast('✓ تم التصدير');
+    };
 
-        /* ═══ LOAD DATA ═══ */
-        function loadAllData(){
-            document.getElementById('lastRefresh').textContent='آخر تحديث: الآن';
-            loadStats();
-            loadDailyChart();
-            loadEvents();
-            loadVisitors();
-        }
-
-        window.refreshData=function(){
-            if(db) loadAllData();
-            toast('✓ تم التحديث');
-        };
-
-        /* ═══ STATS ═══ */
-        function loadStats(){
-            db.collection('lord_stats').doc('global').get().then(function(doc){
-                var d = doc.exists?doc.data():{};
-                var totalVisitors=0;
-                // Count visitors
-                db.collection('lord_visitors').get().then(function(snap){
-                    totalVisitors=snap.size;
-                    renderStats(d,totalVisitors);
-                }).catch(function(){renderStats(d,0)});
-            }).catch(function(){renderStats({},0)});
-        }
-
-        function renderStats(d,visitors){
-            var items=[
-                {l:'إجمالي الزوار',v:fmtN(visitors),ic:'👥',cl:'b',s:'زائر فريد'},
-                {l:'مشاهدات الصفحة',v:fmtN(d.totalPageViews||0),ic:'👁️',cl:'c',s:'إجمالي الزيارات'},
-                {l:'إجمالي الرسائل',v:fmtN((d.totalUserMessages||0)+(d.totalAIMessages||0)),ic:'💬',cl:'g',s:'مستخدم: '+fmtN(d.totalUserMessages||0)+' · ذكاء: '+fmtN(d.totalAIMessages||0)},
-                {l:'إجمالي الكلمات',v:fmtN((d.totalUserWords||0)+(d.totalAIWords||0)),ic:'📝',cl:'p',s:'كلمة مكتوبة ومولدة'},
-                {l:'رسائل المستخدمين',v:fmtN(d.totalUserMessages||0),ic:'📤',cl:'o',s:'أسئلة واستفسارات'},
-                {l:'الأخطاء',v:fmtN(d.totalErrors||0),ic:'⚠️',cl:'r',s:(d.totalErrors||0)===0?'لا أخطاء ✓':'أخطاء API'},
-            ];
-            var h='';
-            for(var i=0;i<items.length;i++){
-                var it=items[i];
-                h+='<div class="card '+it.cl+'">'
-                    +'<div class="card-h"><span class="card-l">'+it.l+'</span><div class="card-ic '+it.cl+'">'+it.ic+'</div></div>'
-                    +'<div class="card-v">'+it.v+'</div>'
-                    +'<div class="card-s">'+it.s+'</div></div>';
-            }
-            document.getElementById('statsGrid').innerHTML=h;
-        }
-
-        /* ═══ DAILY CHART ═══ */
-        function loadDailyChart(){
-            var days={};
-            for(var i=13;i>=0;i--){
-                var dt=new Date();dt.setDate(dt.getDate()-i);
-                days[dt.toISOString().split('T')[0]]={v:0,m:0};
-            }
-            var keys=Object.keys(days);
-            var promises=keys.map(function(k){
-                return db.collection('lord_stats').doc('daily_'+k).get().then(function(doc){
-                    if(doc.exists){
-                        var d=doc.data();
-                        days[k]={v:d.visits||0,m:d.messages||0};
-                    }
-                }).catch(function(){});
-            });
-
-            Promise.all(promises).then(function(){
-                var maxV=1;
-                for(var k in days){if((days[k].v+days[k].m)>maxV)maxV=days[k].v+days[k].m}
-                var html='';
-                for(var j=0;j<keys.length;j++){
-                    var dk=keys[j];
-                    var total=days[dk].v+days[dk].m;
-                    var bh=Math.max(3,(total/maxV)*140);
-                    var dn=dk.split('-')[2];
-                    html+='<div class="bar-c">'
-                        +'<span class="bar-v">'+(total||'')+'</span>'
-                        +'<div class="bar" style="height:'+bh+'px" title="'+dk+': '+days[dk].v+' زيارة, '+days[dk].m+' رسالة"></div>'
-                        +'<span class="bar-l">'+dn+'</span></div>';
-                }
-                document.getElementById('chartBars').innerHTML=html;
-            });
-        }
-
-        /* ═══ LIVE EVENTS ═══ */
-        function loadEvents(){
-            db.collection('lord_events').orderBy('clientTs','desc').limit(50).get().then(function(snap){
-                if(snap.empty){
-                    document.getElementById('liveFeed').innerHTML='<div class="empty"><p>لا توجد أحداث بعد</p></div>';
-                    return;
-                }
-                var html='';
-                var arC=0,enC=0;
-                var respTimes=[];
-
-                snap.forEach(function(doc){
-                    var ev=doc.data();
-                    var type=ev.type;
-                    var dotCl=type==='page_view'?'pv':type==='message'?'msg':'err';
-                    var desc='';
-                    if(type==='page_view') desc='زيارة صفحة';
-                    else if(type==='message'){
-                        var r=ev.data&&ev.data.role;
-                        desc=r==='user'?'رسالة مستخدم ('+fmtN(ev.data.words||0)+' كلمة)':'رد ذكاء ('+fmtN(ev.data.words||0)+' كلمة)';
-                        if(ev.data.lang==='ar')arC++;else enC++;
-                        if(ev.data.responseTime)respTimes.push(ev.data.responseTime);
-                    }
-                    else if(type==='error') desc='خطأ: '+(ev.data&&ev.data.message||'غير معروف').substring(0,60);
-
-                    var ago=timeAgo(ev.clientTs);
-                    html+='<div class="feed-item"><div class="feed-dot '+dotCl+'"></div><div class="feed-txt"><p>'+desc+'</p><small>'+ago+' · '+((ev.visitorId||'').substring(0,10))+'</small></div></div>';
-                });
-
-                document.getElementById('liveFeed').innerHTML=html;
-
-                // Language bars
-                var totalL=arC+enC||1;
-                var arP=Math.round((arC/totalL)*100);
-                var enP=100-arP;
-                document.getElementById('langSection').innerHTML=
-                    '<div class="prog-item"><label><span>🇸🇦 العربية</span><strong>'+arP+'%</strong></label><div class="prog-track"><div class="prog-fill" style="width:'+arP+'%;background:linear-gradient(90deg,var(--accent),var(--purple))"></div></div></div>'
-                    +'<div class="prog-item"><label><span>🇺🇸 الإنجليزية</span><strong>'+enP+'%</strong></label><div class="prog-track"><div class="prog-fill" style="width:'+enP+'%;background:linear-gradient(90deg,var(--blue),var(--cyan))"></div></div></div>'
-                    +'<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3)">عربي: '+arC+' · إنجليزي: '+enC+' (آخر 50 حدث)</div>';
-
-                // Performance
-                var avgRT=respTimes.length?Math.round(respTimes.reduce(function(a,b){return a+b},0)/respTimes.length):0;
-                var minRT=respTimes.length?Math.min.apply(null,respTimes):0;
-                var maxRT=respTimes.length?Math.max.apply(null,respTimes):0;
-                document.getElementById('perfSection').innerHTML=
-                    '<div class="perf-row"><span>متوسط وقت الاستجابة</span><span style="color:var(--green)">'+(avgRT?(avgRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
-                    +'<div class="perf-row"><span>أسرع استجابة</span><span style="color:var(--blue)">'+(minRT?(minRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
-                    +'<div class="perf-row"><span>أبطأ استجابة</span><span style="color:var(--orange)">'+(maxRT?(maxRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
-                    +'<div class="perf-row"><span>عدد القياسات</span><span style="color:var(--text-2)">'+respTimes.length+'</span></div>';
-
-            }).catch(function(e){
-                document.getElementById('liveFeed').innerHTML='<div class="empty"><p>خطأ في التحميل</p></div>';
-            });
-        }
-
-        /* ═══ VISITORS TABLE ═══ */
-        function loadVisitors(){
-            db.collection('lord_visitors').orderBy('lastSeen','desc').limit(50).get().then(function(snap){
-                document.getElementById('usersCount').textContent='إجمالي: '+snap.size+' مستخدم';
-                if(snap.empty){
-                    document.getElementById('usersTable').innerHTML='<div class="empty"><p>لا يوجد مستخدمون بعد</p></div>';
-                    return;
-                }
-                var tbl='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>اللغة</th><th>الرسائل</th><th>الزيارات</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
-                var devices={};
-
-                snap.forEach(function(doc){
-                    var v=doc.data();
-                    var id=doc.id;
-                    var dev=parseUA(v.ua);
-                    var scr=v.screen||'—';
-                    var lng=v.lang||'—';
-                    var msgs=v.totalMessages||0;
-                    var vis=v.visits||0;
-                    var ls=v.lastSeen?v.lastSeen.toDate?v.lastSeen.toDate().getTime():v.lastSeen:0;
-                    var ago=timeAgo(ls);
-                    var isOnline=(Date.now()-ls)<300000;
-                    var badge=isOnline?'<span class="badge badge-g">متصل</span>':'<span class="badge badge-b">غير متصل</span>';
-
-                    // Device stats
-                    var dk=dev.replace(/[^\w]/g,'');
-                    devices[dk]=(devices[dk]||0)+1;
-
-                    tbl+='<tr>'
-                        +'<td style="font-family:var(--mono);font-size:11px;color:var(--text-1)">'+id.substring(0,12)+'…</td>'
-                        +'<td>'+dev+'</td>'
-                        +'<td style="font-family:var(--mono);font-size:11px">'+scr+'</td>'
-                        +'<td>'+lng.substring(0,5)+'</td>'
-                        +'<td style="font-weight:600">'+msgs+'</td>'
-                        +'<td>'+vis+'</td>'
-                        +'<td style="font-size:11px">'+ago+'</td>'
-                        +'<td>'+badge+'</td></tr>';
-                });
-
-                tbl+='</tbody></table>';
-                document.getElementById('usersTable').innerHTML=tbl;
-
-                // Devices section
-                var devEntries=Object.entries(devices).sort(function(a,b){return b[1]-a[1]});
-                var devTotal=devEntries.reduce(function(s,e){return s+e[1]},0)||1;
-                var devHTML='';
-                var colors=['var(--accent)','var(--green)','var(--blue)','var(--orange)','var(--purple)','var(--cyan)'];
-                for(var di=0;di<devEntries.length;di++){
-                    var pct=Math.round((devEntries[di][1]/devTotal)*100);
-                    devHTML+='<div class="prog-item"><label><span>'+devEntries[di][0]+'</span><strong>'+pct+'% ('+devEntries[di][1]+')</strong></label>'
-                        +'<div class="prog-track"><div class="prog-fill" style="width:'+pct+'%;background:'+colors[di%colors.length]+'"></div></div></div>';
-                }
-                document.getElementById('devicesSection').innerHTML=devHTML||'<div class="empty"><p>لا بيانات</p></div>';
-
-            }).catch(function(){
-                document.getElementById('usersTable').innerHTML='<div class="empty"><p>خطأ في تحميل المستخدمين</p></div>';
-            });
-        }
-
-        /* ═══ EXPORT ═══ */
-        window.exportAll=function(){
-            if(!db){toast('Firebase غير متصل');return;}
-            Promise.all([
-                db.collection('lord_stats').get(),
-                db.collection('lord_visitors').get(),
-                db.collection('lord_events').orderBy('clientTs','desc').limit(500).get()
-            ]).then(function(results){
-                var data={
-                    exportDate:new Date().toISOString(),
-                    stats:{},visitors:[],events:[]
-                };
-                results[0].forEach(function(d){data.stats[d.id]=d.data()});
-                results[1].forEach(function(d){data.visitors.push({id:d.id,...d.data()})});
-                results[2].forEach(function(d){data.events.push(d.data())});
-
-                var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-                var url=URL.createObjectURL(blob);
-                var a=document.createElement('a');
-                a.href=url;a.download='lord-ai-admin-'+new Date().toISOString().split('T')[0]+'.json';
-                a.click();URL.revokeObjectURL(url);
-                toast('✓ تم تصدير البيانات');
-            });
-        };
-
-        /* ═══ AUTO REFRESH ═══ */
-        setInterval(function(){if(db&&sessionStorage.getItem('lord_admin')==='1')loadAllData()},60000);
-
-        /* ═══ START ═══ */
-        if(!checkAuth()) loginOverlay.style.display='';
-
-    })();
-    </script>
+    /* AUTO REFRESH */
+    setInterval(function(){if(db&&sessionStorage.getItem('la')==='1')window.load()},120000);
+})();
+</script>
 </body>
 </html>
