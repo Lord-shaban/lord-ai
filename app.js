@@ -37,6 +37,34 @@
     function get(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e) { return d; } }
     function saveAll() { save('lord_convs', convs); save('lord_active', activeId); }
 
+    /* ═══════ ANALYTICS ═══════ */
+    function trackEvent(type, data) {
+        var analytics = get('lord_analytics', { events: [], sessions: [], firstUse: null });
+        if (!analytics.firstUse) analytics.firstUse = Date.now();
+        analytics.events.push({
+            type: type,
+            ts: Date.now(),
+            data: data || {}
+        });
+        // Keep last 5000 events max
+        if (analytics.events.length > 5000) analytics.events = analytics.events.slice(-5000);
+        save('lord_analytics', analytics);
+    }
+
+    function trackSession() {
+        var analytics = get('lord_analytics', { events: [], sessions: [], firstUse: null });
+        if (!analytics.firstUse) analytics.firstUse = Date.now();
+        var today = new Date().toISOString().split('T')[0];
+        var lastSession = analytics.sessions[analytics.sessions.length - 1];
+        if (!lastSession || lastSession.date !== today) {
+            analytics.sessions.push({ date: today, count: 1 });
+        } else {
+            lastSession.count++;
+        }
+        if (analytics.sessions.length > 365) analytics.sessions = analytics.sessions.slice(-365);
+        save('lord_analytics', analytics);
+    }
+
     /* ═══════ DOM ═══════ */
     function $(id) { return document.getElementById(id); }
     function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -507,7 +535,8 @@
         var c = active();
         if (!c) { newConv(); c = active(); }
 
-        c.msgs.push({ role: 'user', content: text });
+        var userMsg = { role: 'user', content: text, ts: Date.now() };
+        c.msgs.push(userMsg);
 
         if (c.msgs.length === 1) {
             c.title = generateTitle(text);
@@ -515,7 +544,8 @@
         }
 
         saveAll();
-        addMsg({ role: 'user', content: text });
+        addMsg(userMsg);
+        trackEvent('user_msg', { words: text.split(/\s+/).length, lang: /[\u0600-\u06FF]/.test(text) ? 'ar' : 'en' });
 
         el.input.value = '';
         resizeInput();
@@ -525,19 +555,25 @@
         el.sendBtn.classList.add('none');
         el.stopBtn.classList.remove('none');
         showDots();
+        var sendTime = Date.now();
 
         callAPI(c.msgs).then(function(res) {
             hideDots();
-            var aiMsg = { role: 'assistant', content: '' };
+            var aiMsg = { role: 'assistant', content: '', ts: Date.now() };
             var node = addMsg(aiMsg);
             return readStream(res, node).then(function(txt) {
                 aiMsg.content = txt;
                 c.msgs.push(aiMsg);
                 saveAll();
+                trackEvent('ai_msg', {
+                    words: txt.split(/\s+/).length,
+                    responseTime: Date.now() - sendTime
+                });
             });
         }).catch(function(err) {
             hideDots();
             handleError(err, c);
+            trackEvent('error', { message: err.message });
         }).then(finishSend);
     }
 
@@ -600,6 +636,7 @@
         cacheDom();
         initTheme();
         loadConvs();
+        trackSession();
         renderList();
         renderChat();
         bind();
