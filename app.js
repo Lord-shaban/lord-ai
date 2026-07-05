@@ -3,7 +3,7 @@
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'gsk_' + '6qnxkQFa9kaXu4conf59' + 'WGdyb3FYmbtpMuclYKqU' + 'qU7lUhKl35qZ';
+    var API_KEY = 'gsk_' + 'f5g4WT1esi' + 'hwrYoW6AQWWGdyb3FYU4' + 'oy0g1RfTZX3oWnmxJme4d4';
     var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
     var MODEL = 'llama-3.3-70b-versatile';
 
