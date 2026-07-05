@@ -3,1045 +3,609 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LORD AI — لوحة التحكم</title>
+    <title>LORD AI — لوحة تحكم الأدمن</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23333'/><text x='50' y='67' font-size='48' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,sans-serif'>L</text></svg>">
     <style>
-        /* ═══════ RESET & VARIABLES ═══════ */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg-0: #0a0a0a;
-            --bg-1: #111111;
-            --bg-2: #1a1a1a;
-            --bg-3: #222222;
-            --bg-4: #2a2a2a;
-            --border: #2d2d2d;
-            --border-2: #363636;
-            --text-1: #f5f5f5;
-            --text-2: #a0a0a0;
-            --text-3: #666666;
-            --accent: #6366f1;
-            --accent-2: #818cf8;
-            --green: #22c55e;
-            --green-bg: rgba(34,197,94,0.1);
-            --red: #ef4444;
-            --red-bg: rgba(239,68,68,0.1);
-            --blue: #3b82f6;
-            --blue-bg: rgba(59,130,246,0.1);
-            --orange: #f59e0b;
-            --orange-bg: rgba(245,158,11,0.1);
-            --purple: #a855f7;
-            --purple-bg: rgba(168,85,247,0.1);
-            --cyan: #06b6d4;
-            --cyan-bg: rgba(6,182,212,0.1);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.3);
-            --font: 'Inter', 'Noto Sans Arabic', sans-serif;
-            --mono: 'JetBrains Mono', monospace;
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg-0:#09090b;--bg-1:#111113;--bg-2:#18181b;--bg-3:#222225;--bg-4:#2a2a2e;
+            --border:#27272a;--border-2:#3f3f46;
+            --text-1:#fafafa;--text-2:#a1a1aa;--text-3:#52525b;
+            --accent:#6366f1;--accent-2:#818cf8;
+            --green:#22c55e;--green-bg:rgba(34,197,94,.12);
+            --red:#ef4444;--red-bg:rgba(239,68,68,.12);
+            --blue:#3b82f6;--blue-bg:rgba(59,130,246,.12);
+            --orange:#f59e0b;--orange-bg:rgba(245,158,11,.12);
+            --purple:#a855f7;--purple-bg:rgba(168,85,247,.12);
+            --cyan:#06b6d4;--cyan-bg:rgba(6,182,212,.12);
+            --r:12px;--rs:8px;
+            --font:'Inter','Noto Sans Arabic',system-ui,sans-serif;
+            --mono:'JetBrains Mono',monospace;
         }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg-0);
-            color: var(--text-1);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        /* ═══════ LAYOUT ═══════ */
-        .dashboard {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 24px;
-        }
-
-        /* ═══════ HEADER ═══════ */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 0;
-            margin-bottom: 32px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--accent), var(--purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: -1px;
-        }
-
-        .logo-text h1 {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .logo-text span {
-            font-size: 12px;
-            color: var(--text-3);
-            font-weight: 400;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 9px 18px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--bg-2);
-            color: var(--text-2);
-            font-family: var(--font);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            text-decoration: none;
-        }
-
-        .btn:hover { background: var(--bg-3); color: var(--text-1); border-color: var(--border-2); }
-        .btn-danger:hover { background: var(--red-bg); color: var(--red); border-color: rgba(239,68,68,0.3); }
-        .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .btn-primary:hover { background: var(--accent-2); }
-
-        /* ═══════ STATUS BAR ═══════ */
-        .status-bar {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 14px 20px;
-            background: var(--bg-1);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-bottom: 24px;
-            font-size: 13px;
-            color: var(--text-2);
-            flex-wrap: wrap;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--green);
-            animation: pulse 2s ease infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .status-sep { width: 1px; height: 16px; background: var(--border); }
-
-        /* ═══════ STATS GRID ═══════ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .stat-card {
-            background: var(--bg-1);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover { border-color: var(--border-2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-        }
-
-        .stat-card.green::after { background: linear-gradient(90deg, var(--green), transparent); }
-        .stat-card.blue::after { background: linear-gradient(90deg, var(--blue), transparent); }
-        .stat-card.purple::after { background: linear-gradient(90deg, var(--purple), transparent); }
-        .stat-card.orange::after { background: linear-gradient(90deg, var(--orange), transparent); }
-        .stat-card.red::after { background: linear-gradient(90deg, var(--red), transparent); }
-        .stat-card.cyan::after { background: linear-gradient(90deg, var(--cyan), transparent); }
-
-        .stat-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-3);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stat-icon.green { background: var(--green-bg); color: var(--green); }
-        .stat-icon.blue { background: var(--blue-bg); color: var(--blue); }
-        .stat-icon.purple { background: var(--purple-bg); color: var(--purple); }
-        .stat-icon.orange { background: var(--orange-bg); color: var(--orange); }
-        .stat-icon.red { background: var(--red-bg); color: var(--red); }
-        .stat-icon.cyan { background: var(--cyan-bg); color: var(--cyan); }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            line-height: 1;
-            margin-bottom: 6px;
-            font-family: var(--mono);
-        }
-
-        .stat-sub {
-            font-size: 12px;
-            color: var(--text-3);
-        }
-
-        /* ═══════ SECTIONS GRID ═══════ */
-        .sections-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        .section {
-            background: var(--bg-1);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        .section-full { grid-column: 1 / -1; }
-
-        .section-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-body { padding: 20px; }
-
-        /* ═══════ CHART ═══════ */
-        .chart-container {
-            width: 100%;
-            height: 220px;
-            position: relative;
-        }
-
-        .chart-container canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            height: 180px;
-            padding-top: 10px;
-        }
-
-        .bar-col {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .bar {
-            width: 100%;
-            min-height: 4px;
-            border-radius: 4px 4px 0 0;
-            background: linear-gradient(180deg, var(--accent), rgba(99,102,241,0.3));
-            transition: height 0.8s cubic-bezier(0.4,0,0.2,1);
-            position: relative;
-        }
-
-        .bar:hover { background: linear-gradient(180deg, var(--accent-2), rgba(129,140,248,0.4)); }
-
-        .bar-label {
-            font-size: 10px;
-            color: var(--text-3);
-            font-family: var(--mono);
-        }
-
-        .bar-value {
-            font-size: 10px;
-            color: var(--text-2);
-            font-family: var(--mono);
-            font-weight: 600;
-        }
-
-        /* ═══════ HEATMAP ═══════ */
-        .heatmap {
-            display: grid;
-            grid-template-columns: repeat(24, 1fr);
-            gap: 3px;
-        }
-
-        .heat-cell {
-            aspect-ratio: 1;
-            border-radius: 3px;
-            background: var(--bg-3);
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .heat-cell[data-level="1"] { background: rgba(99,102,241,0.2); }
-        .heat-cell[data-level="2"] { background: rgba(99,102,241,0.4); }
-        .heat-cell[data-level="3"] { background: rgba(99,102,241,0.6); }
-        .heat-cell[data-level="4"] { background: var(--accent); }
-
-        .heat-labels {
-            display: grid;
-            grid-template-columns: repeat(24, 1fr);
-            gap: 3px;
-            margin-top: 6px;
-        }
-
-        .heat-labels span {
-            font-size: 9px;
-            color: var(--text-3);
-            text-align: center;
-            font-family: var(--mono);
-        }
-
-        /* ═══════ TABLE ═══════ */
-        .table-wrap { overflow-x: auto; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: right;
-            padding: 10px 14px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        td {
-            padding: 12px 14px;
-            font-size: 13px;
-            color: var(--text-2);
-            border-bottom: 1px solid var(--border);
-        }
-
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background: var(--bg-2); }
-
-        .badge {
-            display: inline-flex;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .badge-green { background: var(--green-bg); color: var(--green); }
-        .badge-blue { background: var(--blue-bg); color: var(--blue); }
-        .badge-orange { background: var(--orange-bg); color: var(--orange); }
-        .badge-purple { background: var(--purple-bg); color: var(--purple); }
-
-        /* ═══════ LANG BARS ═══════ */
-        .lang-bar-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .lang-item label {
-            font-size: 12px;
-            color: var(--text-2);
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .lang-track {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-3);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .lang-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 1s ease;
-        }
-
-        .lang-fill.ar { background: linear-gradient(90deg, var(--accent), var(--purple)); }
-        .lang-fill.en { background: linear-gradient(90deg, var(--blue), var(--cyan)); }
-
-        /* ═══════ DONUT ═══════ */
-        .donut-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .donut-chart {
-            width: 150px;
-            height: 150px;
-            position: relative;
-        }
-
-        .donut-chart canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .donut-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .donut-center .val { font-size: 24px; font-weight: 800; font-family: var(--mono); }
-        .donut-center .lbl { font-size: 10px; color: var(--text-3); }
-
-        .donut-legend {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--text-2);
-        }
-
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 3px;
-        }
-
-        /* ═══════ EMPTY ═══════ */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            color: var(--text-3);
-            gap: 12px;
-        }
-
-        .empty-state svg { opacity: 0.3; }
-        .empty-state p { font-size: 13px; }
-
-        /* ═══════ TOAST ═══════ */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--bg-3);
-            color: var(--text-1);
-            padding: 12px 24px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            border: 1px solid var(--border);
-            opacity: 0;
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        /* ═══════ ANIMATIONS ═══════ */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .stat-card { animation: fadeInUp 0.5s ease both; }
-        .stat-card:nth-child(1) { animation-delay: 0.05s; }
-        .stat-card:nth-child(2) { animation-delay: 0.1s; }
-        .stat-card:nth-child(3) { animation-delay: 0.15s; }
-        .stat-card:nth-child(4) { animation-delay: 0.2s; }
-        .stat-card:nth-child(5) { animation-delay: 0.25s; }
-        .stat-card:nth-child(6) { animation-delay: 0.3s; }
-
-        .section { animation: fadeInUp 0.5s ease 0.35s both; }
-
-        /* ═══════ RESPONSIVE ═══════ */
-        @media (max-width: 900px) {
-            .sections-grid { grid-template-columns: 1fr; }
-            .dashboard { padding: 16px; }
-        }
-
-        @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .header { flex-direction: column; gap: 16px; align-items: flex-start; }
-            .stat-value { font-size: 24px; }
-            .stat-card { padding: 16px; }
-            .heatmap { grid-template-columns: repeat(12, 1fr); }
-            .heat-labels { grid-template-columns: repeat(12, 1fr); }
-        }
-
-        /* scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        body{font-family:var(--font);background:var(--bg-0);color:var(--text-1);min-height:100vh;line-height:1.6}
+
+        /* ═══ LOGIN ═══ */
+        .login-overlay{position:fixed;inset:0;background:var(--bg-0);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
+        .login-overlay.hidden{opacity:0;pointer-events:none}
+        .login-box{background:var(--bg-1);border:1px solid var(--border);border-radius:16px;padding:40px;width:380px;max-width:90vw;text-align:center}
+        .login-logo{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;color:#fff;margin-bottom:20px}
+        .login-box h2{font-size:20px;margin-bottom:6px}
+        .login-box p{font-size:13px;color:var(--text-3);margin-bottom:24px}
+        .login-input{width:100%;padding:12px 16px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg-2);color:var(--text-1);font-family:var(--font);font-size:14px;outline:none;transition:border .2s;margin-bottom:16px;text-align:center;letter-spacing:2px}
+        .login-input:focus{border-color:var(--accent)}
+        .login-input.err{border-color:var(--red);animation:shake .4s}
+        .login-btn{width:100%;padding:12px;border-radius:var(--rs);border:none;background:var(--accent);color:#fff;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+        .login-btn:hover{background:var(--accent-2)}
+        @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+        /* ═══ LAYOUT ═══ */
+        .dash{max-width:1440px;margin:0 auto;padding:20px 24px}
+
+        /* ═══ HEADER ═══ */
+        .hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
+        .logo{display:flex;align-items:center;gap:12px}
+        .logo-i{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;color:#fff}
+        .logo h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
+        .logo span{font-size:11px;color:var(--text-3);display:block}
+        .hdr-btns{display:flex;gap:8px;flex-wrap:wrap}
+        .btn{padding:8px 16px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+        .btn:hover{background:var(--bg-3);color:var(--text-1);border-color:var(--border-2)}
+        .btn-d:hover{background:var(--red-bg);color:var(--red);border-color:rgba(239,68,68,.3)}
+
+        /* ═══ STATUS ═══ */
+        .status{display:flex;align-items:center;gap:16px;padding:12px 18px;background:var(--bg-1);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;font-size:12px;color:var(--text-2);flex-wrap:wrap}
+        .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulse 2s ease infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+        .sep{width:1px;height:14px;background:var(--border)}
+
+        /* ═══ GRID ═══ */
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:22px}
+        .card{background:var(--bg-1);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:all .3s;position:relative;overflow:hidden}
+        .card:hover{border-color:var(--border-2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+        .card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+        .card.g::after{background:linear-gradient(90deg,var(--green),transparent)}
+        .card.b::after{background:linear-gradient(90deg,var(--blue),transparent)}
+        .card.p::after{background:linear-gradient(90deg,var(--purple),transparent)}
+        .card.o::after{background:linear-gradient(90deg,var(--orange),transparent)}
+        .card.r::after{background:linear-gradient(90deg,var(--red),transparent)}
+        .card.c::after{background:linear-gradient(90deg,var(--cyan),transparent)}
+        .card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .card-l{font-size:11px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+        .card-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .card-ic.g{background:var(--green-bg)}.card-ic.b{background:var(--blue-bg)}.card-ic.p{background:var(--purple-bg)}
+        .card-ic.o{background:var(--orange-bg)}.card-ic.r{background:var(--red-bg)}.card-ic.c{background:var(--cyan-bg)}
+        .card-v{font-size:28px;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:4px;font-family:var(--mono)}
+        .card-s{font-size:11px;color:var(--text-3)}
+
+        /* ═══ SECTIONS ═══ */
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+        .full{grid-column:1/-1}
+        .sec{background:var(--bg-1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+        .sec-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+        .sec-t{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+        .sec-b{padding:18px}
+
+        /* ═══ BAR CHART ═══ */
+        .bars{display:flex;align-items:flex-end;gap:6px;height:160px}
+        .bar-c{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+        .bar{width:100%;min-height:3px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--accent),rgba(99,102,241,.25));transition:height .8s cubic-bezier(.4,0,.2,1)}
+        .bar:hover{background:linear-gradient(180deg,var(--accent-2),rgba(129,140,248,.35))}
+        .bar-l{font-size:9px;color:var(--text-3);font-family:var(--mono)}
+        .bar-v{font-size:9px;color:var(--text-2);font-family:var(--mono);font-weight:600}
+
+        /* ═══ TABLE ═══ */
+        table{width:100%;border-collapse:collapse}
+        th{text-align:right;padding:10px 14px;font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+        td{padding:10px 14px;font-size:12px;color:var(--text-2);border-bottom:1px solid var(--border)}
+        tr:last-child td{border:none}
+        tr:hover td{background:var(--bg-2)}
+        .badge{display:inline-flex;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600}
+        .badge-g{background:var(--green-bg);color:var(--green)}.badge-b{background:var(--blue-bg);color:var(--blue)}
+        .badge-o{background:var(--orange-bg);color:var(--orange)}.badge-p{background:var(--purple-bg);color:var(--purple)}
+
+        /* ═══ PROGRESS BARS ═══ */
+        .prog-item{margin-bottom:14px}
+        .prog-item:last-child{margin-bottom:0}
+        .prog-item label{font-size:12px;color:var(--text-2);display:flex;justify-content:space-between;margin-bottom:5px}
+        .prog-track{width:100%;height:7px;background:var(--bg-3);border-radius:4px;overflow:hidden}
+        .prog-fill{height:100%;border-radius:4px;transition:width 1s ease}
+
+        /* ═══ PERF ROW ═══ */
+        .perf-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--bg-2);border-radius:var(--rs);margin-bottom:8px}
+        .perf-row:last-child{margin-bottom:0}
+        .perf-row span:first-child{font-size:12px;color:var(--text-2)}
+        .perf-row span:last-child{font-size:13px;font-weight:700;font-family:var(--mono)}
+
+        /* ═══ LIVE FEED ═══ */
+        .feed{max-height:340px;overflow-y:auto}
+        .feed-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+        .feed-item:last-child{border:none}
+        .feed-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+        .feed-dot.pv{background:var(--blue)}.feed-dot.msg{background:var(--green)}.feed-dot.err{background:var(--red)}
+        .feed-txt{flex:1}
+        .feed-txt p{font-size:12px;color:var(--text-2)}
+        .feed-txt small{font-size:10px;color:var(--text-3)}
+
+        /* ═══ EMPTY ═══ */
+        .empty{display:flex;flex-direction:column;align-items:center;padding:40px;color:var(--text-3);gap:10px}
+        .empty svg{opacity:.3}
+        .empty p{font-size:12px}
+
+        /* ═══ LOADING ═══ */
+        .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:8px;color:var(--text-3);font-size:13px}
+        .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* ═══ TOAST ═══ */
+        .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-3);color:var(--text-1);padding:10px 22px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border);opacity:0;transition:all .3s;z-index:1000}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+        /* ═══ ANIMATIONS ═══ */
+        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+        .card{animation:fadeUp .5s ease both}
+        .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}
+        .card:nth-child(3){animation-delay:.15s}.card:nth-child(4){animation-delay:.2s}
+        .card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.3s}
+        .sec{animation:fadeUp .5s ease .35s both}
+
+        /* ═══ RESPONSIVE ═══ */
+        @media(max-width:900px){.grid2{grid-template-columns:1fr}.dash{padding:14px}}
+        @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);gap:10px}.hdr{flex-direction:column;align-items:flex-start}.card-v{font-size:22px}.card{padding:14px}}
+
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <!-- HEADER -->
-        <header class="header">
+
+    <!-- LOGIN SCREEN -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="login-logo">L</div>
+            <h2>لوحة تحكم الأدمن</h2>
+            <p>أدخل كلمة المرور للوصول</p>
+            <input type="password" class="login-input" id="loginPass" placeholder="••••••••" autofocus>
+            <button class="login-btn" id="loginBtn">دخول</button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dash" id="dashContent" style="display:none">
+        <header class="hdr">
             <div class="logo">
-                <div class="logo-icon">L</div>
-                <div class="logo-text">
-                    <h1>لوحة التحكم</h1>
-                    <span>LORD AI Dashboard</span>
+                <div class="logo-i">L</div>
+                <div>
+                    <h1>لوحة تحكم الأدمن</h1>
+                    <span>LORD AI Admin Dashboard</span>
                 </div>
             </div>
-            <div class="header-actions">
+            <div class="hdr-btns">
+                <button class="btn" onclick="refreshData()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                    تحديث
+                </button>
                 <a href="index.html" class="btn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     العودة للشات
                 </a>
-                <button class="btn" onclick="exportData()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    تصدير البيانات
+                <button class="btn" onclick="exportAll()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    تصدير
                 </button>
-                <button class="btn btn-danger" onclick="clearAnalytics()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    مسح
+                <button class="btn btn-d" onclick="logout()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    خروج
                 </button>
             </div>
         </header>
 
         <!-- STATUS BAR -->
-        <div class="status-bar">
-            <div class="status-dot"></div>
+        <div class="status">
+            <div class="dot"></div>
             <span>النظام يعمل</span>
-            <div class="status-sep"></div>
+            <div class="sep"></div>
             <span>النموذج: <strong>Llama 3.3 70B</strong></span>
-            <div class="status-sep"></div>
+            <div class="sep"></div>
             <span>المزود: <strong>Groq</strong></span>
-            <div class="status-sep"></div>
-            <span id="lastActive">آخر نشاط: —</span>
-            <div class="status-sep"></div>
-            <span id="uptime">مدة الاستخدام: —</span>
+            <div class="sep"></div>
+            <span id="fbStatus">Firebase: جاري الاتصال...</span>
+            <div class="sep"></div>
+            <span id="lastRefresh">آخر تحديث: —</span>
         </div>
 
         <!-- STATS CARDS -->
-        <div class="stats-grid" id="statsGrid">
-            <!-- Filled by JS -->
-        </div>
+        <div class="stats" id="statsGrid"></div>
 
-        <!-- SECTIONS -->
-        <div class="sections-grid">
+        <!-- CHARTS & SECTIONS -->
+        <div class="grid2">
             <!-- Messages Chart -->
-            <div class="section section-full">
-                <div class="section-head">
-                    <div class="section-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            <div class="sec full">
+                <div class="sec-h">
+                    <div class="sec-t">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                         نشاط الرسائل — آخر 14 يوم
                     </div>
                 </div>
-                <div class="section-body">
-                    <div class="bar-chart" id="messagesChart"></div>
-                </div>
+                <div class="sec-b"><div class="bars" id="chartBars"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div></div>
             </div>
 
-            <!-- Hourly Heatmap -->
-            <div class="section">
-                <div class="section-head">
-                    <div class="section-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-                        نشاط حسب الساعة
+            <!-- Live Events Feed -->
+            <div class="sec">
+                <div class="sec-h">
+                    <div class="sec-t">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        آخر الأحداث (مباشر)
                     </div>
                 </div>
-                <div class="section-body">
-                    <div class="heatmap" id="heatmap"></div>
-                    <div class="heat-labels" id="heatLabels"></div>
-                </div>
-            </div>
-
-            <!-- Language Distribution -->
-            <div class="section">
-                <div class="section-head">
-                    <div class="section-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        توزيع اللغات
-                    </div>
-                </div>
-                <div class="section-body">
-                    <div class="lang-bar-wrap" id="langBars"></div>
-                </div>
-            </div>
-
-            <!-- Message Ratio -->
-            <div class="section">
-                <div class="section-head">
-                    <div class="section-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                        نسبة الرسائل
-                    </div>
-                </div>
-                <div class="section-body">
-                    <div class="donut-container" id="donutChart"></div>
-                </div>
+                <div class="sec-b"><div class="feed" id="liveFeed"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div></div>
             </div>
 
             <!-- Performance -->
-            <div class="section">
-                <div class="section-head">
-                    <div class="section-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                        الأداء
+            <div class="sec">
+                <div class="sec-h">
+                    <div class="sec-t">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                        الأداء والسرعة
                     </div>
                 </div>
-                <div class="section-body" id="perfSection"></div>
+                <div class="sec-b" id="perfSection"><div class="loading"><div class="spinner"></div></div></div>
             </div>
 
-            <!-- Recent Conversations -->
-            <div class="section section-full">
-                <div class="section-head">
-                    <div class="section-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        أحدث المحادثات
+            <!-- Language Distribution -->
+            <div class="sec">
+                <div class="sec-h">
+                    <div class="sec-t">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        توزيع اللغات
                     </div>
-                    <span style="font-size:12px;color:var(--text-3)" id="totalConvsLabel"></span>
                 </div>
-                <div class="section-body" style="padding:0">
-                    <div class="table-wrap" id="convsTable"></div>
+                <div class="sec-b" id="langSection"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+
+            <!-- Top Devices -->
+            <div class="sec">
+                <div class="sec-h">
+                    <div class="sec-t">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        الأجهزة والشاشات
+                    </div>
                 </div>
+                <div class="sec-b" id="devicesSection"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="sec full">
+                <div class="sec-h">
+                    <div class="sec-t">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        المستخدمون
+                    </div>
+                    <span style="font-size:11px;color:var(--text-3)" id="usersCount"></span>
+                </div>
+                <div class="sec-b" style="padding:0"><div class="table-wrap" id="usersTable"><div class="loading"><div class="spinner"></div>جاري تحميل المستخدمين...</div></div></div>
             </div>
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
     (function() {
         'use strict';
 
-        /* ═══════ HELPERS ═══════ */
-        function get(k, d) {
-            try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }
-            catch(e) { return d; }
+        var db = null;
+
+        /* ═══ HELPERS ═══ */
+        function toast(m){var o=document.querySelector('.toast');if(o)o.remove();var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);requestAnimationFrame(function(){t.classList.add('show')});setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)},2500)}
+
+        function timeAgo(ts){
+            if(!ts)return '—';
+            var d=Date.now()-ts,s=Math.floor(d/1000);
+            if(s<60)return 'الآن';
+            var m=Math.floor(s/60);if(m<60)return m+' دقيقة';
+            var h=Math.floor(m/60);if(h<24)return h+' ساعة';
+            var dy=Math.floor(h/24);return dy+' يوم';
+        }
+        function fmtN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return(n||0).toString()}
+
+        function parseUA(ua){
+            if(!ua)return 'غير معروف';
+            if(/iPhone|iPad/.test(ua))return '📱 iOS';
+            if(/Android/.test(ua))return '📱 Android';
+            if(/Windows/.test(ua))return '💻 Windows';
+            if(/Mac/.test(ua))return '💻 macOS';
+            if(/Linux/.test(ua))return '💻 Linux';
+            return '🌐 آخر';
         }
 
-        function toast(msg) {
-            var old = document.querySelector('.toast');
-            if (old) old.remove();
-            var t = document.createElement('div');
-            t.className = 'toast';
-            t.textContent = msg;
-            document.body.appendChild(t);
-            requestAnimationFrame(function() { t.classList.add('show'); });
-            setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 300); }, 2500);
+        /* ═══ AUTH ═══ */
+        var loginOverlay = document.getElementById('loginOverlay');
+        var dashContent = document.getElementById('dashContent');
+        var loginPass = document.getElementById('loginPass');
+        var loginBtn = document.getElementById('loginBtn');
+
+        function checkAuth(){
+            var s = sessionStorage.getItem('lord_admin');
+            if(s==='1'){showDash();return true;}
+            return false;
         }
 
-        function timeAgo(ts) {
-            if (!ts) return '—';
-            var diff = Date.now() - ts;
-            var s = Math.floor(diff / 1000);
-            if (s < 60) return 'الآن';
-            var m = Math.floor(s / 60);
-            if (m < 60) return m + ' دقيقة';
-            var h = Math.floor(m / 60);
-            if (h < 24) return h + ' ساعة';
-            var d = Math.floor(h / 24);
-            return d + ' يوم';
-        }
-
-        function formatNum(n) {
-            if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-            if (n >= 1000) return (n/1000).toFixed(1) + 'K';
-            return n.toString();
-        }
-
-        /* ═══════ DATA ═══════ */
-        var convs = get('lord_convs', []);
-        var analytics = get('lord_analytics', { events: [], sessions: [], firstUse: null });
-
-        // Compute stats from conversations
-        var totalConvs = convs.length;
-        var totalMsgs = 0;
-        var totalUserMsgs = 0;
-        var totalAIMsgs = 0;
-        var totalUserWords = 0;
-        var totalAIWords = 0;
-        var allMsgs = [];
-        var lastMsgTs = 0;
-
-        for (var i = 0; i < convs.length; i++) {
-            var c = convs[i];
-            for (var j = 0; j < c.msgs.length; j++) {
-                var m = c.msgs[j];
-                totalMsgs++;
-                allMsgs.push({ role: m.role, content: m.content, ts: m.ts || c.ts, convId: c.id, convTitle: c.title });
-                var wc = (m.content || '').split(/\s+/).filter(function(w){return w}).length;
-                if (m.role === 'user') { totalUserMsgs++; totalUserWords += wc; }
-                else { totalAIMsgs++; totalAIWords += wc; }
-                var mts = m.ts || c.ts || 0;
-                if (mts > lastMsgTs) lastMsgTs = mts;
+        function doLogin(){
+            var pass = loginPass.value.trim();
+            if(typeof ADMIN_PASSWORD!=='undefined' && pass===ADMIN_PASSWORD){
+                sessionStorage.setItem('lord_admin','1');
+                showDash();
+            } else {
+                loginPass.classList.add('err');
+                setTimeout(function(){loginPass.classList.remove('err')},500);
             }
         }
 
-        // Response times from analytics
-        var responseTimes = [];
-        var langCounts = { ar: 0, en: 0 };
-        var errorCount = 0;
-        var hourlyActivity = new Array(24).fill(0);
-
-        for (var k = 0; k < analytics.events.length; k++) {
-            var ev = analytics.events[k];
-            if (ev.type === 'ai_msg' && ev.data.responseTime) {
-                responseTimes.push(ev.data.responseTime);
-            }
-            if (ev.type === 'user_msg' && ev.data.lang) {
-                langCounts[ev.data.lang] = (langCounts[ev.data.lang] || 0) + 1;
-            }
-            if (ev.type === 'error') errorCount++;
-
-            // Hourly activity
-            var hour = new Date(ev.ts).getHours();
-            hourlyActivity[hour]++;
+        function showDash(){
+            loginOverlay.classList.add('hidden');
+            dashContent.style.display='';
+            initDB();
         }
 
-        // Also compute hourly from messages if no analytics yet
-        if (analytics.events.length === 0) {
-            for (var a = 0; a < allMsgs.length; a++) {
-                if (allMsgs[a].ts) {
-                    var h2 = new Date(allMsgs[a].ts).getHours();
-                    hourlyActivity[h2]++;
-                }
-                if (allMsgs[a].role === 'user') {
-                    var isAr = /[\u0600-\u06FF]/.test(allMsgs[a].content);
-                    langCounts[isAr ? 'ar' : 'en']++;
-                }
-            }
-        }
+        loginBtn.addEventListener('click',doLogin);
+        loginPass.addEventListener('keydown',function(e){if(e.key==='Enter')doLogin()});
 
-        var avgResponseTime = responseTimes.length
-            ? Math.round(responseTimes.reduce(function(a,b){return a+b},0) / responseTimes.length)
-            : 0;
-
-        var avgUserWords = totalUserMsgs ? Math.round(totalUserWords / totalUserMsgs) : 0;
-        var avgAIWords = totalAIMsgs ? Math.round(totalAIWords / totalAIMsgs) : 0;
-        var totalSessions = analytics.sessions.length || 1;
-
-        /* ═══════ RENDER STATS CARDS ═══════ */
-        var statsHTML = '';
-        var stats = [
-            { label: 'المحادثات', value: totalConvs, icon: '💬', color: 'blue', sub: 'إجمالي المحادثات' },
-            { label: 'الرسائل', value: totalMsgs, icon: '📨', color: 'green', sub: totalUserMsgs + ' مستخدم · ' + totalAIMsgs + ' ذكاء' },
-            { label: 'الكلمات', value: formatNum(totalUserWords + totalAIWords), icon: '📝', color: 'purple', sub: 'مستخدم: ' + formatNum(totalUserWords) + ' · ذكاء: ' + formatNum(totalAIWords) },
-            { label: 'متوسط الرد', value: avgResponseTime ? (avgResponseTime/1000).toFixed(1)+'s' : '—', icon: '⚡', color: 'orange', sub: 'وقت استجابة الذكاء' },
-            { label: 'الجلسات', value: totalSessions, icon: '📊', color: 'cyan', sub: 'إجمالي الجلسات' },
-            { label: 'الأخطاء', value: errorCount, icon: '⚠️', color: 'red', sub: errorCount === 0 ? 'لا أخطاء ✓' : 'حدثت أخطاء' },
-        ];
-
-        for (var s = 0; s < stats.length; s++) {
-            var st = stats[s];
-            statsHTML += '<div class="stat-card ' + st.color + '">'
-                + '<div class="stat-header">'
-                + '<span class="stat-label">' + st.label + '</span>'
-                + '<div class="stat-icon ' + st.color + '">' + st.icon + '</div>'
-                + '</div>'
-                + '<div class="stat-value">' + st.value + '</div>'
-                + '<div class="stat-sub">' + st.sub + '</div>'
-                + '</div>';
-        }
-        document.getElementById('statsGrid').innerHTML = statsHTML;
-
-        /* ═══════ STATUS BAR ═══════ */
-        document.getElementById('lastActive').textContent = 'آخر نشاط: ' + timeAgo(lastMsgTs);
-        if (analytics.firstUse) {
-            var days = Math.floor((Date.now() - analytics.firstUse) / 86400000);
-            document.getElementById('uptime').textContent = 'مدة الاستخدام: ' + (days || 1) + ' يوم';
-        }
-
-        /* ═══════ MESSAGES BAR CHART ═══════ */
-        var chartEl = document.getElementById('messagesChart');
-        var dailyMsgs = {};
-        for (var d = 13; d >= 0; d--) {
-            var date = new Date();
-            date.setDate(date.getDate() - d);
-            var key = date.toISOString().split('T')[0];
-            dailyMsgs[key] = 0;
-        }
-
-        for (var mi = 0; mi < allMsgs.length; mi++) {
-            var ts = allMsgs[mi].ts;
-            if (ts) {
-                var dk = new Date(ts).toISOString().split('T')[0];
-                if (dk in dailyMsgs) dailyMsgs[dk]++;
-            }
-        }
-
-        // Also count from conv timestamps if msgs don't have ts
-        for (var ci = 0; ci < convs.length; ci++) {
-            if (convs[ci].ts) {
-                var ck = new Date(convs[ci].ts).toISOString().split('T')[0];
-                if (ck in dailyMsgs && !convs[ci].msgs[0]?.ts) {
-                    dailyMsgs[ck] += convs[ci].msgs.length;
-                }
-            }
-        }
-
-        var keys = Object.keys(dailyMsgs);
-        var maxVal = Math.max.apply(null, keys.map(function(k){return dailyMsgs[k]})) || 1;
-        var chartHTML = '';
-        for (var bi = 0; bi < keys.length; bi++) {
-            var bk = keys[bi];
-            var bv = dailyMsgs[bk];
-            var bh = Math.max(4, (bv / maxVal) * 160);
-            var dayName = new Date(bk).toLocaleDateString('ar-EG', { weekday: 'short' });
-            var dayNum = bk.split('-')[2];
-            chartHTML += '<div class="bar-col">'
-                + '<span class="bar-value">' + (bv || '') + '</span>'
-                + '<div class="bar" style="height:' + bh + 'px" title="' + bk + ': ' + bv + ' رسالة"></div>'
-                + '<span class="bar-label">' + dayNum + '</span>'
-                + '</div>';
-        }
-        chartEl.innerHTML = chartHTML;
-
-        /* ═══════ HOURLY HEATMAP ═══════ */
-        var heatEl = document.getElementById('heatmap');
-        var heatLabelsEl = document.getElementById('heatLabels');
-        var maxHour = Math.max.apply(null, hourlyActivity) || 1;
-        var heatHTML = '', heatLabelHTML = '';
-
-        for (var hi = 0; hi < 24; hi++) {
-            var hv = hourlyActivity[hi];
-            var level = 0;
-            if (hv > 0) level = 1;
-            if (hv > maxHour * 0.25) level = 2;
-            if (hv > maxHour * 0.5) level = 3;
-            if (hv > maxHour * 0.75) level = 4;
-            heatHTML += '<div class="heat-cell" data-level="' + level + '" title="الساعة ' + hi + ': ' + hv + ' حدث"></div>';
-            heatLabelHTML += '<span>' + (hi % 3 === 0 ? hi + ':00' : '') + '</span>';
-        }
-        heatEl.innerHTML = heatHTML;
-        heatLabelsEl.innerHTML = heatLabelHTML;
-
-        /* ═══════ LANGUAGE BARS ═══════ */
-        var langEl = document.getElementById('langBars');
-        var totalLang = (langCounts.ar || 0) + (langCounts.en || 0) || 1;
-        var arPct = Math.round(((langCounts.ar || 0) / totalLang) * 100);
-        var enPct = 100 - arPct;
-
-        langEl.innerHTML = '<div class="lang-item">'
-            + '<label><span>🇸🇦 العربية</span><strong>' + arPct + '%</strong></label>'
-            + '<div class="lang-track"><div class="lang-fill ar" style="width:' + arPct + '%"></div></div>'
-            + '</div>'
-            + '<div class="lang-item">'
-            + '<label><span>🇺🇸 الإنجليزية</span><strong>' + enPct + '%</strong></label>'
-            + '<div class="lang-track"><div class="lang-fill en" style="width:' + enPct + '%"></div></div>'
-            + '</div>'
-            + '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--text-3)">'
-            + '<span>إجمالي رسائل المستخدم: ' + totalUserMsgs + '</span>'
-            + '<span>عربي: ' + (langCounts.ar||0) + ' · إنجليزي: ' + (langCounts.en||0) + '</span>'
-            + '</div>';
-
-        /* ═══════ DONUT CHART ═══════ */
-        var donutEl = document.getElementById('donutChart');
-        var totalDonut = totalUserMsgs + totalAIMsgs || 1;
-        var userPct = Math.round((totalUserMsgs / totalDonut) * 100);
-        var aiPct = 100 - userPct;
-
-        donutEl.innerHTML = '<div class="donut-chart">'
-            + '<canvas id="donutCanvas" width="150" height="150"></canvas>'
-            + '<div class="donut-center"><div class="val">' + totalMsgs + '</div><div class="lbl">رسالة</div></div>'
-            + '</div>'
-            + '<div class="donut-legend">'
-            + '<div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>المستخدم (' + userPct + '%)</div>'
-            + '<div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>الذكاء (' + aiPct + '%)</div>'
-            + '<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">'
-            + '<div class="legend-item" style="font-size:12px;color:var(--text-3)">متوسط كلمات المستخدم: ' + avgUserWords + '</div>'
-            + '<div class="legend-item" style="font-size:12px;color:var(--text-3)">متوسط كلمات الذكاء: ' + avgAIWords + '</div>'
-            + '</div></div>';
-
-        // Draw donut
-        setTimeout(function() {
-            var canvas = document.getElementById('donutCanvas');
-            if (!canvas) return;
-            var ctx = canvas.getContext('2d');
-            var cx = 75, cy = 75, r = 55, lw = 18;
-
-            // AI slice
-            var aiAngle = (aiPct / 100) * Math.PI * 2;
-            ctx.beginPath();
-            ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + aiAngle);
-            ctx.strokeStyle = '#22c55e';
-            ctx.lineWidth = lw;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-
-            // User slice
-            ctx.beginPath();
-            ctx.arc(cx, cy, r, -Math.PI/2 + aiAngle, -Math.PI/2 + Math.PI*2);
-            ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = lw;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-        }, 100);
-
-        /* ═══════ PERFORMANCE ═══════ */
-        var perfEl = document.getElementById('perfSection');
-        var perfItems = [
-            { label: 'متوسط وقت الاستجابة', value: avgResponseTime ? (avgResponseTime/1000).toFixed(1) + ' ثانية' : 'غير متاح', color: 'var(--green)' },
-            { label: 'أسرع استجابة', value: responseTimes.length ? (Math.min.apply(null, responseTimes)/1000).toFixed(1) + ' ثانية' : '—', color: 'var(--blue)' },
-            { label: 'أبطأ استجابة', value: responseTimes.length ? (Math.max.apply(null, responseTimes)/1000).toFixed(1) + ' ثانية' : '—', color: 'var(--orange)' },
-            { label: 'إجمالي الكلمات المولدة', value: formatNum(totalAIWords), color: 'var(--purple)' },
-            { label: 'نسبة النجاح', value: totalAIMsgs ? Math.round((totalAIMsgs / (totalAIMsgs + errorCount)) * 100) + '%' : '—', color: 'var(--cyan)' },
-        ];
-
-        var perfHTML = '<div style="display:flex;flex-direction:column;gap:14px">';
-        for (var pi = 0; pi < perfItems.length; pi++) {
-            var p = perfItems[pi];
-            perfHTML += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg-2);border-radius:var(--radius-sm)">'
-                + '<span style="font-size:13px;color:var(--text-2)">' + p.label + '</span>'
-                + '<span style="font-size:14px;font-weight:700;color:' + p.color + ';font-family:var(--mono)">' + p.value + '</span>'
-                + '</div>';
-        }
-        perfHTML += '</div>';
-        perfEl.innerHTML = perfHTML;
-
-        /* ═══════ CONVERSATIONS TABLE ═══════ */
-        var tableEl = document.getElementById('convsTable');
-        document.getElementById('totalConvsLabel').textContent = 'إجمالي: ' + totalConvs;
-
-        if (!convs.length) {
-            tableEl.innerHTML = '<div class="empty-state">'
-                + '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
-                + '<p>لا توجد محادثات بعد</p></div>';
-        } else {
-            var tbl = '<table><thead><tr><th>العنوان</th><th>الرسائل</th><th>الكلمات</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>';
-            var shown = convs.slice(0, 20);
-            for (var ti = 0; ti < shown.length; ti++) {
-                var tc = shown[ti];
-                var tmsgCount = tc.msgs.length;
-                var twords = 0;
-                for (var tw = 0; tw < tc.msgs.length; tw++) {
-                    twords += (tc.msgs[tw].content || '').split(/\s+/).filter(function(w){return w}).length;
-                }
-                var tdate = tc.ts ? new Date(tc.ts).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' }) : '—';
-                var badge = tmsgCount > 10 ? '<span class="badge badge-purple">نشطة</span>'
-                    : tmsgCount > 4 ? '<span class="badge badge-blue">متوسطة</span>'
-                    : '<span class="badge badge-green">قصيرة</span>';
-
-                tbl += '<tr>'
-                    + '<td style="font-weight:500;color:var(--text-1);max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (tc.title || 'بدون عنوان') + '</td>'
-                    + '<td>' + tmsgCount + '</td>'
-                    + '<td>' + formatNum(twords) + '</td>'
-                    + '<td style="font-family:var(--mono);font-size:12px">' + tdate + '</td>'
-                    + '<td>' + badge + '</td>'
-                    + '</tr>';
-            }
-            tbl += '</tbody></table>';
-            tableEl.innerHTML = tbl;
-        }
-
-        /* ═══════ GLOBAL FUNCTIONS ═══════ */
-        window.exportData = function() {
-            var data = {
-                conversations: convs,
-                analytics: analytics,
-                exportDate: new Date().toISOString(),
-                stats: {
-                    totalConversations: totalConvs,
-                    totalMessages: totalMsgs,
-                    totalUserMessages: totalUserMsgs,
-                    totalAIMessages: totalAIMsgs,
-                    totalWords: totalUserWords + totalAIWords,
-                    avgResponseTime: avgResponseTime
-                }
-            };
-            var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = 'lord-ai-data-' + new Date().toISOString().split('T')[0] + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            toast('✓ تم تصدير البيانات');
+        window.logout=function(){
+            sessionStorage.removeItem('lord_admin');
+            location.reload();
         };
 
-        window.clearAnalytics = function() {
-            if (!confirm('هل أنت متأكد من مسح جميع بيانات التحليلات؟')) return;
-            localStorage.removeItem('lord_analytics');
-            toast('✓ تم مسح التحليلات');
-            setTimeout(function() { location.reload(); }, 500);
+        /* ═══ FIREBASE INIT ═══ */
+        function initDB(){
+            try{
+                if(typeof firebase!=='undefined'&&typeof FIREBASE_CONFIG!=='undefined'
+                    &&FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.apiKey!=='YOUR_API_KEY_HERE'){
+                    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+                    db=firebase.firestore();
+                    document.getElementById('fbStatus').innerHTML='Firebase: <strong style="color:var(--green)">متصل ✓</strong>';
+                    loadAllData();
+                } else {
+                    document.getElementById('fbStatus').innerHTML='Firebase: <strong style="color:var(--red)">غير مُهيأ</strong>';
+                    showNoFirebase();
+                }
+            }catch(e){
+                document.getElementById('fbStatus').innerHTML='Firebase: <strong style="color:var(--red)">خطأ</strong>';
+                showNoFirebase();
+            }
+        }
+
+        function showNoFirebase(){
+            document.getElementById('statsGrid').innerHTML='<div class="card full" style="grid-column:1/-1;text-align:center;padding:40px"><h3 style="margin-bottom:8px">⚠️ Firebase غير مُهيأ</h3><p style="color:var(--text-3);font-size:13px">قم بتحديث ملف <code>firebase-config.js</code> بإعدادات مشروع Firebase الخاص بك.</p></div>';
+        }
+
+        /* ═══ LOAD DATA ═══ */
+        function loadAllData(){
+            document.getElementById('lastRefresh').textContent='آخر تحديث: الآن';
+            loadStats();
+            loadDailyChart();
+            loadEvents();
+            loadVisitors();
+        }
+
+        window.refreshData=function(){
+            if(db) loadAllData();
+            toast('✓ تم التحديث');
         };
+
+        /* ═══ STATS ═══ */
+        function loadStats(){
+            db.collection('lord_stats').doc('global').get().then(function(doc){
+                var d = doc.exists?doc.data():{};
+                var totalVisitors=0;
+                // Count visitors
+                db.collection('lord_visitors').get().then(function(snap){
+                    totalVisitors=snap.size;
+                    renderStats(d,totalVisitors);
+                }).catch(function(){renderStats(d,0)});
+            }).catch(function(){renderStats({},0)});
+        }
+
+        function renderStats(d,visitors){
+            var items=[
+                {l:'إجمالي الزوار',v:fmtN(visitors),ic:'👥',cl:'b',s:'زائر فريد'},
+                {l:'مشاهدات الصفحة',v:fmtN(d.totalPageViews||0),ic:'👁️',cl:'c',s:'إجمالي الزيارات'},
+                {l:'إجمالي الرسائل',v:fmtN((d.totalUserMessages||0)+(d.totalAIMessages||0)),ic:'💬',cl:'g',s:'مستخدم: '+fmtN(d.totalUserMessages||0)+' · ذكاء: '+fmtN(d.totalAIMessages||0)},
+                {l:'إجمالي الكلمات',v:fmtN((d.totalUserWords||0)+(d.totalAIWords||0)),ic:'📝',cl:'p',s:'كلمة مكتوبة ومولدة'},
+                {l:'رسائل المستخدمين',v:fmtN(d.totalUserMessages||0),ic:'📤',cl:'o',s:'أسئلة واستفسارات'},
+                {l:'الأخطاء',v:fmtN(d.totalErrors||0),ic:'⚠️',cl:'r',s:(d.totalErrors||0)===0?'لا أخطاء ✓':'أخطاء API'},
+            ];
+            var h='';
+            for(var i=0;i<items.length;i++){
+                var it=items[i];
+                h+='<div class="card '+it.cl+'">'
+                    +'<div class="card-h"><span class="card-l">'+it.l+'</span><div class="card-ic '+it.cl+'">'+it.ic+'</div></div>'
+                    +'<div class="card-v">'+it.v+'</div>'
+                    +'<div class="card-s">'+it.s+'</div></div>';
+            }
+            document.getElementById('statsGrid').innerHTML=h;
+        }
+
+        /* ═══ DAILY CHART ═══ */
+        function loadDailyChart(){
+            var days={};
+            for(var i=13;i>=0;i--){
+                var dt=new Date();dt.setDate(dt.getDate()-i);
+                days[dt.toISOString().split('T')[0]]={v:0,m:0};
+            }
+            var keys=Object.keys(days);
+            var promises=keys.map(function(k){
+                return db.collection('lord_stats').doc('daily_'+k).get().then(function(doc){
+                    if(doc.exists){
+                        var d=doc.data();
+                        days[k]={v:d.visits||0,m:d.messages||0};
+                    }
+                }).catch(function(){});
+            });
+
+            Promise.all(promises).then(function(){
+                var maxV=1;
+                for(var k in days){if((days[k].v+days[k].m)>maxV)maxV=days[k].v+days[k].m}
+                var html='';
+                for(var j=0;j<keys.length;j++){
+                    var dk=keys[j];
+                    var total=days[dk].v+days[dk].m;
+                    var bh=Math.max(3,(total/maxV)*140);
+                    var dn=dk.split('-')[2];
+                    html+='<div class="bar-c">'
+                        +'<span class="bar-v">'+(total||'')+'</span>'
+                        +'<div class="bar" style="height:'+bh+'px" title="'+dk+': '+days[dk].v+' زيارة, '+days[dk].m+' رسالة"></div>'
+                        +'<span class="bar-l">'+dn+'</span></div>';
+                }
+                document.getElementById('chartBars').innerHTML=html;
+            });
+        }
+
+        /* ═══ LIVE EVENTS ═══ */
+        function loadEvents(){
+            db.collection('lord_events').orderBy('clientTs','desc').limit(50).get().then(function(snap){
+                if(snap.empty){
+                    document.getElementById('liveFeed').innerHTML='<div class="empty"><p>لا توجد أحداث بعد</p></div>';
+                    return;
+                }
+                var html='';
+                var arC=0,enC=0;
+                var respTimes=[];
+
+                snap.forEach(function(doc){
+                    var ev=doc.data();
+                    var type=ev.type;
+                    var dotCl=type==='page_view'?'pv':type==='message'?'msg':'err';
+                    var desc='';
+                    if(type==='page_view') desc='زيارة صفحة';
+                    else if(type==='message'){
+                        var r=ev.data&&ev.data.role;
+                        desc=r==='user'?'رسالة مستخدم ('+fmtN(ev.data.words||0)+' كلمة)':'رد ذكاء ('+fmtN(ev.data.words||0)+' كلمة)';
+                        if(ev.data.lang==='ar')arC++;else enC++;
+                        if(ev.data.responseTime)respTimes.push(ev.data.responseTime);
+                    }
+                    else if(type==='error') desc='خطأ: '+(ev.data&&ev.data.message||'غير معروف').substring(0,60);
+
+                    var ago=timeAgo(ev.clientTs);
+                    html+='<div class="feed-item"><div class="feed-dot '+dotCl+'"></div><div class="feed-txt"><p>'+desc+'</p><small>'+ago+' · '+((ev.visitorId||'').substring(0,10))+'</small></div></div>';
+                });
+
+                document.getElementById('liveFeed').innerHTML=html;
+
+                // Language bars
+                var totalL=arC+enC||1;
+                var arP=Math.round((arC/totalL)*100);
+                var enP=100-arP;
+                document.getElementById('langSection').innerHTML=
+                    '<div class="prog-item"><label><span>🇸🇦 العربية</span><strong>'+arP+'%</strong></label><div class="prog-track"><div class="prog-fill" style="width:'+arP+'%;background:linear-gradient(90deg,var(--accent),var(--purple))"></div></div></div>'
+                    +'<div class="prog-item"><label><span>🇺🇸 الإنجليزية</span><strong>'+enP+'%</strong></label><div class="prog-track"><div class="prog-fill" style="width:'+enP+'%;background:linear-gradient(90deg,var(--blue),var(--cyan))"></div></div></div>'
+                    +'<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3)">عربي: '+arC+' · إنجليزي: '+enC+' (آخر 50 حدث)</div>';
+
+                // Performance
+                var avgRT=respTimes.length?Math.round(respTimes.reduce(function(a,b){return a+b},0)/respTimes.length):0;
+                var minRT=respTimes.length?Math.min.apply(null,respTimes):0;
+                var maxRT=respTimes.length?Math.max.apply(null,respTimes):0;
+                document.getElementById('perfSection').innerHTML=
+                    '<div class="perf-row"><span>متوسط وقت الاستجابة</span><span style="color:var(--green)">'+(avgRT?(avgRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
+                    +'<div class="perf-row"><span>أسرع استجابة</span><span style="color:var(--blue)">'+(minRT?(minRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
+                    +'<div class="perf-row"><span>أبطأ استجابة</span><span style="color:var(--orange)">'+(maxRT?(maxRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
+                    +'<div class="perf-row"><span>عدد القياسات</span><span style="color:var(--text-2)">'+respTimes.length+'</span></div>';
+
+            }).catch(function(e){
+                document.getElementById('liveFeed').innerHTML='<div class="empty"><p>خطأ في التحميل</p></div>';
+            });
+        }
+
+        /* ═══ VISITORS TABLE ═══ */
+        function loadVisitors(){
+            db.collection('lord_visitors').orderBy('lastSeen','desc').limit(50).get().then(function(snap){
+                document.getElementById('usersCount').textContent='إجمالي: '+snap.size+' مستخدم';
+                if(snap.empty){
+                    document.getElementById('usersTable').innerHTML='<div class="empty"><p>لا يوجد مستخدمون بعد</p></div>';
+                    return;
+                }
+                var tbl='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>اللغة</th><th>الرسائل</th><th>الزيارات</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
+                var devices={};
+
+                snap.forEach(function(doc){
+                    var v=doc.data();
+                    var id=doc.id;
+                    var dev=parseUA(v.ua);
+                    var scr=v.screen||'—';
+                    var lng=v.lang||'—';
+                    var msgs=v.totalMessages||0;
+                    var vis=v.visits||0;
+                    var ls=v.lastSeen?v.lastSeen.toDate?v.lastSeen.toDate().getTime():v.lastSeen:0;
+                    var ago=timeAgo(ls);
+                    var isOnline=(Date.now()-ls)<300000;
+                    var badge=isOnline?'<span class="badge badge-g">متصل</span>':'<span class="badge badge-b">غير متصل</span>';
+
+                    // Device stats
+                    var dk=dev.replace(/[^\w]/g,'');
+                    devices[dk]=(devices[dk]||0)+1;
+
+                    tbl+='<tr>'
+                        +'<td style="font-family:var(--mono);font-size:11px;color:var(--text-1)">'+id.substring(0,12)+'…</td>'
+                        +'<td>'+dev+'</td>'
+                        +'<td style="font-family:var(--mono);font-size:11px">'+scr+'</td>'
+                        +'<td>'+lng.substring(0,5)+'</td>'
+                        +'<td style="font-weight:600">'+msgs+'</td>'
+                        +'<td>'+vis+'</td>'
+                        +'<td style="font-size:11px">'+ago+'</td>'
+                        +'<td>'+badge+'</td></tr>';
+                });
+
+                tbl+='</tbody></table>';
+                document.getElementById('usersTable').innerHTML=tbl;
+
+                // Devices section
+                var devEntries=Object.entries(devices).sort(function(a,b){return b[1]-a[1]});
+                var devTotal=devEntries.reduce(function(s,e){return s+e[1]},0)||1;
+                var devHTML='';
+                var colors=['var(--accent)','var(--green)','var(--blue)','var(--orange)','var(--purple)','var(--cyan)'];
+                for(var di=0;di<devEntries.length;di++){
+                    var pct=Math.round((devEntries[di][1]/devTotal)*100);
+                    devHTML+='<div class="prog-item"><label><span>'+devEntries[di][0]+'</span><strong>'+pct+'% ('+devEntries[di][1]+')</strong></label>'
+                        +'<div class="prog-track"><div class="prog-fill" style="width:'+pct+'%;background:'+colors[di%colors.length]+'"></div></div></div>';
+                }
+                document.getElementById('devicesSection').innerHTML=devHTML||'<div class="empty"><p>لا بيانات</p></div>';
+
+            }).catch(function(){
+                document.getElementById('usersTable').innerHTML='<div class="empty"><p>خطأ في تحميل المستخدمين</p></div>';
+            });
+        }
+
+        /* ═══ EXPORT ═══ */
+        window.exportAll=function(){
+            if(!db){toast('Firebase غير متصل');return;}
+            Promise.all([
+                db.collection('lord_stats').get(),
+                db.collection('lord_visitors').get(),
+                db.collection('lord_events').orderBy('clientTs','desc').limit(500).get()
+            ]).then(function(results){
+                var data={
+                    exportDate:new Date().toISOString(),
+                    stats:{},visitors:[],events:[]
+                };
+                results[0].forEach(function(d){data.stats[d.id]=d.data()});
+                results[1].forEach(function(d){data.visitors.push({id:d.id,...d.data()})});
+                results[2].forEach(function(d){data.events.push(d.data())});
+
+                var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+                var url=URL.createObjectURL(blob);
+                var a=document.createElement('a');
+                a.href=url;a.download='lord-ai-admin-'+new Date().toISOString().split('T')[0]+'.json';
+                a.click();URL.revokeObjectURL(url);
+                toast('✓ تم تصدير البيانات');
+            });
+        };
+
+        /* ═══ AUTO REFRESH ═══ */
+        setInterval(function(){if(db&&sessionStorage.getItem('lord_admin')==='1')loadAllData()},60000);
+
+        /* ═══ START ═══ */
+        if(!checkAuth()) loginOverlay.style.display='';
 
     })();
     </script>
