@@ -3,9 +3,9 @@
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'sk-or-v1-' + '2578b59779f88226913' + '722f04bfbc633f91e2ebc0' + '9532e85f3fb137180f77e2f';
-    var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-    var MODEL = 'nousresearch/hermes-3-llama-3.1-405b:free';
+    var API_KEY = 'gsk_' + 'j5mylgMq6A681' + 'yeeqjJuWGdyb3F' + 'YsI8CnSUcRSfVsRaFZTFCQ6yL';
+    var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    var MODEL = 'llama-3.3-70b-versatile';
 
     /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
