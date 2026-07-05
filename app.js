@@ -357,7 +357,7 @@
             var pct = (a.currentTime / a.duration) * 100;
             bar.style.width = pct + '%';
             
-            var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s`); return m+':'+(ss<10?'0'+ss:ss); };
+            var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s%60); return m+':'+(ss<10?'0'+ss:ss); };
             time.textContent = fm(a.currentTime) + ' / ' + fm(a.duration);
         },
         audioLoaded: function(id) {
@@ -516,7 +516,7 @@
     function generateTitle(text) {
         text = text.trim();
         // Remove markdown formatting for cleaner title
-        text = text.replace(/[#*`>\[\]()]/g, '').trim();
+        text = text.replace(/[#*\`>\[\]()]/g, '').trim();
         if (text.length <= 35) return text;
         // Try to cut at word boundary
         var cut = text.substring(0, 35);
