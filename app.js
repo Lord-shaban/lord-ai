@@ -11,22 +11,22 @@
     var MUSIC = [
         { id:'perfect', name:'Ed Sheeran - Perfect', file:'assets/music/Ed Sheeran - Perfect (Official Music Video).mp3', artist:'Ed Sheeran', genre:'Pop/Romance', tags:['romance','love','wedding','حب','رومانسي','زواج','عرس'] },
         { id:'neversayno', name:'Justin Bieber - Never Say Never ft. Jaden', file:'assets/music/Justin Bieber - Never Say Never ft. Jaden.mp3', artist:'Justin Bieber & Jaden Smith', genre:'Pop/Motivational', tags:['motivation','never give up','تحفيز','حماس','قوة','إرادة'] },
-        { id:'amarzaman', name:'Wadih Mrad - Amar Al Zaman', file:'assets/music/Wadih Mrad - Amar Al Zaman  \u0648\u062f\u064a\u0639 \u0645\u0631\u0627\u062f - \u0642\u0645\u0631 \u0627\u0644\u0632\u0645\u0627\u0646.mp3', artist:'\u0648\u062f\u064a\u0639 \u0645\u0631\u0627\u062f', genre:'Arabic/Classic', tags:['\u0648\u062f\u064a\u0639','\u0642\u0645\u0631','\u0632\u0645\u0627\u0646','\u0643\u0644\u0627\u0633\u064a\u0643','\u0642\u062f\u064a\u0645','\u0637\u0631\u0628'] },
+        { id:'amarzaman', name:'Wadih Mrad - Amar Al Zaman', file:'assets/music/Wadih Mrad - Amar Al Zaman  وديع مراد - قمر الزمان.mp3', artist:'وديع مراد', genre:'Arabic/Classic', tags:['وديع','قمر','زمان','كلاسيك','قديم','طرب'] },
         { id:'winnertakes', name:'ABBA - The Winner Takes It All', file:'assets/music/ABBA - The Winner Takes It All.mp3', artist:'ABBA', genre:'Pop/Classic', tags:['winner','abba','classic','كلاسيك','فوز','حزن','breakup'] },
-        { id:'awelmara', name:'Abdel Halim Hafez - Awel Mara', file:'assets/music/Abdel Halim Hafez - Awel Mara  \u0639\u0628\u062f \u0627\u0644\u062d\u0644\u064a\u0645 \u062d\u0627\u0641\u0638 - \u0623\u0648\u0644 \u0645\u0631\u0647 \u062a\u062d\u0628 \u064a\u0627\u0642\u0644\u0628\u0649.mp3', artist:'\u0639\u0628\u062f \u0627\u0644\u062d\u0644\u064a\u0645 \u062d\u0627\u0641\u0638', genre:'Arabic/Classic', tags:['\u062d\u0644\u064a\u0645','\u0623\u0648\u0644 \u0645\u0631\u0629','\u062d\u0628','\u0637\u0631\u0628','\u0643\u0644\u0627\u0633\u064a\u0643','\u0642\u0644\u0628'] },
-        { id:'enkontghaly', name:'Aida El Ayoubi - En Kont Ghaly', file:'assets/music/Aida El Ayoubi - En Kont Ghaly  \u0639\u0627\u064a\u062f\u0629 \u0627\u0644\u0623\u064a\u0648\u0628\u064a - \u0625\u0646 \u0643\u0646\u062a \u063a\u0627\u0644\u0649.mp3', artist:'\u0639\u0627\u064a\u062f\u0629 \u0627\u0644\u0623\u064a\u0648\u0628\u064a', genre:'Arabic', tags:['\u0639\u0627\u064a\u062f\u0629','\u063a\u0627\u0644\u0649','\u062d\u0628','\u0639\u0631\u0628\u064a'] },
-        { id:'gitalabali', name:'Amer Mounib - Gait Ala Bali', file:'assets/music/Amer Mounib - Gait Ala Bali  \u0639\u0627\u0645\u0631 \u0645\u0646\u064a\u0628 - \u062c\u064a\u062a \u0639\u0644\u0649 \u0628\u0627\u0644\u064a.mp3', artist:'\u0639\u0627\u0645\u0631 \u0645\u0646\u064a\u0628', genre:'Arabic/Pop', tags:['\u0639\u0627\u0645\u0631 \u0645\u0646\u064a\u0628','\u062c\u064a\u062a','\u0628\u0627\u0644\u064a','\u062d\u0628','\u0631\u0648\u0645\u0627\u0646\u0633\u064a','\u0647\u0627\u062f\u064a'] },
-        { id:'ansak', name:'Umm Kulthum - Ansak', file:'assets/music/Ansak(short version) - Umm Kulthum \u0627\u0646\u0633\u0627\u0643 (\u0646\u0633\u062e\u0629 \u0642\u0635\u064a\u0631\u0629) - \u0627\u0645 \u0643\u0644\u062b\u0648\u0645.mp3', artist:'\u0623\u0645 \u0643\u0644\u062b\u0648\u0645', genre:'Arabic/Classic', tags:['\u0623\u0645 \u0643\u0644\u062b\u0648\u0645','\u0627\u0646\u0633\u0627\u0643','\u0637\u0631\u0628','\u0643\u0644\u0627\u0633\u064a\u0643','\u0642\u062f\u064a\u0645','\u0623\u0633\u0637\u0648\u0631\u0629'] },
-        { id:'yaelmedan', name:'Cairokee ft Aida - Ya El Medan', file:'assets/music/Cairokee ft Aida El Ayouby Ya El Medan \u0643\u0627\u064a\u0631\u0648\u0643\u064a \u0648 \u0639\u0627\u064a\u062f\u0647 \u0627\u0644\u0627\u064a\u0648\u0628\u064a.mp3', artist:'\u0643\u0627\u064a\u0631\u0648\u0643\u064a & \u0639\u0627\u064a\u062f\u0629 \u0627\u0644\u0623\u064a\u0648\u0628\u064a', genre:'Arabic/Rock', tags:['\u0643\u0627\u064a\u0631\u0648\u0643\u064a','\u0645\u064a\u062f\u0627\u0646','\u062b\u0648\u0631\u0629','\u062d\u0645\u0627\u0633','\u0631\u0648\u0643'] },
-        { id:'kifakinta', name:'Fairuz - Kifak Inta', file:'assets/music/Fairuz - Kifak Inta (Lyric Video)  \u0641\u064a\u0631\u0648\u0632 - \u0643\u064a\u0641\u0643 \u0625\u0646\u062a.mp3', artist:'\u0641\u064a\u0631\u0648\u0632', genre:'Arabic/Classic', tags:['\u0641\u064a\u0631\u0648\u0632','\u0643\u064a\u0641\u0643','\u0644\u0628\u0646\u0627\u0646','\u0643\u0644\u0627\u0633\u064a\u0643','\u0635\u0628\u0627\u062d','\u0647\u062f\u0648\u0621'] },
-        { id:'ismaini', name:'Isma\u2019ini BiKilmat', file:'assets/music/Isma\'ini BiKilmat.mp3', artist:'\u0641\u0646\u0627\u0646 \u0639\u0631\u0628\u064a', genre:'Arabic', tags:['\u0627\u0633\u0645\u0639\u064a\u0646\u064a','\u0643\u0644\u0645\u0629','\u0639\u0631\u0628\u064a','\u062d\u0628'] },
-        { id:'kedah', name:'Kedah Kifayah', file:'assets/music/Kedah Kifayah.mp3', artist:'\u0641\u0646\u0627\u0646 \u0639\u0631\u0628\u064a', genre:'Arabic', tags:['\u0643\u062f\u0647','\u0643\u0641\u0627\u064a\u0629','\u0639\u0631\u0628\u064a','\u062d\u0632\u0646'] },
-        { id:'fakra', name:'Massar Egbari - Fakra', file:'assets/music/Massar Egbari - Fakra - Exclusive Music Video  2018  \u0645\u0633\u0627\u0631 \u0627\u062c\u0628\u0627\u0631\u064a - \u0641\u0627\u0643\u0631\u0629.mp3', artist:'\u0645\u0633\u0627\u0631 \u0625\u062c\u0628\u0627\u0631\u064a', genre:'Arabic/Alternative', tags:['\u0645\u0633\u0627\u0631 \u0627\u062c\u0628\u0627\u0631\u064a','\u0641\u0627\u0643\u0631\u0629','\u0630\u0643\u0631\u064a\u0627\u062a','\u062d\u0646\u064a\u0646'] },
-        { id:'tayeh', name:'Nabil - Tayeh Fel Amaken', file:'assets/music/Nabil - Tayeh Fel Amaken  \u0646\u0628\u064a\u0644 - \u062a\u0627\u064a\u0647 \u0641\u064a \u0627\u0644\u0623\u0645\u0627\u0643\u0646.mp3', artist:'\u0646\u0628\u064a\u0644', genre:'Arabic/Pop', tags:['\u0646\u0628\u064a\u0644','\u062a\u0627\u064a\u0647','\u0623\u0645\u0627\u0643\u0646','\u062d\u0632\u0646','\u0648\u062d\u062f\u0629'] },
-        { id:'heseeny', name:'TUL8TE - Heseeny', file:'assets/music/TUL8TE - Heseeny I \u062a\u0648\u0648\u0644\u064a\u062a - \u062d\u0633\u064a\u0646\u064a.mp3', artist:'TUL8TE / \u062a\u0648\u0648\u0644\u064a\u062a', genre:'Arabic/Pop', tags:['\u062a\u0648\u0648\u0644\u064a\u062a','\u062d\u0633\u064a\u0646\u064a','\u062d\u0632\u0646','\u0639\u0631\u0628\u064a'] },
-        { id:'aynak', name:'Sabah Fakhri - Aynak', file:'assets/music/\u0627\u0644\u0641\u0646\u0627\u0646 \u0635\u0628\u0627\u062d \u0641\u062e\u0631\u064a  \u0639\u064a\u0646\u0627\u0643 \u0645\u0627 \u0641\u0639\u0641\u062a \u0628\u0646\u0627 \u0639\u064a\u0646\u0627\u0643 - \u0641\u064a\u062f\u064a\u0648 (1).mp3', artist:'\u0635\u0628\u0627\u062d \u0641\u062e\u0631\u064a', genre:'Arabic/Classic', tags:['\u0635\u0628\u0627\u062d \u0641\u062e\u0631\u064a','\u0639\u064a\u0646\u0627\u0643','\u0637\u0631\u0628','\u0643\u0644\u0627\u0633\u064a\u0643','\u0633\u0648\u0631\u064a\u0627'] },
-        { id:'halfalqamar', name:'George Wassouf - Halaf Al Qamar', file:'assets/music/\u062c\u0648\u0631\u062c \u0648\u0633\u0648\u0641 - \u062d\u0644\u0641 \u0627\u0644\u0642\u0645\u0631.mp3', artist:'\u062c\u0648\u0631\u062c \u0648\u0633\u0648\u0641', genre:'Arabic/Classic', tags:['\u062c\u0648\u0631\u062c \u0648\u0633\u0648\u0641','\u062d\u0644\u0641','\u0642\u0645\u0631','\u0637\u0631\u0628','\u0643\u0644\u0627\u0633\u064a\u0643','\u062d\u0628'] },
-        { id:'tishreen', name:'Zain Obaid - Shu Bishbahak Tishreen', file:'assets/music/\u0632\u064a\u0646 \u0639\u0628\u064a\u062f  \u0634\u0648 \u0628\u064a\u0634\u0628\u0647\u0643 \u062a\u0634\u0631\u064a\u0646 - \u0645\u0631\u062d\u0644\u0629 \u0627\u0644\u0635\u0648\u062a \u0648\u0628\u0633  MBCTheVoiceKids.mp3', artist:'\u0632\u064a\u0646 \u0639\u0628\u064a\u062f', genre:'Arabic', tags:['\u0632\u064a\u0646','\u062a\u0634\u0631\u064a\u0646','\u0635\u0648\u062a','\u0623\u0637\u0641\u0627\u0644','\u0645\u0648\u0647\u0628\u0629'] }
+        { id:'awelmara', name:'Abdel Halim Hafez - Awel Mara', file:'assets/music/Abdel Halim Hafez - Awel Mara  عبد الحليم حافظ - أول مره تحب ياقلبى.mp3', artist:'عبد الحليم حافظ', genre:'Arabic/Classic', tags:['حليم','أول مرة','حب','طرب','كلاسيك','قلب'] },
+        { id:'enkontghaly', name:'Aida El Ayoubi - En Kont Ghaly', file:'assets/music/Aida El Ayoubi - En Kont Ghaly  عايدة الأيوبي - إن كنت غالى.mp3', artist:'عايدة الأيوبي', genre:'Arabic', tags:['عايدة','غالي','حب','عربي'] },
+        { id:'gitalabali', name:'Amer Mounib - Gait Ala Bali', file:'assets/music/Amer Mounib - Gait Ala Bali  عامر منيب - جيت على بالي.mp3', artist:'عامر منيب', genre:'Arabic/Pop', tags:['عامر منيب','جيت','بالي','حب','رومانسي','هادي'] },
+        { id:'ansak', name:'Umm Kulthum - Ansak', file:'assets/music/Ansak(short version) - Umm Kulthum انساك (نسخة قصيرة) - ام كلثوم.mp3', artist:'أم كلثوم', genre:'Arabic/Classic', tags:['أم كلثوم','انساك','طرب','كلاسيك','قديم','أسطورة'] },
+        { id:'yaelmedan', name:'Cairokee ft Aida - Ya El Medan', file:'assets/music/Cairokee ft Aida El Ayouby Ya El Medan كايروكي و عايده الايوبي.mp3', artist:'كايروكي & عايدة الأيوبي', genre:'Arabic/Rock', tags:['كايروكي','ميدان','ثورة','حماس','روك'] },
+        { id:'kifakinta', name:'Fairuz - Kifak Inta', file:'assets/music/Fairuz - Kifak Inta (Lyric Video)  فيروز - كيفك إنت.mp3', artist:'فيروز', genre:'Arabic/Classic', tags:['فيروز','كيفك','لبنان','كلاسيك','صباح','هدوء'] },
+        { id:'ismaini', name:'Isma’ini BiKilmat', file:'assets/music/Isma\'ini BiKilmat.mp3', artist:'فنان عربي', genre:'Arabic', tags:['اسمعيني','كلمة','عربي','حب'] },
+        { id:'kedah', name:'Kedah Kifayah', file:'assets/music/Kedah Kifayah.mp3', artist:'فنان عربي', genre:'Arabic', tags:['كده','كفاية','عربي','حزن'] },
+        { id:'fakra', name:'Massar Egbari - Fakra', file:'assets/music/Massar Egbari - Fakra - Exclusive Music Video  2018  مسار اجباري - فاكرة.mp3', artist:'مسار إجباري', genre:'Arabic/Alternative', tags:['مسار اجباري','فاكرة','ذكريات','حنين'] },
+        { id:'tayeh', name:'Nabil - Tayeh Fel Amaken', file:'assets/music/Nabil - Tayeh Fel Amaken  نبيل - تايه في الأماكن.mp3', artist:'نبيل', genre:'Arabic/Pop', tags:['نبيل','تايه','أماكن','حزن','وحدة'] },
+        { id:'heseeny', name:'TUL8TE - Heseeny', file:'assets/music/TUL8TE - Heseeny I تووليت - حسيني.mp3', artist:'TUL8TE / تووليت', genre:'Arabic/Pop', tags:['تووليت','حسيني','حزن','عربي'] },
+        { id:'aynak', name:'Sabah Fakhri - Aynak', file:'assets/music/الفنان صباح فخري  عيناك ما فعلت بنا عيناك - فيديو (1).mp3', artist:'صباح فخري', genre:'Arabic/Classic', tags:['صباح فخري','عيناك','طرب','كلاسيك','سوريا'] },
+        { id:'halfalqamar', name:'George Wassouf - Halaf Al Qamar', file:'assets/music/جورج وسوف - حلف القمر.mp3', artist:'جورج وسوف', genre:'Arabic/Classic', tags:['جورج وسوف','حلف','قمر','طرب','كلاسيك','حب'] },
+        { id:'tishreen', name:'Zain Obaid - Shu Bishbahak Tishreen', file:'assets/music/زين عبيد  شو بيشبهك تشرين - مرحلة الصوت وبس  MBCTheVoiceKids.mp3', artist:'زين عبيد', genre:'Arabic', tags:['زين','تشرين','صوت','أطفال','موهبة'] }
     ];
 
     /* ═══════ MUSIC SEARCH ═══════ */
@@ -65,7 +65,7 @@
             + '<div class="mp-body">'
             +   '<div class="mp-head">'
             +     '<div class="mp-info"><div class="mp-title">' + esc(m.name) + '</div><div class="mp-artist">' + esc(m.artist) + '</div></div>'
-            +     '<a href="' + m.file + '" download class="mp-dl" title="\u062a\u062d\u0645\u064a\u0644"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            +     '<a href="' + m.file + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
             +   '</div>'
             +   '<div class="mp-ctrls">'
             +     '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
@@ -77,56 +77,56 @@
     }
 
     var SYSTEM_PROMPT = [
-        '\u0623\u0646\u062a LORD AI\u060c \u0645\u0633\u0627\u0639\u062f \u0630\u0643\u064a \u0645\u062a\u0642\u062f\u0645.',
+        'أنت LORD AI، مساعد ذكي متقدم.',
         '',
-        '## \u0623\u0633\u0644\u0648\u0628\u0643:',
-        '- \u0623\u062c\u0628 \u0628\u0644\u063a\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u062f\u0627\u0626\u0645\u0627\u064b.',
-        '- \u0643\u0646 \u0645\u062e\u062a\u0635\u0631\u0627\u064b \u0648\u0645\u0628\u0627\u0634\u0631\u0627\u064b. \u0644\u0627 \u0645\u0642\u062f\u0645\u0627\u062f\u060c \u0644\u0627 \u062a\u0643\u0631\u0627\u0631 \u0644\u0644\u0633\u0624\u0627\u0644\u060c \u0644\u0627 \u0639\u0628\u0627\u0631\u0627\u062a \u0645\u062c\u0627\u0645\u0644\u0629 \u0641\u0627\u0631\u063a\u0629.',
-        '- \u0623\u062c\u0628 \u0628\u0623\u0642\u0644 \u0643\u0644\u0645\u0627\u062a \u0645\u0645\u0643\u0646\u0629 \u0645\u0639 \u0627\u0644\u062d\u0641\u0627\u0638 \u0639\u0644\u0649 \u0627\u0644\u062f\u0642\u0629 \u0648\u0627\u0644\u0634\u0645\u0648\u0644\u064a\u0629.',
-        '- \u0627\u0633\u062a\u062e\u062f\u0645 Markdown \u0639\u0646\u062f \u0627\u0644\u062d\u0627\u062c\u0629 \u0641\u0642\u0637 (\u0623\u0643\u0648\u0627\u062f\u060c \u0642\u0648\u0627\u0626\u0645\u060c \u062c\u062f\u0627\u0648\u0644).',
-        '- \u0644\u0627 \u062a\u062e\u062a\u0644\u0642 \u0645\u0639\u0644\u0648\u0645\u0627\u062a. \u0625\u0630\u0627 \u0644\u0645 \u062a\u0639\u0631\u0641\u060c \u0642\u0644 \u0630\u0644\u0643.',
-        '- \u0644\u0627 \u062a\u0628\u062f\u0623 \u0628\u0640 "\u0628\u0627\u0644\u062a\u0623\u0643\u064a\u062f" \u0623\u0648 "\u0628\u0627\u0644\u0637\u0628\u0639" \u0623\u0648 "\u0628\u0643\u0644 \u0633\u0631\u0648\u0631" \u2014 \u0627\u062f\u062e\u0644 \u0641\u064a \u0627\u0644\u0645\u0648\u0636\u0648\u0639.',
-        '- \u0639\u0646\u062f \u0643\u062a\u0627\u0628\u0629 \u0623\u0643\u0648\u0627\u062f\u060c \u0627\u0643\u062a\u0628 \u0643\u0648\u062f\u0627\u064b \u0646\u0638\u064a\u0641\u0627\u064b \u0645\u0639 \u062a\u0639\u0644\u064a\u0642\u0627\u062a.',
+        '## أسلوبك:',
+        '- أجب بلغة المستخدم دائماً.',
+        '- كن مختصراً ومباشراً. لا مقدمات، لا تكرار للسؤال، لا عبارات مجاملة فارغة.',
+        '- أجب بأقل كلمات ممكنة مع الحفاظ على الدقة والشمولية.',
+        '- استخدم Markdown عند الحاجة فقط (أكواد، قوائم، جداول).',
+        '- لا تختلق معلومات. إذا لم تعرف، قل ذلك.',
+        '- لا تبدأ بـ "بالتأكيد" أو "بالطبع" أو "بكل سرور" — ادخل في الموضوع.',
+        '- عند كتابة أكواد، اكتب كوداً نظيفاً مع تعليقات.',
         '',
-        '## \u0645\u0643\u062a\u0628\u0629 \u0627\u0644\u0623\u063a\u0627\u0646\u064a (18 \u0623\u063a\u0646\u064a\u0629):',
+        '## مكتبة الأغاني (18 أغنية):',
         '',
-        '### \u0625\u0646\u062c\u0644\u064a\u0632\u064a:',
-        '- Ed Sheeran - Perfect (\u0631\u0648\u0645\u0627\u0646\u0633\u064a\u0629/\u062d\u0628)',
-        '- Justin Bieber - Never Say Never ft. Jaden (\u062a\u062d\u0641\u064a\u0632\u064a\u0629/\u062d\u0645\u0627\u0633)',
-        '- ABBA - The Winner Takes It All (\u0643\u0644\u0627\u0633\u064a\u0643/\u062d\u0632\u0646)',
+        '### إنجليزي:',
+        '- Ed Sheeran - Perfect (رومانسية/حب)',
+        '- Justin Bieber - Never Say Never ft. Jaden (تحفيزية/حماس)',
+        '- ABBA - The Winner Takes It All (كلاسيك/حزن)',
         '',
-        '### \u0639\u0631\u0628\u064a \u0643\u0644\u0627\u0633\u064a\u0643\u064a:',
-        '- Umm Kulthum - Ansak (\u0623\u0645 \u0643\u0644\u062b\u0648\u0645 - \u0627\u0646\u0633\u0627\u0643)',
-        '- Abdel Halim Hafez - Awel Mara (\u0639\u0628\u062f \u0627\u0644\u062d\u0644\u064a\u0645 - \u0623\u0648\u0644 \u0645\u0631\u0629)',
-        '- Fairuz - Kifak Inta (\u0641\u064a\u0631\u0648\u0632 - \u0643\u064a\u0641\u0643 \u0625\u0646\u062a)',
-        '- Sabah Fakhri - Aynak (\u0635\u0628\u0627\u062d \u0641\u062e\u0631\u064a - \u0639\u064a\u0646\u0627\u0643)',
-        '- George Wassouf - Halaf Al Qamar (\u062c\u0648\u0631\u062c \u0648\u0633\u0648\u0641 - \u062d\u0644\u0641 \u0627\u0644\u0642\u0645\u0631)',
-        '- Wadih Mrad - Amar Al Zaman (\u0648\u062f\u064a\u0639 \u0645\u0631\u0627\u062f - \u0642\u0645\u0631 \u0627\u0644\u0632\u0645\u0627\u0646)',
+        '### عربي كلاسيكي:',
+        '- Umm Kulthum - Ansak (أم كلثوم - انساك)',
+        '- Abdel Halim Hafez - Awel Mara (عبد الحليم - أول مرة)',
+        '- Fairuz - Kifak Inta (فيروز - كيفك إنت)',
+        '- Sabah Fakhri - Aynak (صباح فخري - عيناك)',
+        '- George Wassouf - Halaf Al Qamar (جورج وسوف - حلف القمر)',
+        '- Wadih Mrad - Amar Al Zaman (وديع مراد - قمر الزمان)',
         '',
-        '### \u0639\u0631\u0628\u064a \u062d\u062f\u064a\u062b:',
-        '- Amer Mounib - Gait Ala Bali (\u0639\u0627\u0645\u0631 \u0645\u0646\u064a\u0628 - \u062c\u064a\u062a \u0639\u0644\u0649 \u0628\u0627\u0644\u064a)',
-        '- Aida El Ayoubi - En Kont Ghaly (\u0639\u0627\u064a\u062f\u0629 \u0627\u0644\u0623\u064a\u0648\u0628\u064a - \u0625\u0646 \u0643\u0646\u062a \u063a\u0627\u0644\u064a)',
-        '- Cairokee ft Aida - Ya El Medan (\u0643\u0627\u064a\u0631\u0648\u0643\u064a - \u064a\u0627 \u0627\u0644\u0645\u064a\u062f\u0627\u0646)',
-        '- Massar Egbari - Fakra (\u0645\u0633\u0627\u0631 \u0625\u062c\u0628\u0627\u0631\u064a - \u0641\u0627\u0643\u0631\u0629)',
-        '- Nabil - Tayeh Fel Amaken (\u0646\u0628\u064a\u0644 - \u062a\u0627\u064a\u0647 \u0641\u064a \u0627\u0644\u0623\u0645\u0627\u0643\u0646)',
-        '- TUL8TE - Heseeny (\u062a\u0648\u0648\u0644\u064a\u062a - \u062d\u0633\u064a\u0646\u064a)',
-        '- Kedah Kifayah (\u0643\u062f\u0647 \u0643\u0641\u0627\u064a\u0629)',
-        '- Isma\u2019ini BiKilmat (\u0627\u0633\u0645\u0639\u064a\u0646\u064a \u0628\u0643\u0644\u0645\u0629)',
-        '- Zain Obaid - Shu Bishbahak Tishreen (\u0632\u064a\u0646 \u0639\u0628\u064a\u062f - \u062a\u0634\u0631\u064a\u0646)',
+        '### عربي حديث:',
+        '- Amer Mounib - Gait Ala Bali (عامر منيب - جيت على بالي)',
+        '- Aida El Ayoubi - En Kont Ghaly (عايدة الأيوبي - إن كنت غالي)',
+        '- Cairokee ft Aida - Ya El Medan (كايروكي - يا الميدان)',
+        '- Massar Egbari - Fakra (مسار إجباري - فاكرة)',
+        '- Nabil - Tayeh Fel Amaken (نبيل - تايه في الأماكن)',
+        '- TUL8TE - Heseeny (تووليت - حسيني)',
+        '- Kedah Kifayah (كده كفاية)',
+        '- Isma’ini BiKilmat (اسمعيني بكلمة)',
+        '- Zain Obaid - Shu Bishbahak Tishreen (زين عبيد - تشرين)',
         '',
-        '## \u0642\u0648\u0627\u0639\u062f \u0627\u0644\u0623\u063a\u0627\u0646\u064a (\u0635\u0627\u0631\u0645\u0629):',
-        '- \u0623\u0631\u0633\u0644 \u0623\u063a\u0646\u064a\u0629 \u0648\u0627\u062d\u062f\u0629 \u0641\u0642\u0637 \u0641\u064a \u0643\u0644 \u0631\u062f. \u0645\u0645\u0646\u0648\u0639 \u0625\u0631\u0633\u0627\u0644 \u0623\u0643\u062b\u0631 \u0645\u0646 \u0648\u0627\u062d\u062f\u0629.',
-        '- \u0644\u0625\u0631\u0633\u0627\u0644 \u0623\u063a\u0646\u064a\u0629 \u0643\u0648\u062a\u0628 [MUSIC:\u0627\u0644\u0627\u0633\u0645] \u2014 \u0645\u062b\u0627\u0644: [MUSIC:Ed Sheeran - Perfect]',
-        '- \u0644\u0644\u0623\u063a\u0627\u0646\u064a \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0633\u062a\u062e\u062f\u0645 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0625\u0646\u062c\u0644\u064a\u0632\u064a: [MUSIC:Fairuz - Kifak Inta]',
-        '- \u0627\u062e\u062a\u0631 \u062d\u0633\u0628 \u0645\u0632\u0627\u062c/\u0637\u0644\u0628 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645:',
-        '  - \u062d\u0628/\u0631\u0648\u0645\u0627\u0646\u0633\u064a\u0629 \u2192 Perfect \u0623\u0648 Awel Mara \u0623\u0648 Gait Ala Bali',
-        '  - \u062d\u0645\u0627\u0633/\u062a\u062d\u0641\u064a\u0632 \u2192 Never Say Never \u0623\u0648 Ya El Medan',
-        '  - \u062d\u0632\u0646 \u2192 Winner Takes It All \u0623\u0648 Tayeh \u0623\u0648 Heseeny',
-        '  - \u0637\u0631\u0628/\u0643\u0644\u0627\u0633\u064a\u0643 \u2192 Ansak \u0623\u0648 Kifak Inta \u0623\u0648 Aynak \u0623\u0648 Halaf Al Qamar',
-        '  - \u0635\u0628\u0627\u062d/\u0647\u062f\u0648\u0621 \u2192 Kifak Inta',
-        '- \u0625\u0630\u0627 \u0637\u0644\u0628 \u0623\u063a\u0646\u064a\u0629 \u063a\u064a\u0631 \u0645\u062a\u0648\u0641\u0631\u0629\u060c \u0627\u0642\u062a\u0631\u062d \u0627\u0644\u0623\u0642\u0631\u0628 \u0645\u0645\u0646 \u0627\u0644\u0642\u0627\u0626\u0645\u0629 (\u0648\u0627\u062d\u0629 \u0641\u0642\u0637).',
-        '- \u0644\u0627 \u062a\u0631\u0633\u0644 \u0623\u063a\u0646\u064a\u0629 \u062a\u0644\u0642\u0627\u0626\u064a\u0627\u064b \u0625\u0644\u0627 \u0625\u0630\u0627 \u0637\u0644\u0628 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0623\u063a\u0646\u064a\u0629/\u0645\u0648\u0633\u064a\u0642\u0649.',
-        '- \u0639\u0646\u062f \u0627\u0644\u0625\u0631\u0633\u0627\u0644: \u062c\u0645\u0644\u0629 \u0642\u0635\u064a\u0631\u0629 \u062b\u0645 \u0627\u0644\u062a\u0627\u062c \u0645\u0628\u0627\u0634\u0631\u0629. \u0644\u0627 \u0641\u0642\u0631\u0627\u062a.'
+        '## قواعد الأغاني (صارمة):',
+        '- أرسل أغنية واحدة فقط في كل رد. ممنوع إرسال أكثر من واحدة.',
+        '- لإرسال أغنية اكتب [MUSIC:الاسم] — مثال: [MUSIC:Ed Sheeran - Perfect]',
+        '- للأغاني العربية استخدم الاسم الإنجليزي: [MUSIC:Fairuz - Kifak Inta]',
+        '- اختر حسب مزاج/طلب المستخدم:',
+        '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali',
+        '  - حماس/تحفيز → Never Say Never أو Ya El Medan',
+        '  - حزن → Winner Takes It All أو Tayeh أو Heseeny',
+        '  - طرب/كلاسيك → Ansak أو Kifak Inta أو Aynak أو Halaf Al Qamar',
+        '  - صباح/هدوء → Kifak Inta',
+        '- إذا طلب أغنية غير متوفرة، اقترح الأقرب من القائمة (واحدة فقط).',
+        '- لا ترسل أغنية تلقائياً إلا إذا طلب المستخدم أغنية/موسيقى.',
+        '- عند الإرسال: جملة قصيرة ثم التاج مباشرة. لا فقرات.'
     ].join('\n');
 
     /* ═══════ STATE ═══════ */
@@ -192,7 +192,7 @@
 
     function trackMessage(role, text, responseTime) {
         var words = (text || '').split(/\s+/).filter(function(w){return w}).length;
-        var isAr = /[\u0600-\u06FF]/.test(text);
+        var isAr = /[؀-ۿ]/.test(text);
         var data = { role: role, words: words, mlang: isAr ? 'ar' : 'en' };
         if (responseTime) data.rt = responseTime;
         fbLog('msg', data);
@@ -357,7 +357,7 @@
             var pct = (a.currentTime / a.duration) * 100;
             bar.style.width = pct + '%';
             
-            var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s%60); return m+':'+(ss<10?'0'+ss:ss); };
+            var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s`); return m+':'+(ss<10?'0'+ss:ss); };
             time.textContent = fm(a.currentTime) + ' / ' + fm(a.duration);
         },
         audioLoaded: function(id) {
