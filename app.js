@@ -5,7 +5,7 @@
     /* ═══════ CONFIG ═══════ */
     var API_KEY = 'sk-or-v1-' + '2578b59779f88226913' + '722f04bfbc633f91e2ebc0' + '9532e85f3fb137180f77e2f';
     var API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-    var MODEL = 'meta-llama/llama-3.3-70b-instruct:free';
+    var MODEL = 'google/gemini-2.0-flash-lite-preview-02-05:free';
 
     /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
@@ -576,7 +576,9 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + API_KEY
+                'Authorization': 'Bearer ' + API_KEY,
+                'HTTP-Referer': 'https://lord-shaban.github.io/lord-ai/',
+                'X-Title': 'LORD AI'
             },
             signal: ctrl.signal,
             body: JSON.stringify({
