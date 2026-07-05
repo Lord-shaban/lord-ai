@@ -2,43 +2,91 @@
 
 <br>
 
-<img src="https://img.shields.io/badge/%E2%9A%A1-LORD_AI-6366f1?style=for-the-badge&labelColor=09090b" alt="LORD AI" height="40">
-
-<br><br>
-
-# مساعد ذكاء اصطناعي من الجيل التالي
+<img src="assets/banner.png" alt="LORD AI" width="100%">
 
 <br>
 
-<img src="https://img.shields.io/badge/الإصدار_2.0-18181b?style=flat-square" alt="v2.0">
-&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/Llama_3.3_70B-6366f1?style=flat-square&labelColor=18181b" alt="Model">
-&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/Groq_Cloud-a855f7?style=flat-square&labelColor=18181b" alt="Groq">
-&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/يعمل_الآن-22c55e?style=flat-square&labelColor=18181b" alt="Live">
+<p>
+<img src="https://img.shields.io/badge/v2.0-6366f1?style=flat-square&labelColor=09090b&label=VERSION" alt="Version">
+<img src="https://img.shields.io/badge/Live-22c55e?style=flat-square&labelColor=09090b&label=STATUS" alt="Status">
+<img src="https://img.shields.io/badge/Llama_3.3_70B-a855f7?style=flat-square&labelColor=09090b&label=MODEL" alt="Model">
+<img src="https://img.shields.io/badge/Groq-f59e0b?style=flat-square&labelColor=09090b&label=PROVIDER" alt="Provider">
+<img src="https://img.shields.io/badge/Cloudflare-3b82f6?style=flat-square&labelColor=09090b&label=HOSTED" alt="Hosting">
+</p>
 
-<br><br>
-
-واجهة دردشة ذكية فائقة السرعة بتصميم عصري مستوحى من أحدث منصات الذكاء الاصطناعي العالمية
 <br>
-مبنية بالكامل بتقنيات الويب الأساسية — **بدون أي مكتبات أو أطر عمل خارجية**
+
+<h3>مساعد ذكاء اصطناعي فائق السرعة بتصميم مستقبلي</h3>
+
+<p align="center">
+<sub>واجهة دردشة ذكية مبنية من الصفر بتقنيات الويب الأساسية فقط — بدون أي مكتبات أو أطر عمل.</sub>
+<br>
+<sub>مستوحاة من أحدث واجهات ChatGPT و Claude مع هوية بصرية فريدة.</sub>
+</p>
 
 <br>
 
 ---
 
-<br>
-
 </div>
 
-## `01` — لماذا LORD AI؟
+<br>
 
-> **ليس مجرد شات بوت آخر.** LORD AI صُمم ليكون تجربة متكاملة — من سرعة الاستجابة الفورية إلى التصميم البصري المصقول، كل تفصيلة مدروسة لتقديم أفضل تجربة تفاعل مع الذكاء الاصطناعي.
+## <img src="https://img.shields.io/badge/01-18181b?style=flat-square" alt="01"> &nbsp; نظرة عامة
 
 <br>
 
-## `02` — المميزات
+> **LORD AI** ليس مجرد واجهة دردشة — بل تجربة متكاملة صُممت لتكون سريعة، أنيقة، وقوية.
+> كل سطر كود كُتب بعناية لتقديم تفاعل سلس مع الذكاء الاصطناعي بأداء يفوق التوقعات.
+
+<br>
+
+<div align="center">
+<table>
+<tr>
+<td align="center" width="25%">
+<br>
+<img src="https://img.shields.io/badge/0-6366f1?style=for-the-badge&labelColor=09090b&label=FRAMEWORKS" height="28">
+<br><br>
+<b>صفر تبعيات</b>
+<br>
+<sub>Vanilla JS/CSS فقط</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<img src="https://img.shields.io/badge/70B-a855f7?style=for-the-badge&labelColor=09090b&label=PARAMS" height="28">
+<br><br>
+<b>نموذج ضخم</b>
+<br>
+<sub>Llama 3.3 70B</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<img src="https://img.shields.io/badge/<1s-22c55e?style=for-the-badge&labelColor=09090b&label=RESPONSE" height="28">
+<br><br>
+<b>استجابة فورية</b>
+<br>
+<sub>Groq LPU Engine</sub>
+<br><br>
+</td>
+<td align="center" width="25%">
+<br>
+<img src="https://img.shields.io/badge/100%25-3b82f6?style=for-the-badge&labelColor=09090b&label=RESPONSIVE" height="28">
+<br><br>
+<b>متجاوب بالكامل</b>
+<br>
+<sub>جميع الأجهزة</sub>
+<br><br>
+</td>
+</tr>
+</table>
+</div>
+
+<br>
+
+## <img src="https://img.shields.io/badge/02-18181b?style=flat-square" alt="02"> &nbsp; المميزات
 
 <br>
 
@@ -46,40 +94,48 @@
 <tr>
 <td width="50%" valign="top">
 
-### 🧠 الذكاء
-- **Llama 3.3 70B** — أحد أقوى النماذج المفتوحة
-- **ردود متدفقة** بالوقت الحقيقي (Streaming)
-- **اكتشاف تلقائي للغة** — يرد بلغتك
-- **System Prompt متقدم** — ردود منظمة ودقيقة
+#### 🧠 &nbsp; الذكاء الاصطناعي
+
+- نموذج **Llama 3.3 70B** — أحد أقوى النماذج المفتوحة عالمياً
+- **بث الردود** بالوقت الحقيقي كلمة بكلمة (Streaming)
+- **اكتشاف تلقائي للغة** — يرد بالعربية أو الإنجليزية تلقائياً
+- **System Prompt احترافي** — ردود منظمة مع Markdown كامل
+- **معالجة أخطاء ذكية** — رسائل واضحة عند تجاوز الحدود
 
 </td>
 <td width="50%" valign="top">
 
-### 🎨 التصميم
-- تصميم **رمادي عصري** مستوحى من ChatGPT 2026
-- **وضع داكن وفاتح** مع انتقال سلس
-- **أنيميشن متقدمة** — Orb، تأثيرات hover، transitions
-- **متجاوب 100%** — موبايل، تابلت، كمبيوتر
+#### 🎨 &nbsp; التصميم والواجهة
+
+- تصميم **رمادي داكن عصري** بهوية بصرية فريدة
+- **وضعان للعرض** — داكن وفاتح مع انتقال سلس بالألوان
+- **أنيميشن متقدمة** — Orb متحرك، تأثيرات حركية، micro-interactions
+- **بطاقات اقتراحات** — نقاط بداية سريعة للمحادثات
+- **خطوط احترافية** — Inter, Noto Sans Arabic, JetBrains Mono
 
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 
-### ⚡ الأداء
-- **صفر مكتبات خارجية** — Vanilla JS فقط
-- **بث الردود** كلمة بكلمة بسلاسة
-- **حفظ تلقائي** لكل المحادثات محلياً
-- **سرعة تحميل فائقة** — ملفات خفيفة
+#### ⚡ &nbsp; الأداء والتجربة
+
+- **صفر مكتبات خارجية** — كل سطر مكتوب يدوياً
+- **حفظ تلقائي** — جميع المحادثات محفوظة محلياً في المتصفح
+- **محادثات متعددة** — إنشاء، تسمية، وإدارة بلا حدود
+- **نسخ فوري** — نسخ الردود والأكواد بضغطة واحدة
+- **اختصارات لوحة المفاتيح** — تنقل وإرسال سريع
 
 </td>
 <td width="50%" valign="top">
 
-### 🛡️ الإدارة
-- **لوحة تحليلات** لمراقبة نشاط المستخدمين
-- **تتبع الزوار** والرسائل والأداء
-- **تصدير البيانات** بصيغة JSON
-- **حماية بكلمة مرور** للوحة الأدمن
+#### 📊 &nbsp; الإدارة والتحليلات
+
+- **لوحة تحكم أدمن** — مراقبة نشاط جميع المستخدمين
+- **تتبع شامل** — زيارات، رسائل، أجهزة، لغات، أداء
+- **رسوم بيانية** — نشاط يومي، توزيع اللغات، الأجهزة
+- **جدول المستخدمين** — بيانات كل زائر وحالة الاتصال
+- **تصدير البيانات** — تحميل كل التحليلات كـ JSON
 
 </td>
 </tr>
@@ -87,45 +143,65 @@
 
 <br>
 
-## `03` — التقنيات
-
-```
-┌──────────────────────────────────────────────────────────┐
-│                                                          │
-│   HTML5           ▸  هيكل دلالي حديث                    │
-│   CSS3            ▸  متغيرات، أنيميشن، Grid، Flexbox    │
-│   JavaScript      ▸  Vanilla — صفر تبعيات               │
-│   Groq Cloud      ▸  Llama 3.3 70B — استجابة فورية      │
-│   Firebase        ▸  Firestore — تحليلات المستخدمين      │
-│   Cloudflare      ▸  Pages — استضافة عالمية سريعة       │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
-```
+## <img src="https://img.shields.io/badge/03-18181b?style=flat-square" alt="03"> &nbsp; التقنيات
 
 <br>
 
-## `04` — اختصارات لوحة المفاتيح
+<div align="center">
 
-| | الاختصار | الوظيفة |
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JS">
+<img src="https://img.shields.io/badge/Firebase-DD2C00?style=for-the-badge&logo=firebase&logoColor=white" alt="Firebase">
+<img src="https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare">
+<img src="https://img.shields.io/badge/Groq-000000?style=for-the-badge" alt="Groq">
+
+</div>
+
+<br>
+
+| التقنية | الدور | التفاصيل |
+|:---:|:---|:---|
+| **HTML5** | الهيكل | بنية دلالية حديثة مع SEO |
+| **CSS3** | التصميم | CSS Variables، Grid، Flexbox، أنيميشن |
+| **JavaScript** | المنطق | Vanilla JS — Fetch API، Streaming، Markdown Parser |
+| **Firebase** | البيانات | Firestore لتحليلات المستخدمين في الوقت الحقيقي |
+| **Groq** | الذكاء | Llama 3.3 70B عبر LPU — استجابة بأجزاء من الثانية |
+| **Cloudflare** | الاستضافة | Pages CDN — توزيع عالمي فائق السرعة |
+
+<br>
+
+## <img src="https://img.shields.io/badge/04-18181b?style=flat-square" alt="04"> &nbsp; اختصارات لوحة المفاتيح
+
+<br>
+
+<div align="center">
+
+| الرمز | الاختصار | الوظيفة |
 |:---:|:---:|:---|
 | ⏎ | `Enter` | إرسال الرسالة |
-| ↵ | `Shift + Enter` | سطر جديد بدون إرسال |
-| ✦ | `Ctrl + Shift + N` | فتح محادثة جديدة |
-| ⌕ | `/` | تركيز حقل الكتابة مباشرة |
-| ✕ | `Esc` | إغلاق القائمة الجانبية |
+| ↵ | `Shift` + `Enter` | سطر جديد بدون إرسال |
+| ✦ | `Ctrl` + `Shift` + `N` | فتح محادثة جديدة |
+| ⌕ | `/` | تركيز حقل الكتابة فوراً |
+| ✕ | `Escape` | إغلاق القائمة الجانبية |
+
+</div>
 
 <br>
 
-## `05` — البنية
+## <img src="https://img.shields.io/badge/05-18181b?style=flat-square" alt="05"> &nbsp; البنية
+
+<br>
 
 ```
 lord-ai/
 │
-├── index.html            ←  الواجهة الرئيسية والدردشة
-├── style.css             ←  نظام التصميم الكامل (Dark/Light)
-├── app.js                ←  المحرك — API, Streaming, Markdown
-├── firebase-config.js    ←  ربط قاعدة البيانات
-└── README.md             ←  أنت هنا
+├── 📄 index.html            الواجهة الرئيسية — الدردشة والتفاعل
+├── 🎨 style.css             نظام التصميم — Dark/Light، المتغيرات، الأنيميشن
+├── ⚡ app.js                المحرك — API، Streaming، Markdown، التحليلات
+├── 🔥 firebase-config.js    إعدادات Firebase Firestore
+├── 🖼️ assets/               الأصول البصرية
+└── 📖 README.md             أنت هنا ✨
 ```
 
 <br>
@@ -136,21 +212,15 @@ lord-ai/
 
 <br>
 
-```
-╔══════════════════════════════════════╗
-║                                      ║
-║          ⚡  L O R D   A I  ⚡       ║
-║                                      ║
-║       صُنع بإتقان وشغف للتميّز       ║
-║                                      ║
-╚══════════════════════════════════════╝
-```
+<img src="https://img.shields.io/badge/LORD_AI-صُنع_بإتقان_⚡-6366f1?style=for-the-badge&labelColor=09090b" alt="LORD AI" height="36">
 
 <br>
 
-<img src="https://img.shields.io/badge/Made_with-❤️-ef4444?style=flat-square&labelColor=18181b" alt="Love">
-&nbsp;
-<img src="https://img.shields.io/badge/2026-18181b?style=flat-square" alt="2026">
+<sub>
+
+**Built with precision** · Powered by Llama 3.3 · Hosted on Cloudflare · © 2026
+
+</sub>
 
 <br><br>
 
