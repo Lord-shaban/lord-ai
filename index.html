@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LORD AI</title>
+    <meta name="description" content="LORD AI — مساعد ذكاء اصطناعي متقدم">
+    <meta name="theme-color" content="#171717">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23333'/><text x='50' y='67' font-size='48' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,sans-serif'>L</text></svg>">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-head">
+            <button class="sidebar-new" id="newChatBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                محادثة جديدة
+            </button>
+            <button class="icon-btn hide-desktop" id="closeSidebar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+        </div>
+        <div class="sidebar-convs" id="convList"></div>
+        <div class="sidebar-foot">
+            <div class="sidebar-brand">
+                <div class="brand-icon">L</div>
+                <div class="brand-info">
+                    <span class="brand-name">LORD AI</span>
+                    <span class="brand-ver">v2.0 — Llama 3.3</span>
+                </div>
+            </div>
+            <button class="sidebar-btn text-danger-hover" id="clearBtn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2"/></svg>
+                حذف جميع المحادثات
+            </button>
+        </div>
+    </aside>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main -->
+    <main class="main">
+        <header class="topbar">
+            <div class="topbar-r">
+                <button class="icon-btn show-mobile" id="openSidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+                </button>
+                <span class="topbar-title">LORD AI</span>
+            </div>
+            <div class="topbar-actions">
+                <button class="icon-btn" id="themeBtn" title="تبديل المظهر">
+                    <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="chat-area" id="chatArea">
+            <!-- Welcome -->
+            <div class="welcome" id="welcome">
+                <div class="welcome-orb">
+                    <div class="orb-ring"></div>
+                    <div class="orb-core">L</div>
+                </div>
+                <h1 class="welcome-h">مرحباً، كيف أساعدك؟</h1>
+                <p class="welcome-sub">أنا LORD AI. يمكنني مساعدتك في الكتابة، البرمجة، التحليل، والإجابة على أسئلتك.</p>
+                <div class="prompts" id="prompts">
+                    <button class="prompt-card" data-q="اشرح لي الذكاء الاصطناعي بطريقة مبسطة">
+                        <div class="prompt-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <div class="prompt-text"><strong>اشرح لي</strong><span>الذكاء الاصطناعي ببساطة</span></div>
+                    </button>
+                    <button class="prompt-card" data-q="اكتب لي كود Python لآلة حاسبة">
+                        <div class="prompt-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        </div>
+                        <div class="prompt-text"><strong>اكتب كود</strong><span>آلة حاسبة بـ Python</span></div>
+                    </button>
+                    <button class="prompt-card" data-q="ساعدني في كتابة مقال عن التقنية">
+                        <div class="prompt-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </div>
+                        <div class="prompt-text"><strong>ساعدني أكتب</strong><span>مقال احترافي عن التقنية</span></div>
+                    </button>
+                    <button class="prompt-card" data-q="ما هي أفضل لغات البرمجة للمبتدئين؟">
+                        <div class="prompt-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <div class="prompt-text"><strong>أفضل اللغات</strong><span>للمبتدئين في البرمجة</span></div>
+                    </button>
+                </div>
+            </div>
+            <!-- Messages -->
+            <div class="messages" id="messages"></div>
+        </div>
+
+        <div class="input-wrap">
+            <div class="input-shell">
+                <div class="input-box" id="inputBox">
+                    <textarea id="input" rows="1" placeholder="أرسل رسالة..."></textarea>
+                    <div class="input-actions">
+                        <button class="send-btn" id="sendBtn" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5,12 12,5 19,12"/></svg>
+                        </button>
+                        <button class="stop-btn none" id="stopBtn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <small class="input-note">LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة.</small>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
