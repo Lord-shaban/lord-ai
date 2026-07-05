@@ -7,6 +7,40 @@
     var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
     var MODEL = 'llama-3.3-70b-versatile';
 
+    /* ═══════ MUSIC CATALOG ═══════ */
+    var MUSIC = [
+        { name: 'Ed Sheeran - Perfect', file: 'assets/music/Ed Sheeran - Perfect (Official Music Video).mp3', artist: 'Ed Sheeran', genre: 'Pop/Romance' },
+        { name: 'Justin Bieber - Never Say Never ft. Jaden', file: 'assets/music/Justin Bieber - Never Say Never ft. Jaden.mp3', artist: 'Justin Bieber & Jaden Smith', genre: 'Pop/Motivational' }
+    ];
+
+    function findMusic(text) {
+        var t = (text || '').toLowerCase();
+        var results = [];
+        for (var i = 0; i < MUSIC.length; i++) {
+            var m = MUSIC[i];
+            if (t.indexOf(m.name.toLowerCase()) !== -1
+                || t.indexOf(m.artist.toLowerCase().split(' ')[0].toLowerCase()) !== -1
+                || t.indexOf(m.file.toLowerCase()) !== -1) {
+                results.push(m);
+            }
+        }
+        return results;
+    }
+
+    function musicPlayerHTML(m) {
+        return '<div class="music-player">'
+            + '<div class="music-info">'
+            + '<div class="music-icon">🎵</div>'
+            + '<div class="music-meta">'
+            + '<span class="music-title">' + esc(m.name) + '</span>'
+            + '<span class="music-artist">' + esc(m.artist) + ' · ' + esc(m.genre) + '</span>'
+            + '</div></div>'
+            + '<audio controls preload="none" src="' + m.file + '"></audio>'
+            + '<a href="' + m.file + '" download class="music-dl" title="تحميل">'
+            + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+            + ' تحميل</a></div>';
+    }
+
     var SYSTEM_PROMPT = [
         'أنت LORD AI، مساعد ذكاء اصطناعي متقدم وعالي الأداء.',
         '',
@@ -23,7 +57,18 @@
         '- كن ودوداً ومحترفاً في نفس الوقت.',
         '- عند كتابة الأكواد البرمجية، اكتب كوداً نظيفاً مع تعليقات توضيحية.',
         '- قدّم إجابات شاملة ومفصلة لكن بدون حشو زائد.',
-        '- إذا كان السؤال غامضاً، اطلب توضيحاً قبل الإجابة.'
+        '- إذا كان السؤال غامضاً، اطلب توضيحاً قبل الإجابة.',
+        '',
+        '## الأغاني المتوفرة لديك:',
+        'لديك أغاني يمكنك تقديمها للمستخدم. عندما يطلب أغنية أو موسيقى، تحقق مما يلي:',
+        '1. Ed Sheeran - Perfect (Pop/Romance) — أغنية رومانسية رائعة',
+        '2. Justin Bieber - Never Say Never ft. Jaden (Pop/Motivational) — أغنية تحفيزية',
+        '',
+        'إذا طلب المستخدم أغنية متوفرة، اكتب [MUSIC:اسم_الأغنية] في ردك.',
+        'مثال: إذا طلب أغنية Ed Sheeran اكتب [MUSIC:Ed Sheeran - Perfect]',
+        'مثال: إذا طلب أغنية Justin Bieber اكتب [MUSIC:Justin Bieber - Never Say Never ft. Jaden]',
+        'إذا طلب أغنية غير متوفرة، أخبره بالأغاني المتاحة واقترح عليه إحداها.',
+        'يمكنك أيضاً تقديم الأغاني بشكل تلقائي عندما يكون السياق مناسباً.'
     ].join('\n');
 
     /* ═══════ STATE ═══════ */
@@ -130,6 +175,21 @@
     function md(text) {
         if (!text) return '';
 
+        // Preserve music tags
+        var musicBlocks = [];
+        text = text.replace(/\[MUSIC:([^\]]+)\]/g, function(_, name) {
+            var idx = musicBlocks.length;
+            var found = null;
+            for (var i = 0; i < MUSIC.length; i++) {
+                if (MUSIC[i].name.toLowerCase().indexOf(name.trim().toLowerCase()) !== -1
+                    || name.trim().toLowerCase().indexOf(MUSIC[i].name.toLowerCase()) !== -1) {
+                    found = MUSIC[i]; break;
+                }
+            }
+            musicBlocks.push(found ? musicPlayerHTML(found) : '<p>🎵 ' + esc(name) + ' (غير متوفرة)</p>');
+            return '%%MUSIC_' + idx + '%%';
+        });
+
         // Preserve code blocks first
         var codeBlocks = [];
         text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(_, lang, code) {
@@ -191,6 +251,11 @@
         // Restore code blocks
         for (var i = 0; i < codeBlocks.length; i++) {
             text = text.replace('%%CODE_BLOCK_' + i + '%%', codeBlocks[i]);
+        }
+
+        // Restore music blocks
+        for (var j = 0; j < musicBlocks.length; j++) {
+            text = text.replace('%%MUSIC_' + j + '%%', musicBlocks[j]);
         }
 
         return text;
