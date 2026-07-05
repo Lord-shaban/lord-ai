@@ -4,409 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LORD AI — Admin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23333'/><text x='50' y='67' font-size='48' font-weight='bold' fill='white' text-anchor='middle'>L</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg0:#09090b;--bg1:#111113;--bg2:#18181b;--bg3:#27272a;--bg4:#3f3f46;--tx1:#fafafa;--tx2:#a1a1aa;--tx3:#52525b;--ac:#6366f1;--ac2:#818cf8;--gn:#22c55e;--rd:#ef4444;--bl:#3b82f6;--or:#f59e0b;--pu:#a855f7;--cy:#06b6d4;--r:12px;--rs:8px;--f:'Inter','Noto Sans Arabic',sans-serif;--m:'JetBrains Mono',monospace}
-        body{font-family:var(--f);background:var(--bg0);color:var(--tx1);min-height:100vh}
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--b0:#09090b;--b1:#111113;--b2:#18181b;--b3:#27272a;--b4:#3f3f46;--t1:#fafafa;--t2:#a1a1aa;--t3:#52525b;--ac:#6366f1;--gn:#22c55e;--rd:#ef4444;--bl:#3b82f6;--or:#f59e0b;--pu:#a855f7;--cy:#06b6d4;--r:12px;--f:'Inter','Noto Sans Arabic',sans-serif;--m:'JetBrains Mono',monospace}
+        body{font-family:var(--f);background:var(--b0);color:var(--t1);min-height:100vh}
 
-        /* LOGIN */
-        .login-o{position:fixed;inset:0;background:var(--bg0);display:flex;align-items:center;justify-content:center;z-index:999}
-        .login-o.off{display:none}
-        .login-b{background:var(--bg1);border:1px solid var(--bg3);border-radius:16px;padding:40px;width:380px;max-width:90vw;text-align:center}
-        .login-i{width:56px;height:56px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;color:#fff;margin-bottom:16px}
-        .login-b h2{font-size:18px;margin-bottom:4px}
-        .login-b p{font-size:12px;color:var(--tx3);margin-bottom:20px}
-        .lin{width:100%;padding:12px;border-radius:var(--rs);border:1px solid var(--bg3);background:var(--bg2);color:var(--tx1);font-family:var(--f);font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:14px}
-        .lin:focus{border-color:var(--ac)}
-        .lin.err{border-color:var(--rd);animation:shake .4s}
-        .lbtn{width:100%;padding:11px;border-radius:var(--rs);border:none;background:var(--ac);color:#fff;font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer}
-        .lbtn:hover{background:var(--ac2)}
-        @keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-6px)}50%{transform:translateX(6px)}}
+        .login-w{position:fixed;inset:0;background:var(--b0);display:flex;align-items:center;justify-content:center;z-index:99}
+        .login-w.off{display:none}
+        .lbox{background:var(--b1);border:1px solid var(--b3);border-radius:16px;padding:36px;width:360px;max-width:90vw;text-align:center}
+        .lbox .ic{width:52px;height:52px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#fff;margin-bottom:14px}
+        .lbox h2{font-size:17px;margin-bottom:4px}.lbox p{font-size:11px;color:var(--t3);margin-bottom:18px}
+        .linp{width:100%;padding:11px;border-radius:8px;border:1px solid var(--b3);background:var(--b2);color:var(--t1);font-family:var(--f);font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px}
+        .linp:focus{border-color:var(--ac)}.linp.err{border-color:var(--rd);animation:shake .35s}
+        .lbtn{width:100%;padding:10px;border-radius:8px;border:none;background:var(--ac);color:#fff;font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer}
+        @keyframes shake{25%,75%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
 
-        /* LAYOUT */
-        .d{max-width:1400px;margin:0 auto;padding:20px}
+        .D{max-width:1400px;margin:0 auto;padding:18px}
+        .hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 0 16px;border-bottom:1px solid var(--b3);margin-bottom:18px;flex-wrap:wrap;gap:10px}
+        .logo{display:flex;align-items:center;gap:10px}
+        .logo i{width:36px;height:36px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;font-style:normal}
+        .logo h1{font-size:16px}.logo span{font-size:10px;color:var(--t3);display:block}
+        .hbtns{display:flex;gap:6px;flex-wrap:wrap}
+        .bt{padding:6px 12px;border-radius:7px;border:1px solid var(--b3);background:var(--b2);color:var(--t2);font-family:var(--f);font-size:11px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;transition:all .15s}
+        .bt:hover{background:var(--b3);color:var(--t1)}
 
-        /* HEADER */
-        .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 0 18px;border-bottom:1px solid var(--bg3);margin-bottom:20px;flex-wrap:wrap;gap:12px}
-        .lo{display:flex;align-items:center;gap:12px}
-        .lo-i{width:38px;height:38px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
-        .lo h1{font-size:17px;font-weight:700}.lo span{font-size:10px;color:var(--tx3);display:block}
-        .hb{display:flex;gap:8px;flex-wrap:wrap}
-        .bt{padding:7px 14px;border-radius:var(--rs);border:1px solid var(--bg3);background:var(--bg2);color:var(--tx2);font-family:var(--f);font-size:11px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none;transition:all .15s}
-        .bt:hover{background:var(--bg3);color:var(--tx1)}
+        /* Alert banner */
+        .alert{padding:12px 16px;border-radius:var(--r);margin-bottom:16px;font-size:12px;display:none}
+        .alert.on{display:block}
+        .alert.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--gn)}
+        .alert.bad{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--rd)}
+        .alert.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--or)}
 
-        /* STATUS */
-        .st{display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);margin-bottom:18px;font-size:11px;color:var(--tx2);flex-wrap:wrap}
-        .dt{width:7px;height:7px;background:var(--gn);border-radius:50%;box-shadow:0 0 6px var(--gn);animation:pu 2s ease infinite}
-        @keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
-        .sp{width:1px;height:12px;background:var(--bg3)}
-
-        /* CARDS */
-        .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px}
-        .cd{background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);padding:16px;transition:all .25s;position:relative;overflow:hidden}
-        .cd:hover{border-color:var(--bg4);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.2)}
+        .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:18px}
+        .cd{background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;animation:fu .4s ease both}
         .cd::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-        .cd.cg1::before{background:var(--gn)}.cd.cb::before{background:var(--bl)}.cd.cp::before{background:var(--pu)}
-        .cd.co::before{background:var(--or)}.cd.cr::before{background:var(--rd)}.cd.cc::before{background:var(--cy)}
-        .cd-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-        .cd-l{font-size:10px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-        .cd-e{font-size:15px}
-        .cd-v{font-size:26px;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:3px;font-family:var(--m)}
-        .cd-s{font-size:10px;color:var(--tx3)}
+        .cd.g::before{background:var(--gn)}.cd.b::before{background:var(--bl)}.cd.p::before{background:var(--pu)}
+        .cd.o::before{background:var(--or)}.cd.r::before{background:var(--rd)}.cd.c::before{background:var(--cy)}
+        .cd-h{display:flex;justify-content:space-between;margin-bottom:8px}
+        .cd-l{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase}
+        .cd-v{font-size:24px;font-weight:800;letter-spacing:-1px;font-family:var(--m)}
+        .cd-s{font-size:10px;color:var(--t3)}
+        @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-        /* SECTIONS */
-        .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+        .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
         .fw{grid-column:1/-1}
-        .sc{background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);overflow:hidden}
-        .sh{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bg3)}
-        .stl{font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
-        .sb{padding:16px}
-
-        /* BARS */
-        .brs{display:flex;align-items:flex-end;gap:5px;height:140px}
-        .brc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-        .br{width:100%;min-height:3px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--ac),rgba(99,102,241,.2));transition:height .6s ease}
-        .bl2{font-size:8px;color:var(--tx3);font-family:var(--m)}
-        .bv{font-size:8px;color:var(--tx2);font-family:var(--m);font-weight:600}
-
-        /* TABLE */
-        .tw{overflow-x:auto}
+        .sc{background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);overflow:hidden}
+        .sh{padding:10px 14px;border-bottom:1px solid var(--b3);font-size:12px;font-weight:600}
+        .sb{padding:14px}
+        .brs{display:flex;align-items:flex-end;gap:4px;height:130px}
+        .brc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+        .br{width:100%;min-height:2px;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--ac),rgba(99,102,241,.2))}
+        .bl2{font-size:8px;color:var(--t3);font-family:var(--m)}.bv{font-size:8px;color:var(--t2);font-family:var(--m);font-weight:600}
         table{width:100%;border-collapse:collapse}
-        th{text-align:right;padding:8px 12px;font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bg3)}
-        td{padding:8px 12px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bg3)}
-        tr:last-child td{border:none}
-        tr:hover td{background:var(--bg2)}
-        .bg{display:inline-flex;padding:2px 8px;border-radius:12px;font-size:9px;font-weight:600}
+        th{text-align:right;padding:7px 10px;font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;border-bottom:1px solid var(--b3)}
+        td{padding:7px 10px;font-size:11px;color:var(--t2);border-bottom:1px solid var(--b3)}
+        tr:last-child td{border:none}tr:hover td{background:var(--b2)}
+        .bg{padding:2px 7px;border-radius:10px;font-size:9px;font-weight:600}
         .bg-g{background:rgba(34,197,94,.12);color:var(--gn)}.bg-b{background:rgba(59,130,246,.12);color:var(--bl)}
-        .bg-o{background:rgba(245,158,11,.12);color:var(--or)}
-
-        /* PROGRESS */
-        .pi{margin-bottom:12px}.pi:last-child{margin-bottom:0}
-        .pi label{font-size:11px;color:var(--tx2);display:flex;justify-content:space-between;margin-bottom:4px}
-        .pt{width:100%;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
-        .pf{height:100%;border-radius:3px;transition:width .8s ease}
-
-        /* PERF */
-        .pr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg2);border-radius:var(--rs);margin-bottom:6px}
+        .pi{margin-bottom:10px}.pi:last-child{margin-bottom:0}
+        .pi label{font-size:11px;color:var(--t2);display:flex;justify-content:space-between;margin-bottom:3px}
+        .pt{width:100%;height:6px;background:var(--b3);border-radius:3px;overflow:hidden}
+        .pf{height:100%;border-radius:3px}
+        .pr{display:flex;justify-content:space-between;padding:7px 10px;background:var(--b2);border-radius:7px;margin-bottom:5px;font-size:11px}
         .pr:last-child{margin-bottom:0}
-        .pr span:first-child{font-size:11px;color:var(--tx2)}
-        .pr span:last-child{font-size:12px;font-weight:700;font-family:var(--m)}
-
-        /* FEED */
-        .fd{max-height:300px;overflow-y:auto}
-        .fi{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--bg3)}
+        .fd{max-height:280px;overflow-y:auto}
+        .fi{display:flex;gap:7px;padding:7px 0;border-bottom:1px solid var(--b3);font-size:11px;color:var(--t2)}
         .fi:last-child{border:none}
-        .fd2{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
-        .fd2.v{background:var(--bl)}.fd2.m{background:var(--gn)}.fd2.e{background:var(--rd)}
-        .ft{flex:1}.ft p{font-size:11px;color:var(--tx2)}.ft small{font-size:9px;color:var(--tx3)}
-
-        /* LOADING / EMPTY */
-        .ld{display:flex;align-items:center;justify-content:center;padding:30px;gap:8px;color:var(--tx3);font-size:12px}
-        .sn{width:16px;height:16px;border:2px solid var(--bg3);border-top-color:var(--ac);border-radius:50%;animation:sp .6s linear infinite}
-        @keyframes sp{to{transform:rotate(360deg)}}
-        .em{text-align:center;padding:30px;color:var(--tx3);font-size:12px}
-
-        /* DEBUG */
-        .dbg{margin-top:16px;background:var(--bg1);border:1px solid var(--bg3);border-radius:var(--r);padding:14px;font-family:var(--m);font-size:10px;color:var(--tx3);white-space:pre-wrap;max-height:200px;overflow-y:auto;display:none}
-        .dbg.on{display:block}
-
-        /* TOAST */
-        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);color:var(--tx1);padding:9px 20px;border-radius:var(--rs);font-size:12px;border:1px solid var(--bg4);opacity:0;transition:all .3s;z-index:100}
-        .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-        /* ANIM */
-        @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-        .cd{animation:fu .4s ease both}
-        .cd:nth-child(1){animation-delay:.03s}.cd:nth-child(2){animation-delay:.06s}
-        .cd:nth-child(3){animation-delay:.09s}.cd:nth-child(4){animation-delay:.12s}
-        .cd:nth-child(5){animation-delay:.15s}.cd:nth-child(6){animation-delay:.18s}
-        .cd:nth-child(7){animation-delay:.21s}.cd:nth-child(8){animation-delay:.24s}
-
+        .fi small{font-size:9px;color:var(--t3)}
+        .em{text-align:center;padding:24px;color:var(--t3);font-size:12px}
+        .ld{text-align:center;padding:24px;color:var(--t3);font-size:12px}
+        #log{margin-top:14px;background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);padding:12px;font-family:var(--m);font-size:10px;color:var(--t3);white-space:pre-wrap;max-height:250px;overflow-y:auto}
         @media(max-width:900px){.g2{grid-template-columns:1fr}}
-        @media(max-width:600px){.cg{grid-template-columns:repeat(2,1fr);gap:8px}.hd{flex-direction:column;align-items:flex-start}.cd-v{font-size:20px}}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px}
+        @media(max-width:600px){.cg{grid-template-columns:repeat(2,1fr);gap:8px}.hdr{flex-direction:column;align-items:flex-start}}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px}
     </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="login-o" id="loginO">
-    <div class="login-b">
-        <div class="login-i">L</div>
+<div class="login-w" id="LW">
+    <div class="lbox">
+        <div class="ic">L</div>
         <h2>لوحة تحكم الأدمن</h2>
         <p>أدخل كلمة المرور</p>
-        <input type="password" class="lin" id="lp" placeholder="••••••••" autofocus>
-        <button class="lbtn" id="lb">دخول</button>
+        <input type="password" class="linp" id="LP" placeholder="••••••••" autofocus>
+        <button class="lbtn" id="LB">دخول</button>
     </div>
 </div>
 
-<!-- DASHBOARD -->
-<div class="d" id="dc" style="display:none">
-    <header class="hd">
-        <div class="lo"><div class="lo-i">L</div><div><h1>لوحة تحكم الأدمن</h1><span>LORD AI Dashboard</span></div></div>
-        <div class="hb">
-            <button class="bt" onclick="load()">🔄 تحديث</button>
+<div class="D" id="DC" style="display:none">
+    <header class="hdr">
+        <div class="logo"><i>L</i><div><h1>لوحة تحكم الأدمن</h1><span>LORD AI Admin</span></div></div>
+        <div class="hbtns">
+            <button class="bt" onclick="testConn()">🔌 اختبار الاتصال</button>
+            <button class="bt" onclick="loadData()">🔄 تحديث</button>
             <a href="index.html" class="bt">💬 الشات</a>
-            <button class="bt" onclick="exprt()">📥 تصدير</button>
-            <button class="bt" onclick="toggleDbg()">🐛 Debug</button>
-            <button class="bt" onclick="logoutA()">🚪 خروج</button>
+            <button class="bt" onclick="doExport()">📥 تصدير</button>
+            <button class="bt" onclick="doLogout()">🚪 خروج</button>
         </div>
     </header>
-    <div class="st">
-        <div class="dt"></div><span>النظام يعمل</span><div class="sp"></div>
-        <span>النموذج: <b>Llama 3.3 70B</b></span><div class="sp"></div>
-        <span id="fbs">Firebase: ⏳</span><div class="sp"></div>
-        <span id="lr">آخر تحديث: —</span><div class="sp"></div>
-        <span id="lc">السجلات: —</span>
-    </div>
 
-    <div class="cg" id="cards"></div>
-
+    <div class="alert" id="alertBox"></div>
+    <div class="cg" id="cards"><div class="ld">⏳ جاري التحميل...</div></div>
     <div class="g2">
-        <div class="sc fw"><div class="sh"><div class="stl">📈 نشاط آخر 14 يوم</div></div><div class="sb"><div class="brs" id="chart"><div class="ld"><div class="sn"></div></div></div></div></div>
-        <div class="sc"><div class="sh"><div class="stl">⚡ آخر الأحداث</div></div><div class="sb"><div class="fd" id="feed"><div class="ld"><div class="sn"></div></div></div></div></div>
-        <div class="sc"><div class="sh"><div class="stl">🚀 الأداء</div></div><div class="sb" id="perf"><div class="ld"><div class="sn"></div></div></div></div>
-        <div class="sc"><div class="sh"><div class="stl">🌐 اللغات</div></div><div class="sb" id="langs"><div class="ld"><div class="sn"></div></div></div></div>
-        <div class="sc"><div class="sh"><div class="stl">💻 الأجهزة</div></div><div class="sb" id="devs"><div class="ld"><div class="sn"></div></div></div></div>
-        <div class="sc fw"><div class="sh"><div class="stl">👤 المستخدمون</div><span style="font-size:10px;color:var(--tx3)" id="uc"></span></div><div class="sb" style="padding:0"><div class="tw" id="utbl"><div class="ld"><div class="sn"></div></div></div></div></div>
+        <div class="sc fw"><div class="sh">📈 نشاط آخر 14 يوم</div><div class="sb"><div class="brs" id="chart"><div class="ld">⏳</div></div></div></div>
+        <div class="sc"><div class="sh">⚡ آخر الأحداث</div><div class="sb"><div class="fd" id="feed"><div class="ld">⏳</div></div></div></div>
+        <div class="sc"><div class="sh">🚀 الأداء</div><div class="sb" id="perf"><div class="ld">⏳</div></div></div>
+        <div class="sc"><div class="sh">🌐 اللغات</div><div class="sb" id="langs"><div class="ld">⏳</div></div></div>
+        <div class="sc"><div class="sh">💻 الأجهزة</div><div class="sb" id="devs"><div class="ld">⏳</div></div></div>
+        <div class="sc fw"><div class="sh">👤 المستخدمون <span style="float:left;color:var(--t3);font-weight:400" id="uc"></span></div><div class="sb" style="padding:0"><div id="utbl"><div class="ld">⏳</div></div></div></div>
     </div>
-
-    <div class="dbg" id="dbg"></div>
+    <div id="log"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-(function(){
-    var db=null, logs=[], dbgEl, dbgOn=false;
+var db=null,allLogs=[];
+var logEl;
 
-    function dbg(m){if(dbgEl){dbgEl.textContent+=new Date().toLocaleTimeString()+' '+m+'\n';dbgEl.scrollTop=dbgEl.scrollHeight}}
-    function toast(m){var o=document.querySelector('.toast');if(o)o.remove();var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);requestAnimationFrame(function(){t.classList.add('show')});setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)},2500)}
-    function fN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return(n||0).toString()}
-    function tAgo(ts){if(!ts)return'—';var d=(Date.now()-ts)/1000;if(d<60)return'الآن';if(d<3600)return Math.floor(d/60)+' دقيقة';if(d<86400)return Math.floor(d/3600)+' ساعة';return Math.floor(d/86400)+' يوم'}
-    function pUA(ua){if(!ua)return'غير معروف';if(/iPhone|iPad/.test(ua))return'📱 iOS';if(/Android/.test(ua))return'📱 Android';if(/Windows/.test(ua))return'💻 Windows';if(/Mac/.test(ua))return'💻 macOS';if(/Linux/.test(ua))return'🐧 Linux';return'🌐 آخر'}
+function log(m){
+    console.log('[ADMIN]',m);
+    if(logEl){logEl.textContent+='['+new Date().toLocaleTimeString()+'] '+m+'\n';logEl.scrollTop=9999}
+}
 
-    /* AUTH */
-    var lp=document.getElementById('lp'),lb=document.getElementById('lb');
-    function doLogin(){
-        if(typeof ADMIN_PASSWORD!=='undefined'&&lp.value.trim()===ADMIN_PASSWORD){
-            sessionStorage.setItem('la','1');show();
-        }else{lp.classList.add('err');setTimeout(function(){lp.classList.remove('err')},500)}
+function alert2(msg,type){
+    var el=document.getElementById('alertBox');
+    el.className='alert on '+type;
+    el.innerHTML=msg;
+}
+
+function fN(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':(n||0).toString()}
+function tAgo(ts){if(!ts)return'—';var d=(Date.now()-ts)/1000;if(d<60)return'الآن';if(d<3600)return Math.floor(d/60)+' د';if(d<86400)return Math.floor(d/3600)+' س';return Math.floor(d/86400)+' يوم'}
+function pUA(ua){if(!ua)return'?';if(/iPhone|iPad/.test(ua))return'📱iOS';if(/Android/.test(ua))return'📱Android';if(/Windows/.test(ua))return'💻Win';if(/Mac/.test(ua))return'💻Mac';if(/Linux/.test(ua))return'🐧Linux';return'🌐Other'}
+
+/* AUTH */
+document.getElementById('LB').onclick=function(){
+    if(typeof ADMIN_PASSWORD!=='undefined'&&document.getElementById('LP').value.trim()===ADMIN_PASSWORD){
+        sessionStorage.setItem('la','1');showDash();
+    }else{document.getElementById('LP').classList.add('err');setTimeout(function(){document.getElementById('LP').classList.remove('err')},400)}
+};
+document.getElementById('LP').onkeydown=function(e){if(e.key==='Enter')document.getElementById('LB').click()};
+window.doLogout=function(){sessionStorage.removeItem('la');location.reload()};
+
+function showDash(){
+    document.getElementById('LW').classList.add('off');
+    document.getElementById('DC').style.display='';
+    logEl=document.getElementById('log');
+    initFB();
+}
+if(sessionStorage.getItem('la')==='1')showDash();
+
+/* FIREBASE INIT */
+function initFB(){
+    log('Starting Firebase init...');
+
+    if(typeof firebase==='undefined'){
+        log('ERROR: Firebase SDK not loaded!');
+        alert2('❌ Firebase SDK غير محمّل — تأكد من اتصال الإنترنت','bad');
+        return;
     }
-    lb.onclick=doLogin;lp.onkeydown=function(e){if(e.key==='Enter')doLogin()};
-    window.logoutA=function(){sessionStorage.removeItem('la');location.reload()};
-    window.toggleDbg=function(){dbgOn=!dbgOn;dbgEl.classList.toggle('on',dbgOn)};
+    log('Firebase SDK loaded ✓');
 
-    function show(){
-        document.getElementById('loginO').classList.add('off');
-        document.getElementById('dc').style.display='';
-        dbgEl=document.getElementById('dbg');
-        initFB();
+    if(typeof FIREBASE_CONFIG==='undefined'||!FIREBASE_CONFIG.projectId){
+        log('ERROR: FIREBASE_CONFIG not found');
+        alert2('❌ إعدادات Firebase غير موجودة — تحقق من firebase-config.js','bad');
+        return;
     }
+    log('Config found: project='+FIREBASE_CONFIG.projectId);
 
-    if(sessionStorage.getItem('la')==='1')show();
-
-    /* FIREBASE */
-    function initFB(){
-        dbg('Initializing Firebase...');
-        try{
-            if(typeof firebase==='undefined'){dbg('ERROR: firebase SDK not loaded');document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--rd)">SDK غير محمّل</b>';return}
-            if(typeof FIREBASE_CONFIG==='undefined'||!FIREBASE_CONFIG.projectId){dbg('ERROR: FIREBASE_CONFIG missing');document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--rd)">غير مُعد</b>';return}
-            if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
-            db=firebase.firestore();
-            dbg('Firebase connected: '+FIREBASE_CONFIG.projectId);
-            document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--gn)">متصل ✓</b>';
-            load();
-        }catch(e){
-            dbg('ERROR: '+e.message);
-            document.getElementById('fbs').innerHTML='Firebase: <b style="color:var(--rd)">خطأ</b>';
-        }
+    try{
+        if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+        db=firebase.firestore();
+        log('Firestore initialized ✓');
+        // Auto test
+        testConn();
+    }catch(e){
+        log('ERROR init: '+e.message);
+        alert2('❌ خطأ في تهيئة Firebase: '+e.message,'bad');
     }
+}
 
-    /* LOAD ALL DATA */
-    window.load=function(){
-        if(!db){toast('Firebase غير متصل');return}
-        dbg('Loading logs from lord_logs...');
-        document.getElementById('lr').textContent='آخر تحديث: الآن';
+/* TEST CONNECTION */
+window.testConn=function(){
+    if(!db){alert2('❌ Firebase غير متصل','bad');return}
+    log('Testing Firestore connection...');
+    alert2('⏳ جاري اختبار الاتصال بـ Firestore...','warn');
 
-        db.collection('lord_logs').orderBy('t','desc').limit(2000).get().then(function(snap){
-            logs=[];
-            snap.forEach(function(doc){logs.push(doc.data())});
-            dbg('Loaded '+logs.length+' logs');
-            document.getElementById('lc').textContent='السجلات: '+logs.length;
-            render();
+    var testDoc={type:'_test',t:Date.now(),msg:'connection test'};
+
+    // Step 1: Try to WRITE
+    db.collection('lord_logs').add(testDoc).then(function(ref){
+        log('WRITE SUCCESS ✓ doc id='+ref.id);
+
+        // Step 2: Try to READ it back
+        ref.get().then(function(snap){
+            if(snap.exists){
+                log('READ SUCCESS ✓ data='+JSON.stringify(snap.data()));
+                alert2('✅ <b>Firebase يعمل بنجاح!</b> — الكتابة والقراءة تعملان. جاري تحميل البيانات...','ok');
+
+                // Delete test doc
+                ref.delete().catch(function(){});
+
+                // Now load real data
+                loadData();
+            }else{
+                log('READ FAIL: doc not found');
+                alert2('⚠️ تمت الكتابة لكن القراءة فشلت','warn');
+            }
         }).catch(function(e){
-            dbg('ERROR loading: '+e.message);
-            toast('خطأ: '+e.message);
-            document.getElementById('lc').textContent='السجلات: خطأ!';
+            log('READ ERROR: '+e.message);
+            alert2('⚠️ تمت الكتابة لكن القراءة فشلت: '+e.message,'warn');
         });
-    };
 
-    /* RENDER */
-    function render(){
-        var visits=0, msgs=0, userMsgs=0, aiMsgs=0, errors=0;
-        var userWords=0, aiWords=0;
-        var visitors={}, arC=0, enC=0, rts=[], devices={}, screens={};
-        var daily={}, hourly=new Array(24).fill(0);
+    }).catch(function(e){
+        log('WRITE ERROR: '+e.message);
 
-        // Init 14 days
-        for(var i=13;i>=0;i--){var dt=new Date();dt.setDate(dt.getDate()-i);daily[dt.toISOString().split('T')[0]]={v:0,m:0}}
-
-        for(var j=0;j<logs.length;j++){
-            var L=logs[j];
-            var vid=L.vid||'unknown';
-            var day=new Date(L.t).toISOString().split('T')[0];
-            var hr=new Date(L.t).getHours();
-            hourly[hr]++;
-
-            if(!visitors[vid])visitors[vid]={msgs:0,visits:0,last:0,ua:L.ua||'',scr:L.scr||'',lang:L.lang||''};
-            if(L.t>visitors[vid].last)visitors[vid].last=L.t;
-            if(L.ua){visitors[vid].ua=L.ua}
-            if(L.scr){visitors[vid].scr=L.scr}
-
-            if(L.type==='visit'){
-                visits++;
-                visitors[vid].visits++;
-                if(day in daily)daily[day].v++;
-            }
-            else if(L.type==='msg'){
-                msgs++;
-                if(L.role==='user'){userMsgs++;userWords+=(L.words||0);visitors[vid].msgs++}
-                else{aiMsgs++;aiWords+=(L.words||0)}
-                if(L.mlang==='ar')arC++;else if(L.mlang==='en')enC++;
-                if(L.rt)rts.push(L.rt);
-                if(day in daily)daily[day].m++;
-            }
-            else if(L.type==='error'){errors++}
-
-            var dev=pUA(L.ua);
-            devices[dev]=(devices[dev]||0)+1;
-            if(L.scr)screens[L.scr]=(screens[L.scr]||0)+1;
+        if(e.message.indexOf('PERMISSION_DENIED')!==-1||e.message.indexOf('permission')!==-1){
+            alert2('❌ <b>خطأ صلاحيات Firestore!</b><br><br>الحل: اذهب إلى <a href="https://console.firebase.google.com/project/'+FIREBASE_CONFIG.projectId+'/firestore/rules" target="_blank" style="color:var(--ac);text-decoration:underline">Firebase Console → Firestore → Rules</a> واستبدل القواعد بـ:<br><br><code style="background:var(--b2);padding:4px 8px;border-radius:4px;font-size:11px">rules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if true;\n    }\n  }\n}</code>','bad');
         }
-
-        var uCount=Object.keys(visitors).length;
-        var avgRT=rts.length?Math.round(rts.reduce(function(a,b){return a+b},0)/rts.length):0;
-        var minRT=rts.length?Math.min.apply(null,rts):0;
-        var maxRT=rts.length?Math.max.apply(null,rts):0;
-
-        // Active today
-        var today=new Date().toISOString().split('T')[0];
-        var activeToday=0;
-        for(var vk in visitors){
-            if(new Date(visitors[vk].last).toISOString().split('T')[0]===today)activeToday++;
+        else if(e.message.indexOf('NOT_FOUND')!==-1||e.message.indexOf('not found')!==-1){
+            alert2('❌ <b>Firestore Database غير مُنشأ!</b><br><br>الحل: اذهب إلى <a href="https://console.firebase.google.com/project/'+FIREBASE_CONFIG.projectId+'/firestore" target="_blank" style="color:var(--ac);text-decoration:underline">Firebase Console → Build → Firestore Database</a> → اضغط <b>Create Database</b> → اختر <b>Start in test mode</b> → <b>Create</b>','bad');
         }
-
-        dbg('Stats: visitors='+uCount+' visits='+visits+' msgs='+msgs+' errors='+errors);
-
-        /* CARDS */
-        var cards=[
-            {l:'الزوار الفريدين',v:fN(uCount),e:'👥',c:'cb',s:'مستخدم مختلف'},
-            {l:'مشاهدات الصفحة',v:fN(visits),e:'👁️',c:'cc',s:'إجمالي الزيارات'},
-            {l:'نشطون اليوم',v:fN(activeToday),e:'🟢',c:'cg1',s:'مستخدمون نشطون اليوم'},
-            {l:'إجمالي الرسائل',v:fN(msgs),e:'💬',c:'cb',s:'مستخدم: '+fN(userMsgs)+' · ذكاء: '+fN(aiMsgs)},
-            {l:'أسئلة المستخدمين',v:fN(userMsgs),e:'❓',c:'co',s:'إجمالي الأسئلة المرسلة'},
-            {l:'ردود الذكاء',v:fN(aiMsgs),e:'🤖',c:'cp',s:fN(aiWords)+' كلمة مولّدة'},
-            {l:'الكلمات',v:fN(userWords+aiWords),e:'📝',c:'cp',s:'مستخدم: '+fN(userWords)+' · ذكاء: '+fN(aiWords)},
-            {l:'الأخطاء',v:fN(errors),e:'⚠️',c:'cr',s:errors===0?'لا أخطاء ✓':'أخطاء API'},
-        ];
-        var ch='';
-        for(var ci=0;ci<cards.length;ci++){
-            var c=cards[ci];
-            ch+='<div class="cd '+c.c+'"><div class="cd-h"><span class="cd-l">'+c.l+'</span><span class="cd-e">'+c.e+'</span></div><div class="cd-v">'+c.v+'</div><div class="cd-s">'+c.s+'</div></div>';
-        }
-        document.getElementById('cards').innerHTML=ch;
-
-        /* DAILY CHART */
-        var dKeys=Object.keys(daily);
-        var maxD=1;
-        for(var dk in daily){var tot=daily[dk].v+daily[dk].m;if(tot>maxD)maxD=tot}
-        var barH='';
-        for(var bi=0;bi<dKeys.length;bi++){
-            var bk=dKeys[bi],bTotal=daily[bk].v+daily[bk].m;
-            var h=Math.max(3,(bTotal/maxD)*120);
-            barH+='<div class="brc"><span class="bv">'+(bTotal||'')+'</span><div class="br" style="height:'+h+'px" title="'+bk+'&#10;زيارات: '+daily[bk].v+'&#10;رسائل: '+daily[bk].m+'"></div><span class="bl2">'+bk.slice(8)+'</span></div>';
-        }
-        document.getElementById('chart').innerHTML=barH;
-
-        /* FEED */
-        var feedH='';
-        var recent=logs.slice(0,30);
-        if(!recent.length){feedH='<div class="em">لا أحداث بعد</div>'}
         else{
-            for(var fi=0;fi<recent.length;fi++){
-                var F=recent[fi];
-                var dc=F.type==='visit'?'v':F.type==='msg'?'m':'e';
-                var desc='';
-                if(F.type==='visit')desc='🔵 زيارة صفحة';
-                else if(F.type==='msg')desc=(F.role==='user'?'🟢 رسالة مستخدم':'🟢 رد ذكاء')+' ('+fN(F.words||0)+' كلمة)';
-                else desc='🔴 خطأ: '+(F.err||'').substring(0,50);
-                feedH+='<div class="fi"><div class="fd2 '+dc+'"></div><div class="ft"><p>'+desc+'</p><small>'+tAgo(F.t)+' · '+(F.vid||'').substring(0,10)+'</small></div></div>';
-            }
+            alert2('❌ خطأ في الكتابة: '+e.message,'bad');
         }
-        document.getElementById('feed').innerHTML=feedH;
+    });
+};
 
-        /* PERFORMANCE */
-        document.getElementById('perf').innerHTML=
-            '<div class="pr"><span>متوسط وقت الاستجابة</span><span style="color:var(--gn)">'+(avgRT?(avgRT/1000).toFixed(1)+' ثانية':'غير متوفر')+'</span></div>'
-            +'<div class="pr"><span>أسرع استجابة</span><span style="color:var(--bl)">'+(minRT?(minRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
-            +'<div class="pr"><span>أبطأ استجابة</span><span style="color:var(--or)">'+(maxRT?(maxRT/1000).toFixed(1)+' ثانية':'—')+'</span></div>'
-            +'<div class="pr"><span>عدد القياسات</span><span style="color:var(--tx2)">'+rts.length+'</span></div>'
-            +'<div class="pr"><span>نسبة النجاح</span><span style="color:var(--gn)">'+(msgs>0?Math.round((msgs/(msgs+errors))*100)+'%':'—')+'</span></div>';
+/* LOAD DATA */
+window.loadData=function(){
+    if(!db){return}
+    log('Loading lord_logs...');
 
-        /* LANGUAGES */
-        var tL=arC+enC||1;
-        var arP=Math.round((arC/tL)*100),enP=100-arP;
-        document.getElementById('langs').innerHTML=
-            '<div class="pi"><label><span>🇸🇦 العربية</span><b>'+arP+'% ('+arC+')</b></label><div class="pt"><div class="pf" style="width:'+arP+'%;background:linear-gradient(90deg,var(--ac),var(--pu))"></div></div></div>'
-            +'<div class="pi"><label><span>🇺🇸 الإنجليزية</span><b>'+enP+'% ('+enC+')</b></label><div class="pt"><div class="pf" style="width:'+enP+'%;background:linear-gradient(90deg,var(--bl),var(--cy))"></div></div></div>';
-
-        /* DEVICES */
-        var devArr=Object.entries(devices).sort(function(a,b){return b[1]-a[1]});
-        var devT=devArr.reduce(function(s,e){return s+e[1]},0)||1;
-        var colors=['var(--ac)','var(--gn)','var(--bl)','var(--or)','var(--pu)','var(--cy)'];
-        var devH='';
-        for(var di=0;di<devArr.length;di++){
-            var dp=Math.round((devArr[di][1]/devT)*100);
-            devH+='<div class="pi"><label><span>'+devArr[di][0]+'</span><b>'+dp+'% ('+devArr[di][1]+')</b></label><div class="pt"><div class="pf" style="width:'+dp+'%;background:'+colors[di%6]+'"></div></div></div>';
+    db.collection('lord_logs').orderBy('t','desc').limit(5000).get().then(function(snap){
+        allLogs=[];
+        snap.forEach(function(d){
+            var data=d.data();
+            if(data.type!=='_test') allLogs.push(data);
+        });
+        log('Loaded '+allLogs.length+' records');
+        if(allLogs.length===0){
+            alert2('ℹ️ لا توجد بيانات بعد — افتح <a href="index.html" style="color:var(--ac)">صفحة الشات</a> وأرسل رسالة ثم عد هنا واضغط تحديث','warn');
         }
-        document.getElementById('devs').innerHTML=devH||'<div class="em">لا بيانات</div>';
+        renderAll();
+    }).catch(function(e){
+        log('LOAD ERROR: '+e.message);
+        alert2('❌ خطأ في تحميل البيانات: '+e.message,'bad');
+    });
+};
 
-        /* USERS TABLE */
-        var vArr=Object.entries(visitors).sort(function(a,b){return b[1].last-a[1].last});
-        document.getElementById('uc').textContent='إجمالي: '+vArr.length;
-        if(!vArr.length){document.getElementById('utbl').innerHTML='<div class="em">لا مستخدمون بعد</div>';return}
-        var tbl='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>الرسائل</th><th>الزيارات</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
-        for(var ui=0;ui<Math.min(vArr.length,50);ui++){
-            var uid=vArr[ui][0],uv=vArr[ui][1];
-            var online=(Date.now()-uv.last)<300000;
-            tbl+='<tr><td style="font-family:var(--m);font-size:10px;color:var(--tx1)">'+uid.substring(0,14)+'</td>'
-                +'<td>'+pUA(uv.ua)+'</td>'
-                +'<td style="font-family:var(--m);font-size:10px">'+(uv.scr||'—')+'</td>'
-                +'<td style="font-weight:600">'+uv.msgs+'</td>'
-                +'<td>'+uv.visits+'</td>'
-                +'<td style="font-size:10px">'+tAgo(uv.last)+'</td>'
-                +'<td>'+(online?'<span class="bg bg-g">متصل</span>':'<span class="bg bg-b">غير متصل</span>')+'</td></tr>';
-        }
-        tbl+='</tbody></table>';
-        document.getElementById('utbl').innerHTML=tbl;
+/* RENDER */
+function renderAll(){
+    var visits=0,msgs=0,uMsgs=0,aMsgs=0,errs=0,uWords=0,aWords=0;
+    var visitors={},arC=0,enC=0,rts=[],devs={};
+    var daily={};
+    for(var i=13;i>=0;i--){var dt=new Date();dt.setDate(dt.getDate()-i);daily[dt.toISOString().split('T')[0]]={v:0,m:0}}
+    var today=new Date().toISOString().split('T')[0];
+
+    for(var j=0;j<allLogs.length;j++){
+        var L=allLogs[j];
+        var vid=L.vid||'?';
+        var day=L.t?new Date(L.t).toISOString().split('T')[0]:'';
+        if(!visitors[vid])visitors[vid]={msgs:0,visits:0,last:0,ua:'',scr:''};
+        if(L.t>visitors[vid].last)visitors[vid].last=L.t;
+        if(L.ua)visitors[vid].ua=L.ua;
+        if(L.scr)visitors[vid].scr=L.scr;
+
+        if(L.type==='visit'){
+            visits++;visitors[vid].visits++;
+            if(day in daily)daily[day].v++;
+        }else if(L.type==='msg'){
+            msgs++;
+            if(L.role==='user'){uMsgs++;uWords+=(L.words||0);visitors[vid].msgs++}
+            else{aMsgs++;aWords+=(L.words||0)}
+            if(L.mlang==='ar')arC++;else if(L.mlang==='en')enC++;
+            if(L.rt)rts.push(L.rt);
+            if(day in daily)daily[day].m++;
+        }else if(L.type==='error'){errs++}
+        var dv=pUA(L.ua);devs[dv]=(devs[dv]||0)+1;
     }
 
-    /* EXPORT */
-    window.exprt=function(){
-        var data={exportDate:new Date().toISOString(),logsCount:logs.length,logs:logs};
-        var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-        var a=document.createElement('a');a.href=URL.createObjectURL(blob);
-        a.download='lord-admin-'+new Date().toISOString().split('T')[0]+'.json';a.click();
-        toast('✓ تم التصدير');
-    };
+    var uCnt=Object.keys(visitors).length;
+    var activeToday=0;
+    for(var vk in visitors){if(new Date(visitors[vk].last).toISOString().split('T')[0]===today)activeToday++}
+    var avgRT=rts.length?Math.round(rts.reduce(function(a,b){return a+b},0)/rts.length):0;
 
-    /* AUTO REFRESH */
-    setInterval(function(){if(db&&sessionStorage.getItem('la')==='1')window.load()},120000);
-})();
+    /* CARDS */
+    var cds=[
+        {l:'الزوار',v:fN(uCnt),e:'👥',c:'b',s:'زائر فريد'},
+        {l:'الزيارات',v:fN(visits),e:'👁️',c:'c',s:'إجمالي مشاهدات'},
+        {l:'نشطون اليوم',v:fN(activeToday),e:'🟢',c:'g',s:'نشطون اليوم'},
+        {l:'الرسائل',v:fN(msgs),e:'💬',c:'b',s:'مستخدم '+fN(uMsgs)+' · ذكاء '+fN(aMsgs)},
+        {l:'الأسئلة',v:fN(uMsgs),e:'❓',c:'o',s:'أسئلة المستخدمين'},
+        {l:'ردود AI',v:fN(aMsgs),e:'🤖',c:'p',s:fN(aWords)+' كلمة'},
+        {l:'الكلمات',v:fN(uWords+aWords),e:'📝',c:'p',s:'مستخدم '+fN(uWords)+' · AI '+fN(aWords)},
+        {l:'الأخطاء',v:fN(errs),e:'⚠️',c:'r',s:errs?'أخطاء':'لا أخطاء ✓'},
+    ];
+    var h='';for(var ci=0;ci<cds.length;ci++){var cc=cds[ci];h+='<div class="cd '+cc.c+'" style="animation-delay:'+(ci*.04)+'s"><div class="cd-h"><span class="cd-l">'+cc.l+'</span><span>'+cc.e+'</span></div><div class="cd-v">'+cc.v+'</div><div class="cd-s">'+cc.s+'</div></div>'}
+    document.getElementById('cards').innerHTML=h;
+
+    /* CHART */
+    var dk=Object.keys(daily),mx=1;
+    for(var x in daily){var tt=daily[x].v+daily[x].m;if(tt>mx)mx=tt}
+    var bh='';for(var bi=0;bi<dk.length;bi++){var bk=dk[bi],bt2=daily[bk].v+daily[bk].m,hh=Math.max(2,(bt2/mx)*110);bh+='<div class="brc"><span class="bv">'+(bt2||'')+'</span><div class="br" style="height:'+hh+'px;transition:height .5s" title="'+bk+'"></div><span class="bl2">'+bk.slice(8)+'</span></div>'}
+    document.getElementById('chart').innerHTML=bh;
+
+    /* FEED */
+    var fh='',rc=allLogs.slice(0,25);
+    if(!rc.length){fh='<div class="em">لا أحداث</div>'}
+    for(var fi=0;fi<rc.length;fi++){var F=rc[fi];var desc=F.type==='visit'?'🔵 زيارة':F.type==='msg'?(F.role==='user'?'🟢 سؤال':'🟣 رد AI')+' ('+fN(F.words||0)+' كلمة)':'🔴 خطأ';fh+='<div class="fi"><span>'+desc+'</span> <small>'+tAgo(F.t)+' · '+(F.vid||'').slice(0,8)+'</small></div>'}
+    document.getElementById('feed').innerHTML=fh;
+
+    /* PERF */
+    document.getElementById('perf').innerHTML='<div class="pr"><span>متوسط الاستجابة</span><span style="color:var(--gn)">'+(avgRT?(avgRT/1000).toFixed(1)+'s':'—')+'</span></div><div class="pr"><span>أسرع</span><span style="color:var(--bl)">'+(rts.length?(Math.min.apply(null,rts)/1000).toFixed(1)+'s':'—')+'</span></div><div class="pr"><span>أبطأ</span><span style="color:var(--or)">'+(rts.length?(Math.max.apply(null,rts)/1000).toFixed(1)+'s':'—')+'</span></div><div class="pr"><span>نسبة النجاح</span><span style="color:var(--gn)">'+(msgs?Math.round(msgs/(msgs+errs)*100)+'%':'—')+'</span></div>';
+
+    /* LANGS */
+    var tL=arC+enC||1;
+    document.getElementById('langs').innerHTML='<div class="pi"><label><span>🇸🇦 عربي</span><b>'+Math.round(arC/tL*100)+'% ('+arC+')</b></label><div class="pt"><div class="pf" style="width:'+Math.round(arC/tL*100)+'%;background:var(--ac)"></div></div></div><div class="pi"><label><span>🇺🇸 إنجليزي</span><b>'+Math.round(enC/tL*100)+'% ('+enC+')</b></label><div class="pt"><div class="pf" style="width:'+Math.round(enC/tL*100)+'%;background:var(--bl)"></div></div></div>';
+
+    /* DEVICES */
+    var da=Object.entries(devs).sort(function(a,b){return b[1]-a[1]});
+    var dT=da.reduce(function(s,e){return s+e[1]},0)||1;
+    var dh='';var cls=['var(--ac)','var(--gn)','var(--bl)','var(--or)','var(--pu)'];
+    for(var di=0;di<da.length;di++){var dp=Math.round(da[di][1]/dT*100);dh+='<div class="pi"><label><span>'+da[di][0]+'</span><b>'+dp+'%</b></label><div class="pt"><div class="pf" style="width:'+dp+'%;background:'+cls[di%5]+'"></div></div></div>'}
+    document.getElementById('devs').innerHTML=dh||'<div class="em">—</div>';
+
+    /* USERS */
+    var va=Object.entries(visitors).sort(function(a,b){return b[1].last-a[1].last});
+    document.getElementById('uc').textContent=va.length+' مستخدم';
+    if(!va.length){document.getElementById('utbl').innerHTML='<div class="em">لا مستخدمون</div>';return}
+    var tb='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>الرسائل</th><th>الزيارات</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
+    for(var ui=0;ui<Math.min(va.length,50);ui++){var uid=va[ui][0],uv=va[ui][1];var on2=Date.now()-uv.last<300000;tb+='<tr><td style="font-family:var(--m);font-size:10px">'+uid.slice(0,12)+'</td><td>'+pUA(uv.ua)+'</td><td style="font-family:var(--m);font-size:10px">'+(uv.scr||'—')+'</td><td><b>'+uv.msgs+'</b></td><td>'+uv.visits+'</td><td style="font-size:10px">'+tAgo(uv.last)+'</td><td><span class="bg '+(on2?'bg-g':'bg-b')+'">'+(on2?'متصل':'غير متصل')+'</span></td></tr>'}
+    tb+='</tbody></table>';
+    document.getElementById('utbl').innerHTML=tb;
+}
+
+/* EXPORT */
+window.doExport=function(){
+    var b=new Blob([JSON.stringify({date:new Date().toISOString(),count:allLogs.length,logs:allLogs},null,2)],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lord-admin-'+today+'.json';a.click();
+};
+
+/* AUTO */
+setInterval(function(){if(db&&sessionStorage.getItem('la')==='1')loadData()},120000);
 </script>
 </body>
 </html>
