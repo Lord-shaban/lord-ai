@@ -51,15 +51,27 @@
 
 <table>
 <tr>
-<td align="center">
-<img src="assets/screenshots/chat-dark.png" alt="Dark Mode" width="100%">
-<br><br>
-<sub><b>🌙 الوضع الداكن</b> — التصميم الافتراضي</sub>
+<td align="center" width="50%">
+<img src="assets/screenshots/01-landing.png" alt="Landing Page - Dark Mode" width="100%">
+<br>
+<sub><b>🌙 الواجهة الرئيسية</b> — الوضع الداكن مع بطاقات الاقتراحات</sub>
 </td>
-<td align="center">
-<img src="assets/screenshots/chat-light.png" alt="Light Mode" width="100%">
-<br><br>
-<sub><b>☀️ الوضع الفاتح</b> — انتقال سلس بالألوان</sub>
+<td align="center" width="50%">
+<img src="assets/screenshots/02-light-mode.png" alt="Landing Page - Light Mode" width="100%">
+<br>
+<sub><b>☀️ الوضع الفاتح</b> — انتقال سلس بين الأوضاع</sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<img src="assets/screenshots/03-code.png" alt="Code Response" width="100%">
+<br>
+<sub><b>💻 عرض الأكواد</b> — Syntax Highlighting مع زر نسخ</sub>
+</td>
+<td align="center" width="50%">
+<img src="assets/screenshots/04-music.png" alt="Music Player" width="100%">
+<br>
+<sub><b>🎵 مشغل الموسيقى</b> — تشغيل مدمج مع التحميل</sub>
 </td>
 </tr>
 </table>
