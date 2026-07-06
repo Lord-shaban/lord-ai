@@ -2,21 +2,18 @@
 
 <br>
 
-<img src="assets/banner.png" alt="LORD AI Banner" width="100%">
+<img src="assets/banner.png" alt="LORD AI" width="100%">
 
 <br><br>
 
-# LORD AI
+<a href="https://lord-ai.pages.dev">
+<img src="https://img.shields.io/badge/🌐_Live_Demo-lord--ai.pages.dev-6366f1?style=for-the-badge&labelColor=09090b" alt="Live Demo" height="32">
+</a>
 
-### 🤖 مساعد ذكاء اصطناعي فائق السرعة بتصميم مستقبلي
-
-<p>
-<a href="https://lord-ai.pages.dev"><img src="https://img.shields.io/badge/🌐_Live_Demo-lord--ai.pages.dev-6366f1?style=for-the-badge&labelColor=09090b" alt="Live Demo"></a>
-</p>
+<br><br>
 
 <p>
 <img src="https://img.shields.io/github/v/release/Lord-shaban/lord-ai?style=flat-square&color=6366f1&labelColor=09090b&label=RELEASE" alt="Release">
-<img src="https://img.shields.io/badge/v2.5-6366f1?style=flat-square&labelColor=09090b&label=VERSION" alt="Version">
 <img src="https://img.shields.io/badge/Live-22c55e?style=flat-square&labelColor=09090b&label=STATUS" alt="Status">
 <img src="https://img.shields.io/badge/Llama_3.3_70B-a855f7?style=flat-square&labelColor=09090b&label=MODEL" alt="Model">
 <img src="https://img.shields.io/badge/Groq_LPU-f59e0b?style=flat-square&labelColor=09090b&label=PROVIDER" alt="Provider">
@@ -26,15 +23,21 @@
 <img src="https://img.shields.io/github/last-commit/Lord-shaban/lord-ai?style=flat-square&color=3b82f6&labelColor=09090b" alt="Last Commit">
 </p>
 
-<p align="center">
-<sub>واجهة دردشة ذكية مبنية من الصفر بتقنيات الويب الأساسية فقط — بدون أي مكتبات أو أطر عمل.</sub>
 <br>
-<sub>مستوحاة من أحدث واجهات ChatGPT و Claude مع هوية بصرية فريدة.</sub>
+
+<h3>مساعد ذكاء اصطناعي فائق السرعة بتصميم مستقبلي ⚡</h3>
+
+<p>
+واجهة دردشة ذكية مبنية من الصفر بتقنيات الويب الأساسية فقط — بدون أي مكتبات أو أطر عمل
+<br>
+مستوحاة من أحدث واجهات ChatGPT و Claude مع هوية بصرية فريدة
 </p>
 
 <br>
 
-[🌐 الموقع المباشر](https://lord-ai.pages.dev) · [🐛 الإبلاغ عن مشكلة](https://github.com/Lord-shaban/lord-ai/issues) · [💡 اقتراح ميزة](https://github.com/Lord-shaban/lord-ai/issues)
+[🌐 الموقع المباشر](https://lord-ai.pages.dev) &nbsp;·&nbsp; [🐛 الإبلاغ عن مشكلة](https://github.com/Lord-shaban/lord-ai/issues) &nbsp;·&nbsp; [💡 اقتراح ميزة](https://github.com/Lord-shaban/lord-ai/issues)
+
+<br>
 
 ---
 
@@ -42,19 +45,30 @@
 
 <br>
 
-## 📸 لقطات الشاشة
+## 📸 &nbsp; لقطات الشاشة
 
 <div align="center">
 
-<img src="assets/screenshots/chat-dark.png" alt="LORD AI Chat Interface - Dark Mode" width="90%">
-
-<sub>واجهة الدردشة في الوضع الداكن — تصميم عصري مستوحى من ChatGPT و Claude</sub>
+<table>
+<tr>
+<td align="center">
+<img src="assets/screenshots/chat-dark.png" alt="Dark Mode" width="100%">
+<br><br>
+<sub><b>🌙 الوضع الداكن</b> — التصميم الافتراضي</sub>
+</td>
+<td align="center">
+<img src="assets/screenshots/chat-light.png" alt="Light Mode" width="100%">
+<br><br>
+<sub><b>☀️ الوضع الفاتح</b> — انتقال سلس بالألوان</sub>
+</td>
+</tr>
+</table>
 
 </div>
 
 <br>
 
-## <img src="https://img.shields.io/badge/01-18181b?style=flat-square" alt="01"> &nbsp; نظرة عامة
+## <img src="https://img.shields.io/badge/01-18181b?style=flat-square"> &nbsp; نظرة عامة
 
 <br>
 
@@ -108,7 +122,7 @@
 
 <br>
 
-## <img src="https://img.shields.io/badge/02-18181b?style=flat-square" alt="02"> &nbsp; المميزات
+## <img src="https://img.shields.io/badge/02-18181b?style=flat-square"> &nbsp; المميزات
 
 <br>
 
@@ -158,7 +172,7 @@
 
 - **لوحة تحكم أدمن** — مراقبة نشاط جميع المستخدمين
 - **تتبع شامل** — زيارات، رسائل، أجهزة، لغات، أداء
-- **رسوم بيانية** — نشاط يومي، توزيع اللغات، الأجهزة
+- **رسوم بيانية تفاعلية** — نشاط يومي، توزيع اللغات، الأجهزة
 - **جدول المستخدمين** — بيانات كل زائر وحالة الاتصال
 - **تصدير البيانات** — تحميل كل التحليلات كـ JSON
 - **Firebase Firestore** — قاعدة بيانات لحظية سحابية
@@ -171,11 +185,11 @@
 #### ⚡ &nbsp; الأداء والتجربة
 
 - **صفر مكتبات خارجية** — كل سطر مكتوب يدوياً
-- **حفظ تلقائي** — جميع المحادثات محفوظة محلياً في المتصفح
+- **حفظ تلقائي** — جميع المحادثات محفوظة في `localStorage`
 - **محادثات متعددة** — إنشاء، تسمية، وإدارة بلا حدود
 - **نسخ فوري** — نسخ الردود والأكواد بضغطة واحدة
 - **اختصارات لوحة المفاتيح** — تنقل وإرسال سريع
-- **Markdown Parser مدمج** — عرض أكواد وقوائم وجداول
+- **Markdown Parser مدمج** — أكواد، قوائم، جداول، روابط
 
 </td>
 <td width="50%" valign="top">
@@ -183,10 +197,10 @@
 #### 🔒 &nbsp; الأمان والخصوصية
 
 - **لا خوادم خلفية** — تطبيق ويب ثابت بالكامل (Static)
-- **تخزين محلي** — المحادثات في `localStorage` فقط
+- **تخزين محلي** — المحادثات في المتصفح فقط
 - **API مباشر** — الاتصال بـ Groq بدون وسيط
 - **بدون تسجيل حسابات** — استخدام فوري بدون بيانات شخصية
-- **كود مفتوح المصدر** — شفافية كاملة
+- **كود مفتوح المصدر** — شفافية كاملة ورخصة MIT
 
 </td>
 </tr>
@@ -194,7 +208,7 @@
 
 <br>
 
-## <img src="https://img.shields.io/badge/03-18181b?style=flat-square" alt="03"> &nbsp; التقنيات
+## <img src="https://img.shields.io/badge/03-18181b?style=flat-square"> &nbsp; التقنيات المستخدمة
 
 <br>
 
@@ -215,90 +229,77 @@
 | التقنية | الدور | التفاصيل |
 |:---:|:---|:---|
 | **HTML5** | الهيكل | بنية دلالية حديثة مع SEO مُحسّن |
-| **CSS3** | التصميم | CSS Variables, Grid, Flexbox, أنيميشن, Dark/Light modes |
-| **JavaScript** | المنطق | Vanilla JS — Fetch API, Streaming, Markdown Parser, Music Engine |
+| **CSS3** | التصميم | CSS Variables, Grid, Flexbox, Animations, Dark/Light |
+| **JavaScript** | المنطق | Vanilla JS — Fetch API, Streaming, Markdown, Music Engine |
 | **Firebase** | البيانات | Firestore لتحليلات المستخدمين في الوقت الحقيقي |
 | **Groq** | الذكاء | Llama 3.3 70B عبر LPU — استجابة بأجزاء من الثانية |
 | **Cloudflare** | الاستضافة | Pages CDN — توزيع عالمي فائق السرعة |
 
 <br>
 
-## <img src="https://img.shields.io/badge/04-18181b?style=flat-square" alt="04"> &nbsp; التشغيل المحلي
+## <img src="https://img.shields.io/badge/04-18181b?style=flat-square"> &nbsp; التشغيل المحلي
 
 <br>
 
-### المتطلبات الأساسية
+### المتطلبات
 
 - متصفح ويب حديث (Chrome, Firefox, Safari, Edge)
-- مفتاح API من [Groq](https://console.groq.com) (مجاني)
+- مفتاح API من [Groq](https://console.groq.com) *(مجاني)*
 - *(اختياري)* مشروع [Firebase](https://console.firebase.google.com) للتحليلات
 
-### خطوات التثبيت
+### التثبيت
 
 ```bash
-# 1. استنساخ المستودع
+# استنساخ المستودع
 git clone https://github.com/Lord-shaban/lord-ai.git
-
-# 2. الدخول إلى المجلد
 cd lord-ai
 
-# 3. تشغيل خادم محلي (اختر أحد الطرق)
+# تشغيل خادم محلي (اختر أي طريقة)
+python -m http.server 8080     # Python
+npx serve .                    # Node.js
+# أو استخدم VS Code Live Server
 
-# الطريقة 1: Python
-python -m http.server 8080
-
-# الطريقة 2: Node.js
-npx serve .
-
-# الطريقة 3: VS Code Live Server Extension
-# فقط اضغط "Go Live" في VS Code
-
-# 4. افتح المتصفح على
-# http://localhost:8080
+# افتح المتصفح
+# → http://localhost:8080
 ```
 
-### إعداد مفتاح API
-
-عدّل ملف `app.js` وضع مفتاح Groq الخاص بك:
+### الإعداد
 
 ```javascript
+// app.js — ضع مفتاح Groq الخاص بك
 var API_KEY = 'gsk_YOUR_API_KEY_HERE';
 ```
 
-### إعداد Firebase (اختياري)
-
-عدّل ملف `firebase-config.js`:
-
 ```javascript
+// firebase-config.js — (اختياري) للتحليلات
 var FIREBASE_CONFIG = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "your-project.firebaseapp.com",
+    apiKey: "YOUR_KEY",
     projectId: "your-project-id",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef"
+    // ...
 };
 ```
 
 <br>
 
-## <img src="https://img.shields.io/badge/05-18181b?style=flat-square" alt="05"> &nbsp; النشر على Cloudflare Pages
+## <img src="https://img.shields.io/badge/05-18181b?style=flat-square"> &nbsp; النشر
 
 <br>
 
-```
-1. ارفع المشروع إلى GitHub
-2. اذهب إلى Cloudflare Dashboard → Pages
-3. اربط مستودع GitHub
-4. اضبط إعدادات البناء:
-   • Build command: (اتركه فارغاً)
-   • Build output directory: /
-5. انشر! 🚀
-```
+<div align="center">
+
+| الخطوة | التفاصيل |
+|:---:|:---|
+| **1** | ارفع المشروع إلى GitHub |
+| **2** | اذهب إلى **Cloudflare Dashboard** → **Pages** |
+| **3** | اربط مستودع GitHub |
+| **4** | Build command: *(اتركه فارغاً)* &nbsp;&nbsp;·&nbsp;&nbsp; Output: `/` |
+| **5** | **انشر!** 🚀 |
+
+</div>
 
 <br>
 
-## <img src="https://img.shields.io/badge/06-18181b?style=flat-square" alt="06"> &nbsp; اختصارات لوحة المفاتيح
+## <img src="https://img.shields.io/badge/06-18181b?style=flat-square"> &nbsp; اختصارات لوحة المفاتيح
 
 <br>
 
@@ -307,16 +308,21 @@ var FIREBASE_CONFIG = {
 | الرمز | الاختصار | الوظيفة |
 |:---:|:---:|:---|
 | ⏎ | `Enter` | إرسال الرسالة |
-| ↵ | `Shift` + `Enter` | سطر جديد بدون إرسال |
-| ✦ | `Ctrl` + `Shift` + `N` | فتح محادثة جديدة |
-| ⌕ | `/` | تركيز حقل الكتابة فوراً |
+| ↵ | `Shift + Enter` | سطر جديد بدون إرسال |
+| ✦ | `Ctrl + Shift + N` | فتح محادثة جديدة |
+| ⌕ | `/` | تركيز حقل الكتابة |
 | ✕ | `Escape` | إغلاق القائمة الجانبية |
 
 </div>
 
 <br>
 
-## <img src="https://img.shields.io/badge/07-18181b?style=flat-square" alt="07"> &nbsp; 🎵 مكتبة الموسيقى
+## <img src="https://img.shields.io/badge/07-18181b?style=flat-square"> &nbsp; 🎵 المكتبة الموسيقية
+
+<br>
+
+<details>
+<summary><b>عرض قائمة الأغاني الـ 18 كاملة</b></summary>
 
 <br>
 
@@ -345,55 +351,63 @@ var FIREBASE_CONFIG = {
 
 </div>
 
+</details>
+
 <br>
 
-## <img src="https://img.shields.io/badge/08-18181b?style=flat-square" alt="08"> &nbsp; البنية
+## <img src="https://img.shields.io/badge/08-18181b?style=flat-square"> &nbsp; بنية المشروع
 
 <br>
 
 ```
 lord-ai/
 │
-├── 📄 index.html              ← الواجهة الرئيسية — الدردشة والتفاعل
-├── 🎨 style.css               ← نظام التصميم — Dark/Light، المتغيرات، الأنيميشن
-├── ⚡ app.js                  ← المحرك — API، Streaming، Markdown، الموسيقى
-├── 🔥 firebase-config.js      ← إعدادات Firebase Firestore
+├── 📄 index.html              ← الواجهة الرئيسية
+├── 🎨 style.css               ← نظام التصميم الكامل
+├── ⚡ app.js                  ← المحرك الأساسي
+├── 🔥 firebase-config.js      ← إعدادات Firebase
+│
 ├── 📁 assets/
-│   ├── 🖼️ banner.png          ← صورة البانر
+│   ├── 🖼️ banner.png          ← بانر المشروع
 │   ├── 📁 screenshots/        ← لقطات الشاشة
-│   └── 🎵 music/              ← ملفات الأغاني (18 ملف MP3)
-├── 🔒 .gitignore              ← ملفات مستثناة من Git
-├── 📜 LICENSE                 ← رخصة MIT
+│   └── 🎵 music/              ← 18 ملف MP3
+│
+├── 📁 .github/
+│   ├── 📁 ISSUE_TEMPLATE/     ← قوالب Issues
+│   └── 📋 PULL_REQUEST_TEMPLATE.md
+│
+├── 📖 README.md               ← أنت هنا ✨
 ├── 📋 CONTRIBUTING.md         ← دليل المساهمة
 ├── 🔄 CHANGELOG.md            ← سجل التغييرات
 ├── 🛡️ SECURITY.md             ← سياسة الأمان
 ├── 🤝 CODE_OF_CONDUCT.md      ← قواعد السلوك
-└── 📖 README.md               ← أنت هنا ✨
+├── 📜 LICENSE                 ← رخصة MIT
+└── 🔒 .gitignore
 ```
 
 <br>
 
-## <img src="https://img.shields.io/badge/09-18181b?style=flat-square" alt="09"> &nbsp; المساهمة
+## <img src="https://img.shields.io/badge/09-18181b?style=flat-square"> &nbsp; المساهمة
 
 <br>
 
 نرحب بجميع المساهمات! اقرأ [دليل المساهمة](CONTRIBUTING.md) للبدء.
 
-```
-1. Fork المشروع
-2. أنشئ فرع جديد: git checkout -b feature/amazing-feature
-3. أضف تغييراتك: git commit -m 'Add amazing feature'
-4. ارفع الفرع: git push origin feature/amazing-feature
-5. افتح Pull Request
+```bash
+# 1. Fork المشروع
+# 2. أنشئ فرع: git checkout -b feature/awesome
+# 3. Commit: git commit -m 'feat: add awesome feature'
+# 4. Push: git push origin feature/awesome
+# 5. افتح Pull Request
 ```
 
 <br>
 
-## <img src="https://img.shields.io/badge/10-18181b?style=flat-square" alt="10"> &nbsp; الرخصة
+## <img src="https://img.shields.io/badge/10-18181b?style=flat-square"> &nbsp; الرخصة
 
 <br>
 
-هذا المشروع مرخص بموجب [رخصة MIT](LICENSE) — يمكنك استخدامه، تعديله، وتوزيعه بحرية.
+هذا المشروع مرخص بموجب **[رخصة MIT](LICENSE)** — يمكنك استخدامه، تعديله، وتوزيعه بحرية.
 
 <br>
 
@@ -403,11 +417,33 @@ lord-ai/
 
 <br>
 
-<img src="https://img.shields.io/badge/LORD_AI-صُنع_بإتقان_⚡-6366f1?style=for-the-badge&labelColor=09090b" alt="LORD AI" height="36">
+### 👨‍💻 المطور
+
+<a href="https://github.com/Lord-shaban">
+<img src="https://avatars.githubusercontent.com/u/189514970?v=4" width="100" height="100" style="border-radius: 50%;" alt="Ahmed Sha'ban">
+</a>
 
 <br><br>
 
-**Built with ❤️ by [Lord Shaban](https://github.com/Lord-shaban)**
+**[Ahmed Sha'ban](https://github.com/Lord-shaban)**
+
+<sub>Software Engineer · Nile University Student · Flutter & Firebase Developer</sub>
+
+<br><br>
+
+<a href="https://github.com/Lord-shaban">
+<img src="https://img.shields.io/badge/GitHub-Lord--shaban-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+</a>
+
+<br><br>
+
+---
+
+<br>
+
+<img src="https://img.shields.io/badge/LORD_AI-صُنع_بإتقان_⚡-6366f1?style=for-the-badge&labelColor=09090b" alt="LORD AI" height="36">
+
+<br><br>
 
 <sub>
 
