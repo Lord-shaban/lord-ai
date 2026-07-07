@@ -122,27 +122,46 @@
         var embedUrl = isGDrive ? 'https://drive.google.com/file/d/' + fileId + '/preview' : '';
         var directUrl = isGDrive ? 'https://drive.google.com/file/d/' + fileId + '/view' : encodeURI(m.file);
 
-        return '<div class="movie-player" id="' + id + '">'
-            + '<div class="mv-header">'
-            +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
-            +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
-            +   '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="فتح في تاب جديد">'
-            +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
-            +     ' فتح'
-            +   '</a>'
-            + '</div>'
-            + '<div class="mv-video-wrap">'
-            + (isGDrive
-                ? '<iframe src="' + embedUrl + '" class="mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>'
-                + '<div class="mv-fallback">'
-                + '<p>لو الفيلم مش شغال اضغط هنا</p>'
-                + '<a href="' + directUrl + '" target="_blank" class="mv-fallback-btn">'
-                + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>'
-                + ' شاهد على Google Drive</a>'
+        if (isGDrive) {
+            return '<div class="movie-player" id="' + id + '">'
+                + '<div class="mv-header">'
+                +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
+                +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
+                +   '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="فتح في تاب جديد">'
+                +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+                +     ' فتح'
+                +   '</a>'
                 + '</div>'
-                : '<video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video>')
-            + '</div>'
-            + '</div>';
+                + '<div class="mv-poster" onclick="LORD.playMovie(\'' + id + '\',\'' + embedUrl + '\')">'
+                +   '<div class="mv-poster-bg"></div>'
+                +   '<div class="mv-play-circle">'
+                +     '<svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><polygon points="9.5 7 16.5 12 9.5 17 9.5 7"/></svg>'
+                +   '</div>'
+                +   '<div class="mv-poster-label">' + esc(m.name) + '</div>'
+                + '</div>'
+                + '<div class="mv-screen" id="' + id + '_screen" style="display:none">'
+                +   '<iframe class="mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>'
+                + '</div>'
+                + '<div class="mv-actions">'
+                +   '<a href="' + directUrl + '" target="_blank" class="mv-fallback-btn">'
+                +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>'
+                +     ' شاهد على Google Drive'
+                +   '</a>'
+                +   '<button class="mv-fullscreen-btn" onclick="LORD.movieFullscreen(\'' + id + '\')">'
+                +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>'
+                +     ' ملء الشاشة'
+                +   '</button>'
+                + '</div>'
+                + '</div>';
+        } else {
+            return '<div class="movie-player" id="' + id + '">'
+                + '<div class="mv-header">'
+                +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
+                +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
+                + '</div>'
+                + '<div class="mv-screen"><video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video></div>'
+                + '</div>';
+        }
     }
 
     var SYSTEM_PROMPT = [
@@ -546,6 +565,38 @@
                 hideDots();
                 handleError(err, c);
             }).then(finishSend);
+        },
+        playMovie: function(id, embedUrl) {
+            var player = document.getElementById(id);
+            if (!player) return;
+            var poster = player.querySelector('.mv-poster');
+            var screen = document.getElementById(id + '_screen');
+            if (poster) poster.style.display = 'none';
+            if (screen) {
+                screen.style.display = 'block';
+                var iframe = screen.querySelector('.mv-iframe');
+                if (iframe && !iframe.src) {
+                    iframe.src = embedUrl;
+                }
+            }
+            scrollBottom();
+        },
+        movieFullscreen: function(id) {
+            var player = document.getElementById(id);
+            if (!player) return;
+            var screen = document.getElementById(id + '_screen');
+            if (!screen || screen.style.display === 'none') {
+                // Trigger play first
+                var poster = player.querySelector('.mv-poster');
+                if (poster) poster.click();
+                screen = document.getElementById(id + '_screen');
+            }
+            var iframe = screen ? screen.querySelector('.mv-iframe') : null;
+            if (iframe) {
+                if (iframe.requestFullscreen) iframe.requestFullscreen();
+                else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+                else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+            }
         },
         sw: function(id) { switchConv(id); },
         del: function(id, e) { e.stopPropagation(); deleteConv(id); }
