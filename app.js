@@ -45,7 +45,8 @@
         { id:'bershama', name:'فيلم برشامة 2026', file:'https://drive.google.com/file/d/1NjYWGRwznc2GOjQunoiUvpj6yz3Jv8Yn/preview', genre:'كوميدي', tags:['برشامة','كوميدي','فيلم','مصري','2026','ضحك','كوميديا'] },
         { id:'elkalam', name:'فيلم الكلام على ايه', file:'https://drive.google.com/file/d/1DbuAGxq30yVBQcm3joo6JlrZu8L-p7sk/preview', genre:'مصري', tags:['الكلام','على ايه','مصري','فيلم'] },
         { id:'colonia', name:'فيلم كولونيا', file:'https://drive.google.com/file/d/1C43XdDmCYH73GhskAKIb-kpcUPB37gx8/preview', genre:'دراما/مصري', tags:['كولونيا','مصري','دراما','فيلم'] },
-        { id:'engabelot', name:'فيلم ان غاب القط', file:'https://drive.google.com/file/d/1tEcGyE0r1pKTVR_WJPra9kEUx642f-BE/preview', genre:'كوميدي/مصري', tags:['ان غاب القط','غاب القط','القط','كوميدي','مصري','فيلم'] }
+        { id:'engabelot', name:'فيلم ان غاب القط', file:'https://drive.google.com/file/d/1tEcGyE0r1pKTVR_WJPra9kEUx642f-BE/preview', genre:'كوميدي/مصري', tags:['ان غاب القط','غاب القط','القط','كوميدي','مصري','فيلم'] },
+        { id:'eyalhabiba', name:'فيلم عيال حبيبة', file:'https://drive.google.com/file/d/1h0pP5S14nuZq5q1hX1nUZrQ9J_Pa7l1C/preview', genre:'كوميدي/رومانسي', tags:['عيال حبيبة','عيال','حبيبة','حمادة هلال','رامز جلال','كوميدي','رومانسي','مصري'] }
     ];
 
     /* ═══════ MUSIC SEARCH ═══════ */
@@ -229,11 +230,12 @@
         '- لا ترسل أغنية تلقائياً إلا إذا طلب المستخدم أغنية/موسيقى.',
         '- عند الإرسال: جملة قصيرة ثم التاج مباشرة. لا فقرات.',
         '',
-        '## مكتبة الأفلام (4 أفلام):',
+        '## مكتبة الأفلام (5 أفلام):',
         '- فيلم برشامة 2026 (كوميدي/مصري)',
         '- فيلم الكلام على ايه (مصري)',
         '- فيلم كولونيا (دراما/مصري)',
         '- فيلم ان غاب القط (كوميدي/مصري)',
+        '- فيلم عيال حبيبة (كوميدي/رومانسي/مصري)',
         '',
         '## قواعد الأفلام (مهمة جداً):',
         '- عند طلب فيلم أو مشاهدة أو تفرج، يجب كتابة التاج هكذا بالضبط:',
