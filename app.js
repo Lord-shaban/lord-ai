@@ -114,16 +114,32 @@
     function moviePlayerHTML(m) {
         var id = 'video_' + Math.random().toString(36).substr(2,9);
         var isGDrive = m.file.indexOf('drive.google.com') !== -1;
-        var viewUrl = isGDrive ? m.file.replace('/preview', '/view?usp=sharing') : encodeURI(m.file);
+        var fileId = '';
+        if (isGDrive) {
+            var match = m.file.match(/\/d\/([^/]+)/);
+            fileId = match ? match[1] : '';
+        }
+        var embedUrl = isGDrive ? 'https://drive.google.com/file/d/' + fileId + '/preview' : '';
+        var directUrl = isGDrive ? 'https://drive.google.com/file/d/' + fileId + '/view' : encodeURI(m.file);
+
         return '<div class="movie-player" id="' + id + '">'
             + '<div class="mv-header">'
-            +   '<div class="mv-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg></div>'
-            +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-genre">' + esc(m.genre) + '</div></div>'
-            +   '<a href="' + viewUrl + '" target="_blank" class="mv-dl" title="فتح في تاب جديد"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>'
+            +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
+            +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
+            +   '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="فتح في تاب جديد">'
+            +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+            +     ' فتح'
+            +   '</a>'
             + '</div>'
             + '<div class="mv-video-wrap">'
             + (isGDrive
-                ? '<iframe src="' + m.file + '" class="mv-video mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>'
+                ? '<iframe src="' + embedUrl + '" class="mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>'
+                + '<div class="mv-fallback">'
+                + '<p>لو الفيلم مش شغال اضغط هنا</p>'
+                + '<a href="' + directUrl + '" target="_blank" class="mv-fallback-btn">'
+                + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>'
+                + ' شاهد على Google Drive</a>'
+                + '</div>'
                 : '<video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video>')
             + '</div>'
             + '</div>';
@@ -198,12 +214,14 @@
         '## مكتبة الأفلام (1 فيلم):',
         '- فيلم برشامة 2026 (كوميدي/مصري)',
         '',
-        '## قواعد الأفلام (صارمة):',
-        '- أرسل فيلم واحد فقط في كل رد.',
-        '- لإرسال فيلم اكتب [MOVIE:الاسم] — مثال: [MOVIE:فيلم برشامة 2026]',
-        '- لا ترسل فيلم تلقائياً إلا إذا طلب المستخدم فيلم/مشاهدة.',
-        '- إذا طلب فيلم غير متوفر، أخبره بالأفلام المتاحة.',
-        '- عند الإرسال: جملة قصيرة ثم التاج مباشرة.'
+        '## قواعد الأفلام (مهمة جداً):',
+        '- عند طلب فيلم أو مشاهدة أو تفرج، يجب كتابة التاج هكذا بالضبط:',
+        '  [MOVIE:فيلم برشامة 2026]',
+        '- هذا التاج إلزامي — بدونه لن يظهر مشغل الفيلم للمستخدم.',
+        '- مثال صحيح: اتفضل شاهد الفيلم [MOVIE:فيلم برشامة 2026]',
+        '- مثال خاطئ: اتفضل فيلم برشامة (بدون التاج)',
+        '- لا ترسل فيلم تلقائياً إلا إذا طلب المستخدم فيلم/مشاهدة/تفرج.',
+        '- إذا طلب فيلم غير متوفر، أخبره بالأفلام المتاحة واعرض عليه فيلم برشامة.'
     ].join('\n');
 
     /* ═══════ STATE ═══════ */
@@ -339,6 +357,16 @@
             movieBlocks.push(found ? moviePlayerHTML(found) : '<p>🎬 ' + esc(name) + ' (غير متوفر)</p>');
             return '%%MOVIE_' + idx + '%%';
         });
+
+        // Auto-detect movie names in plain text (fallback if AI doesn't use tag)
+        for (var mi = 0; mi < MOVIES.length; mi++) {
+            var movieName = MOVIES[mi].name;
+            if (text.indexOf('%%MOVIE_') === -1 && text.indexOf(movieName) !== -1) {
+                var midx = movieBlocks.length;
+                movieBlocks.push(moviePlayerHTML(MOVIES[mi]));
+                text = text.replace(movieName, '%%MOVIE_' + midx + '%%');
+            }
+        }
 
         // Preserve code blocks first
         var codeBlocks = [];
