@@ -1047,6 +1047,27 @@ a:hover{color:var(--green);text-decoration:underline}
     max-height:320px;
     border-radius:0 0 13px 13px;
 }
+.mv-iframe{
+    width:100%;
+    height:0;
+    padding-bottom:56.25%;
+    max-height:none;
+    border:none;
+}
+.mv-video-wrap{
+    position:relative;
+}
+.mv-video-wrap .mv-iframe{
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    padding-bottom:0;
+}
+.mv-video-wrap:has(.mv-iframe){
+    padding-bottom:56.25%;
+    height:0;
+    overflow:hidden;
+}
 [data-theme="dark"] .movie-player{
     background:rgba(255,255,255,.03);
     border-color:rgba(255,255,255,.07);

@@ -42,7 +42,7 @@
 
     /* ═══════ MOVIE CATALOG ═══════ */
     var MOVIES = [
-        { id:'bershama', name:'فيلم برشامة 2026', file:'assets/movie/[HotCima.com].Bershama.2026.1080p.WEB-DL.mp4', genre:'كوميدي', tags:['برشامة','كوميدي','فيلم','مصري','2026','ضحك','كوميديا'] }
+        { id:'bershama', name:'فيلم برشامة 2026', file:'https://drive.google.com/file/d/1NjYWGRwznc2GOjQunoiUvpj6yz3Jv8Yn/preview', genre:'كوميدي', tags:['برشامة','كوميدي','فيلم','مصري','2026','ضحك','كوميديا'] }
     ];
 
     /* ═══════ MUSIC SEARCH ═══════ */
@@ -89,6 +89,7 @@
         return scored.map(function(s) { return s.movie; });
     }
 
+    /* ═══════ MUSIC PLAYER HTML ═══════ */
     function musicPlayerHTML(m) {
         var id = 'audio_' + Math.random().toString(36).substr(2,9);
         var safeUrl = encodeURI(m.file);
@@ -109,17 +110,21 @@
             + '</div>';
     }
 
+    /* ═══════ MOVIE PLAYER HTML ═══════ */
     function moviePlayerHTML(m) {
         var id = 'video_' + Math.random().toString(36).substr(2,9);
-        var safeUrl = encodeURI(m.file);
+        var isGDrive = m.file.indexOf('drive.google.com') !== -1;
+        var viewUrl = isGDrive ? m.file.replace('/preview', '/view?usp=sharing') : encodeURI(m.file);
         return '<div class="movie-player" id="' + id + '">'
             + '<div class="mv-header">'
             +   '<div class="mv-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg></div>'
             +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-genre">' + esc(m.genre) + '</div></div>'
-            +   '<a href="' + safeUrl + '" download class="mv-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            +   '<a href="' + viewUrl + '" target="_blank" class="mv-dl" title="فتح في تاب جديد"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>'
             + '</div>'
             + '<div class="mv-video-wrap">'
-            +   '<video controls preload="metadata" class="mv-video"><source src="' + safeUrl + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video>'
+            + (isGDrive
+                ? '<iframe src="' + m.file + '" class="mv-video mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>'
+                : '<video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video>')
             + '</div>'
             + '</div>';
     }
@@ -447,7 +452,6 @@
             if (!a.duration) return;
             var pct = (a.currentTime / a.duration) * 100;
             bar.style.width = pct + '%';
-            
             var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s%60); return m+':'+(ss<10?'0'+ss:ss); };
             time.textContent = fm(a.currentTime) + ' / ' + fm(a.duration);
         },
@@ -494,16 +498,13 @@
             if (busy) return;
             var c = active();
             if (!c || c.msgs.length < 2) return;
-
             c.msgs.pop();
             saveAll();
             renderChat();
-
             busy = true;
             el.sendBtn.classList.add('none');
             el.stopBtn.classList.remove('none');
             showDots();
-
             callAPI(c.msgs).then(function(res) {
                 hideDots();
                 var aiMsg = { role: 'assistant', content: '' };
@@ -785,7 +786,6 @@
                     } catch(e) {}
                 }
 
-                // Throttle rendering for performance
                 if (changed && !renderTimer) {
                     renderTimer = setTimeout(function() {
                         renderTimer = null;
@@ -920,14 +920,12 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && el.sidebar.classList.contains('open')) closeSB();
             if (e.ctrlKey && e.shiftKey && e.key === 'N') { e.preventDefault(); newConv(); }
-            // Focus input with /
             if (e.key === '/' && document.activeElement !== el.input && !busy) {
                 e.preventDefault();
                 el.input.focus();
             }
         });
 
-        // Auto-resize on window resize
         window.addEventListener('resize', function() { resizeInput(); });
     }
 
