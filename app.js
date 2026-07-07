@@ -19,14 +19,30 @@
         { id:'ansak', name:'Umm Kulthum - Ansak', file:'assets/music/Ansak(short version) - Umm Kulthum انساك (نسخة قصيرة) - ام كلثوم.mp3', artist:'أم كلثوم', genre:'Arabic/Classic', tags:['أم كلثوم','انساك','طرب','كلاسيك','قديم','أسطورة'] },
         { id:'yaelmedan', name:'Cairokee ft Aida - Ya El Medan', file:'assets/music/Cairokee ft Aida El Ayouby Ya El Medan كايروكي و عايده الايوبي.mp3', artist:'كايروكي & عايدة الأيوبي', genre:'Arabic/Rock', tags:['كايروكي','ميدان','ثورة','حماس','روك'] },
         { id:'kifakinta', name:'Fairuz - Kifak Inta', file:'assets/music/Fairuz - Kifak Inta (Lyric Video)  فيروز - كيفك إنت.mp3', artist:'فيروز', genre:'Arabic/Classic', tags:['فيروز','كيفك','لبنان','كلاسيك','صباح','هدوء'] },
-        { id:'ismaini', name:'Isma’ini BiKilmat', file:'assets/music/Isma\'ini BiKilmat.mp3', artist:'فنان عربي', genre:'Arabic', tags:['اسمعيني','كلمة','عربي','حب'] },
+        { id:'ismaini', name:'Isma\'ini BiKilmat', file:'assets/music/Isma\'ini BiKilmat.mp3', artist:'فنان عربي', genre:'Arabic', tags:['اسمعيني','كلمة','عربي','حب'] },
         { id:'kedah', name:'Kedah Kifayah', file:'assets/music/Kedah Kifayah.mp3', artist:'فنان عربي', genre:'Arabic', tags:['كده','كفاية','عربي','حزن'] },
         { id:'fakra', name:'Massar Egbari - Fakra', file:'assets/music/Massar Egbari - Fakra - Exclusive Music Video  2018  مسار اجباري - فاكرة.mp3', artist:'مسار إجباري', genre:'Arabic/Alternative', tags:['مسار اجباري','فاكرة','ذكريات','حنين'] },
         { id:'tayeh', name:'Nabil - Tayeh Fel Amaken', file:'assets/music/Nabil - Tayeh Fel Amaken  نبيل - تايه في الأماكن.mp3', artist:'نبيل', genre:'Arabic/Pop', tags:['نبيل','تايه','أماكن','حزن','وحدة'] },
         { id:'heseeny', name:'TUL8TE - Heseeny', file:'assets/music/TUL8TE - Heseeny I تووليت - حسيني.mp3', artist:'TUL8TE / تووليت', genre:'Arabic/Pop', tags:['تووليت','حسيني','حزن','عربي'] },
         { id:'aynak', name:'Sabah Fakhri - Aynak', file:'assets/music/الفنان صباح فخري  عيناك ما فعلت بنا عيناك - فيديو (1).mp3', artist:'صباح فخري', genre:'Arabic/Classic', tags:['صباح فخري','عيناك','طرب','كلاسيك','سوريا'] },
         { id:'halfalqamar', name:'George Wassouf - Halaf Al Qamar', file:'assets/music/جورج وسوف - حلف القمر.mp3', artist:'جورج وسوف', genre:'Arabic/Classic', tags:['جورج وسوف','حلف','قمر','طرب','كلاسيك','حب'] },
-        { id:'tishreen', name:'Zain Obaid - Shu Bishbahak Tishreen', file:'assets/music/زين عبيد  شو بيشبهك تشرين - مرحلة الصوت وبس  MBCTheVoiceKids.mp3', artist:'زين عبيد', genre:'Arabic', tags:['زين','تشرين','صوت','أطفال','موهبة'] }
+        { id:'tishreen', name:'Zain Obaid - Shu Bishbahak Tishreen', file:'assets/music/زين عبيد  شو بيشبهك تشرين - مرحلة الصوت وبس  MBCTheVoiceKids.mp3', artist:'زين عبيد', genre:'Arabic', tags:['زين','تشرين','صوت','أطفال','موهبة'] },
+        { id:'allo', name:'Balti - Allo', file:'assets/music/Balti - Allo (Official Music Video).mp3', artist:'بلطي', genre:'Rap/Arabic', tags:['بلطي','الو','راب','تونسي','حماس'] },
+        { id:'helwayabaladi', name:'Dalida - Helwa Ya Baladi', file:'assets/music/Dalida - Helwa Ya Baladi  داليدا - حلوه يا بلدى  English Subs.mp3', artist:'داليدا', genre:'Arabic/Classic', tags:['داليدا','حلوة','بلدي','كلاسيك','وطني','مصر'] },
+        { id:'elwaili', name:'EL Waili - El Abd Wel Waili', file:'assets/music/EL Waili ft Yucifer - العبد والوايلى - مع محمود الحسينى.mp3', artist:'الوايلي و محمود الحسيني', genre:'Arabic/Mahraganat', tags:['وايلي','حسيني','مهرجانات','شعبي','حماس'] },
+        { id:'mabalash', name:'Hamaki - Ma Balash', file:'assets/music/Hamaki - Ma Balash  حماقي - ما بلاش.mp3', artist:'محمد حماقي', genre:'Arabic/Pop', tags:['حماقي','ما بلاش','حب','رومانسي','حزن'] },
+        { id:'dariyaalby', name:'Hamza Namira - Dari Ya Alby', file:'assets/music/Hamza Namira - Dari Ya Alby  حمزة نمرة - داري يا قلبي.mp3', artist:'حمزة نمرة', genre:'Arabic/Pop', tags:['حمزة نمرة','داري','قلبي','حب','حزن','رومانسي'] },
+        { id:'billiejean', name:'Michael Jackson - Billie Jean', file:'assets/music/Michael Jackson - Billie Jean (Official Video).mp3', artist:'Michael Jackson', genre:'Pop/Classic', tags:['مايكل جاكسون','billie jean','كلاسيك','رقص','pop','ديسكو'] },
+        { id:'fi3esh2elbanat', name:'Mohamed Mounir - Fi 3esh2 El Banat', file:'assets/music/Mohamed Mounir - Fi 3esh2 El Banat  محمد منير - في عشق البنات.mp3', artist:'محمد منير', genre:'Arabic/Classic', tags:['منير','عشق','بنات','كلاسيك','كينج','رومانسي'] },
+        { id:'kelma', name:'Ramy Sabry - Kelma', file:'assets/music/Ramy Sabry - Kelma  رامي صبري - كلمه.mp3', artist:'رامي صبري', genre:'Arabic/Pop', tags:['رامي صبري','كلمة','حب','رومانسي','حزن'] },
+        { id:'nano', name:'TUL8TE & Saint Levant - Nano', file:'assets/music/TUL8TE, Saint Levant - Nano I تووليت ساينت ليفانت - نانو (Official Music Video).mp3', artist:'TUL8TE & Saint Levant', genre:'Arabic/Pop', tags:['تووليت','ساينت ليفانت','نانو','حب','عربي'] },
+        { id:'mashrebtesh', name:'Sherine - Mashrebtesh Men Nilha', file:'assets/music/شيرين  مشربتش من نيلها.mp3', artist:'شيرين', genre:'Arabic/Pop', tags:['شيرين','مشربتش','نيلها','وطني','مصر','حب'] },
+        { id:'henamsr', name:'Hena Masr - Bank Misr', file:'assets/music/هنا مصر .. هفضل كل مرة اجيلك (غناء محمود العسيلي و بهاء سلطان ) بنك مصر (رمضان 2026).mp3', artist:'العسيلي و بهاء سلطان', genre:'Arabic/Pop', tags:['عسيلي','بهاء سلطان','مصر','وطني','رمضان','بنك مصر'] }
+    ];
+
+    /* ═══════ MOVIE CATALOG ═══════ */
+    var MOVIES = [
+        { id:'bershama', name:'فيلم برشامة 2026', file:'assets/movie/[HotCima.com].Bershama.2026.1080p.WEB-DL.mp4', genre:'كوميدي', tags:['برشامة','كوميدي','فيلم','مصري','2026','ضحك','كوميديا'] }
     ];
 
     /* ═══════ MUSIC SEARCH ═══════ */
@@ -37,24 +53,40 @@
         for (var i = 0; i < MUSIC.length; i++) {
             var m = MUSIC[i];
             var score = 0;
-            // Exact name match = highest
             if (q.indexOf(m.name.toLowerCase()) !== -1) score += 100;
             if (q.indexOf(m.id) !== -1) score += 80;
-            // Artist match
             var artistWords = m.artist.toLowerCase().split(/\s+/);
             for (var a = 0; a < artistWords.length; a++) {
                 if (artistWords[a].length > 2 && q.indexOf(artistWords[a]) !== -1) score += 30;
             }
-            // Tag match
             for (var t = 0; t < m.tags.length; t++) {
                 if (q.indexOf(m.tags[t].toLowerCase()) !== -1) score += 15;
             }
-            // Genre match
             if (q.indexOf(m.genre.toLowerCase().split('/')[0]) !== -1) score += 10;
             if (score > 0) scored.push({ song: m, score: score });
         }
         scored.sort(function(a, b) { return b.score - a.score; });
         return scored.map(function(s) { return s.song; });
+    }
+
+    /* ═══════ MOVIE SEARCH ═══════ */
+    function findMovie(query) {
+        if (!query) return [];
+        var q = query.toLowerCase();
+        var scored = [];
+        for (var i = 0; i < MOVIES.length; i++) {
+            var m = MOVIES[i];
+            var score = 0;
+            if (q.indexOf(m.name.toLowerCase()) !== -1) score += 100;
+            if (q.indexOf(m.id) !== -1) score += 80;
+            for (var t = 0; t < m.tags.length; t++) {
+                if (q.indexOf(m.tags[t].toLowerCase()) !== -1) score += 15;
+            }
+            if (q.indexOf(m.genre.toLowerCase()) !== -1) score += 10;
+            if (score > 0) scored.push({ movie: m, score: score });
+        }
+        scored.sort(function(a, b) { return b.score - a.score; });
+        return scored.map(function(s) { return s.movie; });
     }
 
     function musicPlayerHTML(m) {
@@ -77,6 +109,21 @@
             + '</div>';
     }
 
+    function moviePlayerHTML(m) {
+        var id = 'video_' + Math.random().toString(36).substr(2,9);
+        var safeUrl = encodeURI(m.file);
+        return '<div class="movie-player" id="' + id + '">'
+            + '<div class="mv-header">'
+            +   '<div class="mv-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg></div>'
+            +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-genre">' + esc(m.genre) + '</div></div>'
+            +   '<a href="' + safeUrl + '" download class="mv-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            + '</div>'
+            + '<div class="mv-video-wrap">'
+            +   '<video controls preload="metadata" class="mv-video"><source src="' + safeUrl + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video>'
+            + '</div>'
+            + '</div>';
+    }
+
     var SYSTEM_PROMPT = [
         'أنت LORD AI، مساعد ذكي متقدم.',
         '',
@@ -89,12 +136,13 @@
         '- لا تبدأ بـ "بالتأكيد" أو "بالطبع" أو "بكل سرور" — ادخل في الموضوع.',
         '- عند كتابة أكواد، اكتب كوداً نظيفاً مع تعليقات.',
         '',
-        '## مكتبة الأغاني (18 أغنية):',
+        '## مكتبة الأغاني (29 أغنية):',
         '',
         '### إنجليزي:',
         '- Ed Sheeran - Perfect (رومانسية/حب)',
         '- Justin Bieber - Never Say Never ft. Jaden (تحفيزية/حماس)',
         '- ABBA - The Winner Takes It All (كلاسيك/حزن)',
+        '- Michael Jackson - Billie Jean (كلاسيك/رقص)',
         '',
         '### عربي كلاسيكي:',
         '- Umm Kulthum - Ansak (أم كلثوم - انساك)',
@@ -103,6 +151,8 @@
         '- Sabah Fakhri - Aynak (صباح فخري - عيناك)',
         '- George Wassouf - Halaf Al Qamar (جورج وسوف - حلف القمر)',
         '- Wadih Mrad - Amar Al Zaman (وديع مراد - قمر الزمان)',
+        '- Dalida - Helwa Ya Baladi (داليدا - حلوة يا بلدي)',
+        '- Mohamed Mounir - Fi 3esh2 El Banat (محمد منير - في عشق البنات)',
         '',
         '### عربي حديث:',
         '- Amer Mounib - Gait Ala Bali (عامر منيب - جيت على بالي)',
@@ -111,23 +161,44 @@
         '- Massar Egbari - Fakra (مسار إجباري - فاكرة)',
         '- Nabil - Tayeh Fel Amaken (نبيل - تايه في الأماكن)',
         '- TUL8TE - Heseeny (تووليت - حسيني)',
+        '- TUL8TE & Saint Levant - Nano (تووليت و ساينت ليفانت - نانو)',
         '- Kedah Kifayah (كده كفاية)',
-        '- Isma’ini BiKilmat (اسمعيني بكلمة)',
+        '- Isma\'ini BiKilmat (اسمعيني بكلمة)',
         '- Zain Obaid - Shu Bishbahak Tishreen (زين عبيد - تشرين)',
+        '- Hamaki - Ma Balash (حماقي - ما بلاش)',
+        '- Hamza Namira - Dari Ya Alby (حمزة نمرة - داري يا قلبي)',
+        '- Ramy Sabry - Kelma (رامي صبري - كلمة)',
+        '- Sherine - Mashrebtesh Men Nilha (شيرين - مشربتش من نيلها)',
+        '- Hena Masr - Bank Misr (العسيلي و بهاء سلطان - هنا مصر)',
+        '- Balti - Allo (بلطي - الو)',
+        '- EL Waili - El Abd Wel Waili (الوايلي و الحسيني - مهرجانات)',
         '',
         '## قواعد الأغاني (صارمة):',
         '- أرسل أغنية واحدة فقط في كل رد. ممنوع إرسال أكثر من واحدة.',
         '- لإرسال أغنية اكتب [MUSIC:الاسم] — مثال: [MUSIC:Ed Sheeran - Perfect]',
         '- للأغاني العربية استخدم الاسم الإنجليزي: [MUSIC:Fairuz - Kifak Inta]',
         '- اختر حسب مزاج/طلب المستخدم:',
-        '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali',
-        '  - حماس/تحفيز → Never Say Never أو Ya El Medan',
-        '  - حزن → Winner Takes It All أو Tayeh أو Heseeny',
-        '  - طرب/كلاسيك → Ansak أو Kifak Inta أو Aynak أو Halaf Al Qamar',
-        '  - صباح/هدوء → Kifak Inta',
+        '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali أو Dari Ya Alby أو Kelma',
+        '  - حماس/تحفيز → Never Say Never أو Ya El Medan أو Allo',
+        '  - حزن → Winner Takes It All أو Tayeh أو Heseeny أو Ma Balash',
+        '  - طرب/كلاسيك → Ansak أو Kifak Inta أو Aynak أو Halaf Al Qamar أو Fi 3esh2 El Banat',
+        '  - صباح/هدوء → Kifak Inta أو Helwa Ya Baladi',
+        '  - وطني/مصر → Helwa Ya Baladi أو Mashrebtesh Men Nilha أو Hena Masr',
+        '  - رقص/حفلات → Billie Jean أو El Abd Wel Waili أو Nano',
+        '  - مهرجانات/شعبي → El Abd Wel Waili',
         '- إذا طلب أغنية غير متوفرة، اقترح الأقرب من القائمة (واحدة فقط).',
         '- لا ترسل أغنية تلقائياً إلا إذا طلب المستخدم أغنية/موسيقى.',
-        '- عند الإرسال: جملة قصيرة ثم التاج مباشرة. لا فقرات.'
+        '- عند الإرسال: جملة قصيرة ثم التاج مباشرة. لا فقرات.',
+        '',
+        '## مكتبة الأفلام (1 فيلم):',
+        '- فيلم برشامة 2026 (كوميدي/مصري)',
+        '',
+        '## قواعد الأفلام (صارمة):',
+        '- أرسل فيلم واحد فقط في كل رد.',
+        '- لإرسال فيلم اكتب [MOVIE:الاسم] — مثال: [MOVIE:فيلم برشامة 2026]',
+        '- لا ترسل فيلم تلقائياً إلا إذا طلب المستخدم فيلم/مشاهدة.',
+        '- إذا طلب فيلم غير متوفر، أخبره بالأفلام المتاحة.',
+        '- عند الإرسال: جملة قصيرة ثم التاج مباشرة.'
     ].join('\n');
 
     /* ═══════ STATE ═══════ */
@@ -249,6 +320,21 @@
             return '%%MUSIC_' + idx + '%%';
         });
 
+        // Preserve movie tags
+        var movieBlocks = [];
+        text = text.replace(/\[MOVIE:([^\]]+)\]/g, function(_, name) {
+            var idx = movieBlocks.length;
+            var found = null;
+            for (var i = 0; i < MOVIES.length; i++) {
+                if (MOVIES[i].name.toLowerCase().indexOf(name.trim().toLowerCase()) !== -1
+                    || name.trim().toLowerCase().indexOf(MOVIES[i].name.toLowerCase()) !== -1) {
+                    found = MOVIES[i]; break;
+                }
+            }
+            movieBlocks.push(found ? moviePlayerHTML(found) : '<p>🎬 ' + esc(name) + ' (غير متوفر)</p>');
+            return '%%MOVIE_' + idx + '%%';
+        });
+
         // Preserve code blocks first
         var codeBlocks = [];
         text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(_, lang, code) {
@@ -317,6 +403,11 @@
             text = text.replace('%%MUSIC_' + j + '%%', musicBlocks[j]);
         }
 
+        // Restore movie blocks
+        for (var k = 0; k < movieBlocks.length; k++) {
+            text = text.replace('%%MOVIE_' + k + '%%', movieBlocks[k]);
+        }
+
         return text;
     }
 
@@ -333,7 +424,6 @@
             var a = p.querySelector('audio');
             var btn = p.querySelector('.mp-play');
             if (a.paused) {
-                // Pause all others
                 document.querySelectorAll('.music-player audio').forEach(function(o) {
                     if(o !== a) { 
                         o.pause(); 
@@ -405,12 +495,10 @@
             var c = active();
             if (!c || c.msgs.length < 2) return;
 
-            // Remove last AI message
             c.msgs.pop();
             saveAll();
             renderChat();
 
-            // Resend
             busy = true;
             el.sendBtn.classList.add('none');
             el.stopBtn.classList.remove('none');
@@ -516,10 +604,8 @@
     /* ═══════ AUTO TITLE ═══════ */
     function generateTitle(text) {
         text = text.trim();
-        // Remove markdown formatting for cleaner title
         text = text.replace(/[#*\`>\[\]()]/g, '').trim();
         if (text.length <= 35) return text;
-        // Try to cut at word boundary
         var cut = text.substring(0, 35);
         var lastSpace = cut.lastIndexOf(' ');
         if (lastSpace > 15) cut = cut.substring(0, lastSpace);

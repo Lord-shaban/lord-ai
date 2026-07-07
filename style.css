@@ -978,3 +978,102 @@ a:hover{color:var(--green);text-decoration:underline}
     .mp-artist{font-size:10px}
     .mp-time{font-size:9px}
 }
+
+/* ── MOVIE PLAYER ── */
+.movie-player{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin:12px 0;
+    overflow:hidden;
+    width:100%;
+    max-width:560px;
+    box-sizing:border-box;
+    transition:border-color .2s, box-shadow .2s;
+}
+.movie-player:hover{
+    border-color:var(--c4);
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+.mv-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    background:linear-gradient(135deg, var(--accent-soft), transparent);
+    border-bottom:1px solid var(--line);
+}
+.mv-icon{
+    width:40px;height:40px;
+    background:var(--accent);
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--card);
+    flex-shrink:0;
+}
+[data-theme="dark"] .mv-icon{
+    background:var(--c3);
+    color:var(--bg);
+}
+.mv-info{
+    display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;
+}
+.mv-title{
+    font-size:14px;font-weight:600;color:var(--c1);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    line-height:1.3;
+}
+.mv-genre{
+    font-size:11px;color:var(--c3);line-height:1.3;
+}
+.mv-dl{
+    color:var(--c3);
+    display:flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:8px;
+    flex-shrink:0;
+    transition:all .15s;
+    text-decoration:none;
+}
+.mv-dl:hover{
+    background:var(--accent-soft);color:var(--c1);
+}
+.mv-video-wrap{
+    padding:0;
+    background:#000;
+}
+.mv-video{
+    width:100%;
+    display:block;
+    max-height:320px;
+    border-radius:0 0 13px 13px;
+}
+[data-theme="dark"] .movie-player{
+    background:rgba(255,255,255,.03);
+    border-color:rgba(255,255,255,.07);
+}
+[data-theme="dark"] .movie-player:hover{
+    border-color:rgba(255,255,255,.15);
+    box-shadow:0 4px 20px rgba(0,0,0,.25);
+}
+
+/* Responsive */
+@media(max-width:600px){
+    .movie-player{
+        max-width:100%;
+    }
+    .mv-header{
+        padding:12px 14px;
+        gap:10px;
+    }
+    .mv-icon{
+        width:34px;height:34px;
+    }
+    .mv-icon svg{
+        width:16px;height:16px;
+    }
+    .mv-title{font-size:13px}
+    .mv-genre{font-size:10px}
+    .mv-video{
+        max-height:220px;
+    }
+}
