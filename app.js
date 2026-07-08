@@ -1365,13 +1365,13 @@
     function init() {
         cacheDom();
         initTheme();
-        initPlaylist();
         initFirebase();
         loadConvs();
         trackPageView();
         renderList();
         renderChat();
         bind();
+        initPlaylist();
         updateSend();
         setTimeout(function() { if (el.input) el.input.focus(); }, 200);
     }
