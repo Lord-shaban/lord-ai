@@ -1307,9 +1307,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + API_KEY,
-                'HTTP-Referer': 'https://lord-ai.pages.dev/',
-                'X-Title': 'LORD AI'
+                'Authorization': 'Bearer ' + API_KEY
             },
             signal: ctrl.signal,
             body: JSON.stringify({
