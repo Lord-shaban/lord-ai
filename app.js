@@ -1,103 +1,103 @@
 /* LORD AI — Advanced Application Logic v2.0 */
-(function() {
+(function () {
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'gsk_' + 'RnTpYxPUgZfs' + 'bEGFi92KWGdyb3F' + 'YctwLDBKkKTCq2yvNPg80o1cV';
+    var API_KEY = 'gsk_' + '3o3F14h9BsR2aTMdRhHIWG' + 'dyb3FY2FL4tA6jf' + '7XRVfkuJFH1tuRZ';
     var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
     var MODEL = 'llama-3.3-70b-versatile';
 
     /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
-        { id:'perfect', name:'Ed Sheeran - Perfect', file:'assets/music/Ed Sheeran - Perfect (Official Music Video).mp3', artist:'Ed Sheeran', genre:'Pop/Romance', tags:['romance','love','wedding','حب','رومانسي','زواج','عرس'] },
-        { id:'neversayno', name:'Justin Bieber - Never Say Never ft. Jaden', file:'assets/music/Justin Bieber - Never Say Never ft. Jaden.mp3', artist:'Justin Bieber & Jaden Smith', genre:'Pop/Motivational', tags:['motivation','never give up','تحفيز','حماس','قوة','إرادة'] },
-        { id:'amarzaman', name:'Wadih Mrad - Amar Al Zaman', file:'assets/music/Wadih Mrad - Amar Al Zaman  وديع مراد - قمر الزمان.mp3', artist:'وديع مراد', genre:'Arabic/Classic', tags:['وديع','قمر','زمان','كلاسيك','قديم','طرب'] },
-        { id:'winnertakes', name:'ABBA - The Winner Takes It All', file:'assets/music/ABBA - The Winner Takes It All.mp3', artist:'ABBA', genre:'Pop/Classic', tags:['winner','abba','classic','كلاسيك','فوز','حزن','breakup'] },
-        { id:'awelmara', name:'Abdel Halim Hafez - Awel Mara', file:'assets/music/Abdel Halim Hafez - Awel Mara  عبد الحليم حافظ - أول مره تحب ياقلبى.mp3', artist:'عبد الحليم حافظ', genre:'Arabic/Classic', tags:['حليم','أول مرة','حب','طرب','كلاسيك','قلب'] },
-        { id:'enkontghaly', name:'Aida El Ayoubi - En Kont Ghaly', file:'assets/music/Aida El Ayoubi - En Kont Ghaly  عايدة الأيوبي - إن كنت غالى.mp3', artist:'عايدة الأيوبي', genre:'Arabic', tags:['عايدة','غالي','حب','عربي'] },
-        { id:'gitalabali', name:'Amer Mounib - Gait Ala Bali', file:'assets/music/Amer Mounib - Gait Ala Bali  عامر منيب - جيت على بالي.mp3', artist:'عامر منيب', genre:'Arabic/Pop', tags:['عامر منيب','جيت','بالي','حب','رومانسي','هادي'] },
-        { id:'ansak', name:'Umm Kulthum - Ansak', file:'assets/music/Ansak(short version) - Umm Kulthum انساك (نسخة قصيرة) - ام كلثوم.mp3', artist:'أم كلثوم', genre:'Arabic/Classic', tags:['أم كلثوم','انساك','طرب','كلاسيك','قديم','أسطورة'] },
-        { id:'yaelmedan', name:'Cairokee ft Aida - Ya El Medan', file:'assets/music/Cairokee ft Aida El Ayouby Ya El Medan كايروكي و عايده الايوبي.mp3', artist:'كايروكي & عايدة الأيوبي', genre:'Arabic/Rock', tags:['كايروكي','ميدان','ثورة','حماس','روك'] },
-        { id:'kifakinta', name:'Fairuz - Kifak Inta', file:'assets/music/Fairuz - Kifak Inta (Lyric Video)  فيروز - كيفك إنت.mp3', artist:'فيروز', genre:'Arabic/Classic', tags:['فيروز','كيفك','لبنان','كلاسيك','صباح','هدوء'] },
-        { id:'ismaini', name:'Isma\'ini BiKilmat', file:'assets/music/Isma\'ini BiKilmat.mp3', artist:'فنان عربي', genre:'Arabic', tags:['اسمعيني','كلمة','عربي','حب'] },
-        { id:'kedah', name:'Kedah Kifayah', file:'assets/music/Kedah Kifayah.mp3', artist:'فنان عربي', genre:'Arabic', tags:['كده','كفاية','عربي','حزن'] },
-        { id:'fakra', name:'Massar Egbari - Fakra', file:'assets/music/Massar Egbari - Fakra - Exclusive Music Video  2018  مسار اجباري - فاكرة.mp3', artist:'مسار إجباري', genre:'Arabic/Alternative', tags:['مسار اجباري','فاكرة','ذكريات','حنين'] },
-        { id:'tayeh', name:'Nabil - Tayeh Fel Amaken', file:'assets/music/Nabil - Tayeh Fel Amaken  نبيل - تايه في الأماكن.mp3', artist:'نبيل', genre:'Arabic/Pop', tags:['نبيل','تايه','أماكن','حزن','وحدة'] },
-        { id:'heseeny', name:'TUL8TE - Heseeny', file:'assets/music/TUL8TE - Heseeny I تووليت - حسيني.mp3', artist:'TUL8TE / تووليت', genre:'Arabic/Pop', tags:['تووليت','حسيني','حزن','عربي'] },
-        { id:'aynak', name:'Sabah Fakhri - Aynak', file:'assets/music/الفنان صباح فخري  عيناك ما فعلت بنا عيناك - فيديو (1).mp3', artist:'صباح فخري', genre:'Arabic/Classic', tags:['صباح فخري','عيناك','طرب','كلاسيك','سوريا'] },
-        { id:'halfalqamar', name:'George Wassouf - Halaf Al Qamar', file:'assets/music/جورج وسوف - حلف القمر.mp3', artist:'جورج وسوف', genre:'Arabic/Classic', tags:['جورج وسوف','حلف','قمر','طرب','كلاسيك','حب'] },
-        { id:'tishreen', name:'Zain Obaid - Shu Bishbahak Tishreen', file:'assets/music/زين عبيد  شو بيشبهك تشرين - مرحلة الصوت وبس  MBCTheVoiceKids.mp3', artist:'زين عبيد', genre:'Arabic', tags:['زين','تشرين','صوت','أطفال','موهبة'] },
-        { id:'allo', name:'Balti - Allo', file:'assets/music/Balti - Allo (Official Music Video).mp3', artist:'بلطي', genre:'Rap/Arabic', tags:['بلطي','الو','راب','تونسي','حماس'] },
-        { id:'helwayabaladi', name:'Dalida - Helwa Ya Baladi', file:'assets/music/Dalida - Helwa Ya Baladi  داليدا - حلوه يا بلدى  English Subs.mp3', artist:'داليدا', genre:'Arabic/Classic', tags:['داليدا','حلوة','بلدي','كلاسيك','وطني','مصر'] },
-        { id:'elwaili', name:'EL Waili - El Abd Wel Waili', file:'assets/music/EL Waili ft Yucifer - العبد والوايلى - مع محمود الحسينى.mp3', artist:'الوايلي و محمود الحسيني', genre:'Arabic/Mahraganat', tags:['وايلي','حسيني','مهرجانات','شعبي','حماس'] },
-        { id:'mabalash', name:'Hamaki - Ma Balash', file:'assets/music/Hamaki - Ma Balash  حماقي - ما بلاش.mp3', artist:'محمد حماقي', genre:'Arabic/Pop', tags:['حماقي','ما بلاش','حب','رومانسي','حزن'] },
-        { id:'dariyaalby', name:'Hamza Namira - Dari Ya Alby', file:'assets/music/Hamza Namira - Dari Ya Alby  حمزة نمرة - داري يا قلبي.mp3', artist:'حمزة نمرة', genre:'Arabic/Pop', tags:['حمزة نمرة','داري','قلبي','حب','حزن','رومانسي'] },
-        { id:'billiejean', name:'Michael Jackson - Billie Jean', file:'assets/music/Michael Jackson - Billie Jean (Official Video).mp3', artist:'Michael Jackson', genre:'Pop/Classic', tags:['مايكل جاكسون','billie jean','كلاسيك','رقص','pop','ديسكو'] },
-        { id:'fi3esh2elbanat', name:'Mohamed Mounir - Fi 3esh2 El Banat', file:'assets/music/Mohamed Mounir - Fi 3esh2 El Banat  محمد منير - في عشق البنات.mp3', artist:'محمد منير', genre:'Arabic/Classic', tags:['منير','عشق','بنات','كلاسيك','كينج','رومانسي'] },
-        { id:'kelma', name:'Ramy Sabry - Kelma', file:'assets/music/Ramy Sabry - Kelma  رامي صبري - كلمه.mp3', artist:'رامي صبري', genre:'Arabic/Pop', tags:['رامي صبري','كلمة','حب','رومانسي','حزن'] },
-        { id:'nano', name:'TUL8TE & Saint Levant - Nano', file:'assets/music/TUL8TE, Saint Levant - Nano I تووليت ساينت ليفانت - نانو (Official Music Video).mp3', artist:'TUL8TE & Saint Levant', genre:'Arabic/Pop', tags:['تووليت','ساينت ليفانت','نانو','حب','عربي'] },
-        { id:'mashrebtesh', name:'Sherine - Mashrebtesh Men Nilha', file:'assets/music/شيرين  مشربتش من نيلها.mp3', artist:'شيرين', genre:'Arabic/Pop', tags:['شيرين','مشربتش','نيلها','وطني','مصر','حب'] },
-        { id:'henamsr', name:'Hena Masr - Bank Misr', file:'assets/music/هنا مصر .. هفضل كل مرة اجيلك (غناء محمود العسيلي و بهاء سلطان ) بنك مصر (رمضان 2026).mp3', artist:'العسيلي و بهاء سلطان', genre:'Arabic/Pop', tags:['عسيلي','بهاء سلطان','مصر','وطني','رمضان','بنك مصر'] }
+        { id: 'perfect', name: 'Ed Sheeran - Perfect', file: 'assets/music/Ed Sheeran - Perfect (Official Music Video).mp3', artist: 'Ed Sheeran', genre: 'Pop/Romance', tags: ['romance', 'love', 'wedding', 'حب', 'رومانسي', 'زواج', 'عرس'] },
+        { id: 'neversayno', name: 'Justin Bieber - Never Say Never ft. Jaden', file: 'assets/music/Justin Bieber - Never Say Never ft. Jaden.mp3', artist: 'Justin Bieber & Jaden Smith', genre: 'Pop/Motivational', tags: ['motivation', 'never give up', 'تحفيز', 'حماس', 'قوة', 'إرادة'] },
+        { id: 'amarzaman', name: 'Wadih Mrad - Amar Al Zaman', file: 'assets/music/Wadih Mrad - Amar Al Zaman  وديع مراد - قمر الزمان.mp3', artist: 'وديع مراد', genre: 'Arabic/Classic', tags: ['وديع', 'قمر', 'زمان', 'كلاسيك', 'قديم', 'طرب'] },
+        { id: 'winnertakes', name: 'ABBA - The Winner Takes It All', file: 'assets/music/ABBA - The Winner Takes It All.mp3', artist: 'ABBA', genre: 'Pop/Classic', tags: ['winner', 'abba', 'classic', 'كلاسيك', 'فوز', 'حزن', 'breakup'] },
+        { id: 'awelmara', name: 'Abdel Halim Hafez - Awel Mara', file: 'assets/music/Abdel Halim Hafez - Awel Mara  عبد الحليم حافظ - أول مره تحب ياقلبى.mp3', artist: 'عبد الحليم حافظ', genre: 'Arabic/Classic', tags: ['حليم', 'أول مرة', 'حب', 'طرب', 'كلاسيك', 'قلب'] },
+        { id: 'enkontghaly', name: 'Aida El Ayoubi - En Kont Ghaly', file: 'assets/music/Aida El Ayoubi - En Kont Ghaly  عايدة الأيوبي - إن كنت غالى.mp3', artist: 'عايدة الأيوبي', genre: 'Arabic', tags: ['عايدة', 'غالي', 'حب', 'عربي'] },
+        { id: 'gitalabali', name: 'Amer Mounib - Gait Ala Bali', file: 'assets/music/Amer Mounib - Gait Ala Bali  عامر منيب - جيت على بالي.mp3', artist: 'عامر منيب', genre: 'Arabic/Pop', tags: ['عامر منيب', 'جيت', 'بالي', 'حب', 'رومانسي', 'هادي'] },
+        { id: 'ansak', name: 'Umm Kulthum - Ansak', file: 'assets/music/Ansak(short version) - Umm Kulthum انساك (نسخة قصيرة) - ام كلثوم.mp3', artist: 'أم كلثوم', genre: 'Arabic/Classic', tags: ['أم كلثوم', 'انساك', 'طرب', 'كلاسيك', 'قديم', 'أسطورة'] },
+        { id: 'yaelmedan', name: 'Cairokee ft Aida - Ya El Medan', file: 'assets/music/Cairokee ft Aida El Ayouby Ya El Medan كايروكي و عايده الايوبي.mp3', artist: 'كايروكي & عايدة الأيوبي', genre: 'Arabic/Rock', tags: ['كايروكي', 'ميدان', 'ثورة', 'حماس', 'روك'] },
+        { id: 'kifakinta', name: 'Fairuz - Kifak Inta', file: 'assets/music/Fairuz - Kifak Inta (Lyric Video)  فيروز - كيفك إنت.mp3', artist: 'فيروز', genre: 'Arabic/Classic', tags: ['فيروز', 'كيفك', 'لبنان', 'كلاسيك', 'صباح', 'هدوء'] },
+        { id: 'ismaini', name: 'Isma\'ini BiKilmat', file: 'assets/music/Isma\'ini BiKilmat.mp3', artist: 'فنان عربي', genre: 'Arabic', tags: ['اسمعيني', 'كلمة', 'عربي', 'حب'] },
+        { id: 'kedah', name: 'Kedah Kifayah', file: 'assets/music/Kedah Kifayah.mp3', artist: 'فنان عربي', genre: 'Arabic', tags: ['كده', 'كفاية', 'عربي', 'حزن'] },
+        { id: 'fakra', name: 'Massar Egbari - Fakra', file: 'assets/music/Massar Egbari - Fakra - Exclusive Music Video  2018  مسار اجباري - فاكرة.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'فاكرة', 'ذكريات', 'حنين'] },
+        { id: 'tayeh', name: 'Nabil - Tayeh Fel Amaken', file: 'assets/music/Nabil - Tayeh Fel Amaken  نبيل - تايه في الأماكن.mp3', artist: 'نبيل', genre: 'Arabic/Pop', tags: ['نبيل', 'تايه', 'أماكن', 'حزن', 'وحدة'] },
+        { id: 'heseeny', name: 'TUL8TE - Heseeny', file: 'assets/music/TUL8TE - Heseeny I تووليت - حسيني.mp3', artist: 'TUL8TE / تووليت', genre: 'Arabic/Pop', tags: ['تووليت', 'حسيني', 'حزن', 'عربي'] },
+        { id: 'aynak', name: 'Sabah Fakhri - Aynak', file: 'assets/music/الفنان صباح فخري  عيناك ما فعلت بنا عيناك - فيديو (1).mp3', artist: 'صباح فخري', genre: 'Arabic/Classic', tags: ['صباح فخري', 'عيناك', 'طرب', 'كلاسيك', 'سوريا'] },
+        { id: 'halfalqamar', name: 'George Wassouf - Halaf Al Qamar', file: 'assets/music/جورج وسوف - حلف القمر.mp3', artist: 'جورج وسوف', genre: 'Arabic/Classic', tags: ['جورج وسوف', 'حلف', 'قمر', 'طرب', 'كلاسيك', 'حب'] },
+        { id: 'tishreen', name: 'Zain Obaid - Shu Bishbahak Tishreen', file: 'assets/music/زين عبيد  شو بيشبهك تشرين - مرحلة الصوت وبس  MBCTheVoiceKids.mp3', artist: 'زين عبيد', genre: 'Arabic', tags: ['زين', 'تشرين', 'صوت', 'أطفال', 'موهبة'] },
+        { id: 'allo', name: 'Balti - Allo', file: 'assets/music/Balti - Allo (Official Music Video).mp3', artist: 'بلطي', genre: 'Rap/Arabic', tags: ['بلطي', 'الو', 'راب', 'تونسي', 'حماس'] },
+        { id: 'helwayabaladi', name: 'Dalida - Helwa Ya Baladi', file: 'assets/music/Dalida - Helwa Ya Baladi  داليدا - حلوه يا بلدى  English Subs.mp3', artist: 'داليدا', genre: 'Arabic/Classic', tags: ['داليدا', 'حلوة', 'بلدي', 'كلاسيك', 'وطني', 'مصر'] },
+        { id: 'elwaili', name: 'EL Waili - El Abd Wel Waili', file: 'assets/music/EL Waili ft Yucifer - العبد والوايلى - مع محمود الحسينى.mp3', artist: 'الوايلي و محمود الحسيني', genre: 'Arabic/Mahraganat', tags: ['وايلي', 'حسيني', 'مهرجانات', 'شعبي', 'حماس'] },
+        { id: 'mabalash', name: 'Hamaki - Ma Balash', file: 'assets/music/Hamaki - Ma Balash  حماقي - ما بلاش.mp3', artist: 'محمد حماقي', genre: 'Arabic/Pop', tags: ['حماقي', 'ما بلاش', 'حب', 'رومانسي', 'حزن'] },
+        { id: 'dariyaalby', name: 'Hamza Namira - Dari Ya Alby', file: 'assets/music/Hamza Namira - Dari Ya Alby  حمزة نمرة - داري يا قلبي.mp3', artist: 'حمزة نمرة', genre: 'Arabic/Pop', tags: ['حمزة نمرة', 'داري', 'قلبي', 'حب', 'حزن', 'رومانسي'] },
+        { id: 'billiejean', name: 'Michael Jackson - Billie Jean', file: 'assets/music/Michael Jackson - Billie Jean (Official Video).mp3', artist: 'Michael Jackson', genre: 'Pop/Classic', tags: ['مايكل جاكسون', 'billie jean', 'كلاسيك', 'رقص', 'pop', 'ديسكو'] },
+        { id: 'fi3esh2elbanat', name: 'Mohamed Mounir - Fi 3esh2 El Banat', file: 'assets/music/Mohamed Mounir - Fi 3esh2 El Banat  محمد منير - في عشق البنات.mp3', artist: 'محمد منير', genre: 'Arabic/Classic', tags: ['منير', 'عشق', 'بنات', 'كلاسيك', 'كينج', 'رومانسي'] },
+        { id: 'kelma', name: 'Ramy Sabry - Kelma', file: 'assets/music/Ramy Sabry - Kelma  رامي صبري - كلمه.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'كلمة', 'حب', 'رومانسي', 'حزن'] },
+        { id: 'nano', name: 'TUL8TE & Saint Levant - Nano', file: 'assets/music/TUL8TE, Saint Levant - Nano I تووليت ساينت ليفانت - نانو (Official Music Video).mp3', artist: 'TUL8TE & Saint Levant', genre: 'Arabic/Pop', tags: ['تووليت', 'ساينت ليفانت', 'نانو', 'حب', 'عربي'] },
+        { id: 'mashrebtesh', name: 'Sherine - Mashrebtesh Men Nilha', file: 'assets/music/شيرين  مشربتش من نيلها.mp3', artist: 'شيرين', genre: 'Arabic/Pop', tags: ['شيرين', 'مشربتش', 'نيلها', 'وطني', 'مصر', 'حب'] },
+        { id: 'henamsr', name: 'Hena Masr - Bank Misr', file: 'assets/music/هنا مصر .. هفضل كل مرة اجيلك (غناء محمود العسيلي و بهاء سلطان ) بنك مصر (رمضان 2026).mp3', artist: 'العسيلي و بهاء سلطان', genre: 'Arabic/Pop', tags: ['عسيلي', 'بهاء سلطان', 'مصر', 'وطني', 'رمضان', 'بنك مصر'] }
     ];
 
     /* ═══════ MOVIE CATALOG ═══════ */
     var MOVIES = [
-        { id:'bershama', name:'فيلم برشامة 2026', file:'https://drive.google.com/file/d/1NjYWGRwznc2GOjQunoiUvpj6yz3Jv8Yn/preview', genre:'كوميدي', tags:['برشامة','كوميدي','فيلم','مصري','2026','ضحك','كوميديا'] },
-        { id:'elkalam', name:'فيلم الكلام على ايه', file:'https://drive.google.com/file/d/1DbuAGxq30yVBQcm3joo6JlrZu8L-p7sk/preview', genre:'مصري', tags:['الكلام','على ايه','مصري','فيلم'] },
-        { id:'colonia', name:'فيلم كولونيا', file:'https://drive.google.com/file/d/1C43XdDmCYH73GhskAKIb-kpcUPB37gx8/preview', genre:'دراما/مصري', tags:['كولونيا','مصري','دراما','فيلم'] },
-        { id:'engabelot', name:'فيلم ان غاب القط', file:'https://drive.google.com/file/d/1tEcGyE0r1pKTVR_WJPra9kEUx642f-BE/preview', genre:'كوميدي/مصري', tags:['ان غاب القط','غاب القط','القط','كوميدي','مصري','فيلم'] },
-        { id:'eyalhabiba', name:'فيلم عيال حبيبة', file:'https://drive.google.com/file/d/1h0pP5S14nuZq5q1hX1nUZrQ9J_Pa7l1C/preview', genre:'كوميدي/رومانسي', tags:['عيال حبيبة','عيال','حبيبة','حمادة هلال','رامز جلال','كوميدي','رومانسي','مصري'] },
-        { id:'afwahwaraneb', name:'فيلم افواه وارانب', file:'https://youtu.be/qN6eEPZPEF8', genre:'دراما/مصري', tags:['افواه وارانب','افواه','ارانب','فاتن حمامة','دراما','مصري','فيلم','كلاسيك'] },
-        { id:'anesamami', name:'فيلم الانسة مامي', file:'https://youtu.be/ZO4TuiBs08I', genre:'كوميدي/مصري', tags:['الانسة مامي','ياسمين عبدالعزيز','كوميدي','مصري'] },
-        { id:'helmomr', name:'فيلم حلم العمر', file:'https://youtu.be/JZi5sLV17rA', genre:'أكشن/دراما/مصري', tags:['حلم العمر','حمادة هلال','ملاكمة','أكشن','دراما','مصري'] },
-        { id:'asaleswed', name:'فيلم عسل اسود', file:'https://youtu.be/Bhdp9B0GbV8', genre:'كوميدي/دراما/مصري', tags:['عسل اسود','أحمد حلمي','كوميدي','دراما','مصري'] },
-        { id:'erhabkabab', name:'فيلم الارهاب والكباب', file:'https://youtu.be/wRfnxwd8hZY', genre:'كوميدي/مصري/كلاسيك', tags:['الارهاب والكباب','عادل امام','كوميدي','مصري','كلاسيك'] },
-        { id:'antrshadad', name:'فيلم عنتر ابن شداد', file:'https://youtu.be/fEppFPmeagI', genre:'تاريخي/مصري/كلاسيك', tags:['عنتر ابن شداد','فريد شوقي','تاريخي','مصري','كلاسيك'] },
-        { id:'ahlamomrena', name:'فيلم احلام عمرنا', file:'https://youtu.be/wDbxK4qulYA', genre:'رومانسي/دراما/مصري', tags:['احلام عمرنا','منى زكي','مصطفى شعبان','رومانسي','دراما','مصري'] },
-        { id:'lakhmetras', name:'فيلم لخمة راس', file:'https://youtu.be/80mAtao1yCA', genre:'كوميدي/مصري', tags:['لخمة راس','احمد رزق','سعد الصغير','كوميدي','مصري'] },
-        { id:'moshmohandes', name:'فيلم المش مهندس حسن', file:'https://youtu.be/p8oK5kU-aIA', genre:'كوميدي/مصري', tags:['المش مهندس حسن','محمد رجب','كوميدي','مصري'] },
-        { id:'code36', name:'فيلم كود 36', file:'https://youtu.be/A1JHtzMq3zI', genre:'أكشن/مصري', tags:['كود 36','مصطفى شعبان','أكشن','مصري'] },
-        { id:'ebnhamido', name:'فيلم ابن حميدو', file:'https://youtu.be/43tzuCsmkhI', genre:'كوميدي/مصري/كلاسيك', tags:['ابن حميدو','اسماعيل يس','كوميدي','مصري','كلاسيك'] },
-        { id:'sertaqia', name:'فيلم سر طاقية الاخفاء', file:'https://youtu.be/K1QcSIvxsJI', genre:'كوميدي/مصري/كلاسيك', tags:['سر طاقية الاخفاء','طاقية الاخفاء','كوميدي','مصري','كلاسيك'] },
-        { id:'ismaillosy', name:'فيلم اسماعيل يس في الاسطول', file:'https://youtu.be/rGecNvI-4-Y', genre:'كوميدي/مصري/كلاسيك', tags:['اسماعيل يس في الاسطول','اسماعيل يس','كوميدي','مصري','كلاسيك'] },
-        { id:'katebetedam', name:'فيلم كتيبة الاعدام', file:'https://youtu.be/lhBSOeEPcMU', genre:'أكشن/دراما/مصري/كلاسيك', tags:['كتيبة الاعدام','نور الشريف','أكشن','دراما','مصري','كلاسيك'] },
-        { id:'afaret', name:'فيلم العفاريت', file:'https://youtu.be/hesFbe-G1f4', genre:'دراما/مصري/كلاسيك', tags:['العفاريت','عمرو دياب','مديحة كامل','دراما','مصري','كلاسيك'] },
-        { id:'babwazir', name:'فيلم على باب الوزير', file:'https://youtu.be/LxXeytw5IUc', genre:'كوميدي/مصري/كلاسيك', tags:['على باب الوزير','عادل امام','كوميدي','مصري','كلاسيك'] },
-        { id:'rosasa', name:'فيلم الرصاصة لا تزال في جيبي', file:'https://youtu.be/ytFbourO1Pw', genre:'حربي/تاريخي/مصري', tags:['الرصاصة لا تزال في جيبي','حرب اكتوبر','تاريخي','مصري'] },
-        { id:'waeslama', name:'فيلم وا اسلاماه', file:'https://youtu.be/aBBlNtUHrEk', genre:'تاريخي/مصري/كلاسيك', tags:['وا اسلاماه','تاريخي','مصري','كلاسيك'] },
-        { id:'moled', name:'فيلم المولد', file:'https://youtu.be/5VAhJzgtQA4', genre:'أكشن/دراما/مصري/كلاسيك', tags:['المولد','عادل امام','أكشن','دراما','مصري','كلاسيك'] },
-        { id:'eshaet7ob', name:'فيلم اشاعة حب', file:'https://youtu.be/_PjWqLuI-TQ', genre:'كوميدي/مصري/كلاسيك', tags:['اشاعة حب','عمر الشريف','سعاد حسني','كوميدي','مصري','كلاسيك'] },
-        { id:'aqwaregal', name:'فيلم اقوى الرجال', file:'https://youtu.be/Cp8L5bNk5NQ', genre:'أكشن/دراما/مصري', tags:['اقوى الرجال','نور الشريف','أكشن','دراما','مصري'] },
-        { id:'zawga13', name:'فيلم الزوجة 13', file:'https://youtu.be/ynMUxO7yY6s', genre:'كوميدي/مصري/كلاسيك', tags:['الزوجة 13','شادية','رشدي اباظة','كوميدي','مصري','كلاسيك'] },
-        { id:'maazoon', name:'فيلم البعض لا يذهب للمأذون مرتين', file:'https://youtu.be/2VJCN3aCKeg', genre:'كوميدي/مصري/كلاسيك', tags:['البعض لا يذهب للمأذون مرتين','عادل امام','كوميدي','مصري','كلاسيك'] },
-        { id:'mashbooh', name:'فيلم المشبوه', file:'https://youtu.be/Wmqfiny64ds', genre:'أكشن/دراما/مصري/كلاسيك', tags:['المشبوه','عادل امام','سعاد حسني','أكشن','دراما','مصري','كلاسيك'] },
-        { id:'qabdetelhelaly', name:'فيلم قبضة الهلالي', file:'https://youtu.be/bSpjEWcYkfU', genre:'أكشن/مصري/كلاسيك', tags:['قبضة الهلالي','يوسف منصور','ليلى علوي','أكشن','مصري','كلاسيك'] },
-        { id:'elmetasawel', name:'فيلم المتسول', file:'https://youtu.be/U6J7jv75xYg', genre:'كوميدي/مصري/كلاسيك', tags:['المتسول','عادل امام','كوميدي','مصري','كلاسيك'] },
-        { id:'fbaytenaragol', name:'فيلم في بيتنا رجل', file:'https://youtu.be/Ff1_XcngQr0', genre:'دراما/تاريخي/مصري/كلاسيك', tags:['في بيتنا رجل','عمر الشريف','دراما','تاريخي','مصري','كلاسيك'] },
-        { id:'arooselneel', name:'فيلم عروس النيل', file:'https://youtu.be/YJgjpHJDwjs', genre:'كوميدي/رومانسي/مصري/كلاسيك', tags:['عروس النيل','لبنى عبدالعزيز','رشدي اباظة','كوميدي','رومانسي','مصري','كلاسيك'] },
-        { id:'esabet7amada', name:'فيلم عصابة حمادة وتوتو', file:'https://youtu.be/_-7iMnIN8Io', genre:'كوميدي/مصري/كلاسيك', tags:['عصابة حمادة وتوتو','عادل امام','لبلبة','كوميدي','مصري','كلاسيك'] },
-        { id:'eltaaweeza', name:'فيلم التعويذة', file:'https://youtu.be/BoBCW86imOQ', genre:'رعب/مصري/كلاسيك', tags:['التعويذة','محمود ياسين','يسرا','رعب','مصري','كلاسيك'] },
-        { id:'ragolfakadaakloh', name:'فيلم رجل فقد عقله', file:'https://youtu.be/xR5wMs3zeV0', genre:'كوميدي/مصري/كلاسيك', tags:['رجل فقد عقله','عادل امام','فريد شوقي','كريمة مختار','كوميدي','مصري','كلاسيك'] },
-        { id:'ismaillosyeltairan', name:'فيلم اسماعيل يس في الطيران', file:'https://youtu.be/H8kfqawKz9k', genre:'كوميدي/مصري/كلاسيك', tags:['اسماعيل يس في الطيران','اسماعيل يس','كوميدي','مصري','كلاسيك'] },
-        { id:'elbehelbawab', name:'فيلم البيه البواب', file:'https://youtu.be/TZSYzhki4dQ', genre:'كوميدي/مصري/كلاسيك', tags:['البيه البواب','احمد زكي','كوميدي','مصري','كلاسيك'] },
-        { id:'mohematelaviv', name:'فيلم مهمة في تل ابيب', file:'https://youtu.be/61nAg7vfaw0', genre:'أكشن/جاسوسية/مصري', tags:['مهمة في تل ابيب','نادية الجندي','أكشن','جاسوسية','مصري'] },
-        { id:'serafelneel', name:'فيلم صراع في النيل', file:'https://youtu.be/8yI1hXPMenk', genre:'دراما/مصري/كلاسيك', tags:['صراع في النيل','عمر الشريف','هند رستم','دراما','مصري','كلاسيك'] },
-        { id:'batalmenwarak', name:'فيلم بطل من ورق', file:'https://youtu.be/Ym0-Ka5TbOk', genre:'كوميدي/أكشن/مصري/كلاسيك', tags:['بطل من ورق','ممدوح عبدالعليم','اثار الحكيم','كوميدي','أكشن','مصري','كلاسيك'] },
-        { id:'ismaillosyrayaweskina', name:'فيلم اسماعيل يس يقابل ريا وسكينة', file:'https://youtu.be/koL17O-9Yfk', genre:'كوميدي/مصري/كلاسيك', tags:['اسماعيل يس يقابل ريا وسكينة','اسماعيل يس','ريا وسكينة','كوميدي','مصري','كلاسيك'] },
-        { id:'elghool', name:'فيلم الغول', file:'https://youtu.be/lVi5ii1dWv4', genre:'دراما/أكشن/مصري/كلاسيك', tags:['الغول','عادل امام','فريد شوقي','دراما','أكشن','مصري','كلاسيك'] },
-        { id:'anahorra', name:'فيلم انا حرة', file:'https://youtu.be/eIW-9bNVQp0', genre:'دراما/مصري/كلاسيك', tags:['انا حرة','لبنى عبدالعزيز','دراما','مصري','كلاسيك'] },
-        { id:'elnemrelaswad', name:'فيلم النمر الاسود', file:'https://youtu.be/xrAsQl_L6QU', genre:'دراما/أكشن/مصري/كلاسيك', tags:['النمر الاسود','احمد زكي','احمد مظهر','دراما','أكشن','مصري','كلاسيك'] },
-        { id:'antrshayelsefoh', name:'فيلم عنتر شايل سيفه', file:'https://youtu.be/d951EtPggks', genre:'كوميدي/مصري/كلاسيك', tags:['عنتر شايل سيفه','عادل امام','نورا','كوميدي','مصري','كلاسيك'] },
-        { id:'morganahmedmorgan', name:'فيلم مرجان احمد مرجان', file:'https://youtu.be/5S4AvNRI8es', genre:'كوميدي/مصري', tags:['مرجان احمد مرجان','عادل امام','ميرفت امين','كوميدي','مصري'] },
-        { id:'embratoretmem', name:'فيلم امبراطورية ميم', file:'https://youtu.be/83ZpNa3Wj28', genre:'دراما/مصري/كلاسيك', tags:['امبراطورية ميم','فاتن حمامة','دراما','مصري','كلاسيك'] },
-        { id:'shabantahtelsefr', name:'فيلم شعبان تحت الصفر', file:'https://youtu.be/lswGmKSy_DA', genre:'كوميدي/مصري/كلاسيك', tags:['شعبان تحت الصفر','عادل امام','اسعاد يونس','كوميدي','مصري','كلاسيك'] },
-        { id:'fatawetelghalaba', name:'فيلم فتوة الناس الغلابة', file:'https://youtu.be/W62sHudIL-g', genre:'دراما/أكشن/مصري/كلاسيك', tags:['فتوة الناس الغلابة','فريد شوقي','بوسي','دراما','أكشن','مصري','كلاسيك'] },
-        { id:'elkitkat', name:'فيلم الكيت كات', file:'https://youtu.be/urPopxt0G-4', genre:'كوميدي/دراما/مصري/كلاسيك', tags:['الكيت كات','محمود عبدالعزيز','كوميدي','دراما','مصري','كلاسيك'] },
-        { id:'khalybalakmengeranak', name:'فيلم خلي بالك من جيرانك', file:'https://youtu.be/4SBFZHXZ9oA', genre:'كوميدي/مصري/كلاسيك', tags:['خلي بالك من جيرانك','عادل امام','لبلبة','كوميدي','مصري','كلاسيك'] },
-        { id:'elshetanaeltiahabatni', name:'فيلم الشيطانة التي احبتني', file:'https://youtu.be/ZEyxWXpwOVw', genre:'كوميدي/مصري/كلاسيك', tags:['الشيطانة التي احبتني','محمد صبحي','لبلبة','كوميدي','مصري','كلاسيك'] },
-        { id:'baynelsamawelard', name:'فيلم بين السما والارض', file:'https://youtu.be/2BghIxjbj9E', genre:'كوميدي/دراما/مصري/كلاسيك', tags:['بين السما والارض','هند رستم','عبدالسلام النابلسي','كوميدي','دراما','مصري','كلاسيك'] },
-        { id:'alenswelgen', name:'فيلم الانس والجن', file:'https://youtu.be/MGALTgwqD2U', genre:'رعب/مصري/كلاسيك', tags:['الانس والجن','عادل امام','يسرا','رعب','مصري','كلاسيك'] },
-        { id:'ramadanfokelburkan', name:'فيلم رمضان فوق البركان', file:'https://youtu.be/KmwqEmbfsmQ', genre:'كوميدي/مصري/كلاسيك', tags:['رمضان فوق البركان','عادل امام','الهام شاهين','كوميدي','مصري','كلاسيك'] }
+        { id: 'bershama', name: 'فيلم برشامة 2026', file: 'https://drive.google.com/file/d/1NjYWGRwznc2GOjQunoiUvpj6yz3Jv8Yn/preview', genre: 'كوميدي', tags: ['برشامة', 'كوميدي', 'فيلم', 'مصري', '2026', 'ضحك', 'كوميديا'] },
+        { id: 'elkalam', name: 'فيلم الكلام على ايه', file: 'https://drive.google.com/file/d/1DbuAGxq30yVBQcm3joo6JlrZu8L-p7sk/preview', genre: 'مصري', tags: ['الكلام', 'على ايه', 'مصري', 'فيلم'] },
+        { id: 'colonia', name: 'فيلم كولونيا', file: 'https://drive.google.com/file/d/1C43XdDmCYH73GhskAKIb-kpcUPB37gx8/preview', genre: 'دراما/مصري', tags: ['كولونيا', 'مصري', 'دراما', 'فيلم'] },
+        { id: 'engabelot', name: 'فيلم ان غاب القط', file: 'https://drive.google.com/file/d/1tEcGyE0r1pKTVR_WJPra9kEUx642f-BE/preview', genre: 'كوميدي/مصري', tags: ['ان غاب القط', 'غاب القط', 'القط', 'كوميدي', 'مصري', 'فيلم'] },
+        { id: 'eyalhabiba', name: 'فيلم عيال حبيبة', file: 'https://drive.google.com/file/d/1h0pP5S14nuZq5q1hX1nUZrQ9J_Pa7l1C/preview', genre: 'كوميدي/رومانسي', tags: ['عيال حبيبة', 'عيال', 'حبيبة', 'حمادة هلال', 'رامز جلال', 'كوميدي', 'رومانسي', 'مصري'] },
+        { id: 'afwahwaraneb', name: 'فيلم افواه وارانب', file: 'https://youtu.be/qN6eEPZPEF8', genre: 'دراما/مصري', tags: ['افواه وارانب', 'افواه', 'ارانب', 'فاتن حمامة', 'دراما', 'مصري', 'فيلم', 'كلاسيك'] },
+        { id: 'anesamami', name: 'فيلم الانسة مامي', file: 'https://youtu.be/ZO4TuiBs08I', genre: 'كوميدي/مصري', tags: ['الانسة مامي', 'ياسمين عبدالعزيز', 'كوميدي', 'مصري'] },
+        { id: 'helmomr', name: 'فيلم حلم العمر', file: 'https://youtu.be/JZi5sLV17rA', genre: 'أكشن/دراما/مصري', tags: ['حلم العمر', 'حمادة هلال', 'ملاكمة', 'أكشن', 'دراما', 'مصري'] },
+        { id: 'asaleswed', name: 'فيلم عسل اسود', file: 'https://youtu.be/Bhdp9B0GbV8', genre: 'كوميدي/دراما/مصري', tags: ['عسل اسود', 'أحمد حلمي', 'كوميدي', 'دراما', 'مصري'] },
+        { id: 'erhabkabab', name: 'فيلم الارهاب والكباب', file: 'https://youtu.be/wRfnxwd8hZY', genre: 'كوميدي/مصري/كلاسيك', tags: ['الارهاب والكباب', 'عادل امام', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'antrshadad', name: 'فيلم عنتر ابن شداد', file: 'https://youtu.be/fEppFPmeagI', genre: 'تاريخي/مصري/كلاسيك', tags: ['عنتر ابن شداد', 'فريد شوقي', 'تاريخي', 'مصري', 'كلاسيك'] },
+        { id: 'ahlamomrena', name: 'فيلم احلام عمرنا', file: 'https://youtu.be/wDbxK4qulYA', genre: 'رومانسي/دراما/مصري', tags: ['احلام عمرنا', 'منى زكي', 'مصطفى شعبان', 'رومانسي', 'دراما', 'مصري'] },
+        { id: 'lakhmetras', name: 'فيلم لخمة راس', file: 'https://youtu.be/80mAtao1yCA', genre: 'كوميدي/مصري', tags: ['لخمة راس', 'احمد رزق', 'سعد الصغير', 'كوميدي', 'مصري'] },
+        { id: 'moshmohandes', name: 'فيلم المش مهندس حسن', file: 'https://youtu.be/p8oK5kU-aIA', genre: 'كوميدي/مصري', tags: ['المش مهندس حسن', 'محمد رجب', 'كوميدي', 'مصري'] },
+        { id: 'code36', name: 'فيلم كود 36', file: 'https://youtu.be/A1JHtzMq3zI', genre: 'أكشن/مصري', tags: ['كود 36', 'مصطفى شعبان', 'أكشن', 'مصري'] },
+        { id: 'ebnhamido', name: 'فيلم ابن حميدو', file: 'https://youtu.be/43tzuCsmkhI', genre: 'كوميدي/مصري/كلاسيك', tags: ['ابن حميدو', 'اسماعيل يس', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'sertaqia', name: 'فيلم سر طاقية الاخفاء', file: 'https://youtu.be/K1QcSIvxsJI', genre: 'كوميدي/مصري/كلاسيك', tags: ['سر طاقية الاخفاء', 'طاقية الاخفاء', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'ismaillosy', name: 'فيلم اسماعيل يس في الاسطول', file: 'https://youtu.be/rGecNvI-4-Y', genre: 'كوميدي/مصري/كلاسيك', tags: ['اسماعيل يس في الاسطول', 'اسماعيل يس', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'katebetedam', name: 'فيلم كتيبة الاعدام', file: 'https://youtu.be/lhBSOeEPcMU', genre: 'أكشن/دراما/مصري/كلاسيك', tags: ['كتيبة الاعدام', 'نور الشريف', 'أكشن', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'afaret', name: 'فيلم العفاريت', file: 'https://youtu.be/hesFbe-G1f4', genre: 'دراما/مصري/كلاسيك', tags: ['العفاريت', 'عمرو دياب', 'مديحة كامل', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'babwazir', name: 'فيلم على باب الوزير', file: 'https://youtu.be/LxXeytw5IUc', genre: 'كوميدي/مصري/كلاسيك', tags: ['على باب الوزير', 'عادل امام', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'rosasa', name: 'فيلم الرصاصة لا تزال في جيبي', file: 'https://youtu.be/ytFbourO1Pw', genre: 'حربي/تاريخي/مصري', tags: ['الرصاصة لا تزال في جيبي', 'حرب اكتوبر', 'تاريخي', 'مصري'] },
+        { id: 'waeslama', name: 'فيلم وا اسلاماه', file: 'https://youtu.be/aBBlNtUHrEk', genre: 'تاريخي/مصري/كلاسيك', tags: ['وا اسلاماه', 'تاريخي', 'مصري', 'كلاسيك'] },
+        { id: 'moled', name: 'فيلم المولد', file: 'https://youtu.be/5VAhJzgtQA4', genre: 'أكشن/دراما/مصري/كلاسيك', tags: ['المولد', 'عادل امام', 'أكشن', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'eshaet7ob', name: 'فيلم اشاعة حب', file: 'https://youtu.be/_PjWqLuI-TQ', genre: 'كوميدي/مصري/كلاسيك', tags: ['اشاعة حب', 'عمر الشريف', 'سعاد حسني', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'aqwaregal', name: 'فيلم اقوى الرجال', file: 'https://youtu.be/Cp8L5bNk5NQ', genre: 'أكشن/دراما/مصري', tags: ['اقوى الرجال', 'نور الشريف', 'أكشن', 'دراما', 'مصري'] },
+        { id: 'zawga13', name: 'فيلم الزوجة 13', file: 'https://youtu.be/ynMUxO7yY6s', genre: 'كوميدي/مصري/كلاسيك', tags: ['الزوجة 13', 'شادية', 'رشدي اباظة', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'maazoon', name: 'فيلم البعض لا يذهب للمأذون مرتين', file: 'https://youtu.be/2VJCN3aCKeg', genre: 'كوميدي/مصري/كلاسيك', tags: ['البعض لا يذهب للمأذون مرتين', 'عادل امام', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'mashbooh', name: 'فيلم المشبوه', file: 'https://youtu.be/Wmqfiny64ds', genre: 'أكشن/دراما/مصري/كلاسيك', tags: ['المشبوه', 'عادل امام', 'سعاد حسني', 'أكشن', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'qabdetelhelaly', name: 'فيلم قبضة الهلالي', file: 'https://youtu.be/bSpjEWcYkfU', genre: 'أكشن/مصري/كلاسيك', tags: ['قبضة الهلالي', 'يوسف منصور', 'ليلى علوي', 'أكشن', 'مصري', 'كلاسيك'] },
+        { id: 'elmetasawel', name: 'فيلم المتسول', file: 'https://youtu.be/U6J7jv75xYg', genre: 'كوميدي/مصري/كلاسيك', tags: ['المتسول', 'عادل امام', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'fbaytenaragol', name: 'فيلم في بيتنا رجل', file: 'https://youtu.be/Ff1_XcngQr0', genre: 'دراما/تاريخي/مصري/كلاسيك', tags: ['في بيتنا رجل', 'عمر الشريف', 'دراما', 'تاريخي', 'مصري', 'كلاسيك'] },
+        { id: 'arooselneel', name: 'فيلم عروس النيل', file: 'https://youtu.be/YJgjpHJDwjs', genre: 'كوميدي/رومانسي/مصري/كلاسيك', tags: ['عروس النيل', 'لبنى عبدالعزيز', 'رشدي اباظة', 'كوميدي', 'رومانسي', 'مصري', 'كلاسيك'] },
+        { id: 'esabet7amada', name: 'فيلم عصابة حمادة وتوتو', file: 'https://youtu.be/_-7iMnIN8Io', genre: 'كوميدي/مصري/كلاسيك', tags: ['عصابة حمادة وتوتو', 'عادل امام', 'لبلبة', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'eltaaweeza', name: 'فيلم التعويذة', file: 'https://youtu.be/BoBCW86imOQ', genre: 'رعب/مصري/كلاسيك', tags: ['التعويذة', 'محمود ياسين', 'يسرا', 'رعب', 'مصري', 'كلاسيك'] },
+        { id: 'ragolfakadaakloh', name: 'فيلم رجل فقد عقله', file: 'https://youtu.be/xR5wMs3zeV0', genre: 'كوميدي/مصري/كلاسيك', tags: ['رجل فقد عقله', 'عادل امام', 'فريد شوقي', 'كريمة مختار', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'ismaillosyeltairan', name: 'فيلم اسماعيل يس في الطيران', file: 'https://youtu.be/H8kfqawKz9k', genre: 'كوميدي/مصري/كلاسيك', tags: ['اسماعيل يس في الطيران', 'اسماعيل يس', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'elbehelbawab', name: 'فيلم البيه البواب', file: 'https://youtu.be/TZSYzhki4dQ', genre: 'كوميدي/مصري/كلاسيك', tags: ['البيه البواب', 'احمد زكي', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'mohematelaviv', name: 'فيلم مهمة في تل ابيب', file: 'https://youtu.be/61nAg7vfaw0', genre: 'أكشن/جاسوسية/مصري', tags: ['مهمة في تل ابيب', 'نادية الجندي', 'أكشن', 'جاسوسية', 'مصري'] },
+        { id: 'serafelneel', name: 'فيلم صراع في النيل', file: 'https://youtu.be/8yI1hXPMenk', genre: 'دراما/مصري/كلاسيك', tags: ['صراع في النيل', 'عمر الشريف', 'هند رستم', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'batalmenwarak', name: 'فيلم بطل من ورق', file: 'https://youtu.be/Ym0-Ka5TbOk', genre: 'كوميدي/أكشن/مصري/كلاسيك', tags: ['بطل من ورق', 'ممدوح عبدالعليم', 'اثار الحكيم', 'كوميدي', 'أكشن', 'مصري', 'كلاسيك'] },
+        { id: 'ismaillosyrayaweskina', name: 'فيلم اسماعيل يس يقابل ريا وسكينة', file: 'https://youtu.be/koL17O-9Yfk', genre: 'كوميدي/مصري/كلاسيك', tags: ['اسماعيل يس يقابل ريا وسكينة', 'اسماعيل يس', 'ريا وسكينة', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'elghool', name: 'فيلم الغول', file: 'https://youtu.be/lVi5ii1dWv4', genre: 'دراما/أكشن/مصري/كلاسيك', tags: ['الغول', 'عادل امام', 'فريد شوقي', 'دراما', 'أكشن', 'مصري', 'كلاسيك'] },
+        { id: 'anahorra', name: 'فيلم انا حرة', file: 'https://youtu.be/eIW-9bNVQp0', genre: 'دراما/مصري/كلاسيك', tags: ['انا حرة', 'لبنى عبدالعزيز', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'elnemrelaswad', name: 'فيلم النمر الاسود', file: 'https://youtu.be/xrAsQl_L6QU', genre: 'دراما/أكشن/مصري/كلاسيك', tags: ['النمر الاسود', 'احمد زكي', 'احمد مظهر', 'دراما', 'أكشن', 'مصري', 'كلاسيك'] },
+        { id: 'antrshayelsefoh', name: 'فيلم عنتر شايل سيفه', file: 'https://youtu.be/d951EtPggks', genre: 'كوميدي/مصري/كلاسيك', tags: ['عنتر شايل سيفه', 'عادل امام', 'نورا', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'morganahmedmorgan', name: 'فيلم مرجان احمد مرجان', file: 'https://youtu.be/5S4AvNRI8es', genre: 'كوميدي/مصري', tags: ['مرجان احمد مرجان', 'عادل امام', 'ميرفت امين', 'كوميدي', 'مصري'] },
+        { id: 'embratoretmem', name: 'فيلم امبراطورية ميم', file: 'https://youtu.be/83ZpNa3Wj28', genre: 'دراما/مصري/كلاسيك', tags: ['امبراطورية ميم', 'فاتن حمامة', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'shabantahtelsefr', name: 'فيلم شعبان تحت الصفر', file: 'https://youtu.be/lswGmKSy_DA', genre: 'كوميدي/مصري/كلاسيك', tags: ['شعبان تحت الصفر', 'عادل امام', 'اسعاد يونس', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'fatawetelghalaba', name: 'فيلم فتوة الناس الغلابة', file: 'https://youtu.be/W62sHudIL-g', genre: 'دراما/أكشن/مصري/كلاسيك', tags: ['فتوة الناس الغلابة', 'فريد شوقي', 'بوسي', 'دراما', 'أكشن', 'مصري', 'كلاسيك'] },
+        { id: 'elkitkat', name: 'فيلم الكيت كات', file: 'https://youtu.be/urPopxt0G-4', genre: 'كوميدي/دراما/مصري/كلاسيك', tags: ['الكيت كات', 'محمود عبدالعزيز', 'كوميدي', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'khalybalakmengeranak', name: 'فيلم خلي بالك من جيرانك', file: 'https://youtu.be/4SBFZHXZ9oA', genre: 'كوميدي/مصري/كلاسيك', tags: ['خلي بالك من جيرانك', 'عادل امام', 'لبلبة', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'elshetanaeltiahabatni', name: 'فيلم الشيطانة التي احبتني', file: 'https://youtu.be/ZEyxWXpwOVw', genre: 'كوميدي/مصري/كلاسيك', tags: ['الشيطانة التي احبتني', 'محمد صبحي', 'لبلبة', 'كوميدي', 'مصري', 'كلاسيك'] },
+        { id: 'baynelsamawelard', name: 'فيلم بين السما والارض', file: 'https://youtu.be/2BghIxjbj9E', genre: 'كوميدي/دراما/مصري/كلاسيك', tags: ['بين السما والارض', 'هند رستم', 'عبدالسلام النابلسي', 'كوميدي', 'دراما', 'مصري', 'كلاسيك'] },
+        { id: 'alenswelgen', name: 'فيلم الانس والجن', file: 'https://youtu.be/MGALTgwqD2U', genre: 'رعب/مصري/كلاسيك', tags: ['الانس والجن', 'عادل امام', 'يسرا', 'رعب', 'مصري', 'كلاسيك'] },
+        { id: 'ramadanfokelburkan', name: 'فيلم رمضان فوق البركان', file: 'https://youtu.be/KmwqEmbfsmQ', genre: 'كوميدي/مصري/كلاسيك', tags: ['رمضان فوق البركان', 'عادل امام', 'الهام شاهين', 'كوميدي', 'مصري', 'كلاسيك'] }
     ];
 
     /* ═══════ MUSIC SEARCH ═══════ */
@@ -120,8 +120,8 @@
             if (q.indexOf(m.genre.toLowerCase().split('/')[0]) !== -1) score += 10;
             if (score > 0) scored.push({ song: m, score: score });
         }
-        scored.sort(function(a, b) { return b.score - a.score; });
-        return scored.map(function(s) { return s.song; });
+        scored.sort(function (a, b) { return b.score - a.score; });
+        return scored.map(function (s) { return s.song; });
     }
 
     /* ═══════ MOVIE SEARCH ═══════ */
@@ -140,51 +140,51 @@
             if (q.indexOf(m.genre.toLowerCase()) !== -1) score += 10;
             if (score > 0) scored.push({ movie: m, score: score });
         }
-        scored.sort(function(a, b) { return b.score - a.score; });
-        return scored.map(function(s) { return s.movie; });
+        scored.sort(function (a, b) { return b.score - a.score; });
+        return scored.map(function (s) { return s.movie; });
     }
 
     /* ═══════ MUSIC PLAYER HTML ═══════ */
     function musicPlayerHTML(m) {
-        var id = 'audio_' + Math.random().toString(36).substr(2,9);
+        var id = 'audio_' + Math.random().toString(36).substr(2, 9);
         var safeUrl = encodeURI(m.file);
         return '<div class="music-player" id="' + id + '" data-music-id="' + esc(m.id) + '">'
             + '<audio src="' + safeUrl + '" preload="metadata" ontimeupdate="LORD.audioUpdate(\'' + id + '\')" onloadedmetadata="LORD.audioLoaded(\'' + id + '\')" onended="LORD.audioEnded(\'' + id + '\')"></audio>'
             + '<div class="mp-art"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>'
             + '<div class="mp-body">'
-            +   '<div class="mp-head">'
-            +     '<div class="mp-info"><div class="mp-title">' + esc(m.name) + '</div><div class="mp-artist">' + esc(m.artist) + '</div></div>'
-            +     '<div class="mp-head-actions">'
-            +       '<button class="mp-pl-add" onclick="LORD.plAdd(\'' + esc(m.id) + '\')" title="إضافة للبلايليست"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
-            +       '<a href="' + safeUrl + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
-            +     '</div>'
-            +   '</div>'
-            +   '<div class="mp-ctrls">'
-            +     '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')" title="تشغيل"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
-            +     '<div class="mp-progress" onclick="LORD.audioSeek(event, \'' + id + '\')"><div class="mp-bar"></div></div>'
-            +     '<div class="mp-time">0:00 / 0:00</div>'
-            +   '</div>'
+            + '<div class="mp-head">'
+            + '<div class="mp-info"><div class="mp-title">' + esc(m.name) + '</div><div class="mp-artist">' + esc(m.artist) + '</div></div>'
+            + '<div class="mp-head-actions">'
+            + '<button class="mp-pl-add" onclick="LORD.plAdd(\'' + esc(m.id) + '\')" title="إضافة للبلايليست"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
+            + '<a href="' + safeUrl + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            + '</div>'
+            + '</div>'
+            + '<div class="mp-ctrls">'
+            + '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')" title="تشغيل"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
+            + '<div class="mp-progress" onclick="LORD.audioSeek(event, \'' + id + '\')"><div class="mp-bar"></div></div>'
+            + '<div class="mp-time">0:00 / 0:00</div>'
+            + '</div>'
             + '</div>'
             + '</div>';
     }
 
     /* ═══════ INLINE CHAT PLAYLIST HTML ═══════ */
     function chatPlaylistHTML(songs, title) {
-        var plId = 'cpl_' + Math.random().toString(36).substr(2,9);
+        var plId = 'cpl_' + Math.random().toString(36).substr(2, 9);
         var ids = [];
         for (var i = 0; i < songs.length; i++) ids.push(songs[i].id);
         var idsStr = ids.join(',');
         var html = '<div class="chat-playlist" id="' + plId + '" data-songs="' + idsStr + '">'
             + '<div class="cpl-header">'
-            +   '<div class="cpl-title-row">'
-            +     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>'
-            +     '<span class="cpl-title">' + esc(title || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a') + '</span>'
-            +     '<span class="cpl-badge">' + songs.length + ' \u0623\u063a\u0646\u064a\u0629</span>'
-            +   '</div>'
-            +   '<div class="cpl-actions">'
-            +     '<button class="cpl-play-all" onclick="LORD.plPlayInline(\'' + plId + '\')" title="\u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0643\u0644"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> \u062a\u0634\u063a\u064a\u0644</button>'
-            +     '<button class="cpl-add-all" onclick="LORD.plAddInline(\'' + plId + '\')" title="\u0625\u0636\u0627\u0641\u0629 \u0644\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> \u0625\u0636\u0627\u0641\u0629</button>'
-            +   '</div>'
+            + '<div class="cpl-title-row">'
+            + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>'
+            + '<span class="cpl-title">' + esc(title || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a') + '</span>'
+            + '<span class="cpl-badge">' + songs.length + ' \u0623\u063a\u0646\u064a\u0629</span>'
+            + '</div>'
+            + '<div class="cpl-actions">'
+            + '<button class="cpl-play-all" onclick="LORD.plPlayInline(\'' + plId + '\')" title="\u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0643\u0644"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> \u062a\u0634\u063a\u064a\u0644</button>'
+            + '<button class="cpl-add-all" onclick="LORD.plAddInline(\'' + plId + '\')" title="\u0625\u0636\u0627\u0641\u0629 \u0644\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> \u0625\u0636\u0627\u0641\u0629</button>'
+            + '</div>'
             + '</div>'
             + '<div class="cpl-list">';
         for (var j = 0; j < songs.length; j++) {
@@ -205,7 +205,7 @@
     }
 
     function moviePlayerHTML(m) {
-        var id = 'video_' + Math.random().toString(36).substr(2,9);
+        var id = 'video_' + Math.random().toString(36).substr(2, 9);
         var isGDrive = m.file.indexOf('drive.google.com') !== -1;
         var isYouTube = m.file.indexOf('youtu.be') !== -1 || m.file.indexOf('youtube.com') !== -1;
         var fileId = '';
@@ -229,35 +229,35 @@
         if (isGDrive || isYouTube) {
             return '<div class="movie-player" id="' + id + '">'
                 + '<div class="mv-header">'
-                +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
-                +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
-                +   '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="فتح في تاب جديد">'
-                +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
-                +     ' فتح'
-                +   '</a>'
+                + '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
+                + '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
+                + '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="فتح في تاب جديد">'
+                + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+                + ' فتح'
+                + '</a>'
                 + '</div>'
                 + '<div class="mv-poster" onclick="LORD.playMovie(\'' + id + '\',\'' + embedUrl + '\')">'
-                +   '<div class="mv-poster-bg"' + (isYouTube ? ' style="background-image:url(https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg);background-size:cover;background-position:center"' : '') + '></div>'
-                +   '<div class="mv-play-circle">'
-                +     '<svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><polygon points="9.5 7 16.5 12 9.5 17 9.5 7"/></svg>'
-                +   '</div>'
-                +   '<div class="mv-poster-label">' + esc(m.name) + '</div>'
+                + '<div class="mv-poster-bg"' + (isYouTube ? ' style="background-image:url(https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg);background-size:cover;background-position:center"' : '') + '></div>'
+                + '<div class="mv-play-circle">'
+                + '<svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><polygon points="9.5 7 16.5 12 9.5 17 9.5 7"/></svg>'
+                + '</div>'
+                + '<div class="mv-poster-label">' + esc(m.name) + '</div>'
                 + '</div>'
                 + '<div class="mv-screen" id="' + id + '_screen" style="display:none">'
-                +   '<iframe class="mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>'
+                + '<iframe class="mv-iframe" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>'
                 + '</div>'
                 + '<div class="mv-actions" style="justify-content: flex-end">'
-                +   '<button class="mv-fullscreen-btn" onclick="LORD.movieFullscreen(\'' + id + '\')">'
-                +     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>'
-                +     ' ملء الشاشة'
-                +   '</button>'
+                + '<button class="mv-fullscreen-btn" onclick="LORD.movieFullscreen(\'' + id + '\')">'
+                + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>'
+                + ' ملء الشاشة'
+                + '</button>'
                 + '</div>'
                 + '</div>';
         } else {
             return '<div class="movie-player" id="' + id + '">'
                 + '<div class="mv-header">'
-                +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
-                +   '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
+                + '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
+                + '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
                 + '</div>'
                 + '<div class="mv-screen"><video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video></div>'
                 + '</div>';
@@ -423,8 +423,8 @@
     var plPanelOpen = false;
 
     /* ═══════ STORAGE ═══════ */
-    function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
-    function get(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e) { return d; } }
+    function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+    function get(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
     function saveAll() { save('lord_convs', convs); save('lord_active', activeId); }
 
     /* ═══════ FIREBASE ANALYTICS ═══════ */
@@ -441,7 +441,7 @@
             } else {
                 console.log('[LORD] Firebase not configured');
             }
-        } catch(e) { console.error('[LORD] Firebase init error:', e); db = null; }
+        } catch (e) { console.error('[LORD] Firebase init error:', e); db = null; }
     }
 
     function getVisitorId() {
@@ -465,9 +465,9 @@
             lang: navigator.language || ''
         };
         if (data) { for (var k in data) doc[k] = data[k]; }
-        db.collection('lord_logs').add(doc).then(function() {
+        db.collection('lord_logs').add(doc).then(function () {
             console.log('[LORD] Logged:', action);
-        }).catch(function(e) {
+        }).catch(function (e) {
             console.error('[LORD] Log error:', e.message);
         });
     }
@@ -478,7 +478,7 @@
     }
 
     function trackMessage(role, text, responseTime) {
-        var words = (text || '').split(/\s+/).filter(function(w){return w}).length;
+        var words = (text || '').split(/\s+/).filter(function (w) { return w }).length;
         var isAr = /[؀-ۿ]/.test(text);
         var data = { role: role, words: words, mlang: isAr ? 'ar' : 'en' };
         if (responseTime) data.rt = responseTime;
@@ -495,9 +495,9 @@
 
     var el = {};
     function cacheDom() {
-        var ids = ['sidebar','overlay','closeSidebar','openSidebar','newChatBtn','convList',
-            'clearBtn','themeBtn','themeIcon','chatArea','welcome','messages',
-            'input','sendBtn','stopBtn','inputBox','prompts'];
+        var ids = ['sidebar', 'overlay', 'closeSidebar', 'openSidebar', 'newChatBtn', 'convList',
+            'clearBtn', 'themeBtn', 'themeIcon', 'chatArea', 'welcome', 'messages',
+            'input', 'sendBtn', 'stopBtn', 'inputBox', 'prompts'];
         for (var i = 0; i < ids.length; i++) el[ids[i]] = $(ids[i]);
     }
 
@@ -509,10 +509,10 @@
         t.className = 'toast';
         t.textContent = msg;
         document.body.appendChild(t);
-        requestAnimationFrame(function() { t.classList.add('show'); });
-        setTimeout(function() {
+        requestAnimationFrame(function () { t.classList.add('show'); });
+        setTimeout(function () {
             t.classList.remove('show');
-            setTimeout(function() { t.remove(); }, 350);
+            setTimeout(function () { t.remove(); }, 350);
         }, 2500);
     }
 
@@ -522,7 +522,7 @@
 
         // Preserve music tags
         var musicBlocks = [];
-        text = text.replace(/\[MUSIC:([^\]]+)\]/g, function(_, name) {
+        text = text.replace(/\[MUSIC:([^\]]+)\]/g, function (_, name) {
             var idx = musicBlocks.length;
             var found = null;
             for (var i = 0; i < MUSIC.length; i++) {
@@ -537,7 +537,7 @@
 
         // Preserve movie tags
         var movieBlocks = [];
-        text = text.replace(/\[MOVIE:([^\]]+)\]/g, function(_, name) {
+        text = text.replace(/\[MOVIE:([^\]]+)\]/g, function (_, name) {
             var idx = movieBlocks.length;
             var found = null;
             for (var i = 0; i < MOVIES.length; i++) {
@@ -562,9 +562,9 @@
 
         // Preserve playlist tags [PLAYLIST:title|song1|song2|...]
         var playlistBlocks = [];
-        text = text.replace(/\[PLAYLIST:([^\]]+)\]/g, function(_, content) {
+        text = text.replace(/\[PLAYLIST:([^\]]+)\]/g, function (_, content) {
             var pidx = playlistBlocks.length;
-            var parts = content.split('|').map(function(s) { return s.trim(); });
+            var parts = content.split('|').map(function (s) { return s.trim(); });
             var plTitle = parts[0] || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a';
             var songNames = parts.slice(1);
             var foundSongs = [];
@@ -588,7 +588,7 @@
 
         // Preserve code blocks first
         var codeBlocks = [];
-        text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(_, lang, code) {
+        text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function (_, lang, code) {
             var idx = codeBlocks.length;
             var l = lang || 'code';
             codeBlocks.push(
@@ -631,10 +631,10 @@
         text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 
         // Tables
-        text = text.replace(/^(\|.+\|)\n(\|[-:| ]+\|)\n((?:\|.+\|\n?)*)/gm, function(_, hdr, sep, body) {
-            var ths = hdr.split('|').filter(function(c){return c.trim()}).map(function(c){return '<th>'+c.trim()+'</th>'}).join('');
-            var rows = body.trim().split('\n').map(function(r) {
-                var tds = r.split('|').filter(function(c){return c.trim()}).map(function(c){return '<td>'+c.trim()+'</td>'}).join('');
+        text = text.replace(/^(\|.+\|)\n(\|[-:| ]+\|)\n((?:\|.+\|\n?)*)/gm, function (_, hdr, sep, body) {
+            var ths = hdr.split('|').filter(function (c) { return c.trim() }).map(function (c) { return '<th>' + c.trim() + '</th>' }).join('');
+            var rows = body.trim().split('\n').map(function (r) {
+                var tds = r.split('|').filter(function (c) { return c.trim() }).map(function (c) { return '<td>' + c.trim() + '</td>' }).join('');
                 return '<tr>' + tds + '</tr>';
             }).join('');
             return '<table><thead><tr>' + ths + '</tr></thead><tbody>' + rows + '</tbody></table>';
@@ -674,17 +674,17 @@
 
     /* ═══════ GLOBAL ACTIONS ═══════ */
     window.LORD = {
-        audioToggle: function(id) {
+        audioToggle: function (id) {
             var p = document.getElementById(id);
             if (!p) return;
             var a = p.querySelector('audio');
             var btn = p.querySelector('.mp-play');
             if (a.paused) {
-                document.querySelectorAll('.music-player audio').forEach(function(o) {
-                    if(o !== a) { 
-                        o.pause(); 
+                document.querySelectorAll('.music-player audio').forEach(function (o) {
+                    if (o !== a) {
+                        o.pause();
                         var ob = o.parentElement.querySelector('.mp-play');
-                        if (ob) ob.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>'; 
+                        if (ob) ob.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
                     }
                 });
                 a.play();
@@ -694,7 +694,7 @@
                 btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
             }
         },
-        audioUpdate: function(id) {
+        audioUpdate: function (id) {
             var p = document.getElementById(id);
             if (!p) return;
             var a = p.querySelector('audio');
@@ -703,13 +703,13 @@
             if (!a.duration) return;
             var pct = (a.currentTime / a.duration) * 100;
             bar.style.width = pct + '%';
-            var fm = function(s) { var m = Math.floor(s/60); var ss = Math.floor(s%60); return m+':'+(ss<10?'0'+ss:ss); };
+            var fm = function (s) { var m = Math.floor(s / 60); var ss = Math.floor(s % 60); return m + ':' + (ss < 10 ? '0' + ss : ss); };
             time.textContent = fm(a.currentTime) + ' / ' + fm(a.duration);
         },
-        audioLoaded: function(id) {
+        audioLoaded: function (id) {
             this.audioUpdate(id);
         },
-        audioEnded: function(id) {
+        audioEnded: function (id) {
             var p = document.getElementById(id);
             if (!p) return;
             var PLAY_ICO = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
@@ -741,7 +741,7 @@
                 }
             }
         },
-        audioSeek: function(e, id) {
+        audioSeek: function (e, id) {
             var p = document.getElementById(id);
             if (!p) return;
             var a = p.querySelector('audio');
@@ -754,23 +754,23 @@
                 this.audioUpdate(id);
             }
         },
-        copyCode: function(btn) {
+        copyCode: function (btn) {
             var code = btn.closest('pre').querySelector('code');
-            navigator.clipboard.writeText(code.textContent).then(function() {
+            navigator.clipboard.writeText(code.textContent).then(function () {
                 var orig = btn.innerHTML;
                 btn.innerHTML = CHECK_SVG + ' تم!';
                 btn.classList.add('copied');
-                setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1800);
+                setTimeout(function () { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1800);
             });
         },
-        copyMsg: function(btn) {
+        copyMsg: function (btn) {
             var body = btn.closest('.body');
             var text = body.innerText.replace(/نسخ|إعادة توليد$/gm, '').trim();
-            navigator.clipboard.writeText(text).then(function() {
+            navigator.clipboard.writeText(text).then(function () {
                 toast('✓ تم النسخ');
             });
         },
-        regen: function(btn) {
+        regen: function (btn) {
             if (busy) return;
             var c = active();
             if (!c || c.msgs.length < 2) return;
@@ -781,21 +781,21 @@
             el.sendBtn.classList.add('none');
             el.stopBtn.classList.remove('none');
             showDots();
-            callAPI(c.msgs).then(function(res) {
+            callAPI(c.msgs).then(function (res) {
                 hideDots();
                 var aiMsg = { role: 'assistant', content: '' };
                 var node = addMsg(aiMsg);
-                return readStream(res, node).then(function(txt) {
+                return readStream(res, node).then(function (txt) {
                     aiMsg.content = txt;
                     c.msgs.push(aiMsg);
                     saveAll();
                 });
-            }).catch(function(err) {
+            }).catch(function (err) {
                 hideDots();
                 handleError(err, c);
             }).then(finishSend);
         },
-        playMovie: function(id, embedUrl) {
+        playMovie: function (id, embedUrl) {
             var player = document.getElementById(id);
             if (!player) return;
             var poster = player.querySelector('.mv-poster');
@@ -810,7 +810,7 @@
             }
             scrollBottom();
         },
-        movieFullscreen: function(id) {
+        movieFullscreen: function (id) {
             var player = document.getElementById(id);
             if (!player) return;
             var screen = document.getElementById(id + '_screen');
@@ -828,7 +828,7 @@
             }
         },
         /* ═══════ PLAYLIST METHODS ═══════ */
-        plAdd: function(musicId) {
+        plAdd: function (musicId) {
             // Check if already in playlist
             for (var i = 0; i < playlist.length; i++) {
                 if (playlist[i].id === musicId) { toast('🎵 الأغنية موجودة بالفعل في البلايليست'); return; }
@@ -845,7 +845,7 @@
             if (!plPanelOpen) { plPanelOpen = true; }
             renderPlaylistPanel();
         },
-        plRemove: function(idx) {
+        plRemove: function (idx) {
             if (idx < 0 || idx >= playlist.length) return;
             var wasPlaying = (plIdx === idx && plActive);
             playlist.splice(idx, 1);
@@ -856,12 +856,12 @@
             renderPlaylistPanel();
             if (playlist.length === 0) { plIdx = -1; plActive = false; }
         },
-        plClear: function() {
+        plClear: function () {
             // Stop current audio
-            document.querySelectorAll('.music-player audio').forEach(function(a) {
+            document.querySelectorAll('.music-player audio').forEach(function (a) {
                 a.pause(); a.currentTime = 0;
             });
-            document.querySelectorAll('.mp-play').forEach(function(b) {
+            document.querySelectorAll('.mp-play').forEach(function (b) {
                 b.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
             });
             playlist = []; plIdx = -1; plActive = false;
@@ -869,13 +869,13 @@
             renderPlaylistPanel();
             toast('🗑 تم مسح البلايليست');
         },
-        plPlay: function(idx) {
+        plPlay: function (idx) {
             if (idx < 0 || idx >= playlist.length) return;
             plIdx = idx;
             plActive = true;
             var song = playlist[idx];
             // Stop all other audio
-            document.querySelectorAll('.music-player audio').forEach(function(a) {
+            document.querySelectorAll('.music-player audio').forEach(function (a) {
                 a.pause();
                 var btn = a.parentElement.querySelector('.mp-play');
                 if (btn) btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
@@ -894,7 +894,7 @@
                 // Player not visible — skip to next
                 toast('⏭ ' + song.name + ' — غير معروض، تخطي...');
                 var self = this;
-                setTimeout(function() {
+                setTimeout(function () {
                     if (plIdx < playlist.length - 1) self.plPlay(plIdx + 1);
                     else if (plRepeat === 'all') self.plPlay(0);
                     else { plActive = false; }
@@ -902,19 +902,19 @@
             }
             renderPlaylistPanel();
         },
-        plNext: function() {
+        plNext: function () {
             if (playlist.length === 0) return;
             var next = plIdx + 1;
             if (next >= playlist.length) next = (plRepeat === 'all') ? 0 : playlist.length - 1;
             this.plPlay(next);
         },
-        plPrev: function() {
+        plPrev: function () {
             if (playlist.length === 0) return;
             var prev = plIdx - 1;
             if (prev < 0) prev = (plRepeat === 'all') ? playlist.length - 1 : 0;
             this.plPlay(prev);
         },
-        plToggleRepeat: function() {
+        plToggleRepeat: function () {
             if (plRepeat === 'none') plRepeat = 'all';
             else if (plRepeat === 'all') plRepeat = 'one';
             else plRepeat = 'none';
@@ -923,11 +923,11 @@
             var labels = { none: '🔁 تكرار: مغلق', all: '🔁 تكرار: الكل', one: '🔂 تكرار: أغنية واحدة' };
             toast(labels[plRepeat]);
         },
-        plTogglePanel: function() {
+        plTogglePanel: function () {
             plPanelOpen = !plPanelOpen;
             renderPlaylistPanel();
         },
-        plAddAll: function() {
+        plAddAll: function () {
             var added = 0;
             for (var i = 0; i < MUSIC.length; i++) {
                 var exists = false;
@@ -946,7 +946,7 @@
                 renderPlaylistPanel();
             } else { toast('🎵 جميع الأغاني موجودة بالفعل'); }
         },
-        plPlayInline: function(plId) {
+        plPlayInline: function (plId) {
             var panel = document.getElementById(plId);
             if (!panel) return;
             var ids = panel.getAttribute('data-songs').split(',');
@@ -978,7 +978,7 @@
             renderPlaylistPanel();
             if (added > 0) toast('\ud83c\udfb5 \u062a\u0645 \u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a');
         },
-        plPlayInlineSong: function(plId, idx) {
+        plPlayInlineSong: function (plId, idx) {
             var panel = document.getElementById(plId);
             if (!panel) return;
             var ids = panel.getAttribute('data-songs').split(',');
@@ -1005,7 +1005,7 @@
             plPanelOpen = true;
             renderPlaylistPanel();
         },
-        plAddInline: function(plId) {
+        plAddInline: function (plId) {
             var panel = document.getElementById(plId);
             if (!panel) return;
             var ids = panel.getAttribute('data-songs').split(',');
@@ -1032,8 +1032,8 @@
             } else { toast('\ud83c\udfb5 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u063a\u0627\u0646\u064a \u0645\u0648\u062c\u0648\u062f\u0629 \u0628\u0627\u0644\u0641\u0639\u0644'); }
             renderPlaylistPanel();
         },
-        sw: function(id) { switchConv(id); },
-        del: function(id, e) { e.stopPropagation(); deleteConv(id); }
+        sw: function (id) { switchConv(id); },
+        del: function (id, e) { e.stopPropagation(); deleteConv(id); }
     };
 
     /* ═══════ PLAYLIST PANEL ═══════ */
@@ -1097,7 +1097,7 @@
             btn = document.createElement('button');
             btn.id = 'playlistFloatBtn';
             btn.className = 'pl-float-btn';
-            btn.onclick = function() { LORD.plTogglePanel(); };
+            btn.onclick = function () { LORD.plTogglePanel(); };
             document.body.appendChild(btn);
         }
         btn.style.display = plPanelOpen ? 'none' : 'flex';
@@ -1176,7 +1176,7 @@
     }
 
     function deleteConv(id) {
-        convs = convs.filter(function(c) { return c.id !== id; });
+        convs = convs.filter(function (c) { return c.id !== id; });
         if (activeId === id) activeId = convs.length ? convs[0].id : null;
         saveAll();
         renderList();
@@ -1286,7 +1286,7 @@
     }
 
     function scrollBottom() {
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
             el.chatArea.scrollTop = el.chatArea.scrollHeight;
         });
     }
@@ -1320,9 +1320,9 @@
                 max_tokens: 2048,
                 top_p: 0.85
             })
-        }).then(function(res) {
+        }).then(function (res) {
             if (!res.ok) {
-                return res.json().catch(function() { return {}; }).then(function(err) {
+                return res.json().catch(function () { return {}; }).then(function (err) {
                     var msg = err && err.error ? err.error.message : 'خطأ في الاتصال (HTTP ' + res.status + ')';
                     throw new Error(msg);
                 });
@@ -1347,7 +1347,7 @@
         }
 
         function pump() {
-            return reader.read().then(function(result) {
+            return reader.read().then(function (result) {
                 if (result.done) {
                     if (renderTimer) clearTimeout(renderTimer);
                     bodyEl.classList.remove('typing');
@@ -1373,11 +1373,11 @@
                         var t = data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content
                             ? data.choices[0].delta.content : '';
                         if (t) { full += t; changed = true; }
-                    } catch(e) {}
+                    } catch (e) { }
                 }
 
                 if (changed && !renderTimer) {
-                    renderTimer = setTimeout(function() {
+                    renderTimer = setTimeout(function () {
                         renderTimer = null;
                         renderContent();
                     }, 30);
@@ -1387,7 +1387,7 @@
             });
         }
 
-        return pump().catch(function(e) {
+        return pump().catch(function (e) {
             if (renderTimer) clearTimeout(renderTimer);
             bodyEl.classList.remove('typing');
             if (e.name === 'AbortError') {
@@ -1450,17 +1450,17 @@
         showDots();
         var sendTime = Date.now();
 
-        callAPI(c.msgs).then(function(res) {
+        callAPI(c.msgs).then(function (res) {
             hideDots();
             var aiMsg = { role: 'assistant', content: '', ts: Date.now() };
             var node = addMsg(aiMsg);
-            return readStream(res, node).then(function(txt) {
+            return readStream(res, node).then(function (txt) {
                 aiMsg.content = txt;
                 c.msgs.push(aiMsg);
                 saveAll();
                 trackMessage('assistant', txt, Date.now() - sendTime);
             });
-        }).catch(function(err) {
+        }).catch(function (err) {
             hideDots();
             handleError(err, c);
             trackError(err.message);
@@ -1486,11 +1486,11 @@
         el.clearBtn.addEventListener('click', clearAll);
         el.themeBtn.addEventListener('click', toggleTheme);
 
-        el.sendBtn.addEventListener('click', function() { send(el.input.value); });
-        el.stopBtn.addEventListener('click', function() { if (ctrl) ctrl.abort(); });
+        el.sendBtn.addEventListener('click', function () { send(el.input.value); });
+        el.stopBtn.addEventListener('click', function () { if (ctrl) ctrl.abort(); });
 
-        el.input.addEventListener('input', function() { resizeInput(); updateSend(); });
-        el.input.addEventListener('keydown', function(e) {
+        el.input.addEventListener('input', function () { resizeInput(); updateSend(); });
+        el.input.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 if (el.input.value.trim() && !busy) send(el.input.value);
@@ -1500,14 +1500,14 @@
         // Prompt cards
         var cards = document.querySelectorAll('.prompt-card');
         for (var i = 0; i < cards.length; i++) {
-            cards[i].addEventListener('click', function() {
+            cards[i].addEventListener('click', function () {
                 var q = this.getAttribute('data-q');
                 if (q) { el.input.value = q; send(q); }
             });
         }
 
         // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && el.sidebar.classList.contains('open')) closeSB();
             if (e.ctrlKey && e.shiftKey && e.key === 'N') { e.preventDefault(); newConv(); }
             if (e.key === '/' && document.activeElement !== el.input && !busy) {
@@ -1516,7 +1516,7 @@
             }
         });
 
-        window.addEventListener('resize', function() { resizeInput(); });
+        window.addEventListener('resize', function () { resizeInput(); });
     }
 
     /* ═══════ INIT ═══════ */
@@ -1531,7 +1531,7 @@
         bind();
         initPlaylist();
         updateSend();
-        setTimeout(function() { if (el.input) el.input.focus(); }, 200);
+        setTimeout(function () { if (el.input) el.input.focus(); }, 200);
     }
 
     if (document.readyState === 'loading') {
