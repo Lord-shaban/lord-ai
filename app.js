@@ -5,7 +5,7 @@
     /* ═══════ CONFIG ═══════ */
     var API_KEY = get('lord_api_key', 'AQ.Ab' + '8RN6Ij2QlETeLUmv' + 'qR60aOB8a8Ac_v' + 'hjWBY08Fq4v8wwTdOQ');
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
-    var MODEL = 'gemini-3.5-flash';
+    var MODEL = 'gemini-2.5-flash';
 
     /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
