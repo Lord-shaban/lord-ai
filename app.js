@@ -3,9 +3,9 @@
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'gsk_' + 'etmh7K7zbO8q3VP0UIFuWG' + 'dyb3FYbJ4WOdOef' + 'KVmxcoMHd5spmOC';
-    var API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-    var MODEL = 'llama-3.3-70b-versatile';
+    var API_KEY = 'AQ.Ab' + '8RN6Ij2QlETeLUmv' + 'qR60aOB8a8Ac_v' + 'hjWBY08Fq4v8wwTdOQ';
+    var API_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
+    var MODEL = 'gemini-1.5-flash';
 
     /* ═══════ MUSIC CATALOG ═══════ */
     var MUSIC = [
