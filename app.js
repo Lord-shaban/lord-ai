@@ -46,7 +46,8 @@
         { id:'elkalam', name:'فيلم الكلام على ايه', file:'https://drive.google.com/file/d/1DbuAGxq30yVBQcm3joo6JlrZu8L-p7sk/preview', genre:'مصري', tags:['الكلام','على ايه','مصري','فيلم'] },
         { id:'colonia', name:'فيلم كولونيا', file:'https://drive.google.com/file/d/1C43XdDmCYH73GhskAKIb-kpcUPB37gx8/preview', genre:'دراما/مصري', tags:['كولونيا','مصري','دراما','فيلم'] },
         { id:'engabelot', name:'فيلم ان غاب القط', file:'https://drive.google.com/file/d/1tEcGyE0r1pKTVR_WJPra9kEUx642f-BE/preview', genre:'كوميدي/مصري', tags:['ان غاب القط','غاب القط','القط','كوميدي','مصري','فيلم'] },
-        { id:'eyalhabiba', name:'فيلم عيال حبيبة', file:'https://drive.google.com/file/d/1h0pP5S14nuZq5q1hX1nUZrQ9J_Pa7l1C/preview', genre:'كوميدي/رومانسي', tags:['عيال حبيبة','عيال','حبيبة','حمادة هلال','رامز جلال','كوميدي','رومانسي','مصري'] }
+        { id:'eyalhabiba', name:'فيلم عيال حبيبة', file:'https://drive.google.com/file/d/1h0pP5S14nuZq5q1hX1nUZrQ9J_Pa7l1C/preview', genre:'كوميدي/رومانسي', tags:['عيال حبيبة','عيال','حبيبة','حمادة هلال','رامز جلال','كوميدي','رومانسي','مصري'] },
+        { id:'afwahwaraneb', name:'فيلم افواه وارانب', file:'https://youtu.be/qN6eEPZPEF8', genre:'دراما/مصري', tags:['افواه وارانب','افواه','ارانب','فاتن حمامة','دراما','مصري','فيلم','كلاسيك'] }
     ];
 
     /* ═══════ MUSIC SEARCH ═══════ */
@@ -115,18 +116,34 @@
     }
 
     /* ═══════ MOVIE PLAYER HTML ═══════ */
+    function getYouTubeId(url) {
+        var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+        return m ? m[1] : '';
+    }
+
     function moviePlayerHTML(m) {
         var id = 'video_' + Math.random().toString(36).substr(2,9);
         var isGDrive = m.file.indexOf('drive.google.com') !== -1;
+        var isYouTube = m.file.indexOf('youtu.be') !== -1 || m.file.indexOf('youtube.com') !== -1;
         var fileId = '';
+        var ytId = '';
+        var embedUrl = '';
+        var directUrl = '';
+
         if (isGDrive) {
             var match = m.file.match(/\/d\/([^/]+)/);
             fileId = match ? match[1] : '';
+            embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+            directUrl = 'https://drive.google.com/file/d/' + fileId + '/view';
+        } else if (isYouTube) {
+            ytId = getYouTubeId(m.file);
+            embedUrl = 'https://www.youtube.com/embed/' + ytId + '?rel=0&modestbranding=1';
+            directUrl = 'https://www.youtube.com/watch?v=' + ytId;
+        } else {
+            directUrl = encodeURI(m.file);
         }
-        var embedUrl = isGDrive ? 'https://drive.google.com/file/d/' + fileId + '/preview' : '';
-        var directUrl = isGDrive ? 'https://drive.google.com/file/d/' + fileId + '/view' : encodeURI(m.file);
 
-        if (isGDrive) {
+        if (isGDrive || isYouTube) {
             return '<div class="movie-player" id="' + id + '">'
                 + '<div class="mv-header">'
                 +   '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
@@ -137,7 +154,7 @@
                 +   '</a>'
                 + '</div>'
                 + '<div class="mv-poster" onclick="LORD.playMovie(\'' + id + '\',\'' + embedUrl + '\')">'
-                +   '<div class="mv-poster-bg"></div>'
+                +   '<div class="mv-poster-bg"' + (isYouTube ? ' style="background-image:url(https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg);background-size:cover;background-position:center"' : '') + '></div>'
                 +   '<div class="mv-play-circle">'
                 +     '<svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><polygon points="9.5 7 16.5 12 9.5 17 9.5 7"/></svg>'
                 +   '</div>'
@@ -230,12 +247,13 @@
         '- لا ترسل أغنية تلقائياً إلا إذا طلب المستخدم أغنية/موسيقى.',
         '- عند الإرسال: جملة قصيرة ثم التاج مباشرة. لا فقرات.',
         '',
-        '## مكتبة الأفلام (5 أفلام):',
+        '## مكتبة الأفلام (6 أفلام):',
         '- فيلم برشامة 2026 (كوميدي/مصري)',
         '- فيلم الكلام على ايه (مصري)',
         '- فيلم كولونيا (دراما/مصري)',
         '- فيلم ان غاب القط (كوميدي/مصري)',
         '- فيلم عيال حبيبة (كوميدي/رومانسي/مصري)',
+        '- فيلم افواه وارانب (دراما/مصري/كلاسيك)',
         '',
         '## قواعد الأفلام (مهمة جداً):',
         '- عند طلب فيلم أو مشاهدة أو تفرج، يجب كتابة التاج هكذا بالضبط:',
