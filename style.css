@@ -1488,3 +1488,124 @@ a:hover{color:var(--green);text-decoration:underline}
     .pl-header{padding:12px 14px 8px}
     .pl-footer{padding:6px 12px 10px}
 }
+
+/* ── INLINE CHAT PLAYLIST ── */
+.chat-playlist{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin:12px 0;
+    overflow:hidden;
+    max-width:440px;
+    transition:border-color .2s;
+}
+.chat-playlist:hover{
+    border-color:var(--c4);
+}
+.cpl-header{
+    padding:12px 14px 10px;
+    border-bottom:1px solid var(--line);
+    display:flex;flex-direction:column;gap:10px;
+}
+.cpl-title-row{
+    display:flex;align-items:center;gap:8px;
+    color:var(--c1);font-weight:600;font-size:14px;
+}
+.cpl-badge{
+    background:var(--accent);color:#fff;font-size:10px;font-weight:700;
+    padding:2px 8px;border-radius:10px;margin-right:auto;
+}
+.cpl-actions{
+    display:flex;gap:6px;
+}
+.cpl-play-all,.cpl-add-all{
+    flex:1;padding:7px 0;border:none;border-radius:8px;
+    font-size:12px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    transition:all .15s;font-family:inherit;
+}
+.cpl-play-all{
+    background:var(--accent);color:#fff;
+}
+.cpl-play-all:hover{
+    filter:brightness(1.1);transform:scale(1.02);
+}
+.cpl-add-all{
+    background:var(--accent-soft);color:var(--c1);
+}
+.cpl-add-all:hover{
+    background:var(--line);
+}
+.cpl-list{
+    max-height:240px;overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
+.cpl-list::-webkit-scrollbar{width:3px}
+.cpl-list::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+.cpl-item{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 14px;cursor:pointer;
+    transition:background .12s;
+}
+.cpl-item:hover{
+    background:var(--accent-soft);
+}
+.cpl-num{
+    width:18px;text-align:center;
+    font-size:11px;color:var(--c3);font-weight:500;
+    flex-shrink:0;
+}
+.cpl-song-info{
+    flex:1;min-width:0;
+}
+.cpl-song-name{
+    font-size:12.5px;font-weight:500;color:var(--c1);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    line-height:1.3;
+}
+.cpl-song-artist{
+    font-size:10.5px;color:var(--c3);line-height:1.3;
+}
+.cpl-item-add{
+    background:none;border:none;color:var(--c4);cursor:pointer;
+    width:24px;height:24px;border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s;padding:0;
+    opacity:0;flex-shrink:0;
+}
+.cpl-item:hover .cpl-item-add{
+    opacity:1;
+}
+.cpl-item-add:hover{
+    background:var(--accent-soft);color:var(--accent);
+}
+
+/* Dark mode */
+[data-theme="dark"] .chat-playlist{
+    background:rgba(255,255,255,.03);
+    border-color:rgba(255,255,255,.07);
+}
+[data-theme="dark"] .chat-playlist:hover{
+    border-color:rgba(255,255,255,.15);
+}
+[data-theme="dark"] .cpl-item:hover{
+    background:rgba(255,255,255,.04);
+}
+[data-theme="dark"] .cpl-add-all{
+    background:rgba(255,255,255,.06);
+}
+[data-theme="dark"] .cpl-add-all:hover{
+    background:rgba(255,255,255,.1);
+}
+[data-theme="dark"] .cpl-item-add:hover{
+    background:rgba(255,255,255,.08);
+}
+
+/* Responsive */
+@media(max-width:600px){
+    .chat-playlist{max-width:100%}
+    .cpl-header{padding:10px 12px 8px}
+    .cpl-item{padding:7px 12px}
+    .cpl-item-add{opacity:1}
+    .cpl-song-name{font-size:12px}
+}

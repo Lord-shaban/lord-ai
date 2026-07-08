@@ -168,6 +168,36 @@
             + '</div>';
     }
 
+    /* ═══════ INLINE CHAT PLAYLIST HTML ═══════ */
+    function chatPlaylistHTML(songs, title) {
+        var plId = 'cpl_' + Math.random().toString(36).substr(2,9);
+        var ids = [];
+        for (var i = 0; i < songs.length; i++) ids.push(songs[i].id);
+        var idsStr = ids.join(',');
+        var html = '<div class="chat-playlist" id="' + plId + '" data-songs="' + idsStr + '">'
+            + '<div class="cpl-header">'
+            +   '<div class="cpl-title-row">'
+            +     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>'
+            +     '<span class="cpl-title">' + esc(title || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a') + '</span>'
+            +     '<span class="cpl-badge">' + songs.length + ' \u0623\u063a\u0646\u064a\u0629</span>'
+            +   '</div>'
+            +   '<div class="cpl-actions">'
+            +     '<button class="cpl-play-all" onclick="LORD.plPlayInline(\'' + plId + '\')" title="\u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0643\u0644"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> \u062a\u0634\u063a\u064a\u0644</button>'
+            +     '<button class="cpl-add-all" onclick="LORD.plAddInline(\'' + plId + '\')" title="\u0625\u0636\u0627\u0641\u0629 \u0644\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> \u0625\u0636\u0627\u0641\u0629</button>'
+            +   '</div>'
+            + '</div>'
+            + '<div class="cpl-list">';
+        for (var j = 0; j < songs.length; j++) {
+            html += '<div class="cpl-item" onclick="LORD.plPlayInlineSong(\'' + plId + '\',' + j + ')">'
+                + '<span class="cpl-num">' + (j + 1) + '</span>'
+                + '<div class="cpl-song-info"><div class="cpl-song-name">' + esc(songs[j].name) + '</div><div class="cpl-song-artist">' + esc(songs[j].artist) + '</div></div>'
+                + '<button class="cpl-item-add" onclick="event.stopPropagation();LORD.plAdd(\'' + esc(songs[j].id) + '\')" title="\u0625\u0636\u0627\u0641\u0629"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
+                + '</div>';
+        }
+        html += '</div></div>';
+        return html;
+    }
+
     /* ═══════ MOVIE PLAYER HTML ═══════ */
     function getYouTubeId(url) {
         var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
@@ -284,8 +314,7 @@
         '- EL Waili - El Abd Wel Waili (الوايلي و الحسيني - مهرجانات)',
         '',
         '## قواعد الأغاني (صارمة):',
-        '- أرسل أغنية واحدة فقط في كل رد. ممنوع إرسال أكثر من واحدة.',
-        '- لإرسال أغنية اكتب [MUSIC:الاسم] — مثال: [MUSIC:Ed Sheeran - Perfect]',
+        '- لإرسال أغنية واحدة اكتب [MUSIC:الاسم] — مثال: [MUSIC:Ed Sheeran - Perfect]',
         '- للأغاني العربية استخدم الاسم الإنجليزي: [MUSIC:Fairuz - Kifak Inta]',
         '- اختر حسب مزاج/طلب المستخدم:',
         '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali أو Dari Ya Alby أو Kelma',
@@ -298,7 +327,19 @@
         '  - مهرجانات/شعبي → El Abd Wel Waili',
         '- إذا طلب أغنية غير متوفرة، اقترح الأقرب من القائمة (واحدة فقط).',
         '- لا ترسل أغنية تلقائياً إلا إذا طلب المستخدم أغنية/موسيقى.',
-        '- عند الإرسال: جملة قصيرة ثم التاج مباشرة. لا فقرات.',
+        '- عند إرسال أغنية واحدة: جملة قصيرة ثم [MUSIC:...] مباشرة.',
+        '',
+        '## قواعد البلايليست (مهمة جداً):',
+        '- عندما يطلب المستخدم بلايليست/قائمة أغاني/مجموعة أغاني/أغاني لمزاج معين، استخدم تاج البلايليست.',
+        '- التنسيق: [PLAYLIST:عنوان البلايليست|أغنية1|أغنية2|أغنية3]',
+        '- العنوان أولاً ثم الأغاني مفصولة بـ |',
+        '- استخدم الاسم الإنجليزي للأغاني كما في [MUSIC:]',
+        '- مثال: [PLAYLIST:أغاني رومانسية|Ed Sheeran - Perfect|Dari Ya Alby|Kelma|Awel Mara]',
+        '- مثال: [PLAYLIST:أغاني حماسية|Never Say Never|Ya El Medan|Allo|Billie Jean]',
+        '- اختر 3-8 أغاني مناسبة للمزاج المطلوب.',
+        '- اكتب جملة قصيرة عن البلايليست ثم التاج مباشرة.',
+        '- لا تكرر اسماء الأغاني بعد التاج — البلايليست ستعرضهم تلقائياً.',
+        '- عند طلب أغنية واحدة فقط استخدم [MUSIC:] وليس [PLAYLIST:]',
         '',
         '## مكتبة الأفلام (56 فيلم):',
         '- فيلم برشامة 2026 (كوميدي/مصري)',
@@ -519,6 +560,32 @@
             }
         }
 
+        // Preserve playlist tags [PLAYLIST:title|song1|song2|...]
+        var playlistBlocks = [];
+        text = text.replace(/\[PLAYLIST:([^\]]+)\]/g, function(_, content) {
+            var pidx = playlistBlocks.length;
+            var parts = content.split('|').map(function(s) { return s.trim(); });
+            var plTitle = parts[0] || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a';
+            var songNames = parts.slice(1);
+            var foundSongs = [];
+            for (var s = 0; s < songNames.length; s++) {
+                var sn = songNames[s].toLowerCase();
+                for (var mi2 = 0; mi2 < MUSIC.length; mi2++) {
+                    if (MUSIC[mi2].name.toLowerCase().indexOf(sn) !== -1
+                        || sn.indexOf(MUSIC[mi2].name.toLowerCase()) !== -1) {
+                        foundSongs.push(MUSIC[mi2]);
+                        break;
+                    }
+                }
+            }
+            if (foundSongs.length > 0) {
+                playlistBlocks.push(chatPlaylistHTML(foundSongs, plTitle));
+            } else {
+                playlistBlocks.push('<p>\ud83c\udfb5 ' + esc(plTitle) + ' (\u0644\u0627 \u062a\u0648\u062c\u062f \u0623\u063a\u0627\u0646\u064a \u0645\u0637\u0627\u0628\u0642\u0629)</p>');
+            }
+            return '%%PLAYLIST_' + pidx + '%%';
+        });
+
         // Preserve code blocks first
         var codeBlocks = [];
         text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(_, lang, code) {
@@ -590,6 +657,11 @@
         // Restore movie blocks
         for (var k = 0; k < movieBlocks.length; k++) {
             text = text.replace('%%MOVIE_' + k + '%%', movieBlocks[k]);
+        }
+
+        // Restore playlist blocks
+        for (var pl = 0; pl < playlistBlocks.length; pl++) {
+            text = text.replace('%%PLAYLIST_' + pl + '%%', playlistBlocks[pl]);
         }
 
         return text;
@@ -873,6 +945,92 @@
                 if (!plPanelOpen) plPanelOpen = true;
                 renderPlaylistPanel();
             } else { toast('🎵 جميع الأغاني موجودة بالفعل'); }
+        },
+        plPlayInline: function(plId) {
+            var panel = document.getElementById(plId);
+            if (!panel) return;
+            var ids = panel.getAttribute('data-songs').split(',');
+            // Add all to playlist panel and start playing
+            var added = 0;
+            for (var i = 0; i < ids.length; i++) {
+                var exists = false;
+                for (var j = 0; j < playlist.length; j++) {
+                    if (playlist[j].id === ids[i]) { exists = true; break; }
+                }
+                if (!exists) {
+                    for (var k = 0; k < MUSIC.length; k++) {
+                        if (MUSIC[k].id === ids[i]) {
+                            playlist.push({ id: MUSIC[k].id, name: MUSIC[k].name, artist: MUSIC[k].artist, file: MUSIC[k].file });
+                            added++;
+                            break;
+                        }
+                    }
+                }
+            }
+            save('lord_playlist', playlist);
+            plPanelOpen = true;
+            // Start playing from first song of this inline playlist
+            var firstIdx = -1;
+            for (var f = 0; f < playlist.length; f++) {
+                if (playlist[f].id === ids[0]) { firstIdx = f; break; }
+            }
+            if (firstIdx >= 0) this.plPlay(firstIdx);
+            renderPlaylistPanel();
+            if (added > 0) toast('\ud83c\udfb5 \u062a\u0645 \u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a');
+        },
+        plPlayInlineSong: function(plId, idx) {
+            var panel = document.getElementById(plId);
+            if (!panel) return;
+            var ids = panel.getAttribute('data-songs').split(',');
+            if (idx < 0 || idx >= ids.length) return;
+            var songId = ids[idx];
+            // Add to playlist if not there
+            var exists = false;
+            for (var j = 0; j < playlist.length; j++) {
+                if (playlist[j].id === songId) { exists = true; break; }
+            }
+            if (!exists) {
+                for (var k = 0; k < MUSIC.length; k++) {
+                    if (MUSIC[k].id === songId) {
+                        playlist.push({ id: MUSIC[k].id, name: MUSIC[k].name, artist: MUSIC[k].artist, file: MUSIC[k].file });
+                        save('lord_playlist', playlist);
+                        break;
+                    }
+                }
+            }
+            // Find and play
+            for (var f = 0; f < playlist.length; f++) {
+                if (playlist[f].id === songId) { this.plPlay(f); break; }
+            }
+            plPanelOpen = true;
+            renderPlaylistPanel();
+        },
+        plAddInline: function(plId) {
+            var panel = document.getElementById(plId);
+            if (!panel) return;
+            var ids = panel.getAttribute('data-songs').split(',');
+            var added = 0;
+            for (var i = 0; i < ids.length; i++) {
+                var exists = false;
+                for (var j = 0; j < playlist.length; j++) {
+                    if (playlist[j].id === ids[i]) { exists = true; break; }
+                }
+                if (!exists) {
+                    for (var k = 0; k < MUSIC.length; k++) {
+                        if (MUSIC[k].id === ids[i]) {
+                            playlist.push({ id: MUSIC[k].id, name: MUSIC[k].name, artist: MUSIC[k].artist, file: MUSIC[k].file });
+                            added++;
+                            break;
+                        }
+                    }
+                }
+            }
+            save('lord_playlist', playlist);
+            if (added > 0) {
+                toast('\ud83c\udfb5 \u062a\u0645\u062a \u0625\u0636\u0627\u0641\u0629 ' + added + ' \u0623\u063a\u0646\u064a\u0629 \u0644\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a');
+                plPanelOpen = true;
+            } else { toast('\ud83c\udfb5 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u063a\u0627\u0646\u064a \u0645\u0648\u062c\u0648\u062f\u0629 \u0628\u0627\u0644\u0641\u0639\u0644'); }
+            renderPlaylistPanel();
         },
         sw: function(id) { switchConv(id); },
         del: function(id, e) { e.stopPropagation(); deleteConv(id); }
