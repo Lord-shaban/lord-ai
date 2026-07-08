@@ -3,7 +3,7 @@
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'AQ.Ab' + '8RN6Ij2QlETeLUmv' + 'qR60aOB8a8Ac_v' + 'hjWBY08Fq4v8wwTdOQ';
+    var API_KEY = get('lord_api_key', 'AQ.Ab' + '8RN6Ij2QlETeLUmv' + 'qR60aOB8a8Ac_v' + 'hjWBY08Fq4v8wwTdOQ');
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
     var MODEL = 'gemini-3.5-flash';
 
@@ -497,7 +497,7 @@
     function cacheDom() {
         var ids = ['sidebar', 'overlay', 'closeSidebar', 'openSidebar', 'newChatBtn', 'convList',
             'clearBtn', 'themeBtn', 'themeIcon', 'chatArea', 'welcome', 'messages',
-            'input', 'sendBtn', 'stopBtn', 'inputBox', 'prompts'];
+            'input', 'sendBtn', 'stopBtn', 'inputBox', 'prompts', 'settingsBtn'];
         for (var i = 0; i < ids.length; i++) el[ids[i]] = $(ids[i]);
     }
 
@@ -1483,6 +1483,20 @@
         el.newChatBtn.addEventListener('click', newConv);
         el.clearBtn.addEventListener('click', clearAll);
         el.themeBtn.addEventListener('click', toggleTheme);
+        el.settingsBtn.addEventListener('click', function () {
+            var currentKey = get('lord_api_key', '');
+            var newKey = prompt("أدخل مفتاح API الخاص بـ Google Gemini الجديد:\n(اتركه فارغاً للرجوع للمفتاح الافتراضي المدمج)", currentKey);
+            if (newKey !== null) {
+                if (newKey.trim()) {
+                    save('lord_api_key', newKey.trim());
+                    toast("تم حفظ مفتاح API الجديد بنجاح!");
+                } else {
+                    localStorage.removeItem('lord_api_key');
+                    toast("تمت العودة للمفتاح الافتراضي.");
+                }
+                setTimeout(function () { location.reload(); }, 1000);
+            }
+        });
 
         el.sendBtn.addEventListener('click', function () { send(el.input.value); });
         el.stopBtn.addEventListener('click', function () { if (ctrl) ctrl.abort(); });
