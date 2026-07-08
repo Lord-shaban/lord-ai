@@ -148,16 +148,19 @@
     function musicPlayerHTML(m) {
         var id = 'audio_' + Math.random().toString(36).substr(2,9);
         var safeUrl = encodeURI(m.file);
-        return '<div class="music-player" id="' + id + '">'
+        return '<div class="music-player" id="' + id + '" data-music-id="' + esc(m.id) + '">'
             + '<audio src="' + safeUrl + '" preload="metadata" ontimeupdate="LORD.audioUpdate(\'' + id + '\')" onloadedmetadata="LORD.audioLoaded(\'' + id + '\')" onended="LORD.audioEnded(\'' + id + '\')"></audio>'
             + '<div class="mp-art"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>'
             + '<div class="mp-body">'
             +   '<div class="mp-head">'
             +     '<div class="mp-info"><div class="mp-title">' + esc(m.name) + '</div><div class="mp-artist">' + esc(m.artist) + '</div></div>'
-            +     '<a href="' + safeUrl + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            +     '<div class="mp-head-actions">'
+            +       '<button class="mp-pl-add" onclick="LORD.plAdd(\'' + esc(m.id) + '\')" title="إضافة للبلايليست"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
+            +       '<a href="' + safeUrl + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            +     '</div>'
             +   '</div>'
             +   '<div class="mp-ctrls">'
-            +     '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
+            +     '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')" title="تشغيل"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
             +     '<div class="mp-progress" onclick="LORD.audioSeek(event, \'' + id + '\')"><div class="mp-bar"></div></div>'
             +     '<div class="mp-time">0:00 / 0:00</div>'
             +   '</div>'
@@ -370,6 +373,13 @@
     var activeId = null;
     var busy = false;
     var ctrl = null;
+
+    /* ═══════ PLAYLIST STATE ═══════ */
+    var playlist = [];       // [{id, name, artist, file}]
+    var plIdx = -1;
+    var plRepeat = 'none';   // 'none' | 'all' | 'one'
+    var plActive = false;
+    var plPanelOpen = false;
 
     /* ═══════ STORAGE ═══════ */
     function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
@@ -630,9 +640,34 @@
         audioEnded: function(id) {
             var p = document.getElementById(id);
             if (!p) return;
-            p.querySelector('.mp-play').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            var PLAY_ICO = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            p.querySelector('.mp-play').innerHTML = PLAY_ICO;
             p.querySelector('audio').currentTime = 0;
             this.audioUpdate(id);
+            // Playlist auto-play logic
+            if (plActive && playlist.length > 0 && plIdx >= 0) {
+                var curMusicId = p.getAttribute('data-music-id');
+                if (curMusicId && playlist[plIdx] && playlist[plIdx].id === curMusicId) {
+                    if (plRepeat === 'one') {
+                        // Repeat same song
+                        var a = p.querySelector('audio');
+                        a.currentTime = 0;
+                        a.play();
+                        p.querySelector('.mp-play').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+                    } else if (plIdx < playlist.length - 1) {
+                        // Next song
+                        this.plPlay(plIdx + 1);
+                    } else if (plRepeat === 'all') {
+                        // Loop back to first
+                        this.plPlay(0);
+                    } else {
+                        // End of playlist, no repeat
+                        plActive = false;
+                        plIdx = -1;
+                        renderPlaylistPanel();
+                    }
+                }
+            }
         },
         audioSeek: function(e, id) {
             var p = document.getElementById(id);
@@ -720,9 +755,205 @@
                 else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
             }
         },
+        /* ═══════ PLAYLIST METHODS ═══════ */
+        plAdd: function(musicId) {
+            // Check if already in playlist
+            for (var i = 0; i < playlist.length; i++) {
+                if (playlist[i].id === musicId) { toast('🎵 الأغنية موجودة بالفعل في البلايليست'); return; }
+            }
+            // Find song
+            var song = null;
+            for (var j = 0; j < MUSIC.length; j++) {
+                if (MUSIC[j].id === musicId) { song = MUSIC[j]; break; }
+            }
+            if (!song) return;
+            playlist.push({ id: song.id, name: song.name, artist: song.artist, file: song.file });
+            save('lord_playlist', playlist);
+            toast('🎵 تمت الإضافة: ' + song.name);
+            if (!plPanelOpen) { plPanelOpen = true; }
+            renderPlaylistPanel();
+        },
+        plRemove: function(idx) {
+            if (idx < 0 || idx >= playlist.length) return;
+            var wasPlaying = (plIdx === idx && plActive);
+            playlist.splice(idx, 1);
+            if (plIdx >= playlist.length) plIdx = playlist.length - 1;
+            if (plIdx === idx && wasPlaying) plActive = false;
+            if (plIdx > idx) plIdx--;
+            save('lord_playlist', playlist);
+            renderPlaylistPanel();
+            if (playlist.length === 0) { plIdx = -1; plActive = false; }
+        },
+        plClear: function() {
+            // Stop current audio
+            document.querySelectorAll('.music-player audio').forEach(function(a) {
+                a.pause(); a.currentTime = 0;
+            });
+            document.querySelectorAll('.mp-play').forEach(function(b) {
+                b.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            });
+            playlist = []; plIdx = -1; plActive = false;
+            save('lord_playlist', playlist);
+            renderPlaylistPanel();
+            toast('🗑 تم مسح البلايليست');
+        },
+        plPlay: function(idx) {
+            if (idx < 0 || idx >= playlist.length) return;
+            plIdx = idx;
+            plActive = true;
+            var song = playlist[idx];
+            // Stop all other audio
+            document.querySelectorAll('.music-player audio').forEach(function(a) {
+                a.pause();
+                var btn = a.parentElement.querySelector('.mp-play');
+                if (btn) btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            });
+            // Find player with this music id
+            var players = document.querySelectorAll('.music-player[data-music-id="' + song.id + '"]');
+            if (players.length > 0) {
+                var p = players[0];
+                var a = p.querySelector('audio');
+                var btn = p.querySelector('.mp-play');
+                a.currentTime = 0;
+                a.play();
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+                p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                // Player not visible — skip to next
+                toast('⏭ ' + song.name + ' — غير معروض، تخطي...');
+                var self = this;
+                setTimeout(function() {
+                    if (plIdx < playlist.length - 1) self.plPlay(plIdx + 1);
+                    else if (plRepeat === 'all') self.plPlay(0);
+                    else { plActive = false; }
+                }, 500);
+            }
+            renderPlaylistPanel();
+        },
+        plNext: function() {
+            if (playlist.length === 0) return;
+            var next = plIdx + 1;
+            if (next >= playlist.length) next = (plRepeat === 'all') ? 0 : playlist.length - 1;
+            this.plPlay(next);
+        },
+        plPrev: function() {
+            if (playlist.length === 0) return;
+            var prev = plIdx - 1;
+            if (prev < 0) prev = (plRepeat === 'all') ? playlist.length - 1 : 0;
+            this.plPlay(prev);
+        },
+        plToggleRepeat: function() {
+            if (plRepeat === 'none') plRepeat = 'all';
+            else if (plRepeat === 'all') plRepeat = 'one';
+            else plRepeat = 'none';
+            save('lord_pl_repeat', plRepeat);
+            renderPlaylistPanel();
+            var labels = { none: '🔁 تكرار: مغلق', all: '🔁 تكرار: الكل', one: '🔂 تكرار: أغنية واحدة' };
+            toast(labels[plRepeat]);
+        },
+        plTogglePanel: function() {
+            plPanelOpen = !plPanelOpen;
+            renderPlaylistPanel();
+        },
+        plAddAll: function() {
+            var added = 0;
+            for (var i = 0; i < MUSIC.length; i++) {
+                var exists = false;
+                for (var j = 0; j < playlist.length; j++) {
+                    if (playlist[j].id === MUSIC[i].id) { exists = true; break; }
+                }
+                if (!exists) {
+                    playlist.push({ id: MUSIC[i].id, name: MUSIC[i].name, artist: MUSIC[i].artist, file: MUSIC[i].file });
+                    added++;
+                }
+            }
+            if (added > 0) {
+                save('lord_playlist', playlist);
+                toast('🎵 تمت إضافة ' + added + ' أغنية');
+                if (!plPanelOpen) plPanelOpen = true;
+                renderPlaylistPanel();
+            } else { toast('🎵 جميع الأغاني موجودة بالفعل'); }
+        },
         sw: function(id) { switchConv(id); },
         del: function(id, e) { e.stopPropagation(); deleteConv(id); }
     };
+
+    /* ═══════ PLAYLIST PANEL ═══════ */
+    function renderPlaylistPanel() {
+        var panel = document.getElementById('playlistPanel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'playlistPanel';
+            document.body.appendChild(panel);
+        }
+        if (!plPanelOpen || playlist.length === 0) {
+            panel.className = 'pl-panel pl-hidden';
+            // Show floating button if playlist has items
+            renderPlaylistBtn();
+            return;
+        }
+        var repeatIcons = {
+            none: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
+            all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
+            one: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/><text x="10" y="14" font-size="8" fill="var(--accent)" stroke="none" font-weight="bold">1</text></svg>'
+        };
+        var repeatLabel = { none: 'تكرار', all: 'تكرار الكل', one: 'تكرار واحدة' };
+        var html = '<div class="pl-header">'
+            + '<div class="pl-header-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> بلايليست <span class="pl-count">' + playlist.length + '</span></div>'
+            + '<button class="pl-close" onclick="LORD.plTogglePanel()" title="إغلاق"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+            + '</div>';
+        // Controls
+        html += '<div class="pl-controls">'
+            + '<button class="pl-ctrl-btn" onclick="LORD.plPrev()" title="السابق"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg></button>'
+            + '<button class="pl-ctrl-btn pl-ctrl-main" onclick="LORD.plPlay(' + Math.max(plIdx, 0) + ')" title="تشغيل">' + (plActive ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>') + '</button>'
+            + '<button class="pl-ctrl-btn" onclick="LORD.plNext()" title="التالي"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg></button>'
+            + '<button class="pl-ctrl-btn pl-repeat' + (plRepeat !== 'none' ? ' active' : '') + '" onclick="LORD.plToggleRepeat()" title="' + repeatLabel[plRepeat] + '">' + repeatIcons[plRepeat] + '</button>'
+            + '</div>';
+        // Song list
+        html += '<div class="pl-list">';
+        for (var i = 0; i < playlist.length; i++) {
+            var isActive = (i === plIdx && plActive);
+            html += '<div class="pl-item' + (isActive ? ' pl-active' : '') + '" onclick="LORD.plPlay(' + i + ')">'
+                + '<span class="pl-item-num">' + (isActive ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="var(--accent)"><polygon points="5 3 19 12 5 21 5 3"/></svg>' : (i + 1)) + '</span>'
+                + '<div class="pl-item-info"><div class="pl-item-name">' + esc(playlist[i].name) + '</div><div class="pl-item-artist">' + esc(playlist[i].artist) + '</div></div>'
+                + '<button class="pl-item-del" onclick="event.stopPropagation();LORD.plRemove(' + i + ')" title="حذف"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+                + '</div>';
+        }
+        html += '</div>';
+        // Footer
+        html += '<div class="pl-footer">'
+            + '<button class="pl-footer-btn" onclick="LORD.plClear()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> مسح الكل</button>'
+            + '</div>';
+        panel.className = 'pl-panel';
+        panel.innerHTML = html;
+        renderPlaylistBtn();
+    }
+
+    function renderPlaylistBtn() {
+        var btn = document.getElementById('playlistFloatBtn');
+        if (playlist.length === 0) {
+            if (btn) btn.style.display = 'none';
+            return;
+        }
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.id = 'playlistFloatBtn';
+            btn.className = 'pl-float-btn';
+            btn.onclick = function() { LORD.plTogglePanel(); };
+            document.body.appendChild(btn);
+        }
+        btn.style.display = plPanelOpen ? 'none' : 'flex';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="pl-float-count">' + playlist.length + '</span>';
+    }
+
+    function initPlaylist() {
+        playlist = get('lord_playlist', []);
+        plRepeat = get('lord_pl_repeat', 'none');
+        if (playlist.length > 0) {
+            renderPlaylistPanel();
+        }
+    }
+
 
     /* ═══════ THEME ═══════ */
     function initTheme() {
@@ -1134,6 +1365,7 @@
     function init() {
         cacheDom();
         initTheme();
+        initPlaylist();
         initFirebase();
         loadConvs();
         trackPageView();
