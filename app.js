@@ -38,7 +38,7 @@
         { id: 'nano', name: 'TUL8TE & Saint Levant - Nano', file: 'assets/music/TUL8TE, Saint Levant - Nano I تووليت ساينت ليفانت - نانو (Official Music Video).mp3', artist: 'TUL8TE & Saint Levant', genre: 'Arabic/Pop', tags: ['تووليت', 'ساينت ليفانت', 'نانو', 'حب', 'عربي'] },
         { id: 'mashrebtesh', name: 'Sherine - Mashrebtesh Men Nilha', file: 'assets/music/شيرين  مشربتش من نيلها.mp3', artist: 'شيرين', genre: 'Arabic/Pop', tags: ['شيرين', 'مشربتش', 'نيلها', 'وطني', 'مصر', 'حب'] },
         { id: 'henamsr', name: 'Hena Masr - Bank Misr', file: 'assets/music/هنا مصر .. هفضل كل مرة اجيلك (غناء محمود العسيلي و بهاء سلطان ) بنك مصر (رمضان 2026).mp3', artist: 'العسيلي و بهاء سلطان', genre: 'Arabic/Pop', tags: ['عسيلي', 'بهاء سلطان', 'مصر', 'وطني', 'رمضان', 'بنك مصر'] },
-        { id: 'lesabtesaly', name: 'Hany Shaker - Lesa Btesaly', file: 'https://cdn.jsdelivr.net/gh/Lord-shaban/songs-storage@main/hany-shaker-lesa-btesaly.mp3.mp3', artist: 'هاني شاكر', genre: 'Arabic/Classic', tags: ['هاني شاكر', 'لسه بتسألي', 'حب', 'رومانسي', 'حزن', 'عربي', 'طرب'] }
+        { id: 'lesabtesaly', name: 'Hany Shaker - Lesa Btesaly', file: 'https://pub-2021705f66434f5da4babc84df1667a7.r2.dev/hany-shaker-lesa-btesaly.mp3', artist: 'هاني شاكر', genre: 'Arabic/Classic', tags: ['هاني شاكر', 'لسه بتسألي', 'حب', 'رومانسي', 'حزن', 'عربي', 'طرب'] }
     ];
 
     /* ═══════ MOVIE CATALOG ═══════ */
