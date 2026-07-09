@@ -37,7 +37,8 @@
         { id: 'kelma', name: 'Ramy Sabry - Kelma', file: 'assets/music/Ramy Sabry - Kelma  رامي صبري - كلمه.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'كلمة', 'حب', 'رومانسي', 'حزن'] },
         { id: 'nano', name: 'TUL8TE & Saint Levant - Nano', file: 'assets/music/TUL8TE, Saint Levant - Nano I تووليت ساينت ليفانت - نانو (Official Music Video).mp3', artist: 'TUL8TE & Saint Levant', genre: 'Arabic/Pop', tags: ['تووليت', 'ساينت ليفانت', 'نانو', 'حب', 'عربي'] },
         { id: 'mashrebtesh', name: 'Sherine - Mashrebtesh Men Nilha', file: 'assets/music/شيرين  مشربتش من نيلها.mp3', artist: 'شيرين', genre: 'Arabic/Pop', tags: ['شيرين', 'مشربتش', 'نيلها', 'وطني', 'مصر', 'حب'] },
-        { id: 'henamsr', name: 'Hena Masr - Bank Misr', file: 'assets/music/هنا مصر .. هفضل كل مرة اجيلك (غناء محمود العسيلي و بهاء سلطان ) بنك مصر (رمضان 2026).mp3', artist: 'العسيلي و بهاء سلطان', genre: 'Arabic/Pop', tags: ['عسيلي', 'بهاء سلطان', 'مصر', 'وطني', 'رمضان', 'بنك مصر'] }
+        { id: 'henamsr', name: 'Hena Masr - Bank Misr', file: 'assets/music/هنا مصر .. هفضل كل مرة اجيلك (غناء محمود العسيلي و بهاء سلطان ) بنك مصر (رمضان 2026).mp3', artist: 'العسيلي و بهاء سلطان', genre: 'Arabic/Pop', tags: ['عسيلي', 'بهاء سلطان', 'مصر', 'وطني', 'رمضان', 'بنك مصر'] },
+        { id: 'lesabtesaly', name: 'Hany Shaker - Lesa Btesaly', file: 'https://cdn.jsdelivr.net/gh/Lord-shaban/songs-storage@main/songs/hany-shaker-lesa-btesaly.mp3', artist: 'هاني شاكر', genre: 'Arabic/Classic', tags: ['هاني شاكر', 'لسه بتسألي', 'حب', 'رومانسي', 'حزن', 'عربي', 'طرب'] }
     ];
 
     /* ═══════ MOVIE CATALOG ═══════ */
@@ -276,7 +277,7 @@
         '- لا تبدأ بـ "بالتأكيد" أو "بالطبع" أو "بكل سرور" — ادخل في الموضوع.',
         '- عند كتابة أكواد، اكتب كوداً نظيفاً مع تعليقات.',
         '',
-        '## مكتبة الأغاني (29 أغنية):',
+        '## مكتبة الأغاني (30 أغنية):',
         '',
         '### إنجليزي:',
         '- Ed Sheeran - Perfect (رومانسية/حب)',
@@ -285,6 +286,7 @@
         '- Michael Jackson - Billie Jean (كلاسيك/رقص)',
         '',
         '### عربي كلاسيكي:',
+        '- Hany Shaker - Lesa Btesaly (هاني شاكر - لسه بتسألي)',
         '- Umm Kulthum - Ansak (أم كلثوم - انساك)',
         '- Abdel Halim Hafez - Awel Mara (عبد الحليم - أول مرة)',
         '- Fairuz - Kifak Inta (فيروز - كيفك إنت)',
@@ -317,10 +319,10 @@
         '- لإرسال أغنية واحدة اكتب [MUSIC:الاسم] — مثال: [MUSIC:Ed Sheeran - Perfect]',
         '- للأغاني العربية استخدم الاسم الإنجليزي: [MUSIC:Fairuz - Kifak Inta]',
         '- اختر حسب مزاج/طلب المستخدم:',
-        '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali أو Dari Ya Alby أو Kelma',
+        '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali أو Dari Ya Alby أو Kelma أو Lesa Btesaly',
         '  - حماس/تحفيز → Never Say Never أو Ya El Medan أو Allo',
-        '  - حزن → Winner Takes It All أو Tayeh أو Heseeny أو Ma Balash',
-        '  - طرب/كلاسيك → Ansak أو Kifak Inta أو Aynak أو Halaf Al Qamar أو Fi 3esh2 El Banat',
+        '  - حزن → Winner Takes It All أو Tayeh أو Heseeny أو Ma Balash أو Lesa Btesaly',
+        '  - طرب/كلاسيك → Ansak أو Kifak Inta أو Aynak أو Halaf Al Qamar أو Fi 3esh2 El Banat أو Lesa Btesaly',
         '  - صباح/هدوء → Kifak Inta أو Helwa Ya Baladi',
         '  - وطني/مصر → Helwa Ya Baladi أو Mashrebtesh Men Nilha أو Hena Masr',
         '  - رقص/حفلات → Billie Jean أو El Abd Wel Waili أو Nano',
