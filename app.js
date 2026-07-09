@@ -421,6 +421,7 @@
     var plRepeat = 'none';   // 'none' | 'all' | 'one'
     var plActive = false;
     var plPanelOpen = false;
+    var plHiddenAudio = null; // Hidden audio element for playing songs not visible in chat
 
     /* ═══════ STORAGE ═══════ */
     function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
@@ -687,6 +688,8 @@
                         if (ob) ob.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
                     }
                 });
+                // Stop hidden audio to avoid two songs playing
+                if (plHiddenAudio) { plHiddenAudio.pause(); }
                 a.play();
                 btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
             } else {
@@ -716,28 +719,11 @@
             p.querySelector('.mp-play').innerHTML = PLAY_ICO;
             p.querySelector('audio').currentTime = 0;
             this.audioUpdate(id);
-            // Playlist auto-play logic
+            // Playlist auto-play logic — use shared handler
             if (plActive && playlist.length > 0 && plIdx >= 0) {
                 var curMusicId = p.getAttribute('data-music-id');
                 if (curMusicId && playlist[plIdx] && playlist[plIdx].id === curMusicId) {
-                    if (plRepeat === 'one') {
-                        // Repeat same song
-                        var a = p.querySelector('audio');
-                        a.currentTime = 0;
-                        a.play();
-                        p.querySelector('.mp-play').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-                    } else if (plIdx < playlist.length - 1) {
-                        // Next song
-                        this.plPlay(plIdx + 1);
-                    } else if (plRepeat === 'all') {
-                        // Loop back to first
-                        this.plPlay(0);
-                    } else {
-                        // End of playlist, no repeat
-                        plActive = false;
-                        plIdx = -1;
-                        renderPlaylistPanel();
-                    }
+                    plHandleEnded();
                 }
             }
         },
@@ -864,6 +850,8 @@
             document.querySelectorAll('.mp-play').forEach(function (b) {
                 b.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
             });
+            // Stop hidden audio
+            if (plHiddenAudio) { plHiddenAudio.pause(); plHiddenAudio.removeAttribute('src'); plHiddenAudio.load(); }
             playlist = []; plIdx = -1; plActive = false;
             save('lord_playlist', playlist);
             renderPlaylistPanel();
@@ -874,15 +862,18 @@
             plIdx = idx;
             plActive = true;
             var song = playlist[idx];
-            // Stop all other audio
+            // Stop all visible audio players
             document.querySelectorAll('.music-player audio').forEach(function (a) {
                 a.pause();
                 var btn = a.parentElement.querySelector('.mp-play');
                 if (btn) btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
             });
-            // Find player with this music id
+            // Stop hidden audio if playing
+            if (plHiddenAudio) { plHiddenAudio.pause(); }
+            // Find player with this music id in chat DOM
             var players = document.querySelectorAll('.music-player[data-music-id="' + song.id + '"]');
             if (players.length > 0) {
+                // Use visible player in chat
                 var p = players[0];
                 var a = p.querySelector('audio');
                 var btn = p.querySelector('.mp-play');
@@ -891,14 +882,16 @@
                 btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
                 p.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                // Player not visible — skip to next
-                toast('⏭ ' + song.name + ' — غير معروض، تخطي...');
-                var self = this;
-                setTimeout(function () {
-                    if (plIdx < playlist.length - 1) self.plPlay(plIdx + 1);
-                    else if (plRepeat === 'all') self.plPlay(0);
-                    else { plActive = false; }
-                }, 500);
+                // No visible player — use hidden audio (fixes skip bug)
+                if (plHiddenAudio) {
+                    plHiddenAudio.src = encodeURI(song.file);
+                    plHiddenAudio.currentTime = 0;
+                    plHiddenAudio.play().catch(function(e) {
+                        console.error('[LORD] Hidden audio play error:', e);
+                        toast('⚠️ تعذر تشغيل: ' + song.name);
+                    });
+                    toast('🎵 ' + song.name);
+                }
             }
             renderPlaylistPanel();
         },
@@ -1104,9 +1097,38 @@
         btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="pl-float-count">' + playlist.length + '</span>';
     }
 
+    /* ═══════ PLAYLIST AUTO-ADVANCE ═══════ */
+    function plHandleEnded() {
+        if (!plActive || playlist.length === 0 || plIdx < 0) return;
+        if (plRepeat === 'one') {
+            // Repeat same song
+            LORD.plPlay(plIdx);
+        } else if (plIdx < playlist.length - 1) {
+            // Next song
+            LORD.plPlay(plIdx + 1);
+        } else if (plRepeat === 'all') {
+            // Loop back to first
+            LORD.plPlay(0);
+        } else {
+            // End of playlist, no repeat
+            plActive = false;
+            plIdx = -1;
+            renderPlaylistPanel();
+        }
+    }
+
     function initPlaylist() {
         playlist = get('lord_playlist', []);
         plRepeat = get('lord_pl_repeat', 'none');
+        // Create hidden audio element for playing songs not visible in chat
+        plHiddenAudio = document.createElement('audio');
+        plHiddenAudio.id = 'plHiddenAudio';
+        plHiddenAudio.preload = 'metadata';
+        plHiddenAudio.style.display = 'none';
+        plHiddenAudio.addEventListener('ended', function () {
+            plHandleEnded();
+        });
+        document.body.appendChild(plHiddenAudio);
         if (playlist.length > 0) {
             renderPlaylistPanel();
         }
