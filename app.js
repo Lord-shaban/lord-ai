@@ -539,7 +539,22 @@
             noVideo: 'المتصفح لا يدعم تشغيل الفيديو',
             repeatT: { none: 'تكرار', all: 'تكرار الكل', one: 'تكرار واحدة' },
             repeatToast: { none: '🔁 تكرار: مغلق', all: '🔁 تكرار: الكل', one: '🔂 تكرار: أغنية واحدة' },
-            langToast: 'اللغة: العربية'
+            langToast: 'اللغة: العربية',
+            grpToday: 'اليوم',
+            grpYest: 'أمس',
+            grpWeek: 'آخر 7 أيام',
+            grpOlder: 'أقدم',
+            rename: 'إعادة تسمية',
+            edit: 'تعديل',
+            speak: 'استماع',
+            good: 'رد مفيد',
+            bad: 'رد غير مفيد',
+            thanks: '✓ شكراً على تقييمك',
+            exported: '✓ تم تصدير المحادثة',
+            noChat: 'لا توجد محادثة للتصدير',
+            listening: '🎤 جاري الاستماع… تحدث الآن',
+            editHint: '✏️ عدّل رسالتك ثم أرسلها',
+            youWord: 'أنت'
         },
         en: {
             newChat: 'New chat',
@@ -581,7 +596,22 @@
             noVideo: 'Your browser does not support video playback',
             repeatT: { none: 'Repeat', all: 'Repeat all', one: 'Repeat one' },
             repeatToast: { none: '🔁 Repeat: off', all: '🔁 Repeat: all', one: '🔂 Repeat: one' },
-            langToast: 'Language: English'
+            langToast: 'Language: English',
+            grpToday: 'Today',
+            grpYest: 'Yesterday',
+            grpWeek: 'Previous 7 days',
+            grpOlder: 'Older',
+            rename: 'Rename',
+            edit: 'Edit',
+            speak: 'Read aloud',
+            good: 'Good response',
+            bad: 'Bad response',
+            thanks: '✓ Thanks for your feedback',
+            exported: '✓ Chat exported',
+            noChat: 'No chat to export',
+            listening: '🎤 Listening… speak now',
+            editHint: '✏️ Edit your message and send',
+            youWord: 'You'
         }
     };
 
@@ -803,6 +833,25 @@
     var COPY_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
     var CHECK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>';
     var REGEN_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
+    var SPEAK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+    var LIKE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
+    var DISLIKE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>';
+    var EDIT_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+
+    /* Shared action bar for assistant messages */
+    var speaking = null;
+    function aiActsHTML(includeRegen) {
+        var h = '<div class="msg-acts">'
+            + '<button class="act-btn" onclick="LORD.copyMsg(this)" title="' + t('copy') + '">' + COPY_SVG + ' ' + t('copy') + '</button>';
+        if (includeRegen) {
+            h += '<button class="act-btn" onclick="LORD.regen(this)" title="' + t('regen') + '">' + REGEN_SVG + ' ' + t('regen') + '</button>';
+        }
+        h += '<button class="act-btn" onclick="LORD.speak(this)" title="' + t('speak') + '">' + SPEAK_SVG + '</button>'
+            + '<button class="act-btn" onclick="LORD.rate(this,1)" title="' + t('good') + '">' + LIKE_SVG + '</button>'
+            + '<button class="act-btn" onclick="LORD.rate(this,-1)" title="' + t('bad') + '">' + DISLIKE_SVG + '</button>'
+            + '</div>';
+        return h;
+    }
 
     /* ═══════ GLOBAL ACTIONS ═══════ */
     window.LORD = {
@@ -1156,7 +1205,86 @@
             renderPlaylistPanel();
         },
         sw: function (id) { switchConv(id); },
-        del: function (id, e) { e.stopPropagation(); deleteConv(id); }
+        del: function (id, e) { e.stopPropagation(); deleteConv(id); },
+        ren: function (id, e) {
+            e.stopPropagation();
+            var item = e.target.closest('.conv');
+            var tEl = item ? item.querySelector('.conv-t') : null;
+            var conv = null;
+            for (var i = 0; i < convs.length; i++) {
+                if (convs[i].id === id) { conv = convs[i]; break; }
+            }
+            if (!conv || !tEl) return;
+            var inp = document.createElement('input');
+            inp.type = 'text';
+            inp.className = 'conv-edit';
+            inp.value = conv.title;
+            tEl.replaceWith(inp);
+            inp.focus();
+            inp.select();
+            inp.addEventListener('click', function (ev) { ev.stopPropagation(); });
+            var done = false;
+            function commit() {
+                if (done) return;
+                done = true;
+                var v = inp.value.trim();
+                if (v) conv.title = v;
+                saveAll();
+                renderList();
+            }
+            inp.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Enter') commit();
+                if (ev.key === 'Escape') { done = true; renderList(); }
+            });
+            inp.addEventListener('blur', commit);
+        },
+        editMsg: function (btn) {
+            if (busy) return;
+            var c = active();
+            if (!c) return;
+            var node = btn.closest('.msg');
+            var idx = [].indexOf.call(el.messages.children, node);
+            if (idx < 0 || !c.msgs[idx] || c.msgs[idx].role !== 'user') return;
+            el.input.value = c.msgs[idx].content;
+            c.msgs = c.msgs.slice(0, idx);
+            saveAll();
+            renderChat();
+            resizeInput();
+            updateSend();
+            el.input.focus();
+            toast(t('editHint'));
+        },
+        speak: function (btn) {
+            if (!window.speechSynthesis) return;
+            if (speaking === btn) {
+                speechSynthesis.cancel();
+                speaking = null;
+                btn.classList.remove('speaking');
+                return;
+            }
+            speechSynthesis.cancel();
+            if (speaking) speaking.classList.remove('speaking');
+            var body = btn.closest('.body');
+            var clone = body.cloneNode(true);
+            clone.querySelectorAll('.msg-acts,pre,.music-player,.movie-player,.chat-playlist').forEach(function (n) { n.remove(); });
+            var text = clone.innerText.trim();
+            if (!text) return;
+            var u = new SpeechSynthesisUtterance(text);
+            u.lang = /[؀-ۿ]/.test(text) ? 'ar-EG' : 'en-US';
+            u.onend = function () {
+                btn.classList.remove('speaking');
+                if (speaking === btn) speaking = null;
+            };
+            speaking = btn;
+            btn.classList.add('speaking');
+            speechSynthesis.speak(u);
+        },
+        rate: function (btn, v) {
+            fbLog('feedback', { val: v });
+            btn.parentElement.querySelectorAll('.rated').forEach(function (b) { b.classList.remove('rated'); });
+            btn.classList.add('rated');
+            toast(t('thanks'));
+        }
     };
 
     /* ═══════ PLAYLIST PANEL ═══════ */
@@ -1320,6 +1448,7 @@
     }
 
     function switchConv(id) {
+        if (window.speechSynthesis) speechSynthesis.cancel();
         activeId = id;
         saveAll();
         renderList();
@@ -1364,11 +1493,33 @@
                 + '<span>' + t('startNew') + '</span></div>';
             return;
         }
+        // Date groups (Today / Yesterday / Last 7 days / Older)
+        var now = new Date();
+        var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        var startYest = startToday - 86400000;
+        var startWeek = startToday - 6 * 86400000;
+        function grpOf(ts) {
+            if (!ts) return 3;
+            if (ts >= startToday) return 0;
+            if (ts >= startYest) return 1;
+            if (ts >= startWeek) return 2;
+            return 3;
+        }
+        var grpNames = [t('grpToday'), t('grpYest'), t('grpWeek'), t('grpOlder')];
         var h = '';
+        var lastGrp = -1;
         for (var i = 0; i < convs.length; i++) {
             var c = convs[i];
+            var g = grpOf(c.ts);
+            if (g !== lastGrp) {
+                h += '<div class="conv-group">' + grpNames[g] + '</div>';
+                lastGrp = g;
+            }
             h += '<div class="conv' + (c.id === activeId ? ' on' : '') + '" onclick="LORD.sw(\'' + c.id + '\')">'
                 + '<span class="conv-t">' + esc(c.title) + '</span>'
+                + '<button class="conv-ren" onclick="LORD.ren(\'' + c.id + '\',event)" title="' + t('rename') + '">'
+                + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'
+                + '</button>'
                 + '<button class="conv-x" onclick="LORD.del(\'' + c.id + '\',event)" title="' + t('del') + '">'
                 + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
                 + '</button></div>';
@@ -1386,6 +1537,10 @@
             var tEl = item.querySelector('.conv-t');
             var match = !q || (tEl && tEl.textContent.toLowerCase().indexOf(q) !== -1);
             item.style.display = match ? '' : 'none';
+        });
+        // Hide date labels while searching (flat results)
+        el.convList.querySelectorAll('.conv-group').forEach(function (lbl) {
+            lbl.style.display = q ? 'none' : '';
         });
     }
 
@@ -1410,19 +1565,20 @@
         var isU = m.role === 'user';
         var content = isU ? '<p>' + esc(m.content) + '</p>' : md(m.content);
         var av = isU ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' : 'L';
-        var acts = '';
-        if (!isU) {
-            acts = '<div class="msg-acts">'
-                + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' ' + t('copy') + '</button>';
-            if (isLastAI) {
-                acts += '<button class="act-btn" onclick="LORD.regen(this)">' + REGEN_SVG + ' ' + t('regen') + '</button>';
-            }
-            acts += '</div>';
+        var timeAttr = m.ts ? ' title="' + new Date(m.ts).toLocaleString(LANG === 'en' ? 'en-US' : 'ar-EG') + '"' : '';
+        var inner;
+        if (isU) {
+            var uActs = '<div class="msg-acts msg-acts-u">'
+                + '<button class="act-btn" onclick="LORD.editMsg(this)" title="' + t('edit') + '">' + EDIT_SVG + '</button>'
+                + '</div>';
+            inner = '<div class="body" dir="auto">' + content + '</div>' + uActs;
+        } else {
+            inner = '<div class="body" dir="auto">' + content + aiActsHTML(isLastAI) + '</div>';
         }
-        return '<div class="msg ' + (isU ? 'msg-u' : 'msg-a') + '">'
+        return '<div class="msg ' + (isU ? 'msg-u' : 'msg-a') + '"' + timeAttr + '>'
             + '<div class="msg-in">'
             + '<div class="avatar">' + av + '</div>'
-            + '<div class="body" dir="auto">' + content + acts + '</div>'
+            + inner
             + '</div></div>';
     }
 
@@ -1514,10 +1670,7 @@
                 if (result.done) {
                     if (renderTimer) clearTimeout(renderTimer);
                     bodyEl.classList.remove('typing');
-                    bodyEl.innerHTML = md(full) + '<div class="msg-acts">'
-                        + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' ' + t('copy') + '</button>'
-                        + '<button class="act-btn" onclick="LORD.regen(this)">' + REGEN_SVG + ' ' + t('regen') + '</button>'
-                        + '</div>';
+                    bodyEl.innerHTML = md(full) + aiActsHTML(true);
                     return full;
                 }
 
@@ -1558,8 +1711,7 @@
             } else {
                 throw e;
             }
-            bodyEl.innerHTML = md(full) + '<div class="msg-acts">'
-                + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' ' + t('copy') + '</button></div>';
+            bodyEl.innerHTML = md(full) + aiActsHTML(false);
             return full;
         });
     }
@@ -1587,6 +1739,7 @@
     function send(text) {
         text = text.trim();
         if (!text || busy) return;
+        if (window.speechSynthesis) speechSynthesis.cancel();
 
         var c = active();
         if (!c) { newConv(); c = active(); }
@@ -1640,6 +1793,65 @@
         el.sendBtn.disabled = !el.input.value.trim();
     }
 
+    /* ═══════ EXPORT CHAT ═══════ */
+    function exportChat() {
+        var c = active();
+        if (!c || !c.msgs.length) { toast(t('noChat')); return; }
+        var lines = ['# ' + c.title, ''];
+        for (var i = 0; i < c.msgs.length; i++) {
+            var m = c.msgs[i];
+            lines.push('**' + (m.role === 'user' ? t('youWord') : 'LORD AI') + ':**');
+            lines.push(m.content);
+            lines.push('');
+        }
+        var blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'lord-chat-' + new Date().toISOString().slice(0, 10) + '.md';
+        a.click();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+        toast(t('exported'));
+    }
+
+    /* ═══════ SHORTCUTS MODAL ═══════ */
+    function toggleShortcuts(show) {
+        var m = $('shortcutsModal');
+        if (!m) return;
+        if (show === undefined) show = m.classList.contains('none');
+        m.classList.toggle('none', !show);
+    }
+
+    /* ═══════ VOICE INPUT ═══════ */
+    var recog = null, recActive = false;
+    function initMic() {
+        var micBtn = $('micBtn');
+        if (!micBtn) return;
+        var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { micBtn.style.display = 'none'; return; }
+        recog = new SR();
+        recog.interimResults = false;
+        recog.maxAlternatives = 1;
+        recog.onresult = function (e) {
+            var txt = e.results[0][0].transcript;
+            el.input.value = (el.input.value ? el.input.value + ' ' : '') + txt;
+            resizeInput();
+            updateSend();
+            el.input.focus();
+        };
+        recog.onend = function () { recActive = false; micBtn.classList.remove('rec'); };
+        recog.onerror = function () { recActive = false; micBtn.classList.remove('rec'); };
+        micBtn.addEventListener('click', function () {
+            if (recActive) { recog.stop(); return; }
+            recog.lang = LANG === 'en' ? 'en-US' : 'ar-EG';
+            try {
+                recog.start();
+                recActive = true;
+                micBtn.classList.add('rec');
+                toast(t('listening'));
+            } catch (e) { }
+        });
+    }
+
     /* ═══════ EVENTS ═══════ */
     function bind() {
         el.openSidebar.addEventListener('click', openSB);
@@ -1652,6 +1864,20 @@
         // Language toggle
         var langBtn = $('langBtn');
         if (langBtn) langBtn.addEventListener('click', toggleLang);
+
+        // Export chat
+        var exportBtn = $('exportBtn');
+        if (exportBtn) exportBtn.addEventListener('click', exportChat);
+
+        // Shortcuts modal
+        var helpBtn = $('helpBtn');
+        if (helpBtn) helpBtn.addEventListener('click', function () { toggleShortcuts(true); });
+        var closeShortcuts = $('closeShortcuts');
+        if (closeShortcuts) closeShortcuts.addEventListener('click', function () { toggleShortcuts(false); });
+        var scModal = $('shortcutsModal');
+        if (scModal) scModal.addEventListener('click', function (e) {
+            if (e.target === scModal) toggleShortcuts(false);
+        });
 
         // Conversation search
         var convSearch = $('convSearch');
@@ -1691,8 +1917,12 @@
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && el.sidebar.classList.contains('open')) closeSB();
+            if (e.key === 'Escape') {
+                if (el.sidebar.classList.contains('open')) closeSB();
+                toggleShortcuts(false);
+            }
             if (e.ctrlKey && e.shiftKey && e.key === 'N') { e.preventDefault(); newConv(); }
+            if (e.ctrlKey && e.key === '/') { e.preventDefault(); toggleShortcuts(); return; }
             if (e.key === '/' && document.activeElement !== el.input && !busy) {
                 e.preventDefault();
                 el.input.focus();
@@ -1714,6 +1944,7 @@
         renderChat();
         bind();
         initPlaylist();
+        initMic();
         updateSend();
         setTimeout(function () { if (el.input) el.input.focus(); }, 200);
     }
