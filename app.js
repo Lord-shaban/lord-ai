@@ -554,6 +554,8 @@
             noChat: 'لا توجد محادثة للتصدير',
             listening: '🎤 جاري الاستماع… تحدث الآن',
             editHint: '✏️ عدّل رسالتك ثم أرسلها',
+            saveSend: 'إرسال',
+            cancel: 'إلغاء',
             youWord: 'أنت'
         },
         en: {
@@ -611,6 +613,8 @@
             noChat: 'No chat to export',
             listening: '🎤 Listening… speak now',
             editHint: '✏️ Edit your message and send',
+            saveSend: 'Send',
+            cancel: 'Cancel',
             youWord: 'You'
         }
     };
@@ -1245,14 +1249,76 @@
             var node = btn.closest('.msg');
             var idx = [].indexOf.call(el.messages.children, node);
             if (idx < 0 || !c.msgs[idx] || c.msgs[idx].role !== 'user') return;
-            el.input.value = c.msgs[idx].content;
-            c.msgs = c.msgs.slice(0, idx);
-            saveAll();
-            renderChat();
-            resizeInput();
-            updateSend();
-            el.input.focus();
-            toast(t('editHint'));
+            // Already editing? do nothing
+            if (node.querySelector('.edit-wrap')) return;
+
+            var body = node.querySelector('.body');
+            var actsU = node.querySelector('.msg-acts-u');
+            var original = c.msgs[idx].content;
+
+            // Inline editor in place of the bubble (nothing is deleted until confirmed)
+            var wrap = document.createElement('div');
+            wrap.className = 'edit-wrap';
+
+            var ta = document.createElement('textarea');
+            ta.className = 'edit-ta';
+            ta.value = original;
+            ta.dir = 'auto';
+            ta.rows = 1;
+
+            var actions = document.createElement('div');
+            actions.className = 'edit-actions';
+            var saveB = document.createElement('button');
+            saveB.className = 'edit-save';
+            saveB.textContent = t('saveSend');
+            var cancelB = document.createElement('button');
+            cancelB.className = 'edit-cancel';
+            cancelB.textContent = t('cancel');
+            actions.appendChild(saveB);
+            actions.appendChild(cancelB);
+            wrap.appendChild(ta);
+            wrap.appendChild(actions);
+
+            body.style.display = 'none';
+            if (actsU) actsU.style.display = 'none';
+            body.parentElement.insertBefore(wrap, body);
+
+            function fit() {
+                ta.style.height = 'auto';
+                ta.style.height = Math.min(ta.scrollHeight, 200) + 'px';
+            }
+            fit();
+            ta.focus();
+            ta.setSelectionRange(ta.value.length, ta.value.length);
+            ta.addEventListener('input', fit);
+
+            function cancel() {
+                wrap.remove();
+                body.style.display = '';
+                if (actsU) actsU.style.display = '';
+            }
+            cancelB.addEventListener('click', cancel);
+
+            function confirmSend() {
+                var v = ta.value.trim();
+                if (!v || busy) return;
+                if (v === original) { cancel(); return; }
+                // Recompute index at confirm time, then truncate from this message onward and resend
+                var idx2 = [].indexOf.call(el.messages.children, node);
+                if (idx2 < 0 || !c.msgs[idx2]) { cancel(); return; }
+                c.msgs = c.msgs.slice(0, idx2);
+                saveAll();
+                renderChat();
+                send(v);
+            }
+            saveB.addEventListener('click', confirmSend);
+            ta.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Escape') cancel();
+                if (ev.key === 'Enter' && !ev.shiftKey) {
+                    ev.preventDefault();
+                    confirmSend();
+                }
+            });
         },
         speak: function (btn) {
             if (!window.speechSynthesis) return;
