@@ -156,12 +156,12 @@
             + '<div class="mp-head">'
             + '<div class="mp-info"><div class="mp-title">' + esc(m.name) + '</div><div class="mp-artist">' + esc(m.artist) + '</div></div>'
             + '<div class="mp-head-actions">'
-            + '<button class="mp-pl-add" onclick="LORD.plAdd(\'' + esc(m.id) + '\')" title="إضافة للبلايليست"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
-            + '<a href="' + safeUrl + '" download class="mp-dl" title="تحميل"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+            + '<button class="mp-pl-add" onclick="LORD.plAdd(\'' + esc(m.id) + '\')" title="' + t('addToPl') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
+            + '<a href="' + safeUrl + '" download class="mp-dl" title="' + t('download') + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
             + '</div>'
             + '</div>'
             + '<div class="mp-ctrls">'
-            + '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')" title="تشغيل"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
+            + '<button class="mp-play" onclick="LORD.audioToggle(\'' + id + '\')" title="' + t('play') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>'
             + '<div class="mp-progress" onclick="LORD.audioSeek(event, \'' + id + '\')"><div class="mp-bar"></div></div>'
             + '<div class="mp-time">0:00 / 0:00</div>'
             + '</div>'
@@ -179,12 +179,12 @@
             + '<div class="cpl-header">'
             + '<div class="cpl-title-row">'
             + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>'
-            + '<span class="cpl-title">' + esc(title || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a') + '</span>'
-            + '<span class="cpl-badge">' + songs.length + ' \u0623\u063a\u0646\u064a\u0629</span>'
+            + '<span class="cpl-title">' + esc(title || t('playlist')) + '</span>'
+            + '<span class="cpl-badge">' + songs.length + ' ' + t('songsWord') + '</span>'
             + '</div>'
             + '<div class="cpl-actions">'
-            + '<button class="cpl-play-all" onclick="LORD.plPlayInline(\'' + plId + '\')" title="\u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0643\u0644"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> \u062a\u0634\u063a\u064a\u0644</button>'
-            + '<button class="cpl-add-all" onclick="LORD.plAddInline(\'' + plId + '\')" title="\u0625\u0636\u0627\u0641\u0629 \u0644\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> \u0625\u0636\u0627\u0641\u0629</button>'
+            + '<button class="cpl-play-all" onclick="LORD.plPlayInline(\'' + plId + '\')" title="' + t('playAll') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> ' + t('play') + '</button>'
+            + '<button class="cpl-add-all" onclick="LORD.plAddInline(\'' + plId + '\')" title="' + t('addToPl') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ' + t('add') + '</button>'
             + '</div>'
             + '</div>'
             + '<div class="cpl-list">';
@@ -192,7 +192,7 @@
             html += '<div class="cpl-item" onclick="LORD.plPlayInlineSong(\'' + plId + '\',' + j + ')">'
                 + '<span class="cpl-num">' + (j + 1) + '</span>'
                 + '<div class="cpl-song-info"><div class="cpl-song-name">' + esc(songs[j].name) + '</div><div class="cpl-song-artist">' + esc(songs[j].artist) + '</div></div>'
-                + '<button class="cpl-item-add" onclick="event.stopPropagation();LORD.plAdd(\'' + esc(songs[j].id) + '\')" title="\u0625\u0636\u0627\u0641\u0629"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
+                + '<button class="cpl-item-add" onclick="event.stopPropagation();LORD.plAdd(\'' + esc(songs[j].id) + '\')" title="' + t('add') + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>'
                 + '</div>';
         }
         html += '</div></div>';
@@ -232,9 +232,9 @@
                 + '<div class="mv-header">'
                 + '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
                 + '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
-                + '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="فتح في تاب جديد">'
+                + '<a href="' + directUrl + '" target="_blank" class="mv-open-btn" title="' + t('openTab') + '">'
                 + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
-                + ' فتح'
+                + ' ' + t('open')
                 + '</a>'
                 + '</div>'
                 + '<div class="mv-poster" onclick="LORD.playMovie(\'' + id + '\',\'' + embedUrl + '\')">'
@@ -250,7 +250,7 @@
                 + '<div class="mv-actions" style="justify-content: flex-end">'
                 + '<button class="mv-fullscreen-btn" onclick="LORD.movieFullscreen(\'' + id + '\')">'
                 + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>'
-                + ' ملء الشاشة'
+                + ' ' + t('fullscreen')
                 + '</button>'
                 + '</div>'
                 + '</div>';
@@ -260,7 +260,7 @@
                 + '<div class="mv-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'
                 + '<div class="mv-info"><div class="mv-title">' + esc(m.name) + '</div><div class="mv-meta"><span class="mv-genre-tag">' + esc(m.genre) + '</span><span class="mv-year">2026</span></div></div>'
                 + '</div>'
-                + '<div class="mv-screen"><video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">المتصفح لا يدعم تشغيل الفيديو</video></div>'
+                + '<div class="mv-screen"><video controls preload="metadata" class="mv-video"><source src="' + encodeURI(m.file) + '" type="video/mp4">' + t('noVideo') + '</video></div>'
                 + '</div>';
         }
     }
@@ -496,6 +496,135 @@
     function $(id) { return document.getElementById(id); }
     function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
+    /* ═══════ LANGUAGE SYSTEM (AR / EN) ═══════ */
+    var LANG = 'ar';
+    var I18N = {
+        ar: {
+            newChat: 'محادثة جديدة',
+            startNew: 'ابدأ محادثة جديدة',
+            cleared: 'تم حذف جميع المحادثات',
+            del: 'حذف',
+            copy: 'نسخ',
+            copied: '✓ تم النسخ',
+            done: 'تم!',
+            regen: 'إعادة توليد',
+            stopped: '*(تم الإيقاف)*',
+            errUnknown: 'حدث خطأ غير متوقع',
+            errRate: '⏳ تم تجاوز الحد المسموح. انتظر قليلاً وحاول مرة أخرى.',
+            errConn: 'خطأ في الاتصال',
+            playlist: 'بلايليست',
+            close: 'إغلاق',
+            prev: 'السابق',
+            next: 'التالي',
+            play: 'تشغيل',
+            add: 'إضافة',
+            addToPl: 'إضافة للبلايليست',
+            playAll: 'تشغيل الكل',
+            clearList: 'مسح الكل',
+            download: 'تحميل',
+            open: 'فتح',
+            openTab: 'فتح في تاب جديد',
+            fullscreen: 'ملء الشاشة',
+            songsWord: 'أغنية',
+            plExists: '🎵 الأغنية موجودة بالفعل في البلايليست',
+            plAdded: '🎵 تمت الإضافة: ',
+            plCleared: '🗑 تم مسح البلايليست',
+            plFail: '⚠️ تعذر تشغيل: ',
+            addedPre: '🎵 تمت إضافة ',
+            addedPost: ' أغنية',
+            plAllExist: '🎵 جميع الأغاني موجودة بالفعل',
+            plStarted: '🎵 تم تشغيل البلايليست',
+            notAvail: 'غير متوفر',
+            plNoMatch: 'لا توجد أغاني مطابقة',
+            noVideo: 'المتصفح لا يدعم تشغيل الفيديو',
+            repeatT: { none: 'تكرار', all: 'تكرار الكل', one: 'تكرار واحدة' },
+            repeatToast: { none: '🔁 تكرار: مغلق', all: '🔁 تكرار: الكل', one: '🔂 تكرار: أغنية واحدة' },
+            langToast: 'اللغة: العربية'
+        },
+        en: {
+            newChat: 'New chat',
+            startNew: 'Start a new chat',
+            cleared: 'All chats deleted',
+            del: 'Delete',
+            copy: 'Copy',
+            copied: '✓ Copied',
+            done: 'Done!',
+            regen: 'Regenerate',
+            stopped: '*(Stopped)*',
+            errUnknown: 'An unexpected error occurred',
+            errRate: '⏳ Rate limit exceeded. Please wait a moment and try again.',
+            errConn: 'Connection error',
+            playlist: 'Playlist',
+            close: 'Close',
+            prev: 'Previous',
+            next: 'Next',
+            play: 'Play',
+            add: 'Add',
+            addToPl: 'Add to playlist',
+            playAll: 'Play all',
+            clearList: 'Clear all',
+            download: 'Download',
+            open: 'Open',
+            openTab: 'Open in new tab',
+            fullscreen: 'Fullscreen',
+            songsWord: 'songs',
+            plExists: '🎵 Song is already in the playlist',
+            plAdded: '🎵 Added: ',
+            plCleared: '🗑 Playlist cleared',
+            plFail: '⚠️ Could not play: ',
+            addedPre: '🎵 Added ',
+            addedPost: ' songs',
+            plAllExist: '🎵 All songs are already added',
+            plStarted: '🎵 Playlist started',
+            notAvail: 'not available',
+            plNoMatch: 'no matching songs',
+            noVideo: 'Your browser does not support video playback',
+            repeatT: { none: 'Repeat', all: 'Repeat all', one: 'Repeat one' },
+            repeatToast: { none: '🔁 Repeat: off', all: '🔁 Repeat: all', one: '🔂 Repeat: one' },
+            langToast: 'Language: English'
+        }
+    };
+
+    function t(k) {
+        var d = I18N[LANG] || I18N.ar;
+        return d[k] !== undefined ? d[k] : I18N.ar[k];
+    }
+
+    function applyLang(l) {
+        LANG = (l === 'en') ? 'en' : 'ar';
+        save('lord_lang', LANG);
+        var root = document.documentElement;
+        root.setAttribute('lang', LANG);
+        root.setAttribute('dir', LANG === 'en' ? 'ltr' : 'rtl');
+        var attr = 'data-' + LANG;
+        document.querySelectorAll('[data-ar]').forEach(function (n) {
+            var v = n.getAttribute(attr);
+            if (v !== null) n.textContent = v;
+        });
+        document.querySelectorAll('[data-ar-ph]').forEach(function (n) {
+            var v = n.getAttribute(attr + '-ph');
+            if (v !== null) n.setAttribute('placeholder', v);
+        });
+        document.querySelectorAll('[data-ar-title]').forEach(function (n) {
+            var v = n.getAttribute(attr + '-title');
+            if (v !== null) n.setAttribute('title', v);
+        });
+        document.querySelectorAll('[data-q-ar]').forEach(function (n) {
+            var v = n.getAttribute('data-q-' + LANG);
+            if (v !== null) n.setAttribute('data-q', v);
+        });
+        var lb = $('langBtn');
+        if (lb) lb.textContent = LANG === 'en' ? 'ع' : 'EN';
+    }
+
+    function toggleLang() {
+        applyLang(LANG === 'en' ? 'ar' : 'en');
+        renderList();
+        renderChat();
+        renderPlaylistPanel();
+        toast(t('langToast'));
+    }
+
     var el = {};
     function cacheDom() {
         var ids = ['sidebar', 'overlay', 'closeSidebar', 'openSidebar', 'newChatBtn', 'convList',
@@ -534,7 +663,7 @@
                     found = MUSIC[i]; break;
                 }
             }
-            musicBlocks.push(found ? musicPlayerHTML(found) : '<p>🎵 ' + esc(name) + ' (غير متوفرة)</p>');
+            musicBlocks.push(found ? musicPlayerHTML(found) : '<p>🎵 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%MUSIC_' + idx + '%%';
         });
 
@@ -549,7 +678,7 @@
                     found = MOVIES[i]; break;
                 }
             }
-            movieBlocks.push(found ? moviePlayerHTML(found) : '<p>🎬 ' + esc(name) + ' (غير متوفر)</p>');
+            movieBlocks.push(found ? moviePlayerHTML(found) : '<p>🎬 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%MOVIE_' + idx + '%%';
         });
 
@@ -568,7 +697,7 @@
         text = text.replace(/\[PLAYLIST:([^\]]+)\]/g, function (_, content) {
             var pidx = playlistBlocks.length;
             var parts = content.split('|').map(function (s) { return s.trim(); });
-            var plTitle = parts[0] || '\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a';
+            var plTitle = parts[0] || t('playlist');
             var songNames = parts.slice(1);
             var foundSongs = [];
             for (var s = 0; s < songNames.length; s++) {
@@ -584,7 +713,7 @@
             if (foundSongs.length > 0) {
                 playlistBlocks.push(chatPlaylistHTML(foundSongs, plTitle));
             } else {
-                playlistBlocks.push('<p>\ud83c\udfb5 ' + esc(plTitle) + ' (\u0644\u0627 \u062a\u0648\u062c\u062f \u0623\u063a\u0627\u0646\u064a \u0645\u0637\u0627\u0628\u0642\u0629)</p>');
+                playlistBlocks.push('<p>\ud83c\udfb5 ' + esc(plTitle) + ' (' + t('plNoMatch') + ')</p>');
             }
             return '%%PLAYLIST_' + pidx + '%%';
         });
@@ -597,7 +726,7 @@
             codeBlocks.push(
                 '<pre><div class="code-h"><span>' + esc(l) + '</span>'
                 + '<button class="copy-btn" onclick="LORD.copyCode(this)">'
-                + COPY_SVG + ' نسخ</button></div>'
+                + COPY_SVG + ' ' + t('copy') + '</button></div>'
                 + '<code>' + esc(code.trim()) + '</code></pre>'
             );
             return '%%CODE_BLOCK_' + idx + '%%';
@@ -746,16 +875,16 @@
             var code = btn.closest('pre').querySelector('code');
             navigator.clipboard.writeText(code.textContent).then(function () {
                 var orig = btn.innerHTML;
-                btn.innerHTML = CHECK_SVG + ' تم!';
+                btn.innerHTML = CHECK_SVG + ' ' + t('done');
                 btn.classList.add('copied');
                 setTimeout(function () { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1800);
             });
         },
         copyMsg: function (btn) {
             var body = btn.closest('.body');
-            var text = body.innerText.replace(/نسخ|إعادة توليد$/gm, '').trim();
+            var text = body.innerText.replace(/^(نسخ|إعادة توليد|Copy|Regenerate)$/gm, '').trim();
             navigator.clipboard.writeText(text).then(function () {
-                toast('✓ تم النسخ');
+                toast(t('copied'));
             });
         },
         regen: function (btn) {
@@ -819,7 +948,7 @@
         plAdd: function (musicId) {
             // Check if already in playlist
             for (var i = 0; i < playlist.length; i++) {
-                if (playlist[i].id === musicId) { toast('🎵 الأغنية موجودة بالفعل في البلايليست'); return; }
+                if (playlist[i].id === musicId) { toast(t('plExists')); return; }
             }
             // Find song
             var song = null;
@@ -829,7 +958,7 @@
             if (!song) return;
             playlist.push({ id: song.id, name: song.name, artist: song.artist, file: song.file });
             save('lord_playlist', playlist);
-            toast('🎵 تمت الإضافة: ' + song.name);
+            toast(t('plAdded') + song.name);
             if (!plPanelOpen) { plPanelOpen = true; }
             renderPlaylistPanel();
         },
@@ -857,7 +986,7 @@
             playlist = []; plIdx = -1; plActive = false;
             save('lord_playlist', playlist);
             renderPlaylistPanel();
-            toast('🗑 تم مسح البلايليست');
+            toast(t('plCleared'));
         },
         plPlay: function (idx) {
             if (idx < 0 || idx >= playlist.length) return;
@@ -890,7 +1019,7 @@
                     plHiddenAudio.currentTime = 0;
                     plHiddenAudio.play().catch(function(e) {
                         console.error('[LORD] Hidden audio play error:', e);
-                        toast('⚠️ تعذر تشغيل: ' + song.name);
+                        toast(t('plFail') + song.name);
                     });
                     toast('🎵 ' + song.name);
                 }
@@ -915,8 +1044,7 @@
             else plRepeat = 'none';
             save('lord_pl_repeat', plRepeat);
             renderPlaylistPanel();
-            var labels = { none: '🔁 تكرار: مغلق', all: '🔁 تكرار: الكل', one: '🔂 تكرار: أغنية واحدة' };
-            toast(labels[plRepeat]);
+            toast(t('repeatToast')[plRepeat]);
         },
         plTogglePanel: function () {
             plPanelOpen = !plPanelOpen;
@@ -936,10 +1064,10 @@
             }
             if (added > 0) {
                 save('lord_playlist', playlist);
-                toast('🎵 تمت إضافة ' + added + ' أغنية');
+                toast(t('addedPre') + added + t('addedPost'));
                 if (!plPanelOpen) plPanelOpen = true;
                 renderPlaylistPanel();
-            } else { toast('🎵 جميع الأغاني موجودة بالفعل'); }
+            } else { toast(t('plAllExist')); }
         },
         plPlayInline: function (plId) {
             var panel = document.getElementById(plId);
@@ -971,7 +1099,7 @@
             }
             if (firstIdx >= 0) this.plPlay(firstIdx);
             renderPlaylistPanel();
-            if (added > 0) toast('\ud83c\udfb5 \u062a\u0645 \u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a');
+            if (added > 0) toast(t('plStarted'));
         },
         plPlayInlineSong: function (plId, idx) {
             var panel = document.getElementById(plId);
@@ -1022,9 +1150,9 @@
             }
             save('lord_playlist', playlist);
             if (added > 0) {
-                toast('\ud83c\udfb5 \u062a\u0645\u062a \u0625\u0636\u0627\u0641\u0629 ' + added + ' \u0623\u063a\u0646\u064a\u0629 \u0644\u0644\u0628\u0644\u0627\u064a\u0644\u064a\u0633\u062a');
+                toast(t('addedPre') + added + t('addedPost'));
                 plPanelOpen = true;
-            } else { toast('\ud83c\udfb5 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u063a\u0627\u0646\u064a \u0645\u0648\u062c\u0648\u062f\u0629 \u0628\u0627\u0644\u0641\u0639\u0644'); }
+            } else { toast(t('plAllExist')); }
             renderPlaylistPanel();
         },
         sw: function (id) { switchConv(id); },
@@ -1050,16 +1178,16 @@
             all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
             one: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/><text x="10" y="14" font-size="8" fill="var(--accent)" stroke="none" font-weight="bold">1</text></svg>'
         };
-        var repeatLabel = { none: 'تكرار', all: 'تكرار الكل', one: 'تكرار واحدة' };
+        var repeatLabel = t('repeatT');
         var html = '<div class="pl-header">'
-            + '<div class="pl-header-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> بلايليست <span class="pl-count">' + playlist.length + '</span></div>'
-            + '<button class="pl-close" onclick="LORD.plTogglePanel()" title="إغلاق"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+            + '<div class="pl-header-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ' + t('playlist') + ' <span class="pl-count">' + playlist.length + '</span></div>'
+            + '<button class="pl-close" onclick="LORD.plTogglePanel()" title="' + t('close') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
             + '</div>';
         // Controls
         html += '<div class="pl-controls">'
-            + '<button class="pl-ctrl-btn" onclick="LORD.plPrev()" title="السابق"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg></button>'
-            + '<button class="pl-ctrl-btn pl-ctrl-main" onclick="LORD.plPlay(' + Math.max(plIdx, 0) + ')" title="تشغيل">' + (plActive ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>') + '</button>'
-            + '<button class="pl-ctrl-btn" onclick="LORD.plNext()" title="التالي"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg></button>'
+            + '<button class="pl-ctrl-btn" onclick="LORD.plPrev()" title="' + t('prev') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg></button>'
+            + '<button class="pl-ctrl-btn pl-ctrl-main" onclick="LORD.plPlay(' + Math.max(plIdx, 0) + ')" title="' + t('play') + '">' + (plActive ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>') + '</button>'
+            + '<button class="pl-ctrl-btn" onclick="LORD.plNext()" title="' + t('next') + '"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg></button>'
             + '<button class="pl-ctrl-btn pl-repeat' + (plRepeat !== 'none' ? ' active' : '') + '" onclick="LORD.plToggleRepeat()" title="' + repeatLabel[plRepeat] + '">' + repeatIcons[plRepeat] + '</button>'
             + '</div>';
         // Song list
@@ -1069,13 +1197,13 @@
             html += '<div class="pl-item' + (isActive ? ' pl-active' : '') + '" onclick="LORD.plPlay(' + i + ')">'
                 + '<span class="pl-item-num">' + (isActive ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="var(--accent)"><polygon points="5 3 19 12 5 21 5 3"/></svg>' : (i + 1)) + '</span>'
                 + '<div class="pl-item-info"><div class="pl-item-name">' + esc(playlist[i].name) + '</div><div class="pl-item-artist">' + esc(playlist[i].artist) + '</div></div>'
-                + '<button class="pl-item-del" onclick="event.stopPropagation();LORD.plRemove(' + i + ')" title="حذف"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
+                + '<button class="pl-item-del" onclick="event.stopPropagation();LORD.plRemove(' + i + ')" title="' + t('del') + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>'
                 + '</div>';
         }
         html += '</div>';
         // Footer
         html += '<div class="pl-footer">'
-            + '<button class="pl-footer-btn" onclick="LORD.plClear()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> مسح الكل</button>'
+            + '<button class="pl-footer-btn" onclick="LORD.plClear()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> ' + t('clearList') + '</button>'
             + '</div>';
         panel.className = 'pl-panel';
         panel.innerHTML = html;
@@ -1181,7 +1309,7 @@
     }
 
     function newConv() {
-        var c = { id: genId(), title: 'محادثة جديدة', msgs: [], ts: Date.now() };
+        var c = { id: genId(), title: t('newChat'), msgs: [], ts: Date.now() };
         convs.unshift(c);
         activeId = c.id;
         saveAll();
@@ -1213,7 +1341,7 @@
         saveAll();
         renderList();
         renderChat();
-        toast('تم حذف جميع المحادثات');
+        toast(t('cleared'));
     }
 
     /* ═══════ AUTO TITLE ═══════ */
@@ -1233,7 +1361,7 @@
             el.convList.innerHTML = '<div class="sidebar-empty">'
                 + '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".3">'
                 + '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
-                + '<span>ابدأ محادثة جديدة</span></div>';
+                + '<span>' + t('startNew') + '</span></div>';
             return;
         }
         var h = '';
@@ -1241,11 +1369,24 @@
             var c = convs[i];
             h += '<div class="conv' + (c.id === activeId ? ' on' : '') + '" onclick="LORD.sw(\'' + c.id + '\')">'
                 + '<span class="conv-t">' + esc(c.title) + '</span>'
-                + '<button class="conv-x" onclick="LORD.del(\'' + c.id + '\',event)" title="حذف">'
+                + '<button class="conv-x" onclick="LORD.del(\'' + c.id + '\',event)" title="' + t('del') + '">'
                 + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
                 + '</button></div>';
         }
         el.convList.innerHTML = h;
+        applyConvFilter();
+    }
+
+    /* ═══════ CONVERSATION SEARCH ═══════ */
+    function applyConvFilter() {
+        var cs = $('convSearch');
+        if (!cs || !el.convList) return;
+        var q = cs.value.trim().toLowerCase();
+        el.convList.querySelectorAll('.conv').forEach(function (item) {
+            var tEl = item.querySelector('.conv-t');
+            var match = !q || (tEl && tEl.textContent.toLowerCase().indexOf(q) !== -1);
+            item.style.display = match ? '' : 'none';
+        });
     }
 
     function renderChat() {
@@ -1272,16 +1413,16 @@
         var acts = '';
         if (!isU) {
             acts = '<div class="msg-acts">'
-                + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' نسخ</button>';
+                + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' ' + t('copy') + '</button>';
             if (isLastAI) {
-                acts += '<button class="act-btn" onclick="LORD.regen(this)">' + REGEN_SVG + ' إعادة توليد</button>';
+                acts += '<button class="act-btn" onclick="LORD.regen(this)">' + REGEN_SVG + ' ' + t('regen') + '</button>';
             }
             acts += '</div>';
         }
         return '<div class="msg ' + (isU ? 'msg-u' : 'msg-a') + '">'
             + '<div class="msg-in">'
             + '<div class="avatar">' + av + '</div>'
-            + '<div class="body">' + content + acts + '</div>'
+            + '<div class="body" dir="auto">' + content + acts + '</div>'
             + '</div></div>';
     }
 
@@ -1345,7 +1486,7 @@
         }).then(function (res) {
             if (!res.ok) {
                 return res.json().catch(function () { return {}; }).then(function (err) {
-                    var msg = err && err.error ? err.error.message : 'خطأ في الاتصال (HTTP ' + res.status + ')';
+                    var msg = err && err.error ? err.error.message : t('errConn') + ' (HTTP ' + res.status + ')';
                     throw new Error(msg);
                 });
             }
@@ -1374,8 +1515,8 @@
                     if (renderTimer) clearTimeout(renderTimer);
                     bodyEl.classList.remove('typing');
                     bodyEl.innerHTML = md(full) + '<div class="msg-acts">'
-                        + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' نسخ</button>'
-                        + '<button class="act-btn" onclick="LORD.regen(this)">' + REGEN_SVG + ' إعادة توليد</button>'
+                        + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' ' + t('copy') + '</button>'
+                        + '<button class="act-btn" onclick="LORD.regen(this)">' + REGEN_SVG + ' ' + t('regen') + '</button>'
                         + '</div>';
                     return full;
                 }
@@ -1413,21 +1554,21 @@
             if (renderTimer) clearTimeout(renderTimer);
             bodyEl.classList.remove('typing');
             if (e.name === 'AbortError') {
-                full += '\n\n*(تم الإيقاف)*';
+                full += '\n\n' + t('stopped');
             } else {
                 throw e;
             }
             bodyEl.innerHTML = md(full) + '<div class="msg-acts">'
-                + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' نسخ</button></div>';
+                + '<button class="act-btn" onclick="LORD.copyMsg(this)">' + COPY_SVG + ' ' + t('copy') + '</button></div>';
             return full;
         });
     }
 
     /* ═══════ ERROR HANDLING ═══════ */
     function handleError(err, c) {
-        var errText = '⚠️ ' + (err.message || 'حدث خطأ غير متوقع');
+        var errText = '⚠️ ' + (err.message || t('errUnknown'));
         if (err.message && err.message.indexOf('rate') !== -1) {
-            errText = '⏳ تم تجاوز الحد المسموح. انتظر قليلاً وحاول مرة أخرى.';
+            errText = t('errRate');
         }
         var aiMsg = { role: 'assistant', content: errText };
         c.msgs.push(aiMsg);
@@ -1508,6 +1649,26 @@
         el.clearBtn.addEventListener('click', clearAll);
         el.themeBtn.addEventListener('click', toggleTheme);
 
+        // Language toggle
+        var langBtn = $('langBtn');
+        if (langBtn) langBtn.addEventListener('click', toggleLang);
+
+        // Conversation search
+        var convSearch = $('convSearch');
+        if (convSearch) convSearch.addEventListener('input', applyConvFilter);
+
+        // Scroll-to-bottom button
+        var scrollBtn = $('scrollBtn');
+        if (scrollBtn) {
+            el.chatArea.addEventListener('scroll', function () {
+                var gap = el.chatArea.scrollHeight - el.chatArea.scrollTop - el.chatArea.clientHeight;
+                scrollBtn.classList.toggle('show', gap > 240);
+            });
+            scrollBtn.addEventListener('click', function () {
+                el.chatArea.scrollTo({ top: el.chatArea.scrollHeight, behavior: 'smooth' });
+            });
+        }
+
         el.sendBtn.addEventListener('click', function () { send(el.input.value); });
         el.stopBtn.addEventListener('click', function () { if (ctrl) ctrl.abort(); });
 
@@ -1544,6 +1705,7 @@
     /* ═══════ INIT ═══════ */
     function init() {
         cacheDom();
+        applyLang(get('lord_lang', 'ar'));
         initTheme();
         initFirebase();
         loadConvs();

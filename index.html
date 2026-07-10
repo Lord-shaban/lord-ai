@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LORD AI</title>
     <meta name="description" content="LORD AI — مساعد ذكاء اصطناعي متقدم">
-    <meta name="theme-color" content="#262624">
+    <meta name="theme-color" content="#16161d">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23d97757'/><text x='50' y='67' font-size='48' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,sans-serif'>L</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236e56f7'/><stop offset='1' stop-color='%234f7dff'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='68' font-size='50' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,sans-serif'>L</text></svg>">
 </head>
 <body>
 
@@ -19,11 +19,15 @@
         <div class="sidebar-head">
             <button class="sidebar-new" id="newChatBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                محادثة جديدة
+                <span data-ar="محادثة جديدة" data-en="New chat">محادثة جديدة</span>
             </button>
             <button class="icon-btn hide-desktop" id="closeSidebar">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
+        </div>
+        <div class="sidebar-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="convSearch" data-ar-ph="بحث في المحادثات" data-en-ph="Search chats" placeholder="بحث في المحادثات">
         </div>
         <div class="sidebar-convs" id="convList"></div>
         <div class="sidebar-foot">
@@ -31,12 +35,12 @@
                 <div class="brand-icon">L</div>
                 <div class="brand-info">
                     <span class="brand-name">LORD AI</span>
-                    <span class="brand-ver">v2.0 — Llama 3.3</span>
+                    <span class="brand-ver">v3.0 — 2026</span>
                 </div>
             </div>
             <button class="sidebar-btn text-danger-hover" id="clearBtn">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2"/></svg>
-                حذف جميع المحادثات
+                <span data-ar="حذف جميع المحادثات" data-en="Delete all chats">حذف جميع المحادثات</span>
             </button>
         </div>
     </aside>
@@ -52,7 +56,8 @@
                 <span class="topbar-title">LORD AI</span>
             </div>
             <div class="topbar-actions">
-                <button class="icon-btn" id="themeBtn" title="تبديل المظهر">
+                <button class="icon-btn lang-btn" id="langBtn" data-ar-title="English" data-en-title="العربية" title="English">EN</button>
+                <button class="icon-btn" id="themeBtn" data-ar-title="تبديل المظهر" data-en-title="Toggle theme" title="تبديل المظهر">
                     <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
             </div>
@@ -65,38 +70,38 @@
                     <div class="orb-ring"></div>
                     <div class="orb-core">L</div>
                 </div>
-                <h1 class="welcome-h">مرحباً، كيف أساعدك؟</h1>
-                <p class="welcome-sub">أنا LORD AI. يمكنني مساعدتك في الكتابة، البرمجة، التحليل، والإجابة على أسئلتك.</p>
+                <h1 class="welcome-h" data-ar="مرحباً، كيف أساعدك اليوم؟" data-en="Hello, how can I help you today?">مرحباً، كيف أساعدك اليوم؟</h1>
+                <p class="welcome-sub" data-ar="أنا LORD AI. أساعدك في الكتابة والبرمجة والتحليل، وأشغّل لك الموسيقى والأفلام." data-en="I'm LORD AI. I can help you write, code, analyze, and play music and movies.">أنا LORD AI. أساعدك في الكتابة والبرمجة والتحليل، وأشغّل لك الموسيقى والأفلام.</p>
                 <div class="prompts" id="prompts">
-                    <button class="prompt-card" data-q="اشرح لي الذكاء الاصطناعي بطريقة مبسطة">
+                    <button class="prompt-card" data-q="اشرح لي الذكاء الاصطناعي بطريقة مبسطة" data-q-ar="اشرح لي الذكاء الاصطناعي بطريقة مبسطة" data-q-en="Explain artificial intelligence in simple terms">
                         <div class="prompt-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                         </div>
-                        <div class="prompt-text"><strong>اشرح لي</strong><span>الذكاء الاصطناعي ببساطة</span></div>
+                        <div class="prompt-text"><strong data-ar="اشرح لي" data-en="Explain">اشرح لي</strong><span data-ar="الذكاء الاصطناعي ببساطة" data-en="AI in simple terms">الذكاء الاصطناعي ببساطة</span></div>
                     </button>
-                    <button class="prompt-card" data-q="اكتب لي كود Python لآلة حاسبة">
+                    <button class="prompt-card" data-q="اكتب لي كود Python لآلة حاسبة" data-q-ar="اكتب لي كود Python لآلة حاسبة" data-q-en="Write Python code for a calculator">
                         <div class="prompt-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                         </div>
-                        <div class="prompt-text"><strong>اكتب كود</strong><span>آلة حاسبة بـ Python</span></div>
+                        <div class="prompt-text"><strong data-ar="اكتب كود" data-en="Write code">اكتب كود</strong><span data-ar="آلة حاسبة بـ Python" data-en="a calculator in Python">آلة حاسبة بـ Python</span></div>
                     </button>
-                    <button class="prompt-card" data-q="ساعدني في كتابة مقال عن التقنية">
+                    <button class="prompt-card" data-q="ساعدني في كتابة مقال عن التقنية" data-q-ar="ساعدني في كتابة مقال عن التقنية" data-q-en="Help me write an article about technology">
                         <div class="prompt-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         </div>
-                        <div class="prompt-text"><strong>ساعدني أكتب</strong><span>مقال احترافي عن التقنية</span></div>
+                        <div class="prompt-text"><strong data-ar="ساعدني أكتب" data-en="Help me write">ساعدني أكتب</strong><span data-ar="مقال احترافي عن التقنية" data-en="a professional tech article">مقال احترافي عن التقنية</span></div>
                     </button>
-                    <button class="prompt-card" data-q="شغل لي أغنية حلوة">
+                    <button class="prompt-card" data-q="شغل لي أغنية حلوة" data-q-ar="شغل لي أغنية حلوة" data-q-en="Play me a nice song">
                         <div class="prompt-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                         </div>
-                        <div class="prompt-text"><strong>شغل أغنية</strong><span>اسمع موسيقى وحمّلها</span></div>
+                        <div class="prompt-text"><strong data-ar="شغل أغنية" data-en="Play a song">شغل أغنية</strong><span data-ar="اسمع موسيقى وحمّلها" data-en="listen &amp; download music">اسمع موسيقى وحمّلها</span></div>
                     </button>
-                    <button class="prompt-card" data-q="عايز أتفرج على فيلم">
+                    <button class="prompt-card" data-q="عايز أتفرج على فيلم" data-q-ar="عايز أتفرج على فيلم" data-q-en="I want to watch a movie">
                         <div class="prompt-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
                         </div>
-                        <div class="prompt-text"><strong>شاهد فيلم</strong><span>تفرج على أفلام مصرية</span></div>
+                        <div class="prompt-text"><strong data-ar="شاهد فيلم" data-en="Watch a movie">شاهد فيلم</strong><span data-ar="تفرج على أفلام مصرية" data-en="watch Egyptian movies">تفرج على أفلام مصرية</span></div>
                     </button>
                 </div>
             </div>
@@ -104,20 +109,24 @@
             <div class="messages" id="messages"></div>
         </div>
 
+        <button class="scroll-btn" id="scrollBtn" data-ar-title="الانتقال للأسفل" data-en-title="Scroll to bottom" title="الانتقال للأسفل">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg>
+        </button>
+
         <div class="input-wrap">
             <div class="input-shell">
                 <div class="input-box" id="inputBox">
-                    <textarea id="input" rows="1" placeholder="أرسل رسالة..."></textarea>
+                    <textarea id="input" rows="1" dir="auto" data-ar-ph="اسأل LORD AI…" data-en-ph="Ask LORD AI…" placeholder="اسأل LORD AI…"></textarea>
                     <div class="input-actions">
-                        <button class="send-btn" id="sendBtn" disabled>
+                        <button class="send-btn" id="sendBtn" disabled data-ar-title="إرسال" data-en-title="Send" title="إرسال">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5,12 12,5 19,12"/></svg>
                         </button>
-                        <button class="stop-btn none" id="stopBtn">
+                        <button class="stop-btn none" id="stopBtn" data-ar-title="إيقاف" data-en-title="Stop" title="إيقاف">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
                         </button>
                     </div>
                 </div>
-                <small class="input-note">LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة.</small>
+                <small class="input-note" data-ar="LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة." data-en="LORD AI can make mistakes. Verify important information.">LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة.</small>
             </div>
         </div>
     </main>
