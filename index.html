@@ -56,6 +56,12 @@
                 <span class="topbar-title">LORD AI</span>
             </div>
             <div class="topbar-actions">
+                <button class="icon-btn" id="searchBtn" data-ar-title="بحث وأوامر (Ctrl+K)" data-en-title="Search &amp; commands (Ctrl+K)" title="بحث وأوامر (Ctrl+K)">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </button>
+                <button class="icon-btn" id="personalizeBtn" data-ar-title="تخصيص LORD AI" data-en-title="Personalize LORD AI" title="تخصيص LORD AI">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                </button>
                 <button class="icon-btn" id="exportBtn" data-ar-title="تصدير المحادثة" data-en-title="Export chat" title="تصدير المحادثة">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 </button>
@@ -135,7 +141,14 @@
                         </button>
                     </div>
                 </div>
-                <small class="input-note" data-ar="LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة." data-en="LORD AI can make mistakes. Verify important information.">LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة.</small>
+                <div class="input-foot">
+                    <div class="style-row" id="styleRow">
+                        <button class="style-chip" data-style="concise" data-ar="مختصر" data-en="Concise" data-ar-title="ردود قصيرة ومباشرة" data-en-title="Short, direct replies">مختصر</button>
+                        <button class="style-chip" data-style="normal" data-ar="متوازن" data-en="Balanced" data-ar-title="الأسلوب الافتراضي" data-en-title="Default style">متوازن</button>
+                        <button class="style-chip" data-style="detailed" data-ar="مفصّل" data-en="Detailed" data-ar-title="شرح موسع مع أمثلة" data-en-title="In-depth with examples">مفصّل</button>
+                    </div>
+                    <small class="input-note" data-ar="LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة." data-en="LORD AI can make mistakes. Verify important information.">LORD AI قد يُخطئ أحياناً. تحقق من المعلومات المهمة.</small>
+                </div>
             </div>
         </div>
     </main>
@@ -152,9 +165,46 @@
             <div class="sc-row"><span data-ar="إرسال الرسالة" data-en="Send message">إرسال الرسالة</span><span class="keys"><kbd>Enter</kbd></span></div>
             <div class="sc-row"><span data-ar="سطر جديد" data-en="New line">سطر جديد</span><span class="keys"><kbd>Shift</kbd><kbd>Enter</kbd></span></div>
             <div class="sc-row"><span data-ar="محادثة جديدة" data-en="New chat">محادثة جديدة</span><span class="keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>N</kbd></span></div>
+        <div class="sc-row"><span data-ar="بحث وأوامر" data-en="Search &amp; commands">بحث وأوامر</span><span class="keys"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
             <div class="sc-row"><span data-ar="التركيز على صندوق الكتابة" data-en="Focus the composer">التركيز على صندوق الكتابة</span><span class="keys"><kbd>/</kbd></span></div>
             <div class="sc-row"><span data-ar="إظهار الاختصارات" data-en="Show shortcuts">إظهار الاختصارات</span><span class="keys"><kbd>Ctrl</kbd><kbd>/</kbd></span></div>
             <div class="sc-row"><span data-ar="إغلاق / رجوع" data-en="Close / back">إغلاق / رجوع</span><span class="keys"><kbd>Esc</kbd></span></div>
+        </div>
+    </div>
+
+    <!-- Command Palette (Ctrl+K) -->
+    <div class="ck-modal none" id="ckModal">
+        <div class="ck-box">
+            <div class="ck-search">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="ckInput" dir="auto" data-ar-ph="ابحث في المحادثات أو اكتب أمراً…" data-en-ph="Search chats or type a command…" placeholder="ابحث في المحادثات أو اكتب أمراً…">
+                <kbd>Esc</kbd>
+            </div>
+            <div class="ck-list" id="ckList"></div>
+        </div>
+    </div>
+
+    <!-- Personalize Modal -->
+    <div class="sc-modal none" id="ciModal">
+        <div class="sc-box ci-box">
+            <div class="sc-head">
+                <span data-ar="تخصيص LORD AI" data-en="Personalize LORD AI">تخصيص LORD AI</span>
+                <button class="icon-btn" id="closeCi">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="ci-body">
+                <label class="ci-label" data-ar="ما اسمك؟" data-en="What's your name?">ما اسمك؟</label>
+                <input type="text" class="ci-input" id="ciName" dir="auto" maxlength="40" data-ar-ph="اسمك أو كنيتك" data-en-ph="Your name or nickname" placeholder="اسمك أو كنيتك">
+                <label class="ci-label" data-ar="ماذا يجب أن يعرف LORD AI عنك؟" data-en="What should LORD AI know about you?">ماذا يجب أن يعرف LORD AI عنك؟</label>
+                <textarea class="ci-input" id="ciAbout" dir="auto" rows="2" maxlength="400" data-ar-ph="مثال: طالب هندسة، أحب البرمجة والموسيقى…" data-en-ph="e.g. engineering student, love coding and music…" placeholder="مثال: طالب هندسة، أحب البرمجة والموسيقى…"></textarea>
+                <label class="ci-label" data-ar="كيف تريد أن يرد عليك؟" data-en="How should LORD AI respond?">كيف تريد أن يرد عليك؟</label>
+                <textarea class="ci-input" id="ciExtra" dir="auto" rows="3" maxlength="600" data-ar-ph="مثال: رد بالعامية المصرية، استخدم أمثلة عملية…" data-en-ph="e.g. use casual tone, include practical examples…" placeholder="مثال: رد بالعامية المصرية، استخدم أمثلة عملية…"></textarea>
+                <div class="ci-actions">
+                    <button class="ci-clear" id="ciClear" data-ar="مسح الكل" data-en="Clear all">مسح الكل</button>
+                    <button class="ci-save" id="ciSave" data-ar="حفظ" data-en="Save">حفظ</button>
+                </div>
+            </div>
         </div>
     </div>
 

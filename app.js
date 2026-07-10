@@ -416,6 +416,25 @@
     var activeId = null;
     var busy = false;
     var ctrl = null;
+    var customCfg = { name: '', about: '', extra: '' };
+    var replyStyle = 'normal';   // 'concise' | 'normal' | 'detailed'
+    var stickBottom = true;      // Smart auto-scroll: follow stream only while user is near the bottom
+
+    /* ═══════ PERSONALIZED SYSTEM PROMPT ═══════ */
+    function buildSystemPrompt() {
+        var p = SYSTEM_PROMPT;
+        if (replyStyle === 'concise') {
+            p += '\n\n## أسلوب الرد المطلوب من المستخدم:\n- أجب بإيجاز شديد. أقصر إجابة صحيحة ممكنة، بدون أي تفاصيل إضافية.';
+        } else if (replyStyle === 'detailed') {
+            p += '\n\n## أسلوب الرد المطلوب من المستخدم:\n- أجب بتفصيل وشمولية: اشرح الخلفية، أعطِ أمثلة عملية، وغطِّ الحالات المهمة.';
+        }
+        var c = [];
+        if (customCfg.name) c.push('- اسم المستخدم: ' + customCfg.name + '. خاطبه باسمه أحياناً بشكل طبيعي.');
+        if (customCfg.about) c.push('- معلومات عن المستخدم: ' + customCfg.about);
+        if (customCfg.extra) c.push('- تعليمات من المستخدم لطريقة الرد (اتبعها دائماً): ' + customCfg.extra);
+        if (c.length) p += '\n\n## تخصيص المستخدم:\n' + c.join('\n');
+        return p;
+    }
 
     /* ═══════ PLAYLIST STATE ═══════ */
     var playlist = [];       // [{id, name, artist, file}]
@@ -556,7 +575,27 @@
             editHint: '✏️ عدّل رسالتك ثم أرسلها',
             saveSend: 'إرسال',
             cancel: 'إلغاء',
-            youWord: 'أنت'
+            youWord: 'أنت',
+            grpPinned: 'مثبتة',
+            pin: 'تثبيت',
+            unpin: 'إلغاء التثبيت',
+            pinned: '📌 تم تثبيت المحادثة',
+            unpinned: 'تم إلغاء التثبيت',
+            undo: 'تراجع',
+            convDeleted: 'تم حذف المحادثة',
+            ckActions: 'إجراءات',
+            ckChats: 'المحادثات',
+            ckEmpty: 'لا توجد نتائج',
+            actTheme: 'تبديل المظهر',
+            actLang: 'تغيير اللغة',
+            actExport: 'تصدير المحادثة',
+            actPersonalize: 'تخصيص LORD AI',
+            actShortcuts: 'اختصارات لوحة المفاتيح',
+            actClearAll: 'حذف جميع المحادثات',
+            quote: 'اقتباس',
+            styleToast: { concise: '⚡ أسلوب الرد: مختصر', normal: '⚖️ أسلوب الرد: متوازن', detailed: '📖 أسلوب الرد: مفصّل' },
+            ciSaved: '✓ تم حفظ التخصيص',
+            ciClearedT: 'تم مسح التخصيص'
         },
         en: {
             newChat: 'New chat',
@@ -615,7 +654,27 @@
             editHint: '✏️ Edit your message and send',
             saveSend: 'Send',
             cancel: 'Cancel',
-            youWord: 'You'
+            youWord: 'You',
+            grpPinned: 'Pinned',
+            pin: 'Pin',
+            unpin: 'Unpin',
+            pinned: '📌 Chat pinned',
+            unpinned: 'Chat unpinned',
+            undo: 'Undo',
+            convDeleted: 'Chat deleted',
+            ckActions: 'Actions',
+            ckChats: 'Chats',
+            ckEmpty: 'No results',
+            actTheme: 'Toggle theme',
+            actLang: 'Switch language',
+            actExport: 'Export chat',
+            actPersonalize: 'Personalize LORD AI',
+            actShortcuts: 'Keyboard shortcuts',
+            actClearAll: 'Delete all chats',
+            quote: 'Quote',
+            styleToast: { concise: '⚡ Reply style: concise', normal: '⚖️ Reply style: balanced', detailed: '📖 Reply style: detailed' },
+            ciSaved: '✓ Personalization saved',
+            ciClearedT: 'Personalization cleared'
         }
     };
 
@@ -680,6 +739,33 @@
             t.classList.remove('show');
             setTimeout(function () { t.remove(); }, 350);
         }, 2500);
+    }
+
+    /* Toast with an Undo action (used for destructive operations) */
+    function toastUndo(msg, onUndo) {
+        var old = document.querySelector('.toast');
+        if (old) old.remove();
+        var box = document.createElement('div');
+        box.className = 'toast undoable';
+        var span = document.createElement('span');
+        span.textContent = msg;
+        var btn = document.createElement('button');
+        btn.className = 'toast-undo';
+        btn.textContent = t('undo');
+        box.appendChild(span);
+        box.appendChild(btn);
+        document.body.appendChild(box);
+        function hide() {
+            box.classList.remove('show');
+            setTimeout(function () { box.remove(); }, 350);
+        }
+        var timer = setTimeout(hide, 6000);
+        btn.addEventListener('click', function () {
+            clearTimeout(timer);
+            hide();
+            onUndo();
+        });
+        requestAnimationFrame(function () { box.classList.add('show'); });
     }
 
     /* ═══════ MARKDOWN PARSER ═══════ */
@@ -934,7 +1020,7 @@
             });
         },
         copyMsg: function (btn) {
-            var body = btn.closest('.body');
+            var body = btn.closest('.body') || btn.closest('.msg').querySelector('.body');
             var text = body.innerText.replace(/^(نسخ|إعادة توليد|Copy|Regenerate)$/gm, '').trim();
             navigator.clipboard.writeText(text).then(function () {
                 toast(t('copied'));
@@ -1210,6 +1296,18 @@
         },
         sw: function (id) { switchConv(id); },
         del: function (id, e) { e.stopPropagation(); deleteConv(id); },
+        pin: function (id, e) {
+            e.stopPropagation();
+            for (var i = 0; i < convs.length; i++) {
+                if (convs[i].id === id) {
+                    convs[i].pin = !convs[i].pin;
+                    toast(convs[i].pin ? t('pinned') : t('unpinned'));
+                    break;
+                }
+            }
+            saveAll();
+            renderList();
+        },
         ren: function (id, e) {
             e.stopPropagation();
             var item = e.target.closest('.conv');
@@ -1523,20 +1621,40 @@
     }
 
     function deleteConv(id) {
-        convs = convs.filter(function (c) { return c.id !== id; });
+        var idx = -1;
+        for (var i = 0; i < convs.length; i++) {
+            if (convs[i].id === id) { idx = i; break; }
+        }
+        if (idx < 0) return;
+        var removed = convs[idx];
+        convs.splice(idx, 1);
         if (activeId === id) activeId = convs.length ? convs[0].id : null;
         saveAll();
         renderList();
         renderChat();
+        toastUndo(t('convDeleted'), function () {
+            convs.splice(Math.min(idx, convs.length), 0, removed);
+            activeId = removed.id;
+            saveAll();
+            renderList();
+            renderChat();
+        });
     }
 
     function clearAll() {
         if (!convs.length) return;
+        var snapConvs = convs, snapActive = activeId;
         convs = []; activeId = null;
         saveAll();
         renderList();
         renderChat();
-        toast(t('cleared'));
+        toastUndo(t('cleared'), function () {
+            convs = snapConvs;
+            activeId = snapActive;
+            saveAll();
+            renderList();
+            renderChat();
+        });
     }
 
     /* ═══════ AUTO TITLE ═══════ */
@@ -1548,6 +1666,48 @@
         var lastSpace = cut.lastIndexOf(' ');
         if (lastSpace > 15) cut = cut.substring(0, lastSpace);
         return cut + '…';
+    }
+
+    /* ═══════ AI AUTO TITLE ═══════
+       After the first exchange, ask the model for a short smart title
+       (fire-and-forget: any failure silently keeps the truncated title) */
+    function aiAutoTitle(c, userText, aiText) {
+        try {
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + API_KEY
+                },
+                body: JSON.stringify({
+                    model: MODEL,
+                    messages: [
+                        { role: 'system', content: 'اكتب عنواناً قصيراً جداً (2 إلى 5 كلمات) يلخص موضوع المحادثة. بنفس لغة المستخدم. أجب بالعنوان فقط — بدون علامات اقتباس أو ترقيم أو شرح.' },
+                        { role: 'user', content: (userText || '').slice(0, 500) + '\n---\n' + (aiText || '').slice(0, 400) }
+                    ],
+                    stream: false,
+                    temperature: 0.3,
+                    max_tokens: 30
+                })
+            }).then(function (r) {
+                return r.ok ? r.json() : null;
+            }).then(function (d) {
+                if (!d) return;
+                var title = d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+                if (!title) return;
+                title = title.replace(/["'«»`#*_\n]/g, '').trim();
+                if (!title || title.length > 60) return;
+                // The conversation may have been deleted meanwhile
+                for (var i = 0; i < convs.length; i++) {
+                    if (convs[i].id === c.id) {
+                        convs[i].title = title;
+                        saveAll();
+                        renderList();
+                        break;
+                    }
+                }
+            }).catch(function () { });
+        } catch (e) { }
     }
 
     /* ═══════ RENDER ═══════ */
@@ -1572,23 +1732,41 @@
             return 3;
         }
         var grpNames = [t('grpToday'), t('grpYest'), t('grpWeek'), t('grpOlder')];
-        var h = '';
-        var lastGrp = -1;
-        for (var i = 0; i < convs.length; i++) {
-            var c = convs[i];
-            var g = grpOf(c.ts);
-            if (g !== lastGrp) {
-                h += '<div class="conv-group">' + grpNames[g] + '</div>';
-                lastGrp = g;
-            }
-            h += '<div class="conv' + (c.id === activeId ? ' on' : '') + '" onclick="LORD.sw(\'' + c.id + '\')">'
+
+        function itemHTML(c) {
+            var pinTitle = c.pin ? t('unpin') : t('pin');
+            var pinIco = c.pin
+                ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></svg>'
+                : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></svg>';
+            return '<div class="conv' + (c.id === activeId ? ' on' : '') + '" data-cid="' + c.id + '" onclick="LORD.sw(\'' + c.id + '\')">'
                 + '<span class="conv-t">' + esc(c.title) + '</span>'
+                + '<button class="conv-pin' + (c.pin ? ' pinned' : '') + '" onclick="LORD.pin(\'' + c.id + '\',event)" title="' + pinTitle + '">' + pinIco + '</button>'
                 + '<button class="conv-ren" onclick="LORD.ren(\'' + c.id + '\',event)" title="' + t('rename') + '">'
                 + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'
                 + '</button>'
                 + '<button class="conv-x" onclick="LORD.del(\'' + c.id + '\',event)" title="' + t('del') + '">'
                 + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
                 + '</button></div>';
+        }
+
+        var pinned = [], rest = [];
+        for (var i = 0; i < convs.length; i++) {
+            (convs[i].pin ? pinned : rest).push(convs[i]);
+        }
+        var h = '';
+        if (pinned.length) {
+            h += '<div class="conv-group">📌 ' + t('grpPinned') + '</div>';
+            for (var p = 0; p < pinned.length; p++) h += itemHTML(pinned[p]);
+        }
+        var lastGrp = -1;
+        for (var j = 0; j < rest.length; j++) {
+            var c = rest[j];
+            var g = grpOf(c.ts);
+            if (g !== lastGrp) {
+                h += '<div class="conv-group">' + grpNames[g] + '</div>';
+                lastGrp = g;
+            }
+            h += itemHTML(c);
         }
         el.convList.innerHTML = h;
         applyConvFilter();
@@ -1624,7 +1802,8 @@
             h += msgHTML(c.msgs[i], i === c.msgs.length - 1 && c.msgs[i].role === 'assistant');
         }
         el.messages.innerHTML = h;
-        scrollBottom();
+        stickBottom = true;
+        scrollBottom(true);
     }
 
     function msgHTML(m, isLastAI) {
@@ -1635,6 +1814,7 @@
         var inner;
         if (isU) {
             var uActs = '<div class="msg-acts msg-acts-u">'
+                + '<button class="act-btn" onclick="LORD.copyMsg(this)" title="' + t('copy') + '">' + COPY_SVG + '</button>'
                 + '<button class="act-btn" onclick="LORD.editMsg(this)" title="' + t('edit') + '">' + EDIT_SVG + '</button>'
                 + '</div>';
             inner = '<div class="body" dir="auto">' + content + '</div>' + uActs;
@@ -1672,7 +1852,8 @@
         if (d) d.remove();
     }
 
-    function scrollBottom() {
+    function scrollBottom(force) {
+        if (!force && !stickBottom) return;
         requestAnimationFrame(function () {
             el.chatArea.scrollTop = el.chatArea.scrollHeight;
         });
@@ -1680,7 +1861,7 @@
 
     /* ═══════ API ═══════ */
     function callAPI(msgs) {
-        var contents = [{ role: 'system', content: SYSTEM_PROMPT }];
+        var contents = [{ role: 'system', content: buildSystemPrompt() }];
         for (var i = 0; i < msgs.length; i++) {
             contents.push({
                 role: msgs[i].role === 'user' ? 'user' : 'assistant',
@@ -1812,6 +1993,7 @@
 
         var userMsg = { role: 'user', content: text, ts: Date.now() };
         c.msgs.push(userMsg);
+        stickBottom = true;
 
         if (c.msgs.length === 1) {
             c.title = generateTitle(text);
@@ -1841,6 +2023,7 @@
                 c.msgs.push(aiMsg);
                 saveAll();
                 trackMessage('assistant', txt, Date.now() - sendTime);
+                if (c.msgs.length === 2) aiAutoTitle(c, text, txt);
             });
         }).catch(function (err) {
             hideDots();
@@ -1885,6 +2068,225 @@
         if (!m) return;
         if (show === undefined) show = m.classList.contains('none');
         m.classList.toggle('none', !show);
+    }
+
+    /* ═══════ PERSONALIZE (CUSTOM INSTRUCTIONS) ═══════ */
+    function toggleCi(show) {
+        var m = $('ciModal');
+        if (!m) return;
+        if (show === undefined) show = m.classList.contains('none');
+        m.classList.toggle('none', !show);
+        if (show) {
+            $('ciName').value = customCfg.name || '';
+            $('ciAbout').value = customCfg.about || '';
+            $('ciExtra').value = customCfg.extra || '';
+            setTimeout(function () { $('ciName').focus(); }, 60);
+        }
+    }
+
+    function saveCi() {
+        customCfg = {
+            name: $('ciName').value.trim(),
+            about: $('ciAbout').value.trim(),
+            extra: $('ciExtra').value.trim()
+        };
+        save('lord_custom', customCfg);
+        toggleCi(false);
+        toast(t('ciSaved'));
+    }
+
+    /* ═══════ REPLY STYLE (concise / balanced / detailed) ═══════ */
+    function paintStyleChips() {
+        document.querySelectorAll('.style-chip').forEach(function (b) {
+            b.classList.toggle('on', b.getAttribute('data-style') === replyStyle);
+        });
+    }
+
+    function setStyle(s) {
+        replyStyle = s;
+        save('lord_style', s);
+        paintStyleChips();
+        toast(t('styleToast')[s]);
+    }
+
+    /* ═══════ COMMAND PALETTE (Ctrl+K) ═══════ */
+    var ckItems = [];
+    var ckSel = 0;
+
+    var CK_CHAT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    var CK_BOLT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+
+    function ckActionList() {
+        return [
+            { label: t('newChat'), run: newConv },
+            { label: t('actTheme'), run: toggleTheme },
+            { label: t('actLang'), run: toggleLang },
+            { label: t('actExport'), run: exportChat },
+            { label: t('actPersonalize'), run: function () { toggleCi(true); } },
+            { label: t('actShortcuts'), run: function () { toggleShortcuts(true); } },
+            { label: t('actClearAll'), run: clearAll, danger: true }
+        ];
+    }
+
+    function ckToggle(show) {
+        var m = $('ckModal');
+        if (!m) return;
+        if (show === undefined) show = m.classList.contains('none');
+        m.classList.toggle('none', !show);
+        if (show) {
+            var inp = $('ckInput');
+            inp.value = '';
+            ckBuild('');
+            setTimeout(function () { inp.focus(); }, 40);
+        }
+    }
+
+    function ckBuild(q) {
+        q = q.trim().toLowerCase();
+        ckItems = [];
+        ckSel = 0;
+        var list = $('ckList');
+        if (!list) return;
+
+        // Matching chats: by title, or full-text inside messages when a query exists
+        var matches = [];
+        for (var i = 0; i < convs.length && matches.length < 10; i++) {
+            var c = convs[i];
+            var snippet = '';
+            var hit = !q || c.title.toLowerCase().indexOf(q) !== -1;
+            if (!hit && q) {
+                for (var m = 0; m < c.msgs.length; m++) {
+                    var body = (c.msgs[m].content || '');
+                    var at = body.toLowerCase().indexOf(q);
+                    if (at !== -1) {
+                        hit = true;
+                        snippet = body.substring(Math.max(0, at - 18), at + 62).replace(/\s+/g, ' ').trim();
+                        break;
+                    }
+                }
+            }
+            if (hit) matches.push({ conv: c, snippet: snippet });
+        }
+        var actions = ckActionList().filter(function (a) {
+            return !q || a.label.toLowerCase().indexOf(q) !== -1;
+        });
+        if (!q) matches = matches.slice(0, 5);
+
+        var html = '';
+        function pushItem(icon, title, sub, run, danger) {
+            ckItems.push({ run: run });
+            html += '<button class="ck-item' + (danger ? ' ck-danger' : '') + '" data-i="' + (ckItems.length - 1) + '">'
+                + '<span class="ck-ico">' + icon + '</span>'
+                + '<span class="ck-item-t">' + esc(title)
+                + (sub ? '<small>' + esc(sub) + '</small>' : '')
+                + '</span></button>';
+        }
+
+        // With a query, chats come first (search feel); otherwise actions first
+        function chatsSection() {
+            if (!matches.length) return;
+            html += '<div class="ck-sec">' + t('ckChats') + '</div>';
+            matches.forEach(function (m2) {
+                pushItem(CK_CHAT_SVG, m2.conv.title, m2.snippet, (function (id) {
+                    return function () { switchConv(id); };
+                })(m2.conv.id));
+            });
+        }
+        function actionsSection() {
+            if (!actions.length) return;
+            html += '<div class="ck-sec">' + t('ckActions') + '</div>';
+            actions.forEach(function (a) {
+                pushItem(CK_BOLT_SVG, a.label, '', a.run, a.danger);
+            });
+        }
+        if (q) { chatsSection(); actionsSection(); }
+        else { actionsSection(); chatsSection(); }
+
+        if (!ckItems.length) html = '<div class="ck-empty">' + t('ckEmpty') + '</div>';
+        list.innerHTML = html;
+        ckPaint();
+    }
+
+    function ckPaint() {
+        var items = document.querySelectorAll('.ck-item');
+        items.forEach(function (n, i) {
+            n.classList.toggle('sel', i === ckSel);
+        });
+        var cur = items[ckSel];
+        if (cur) cur.scrollIntoView({ block: 'nearest' });
+    }
+
+    function ckRun(i) {
+        if (!ckItems[i]) return;
+        ckToggle(false);
+        ckItems[i].run();
+    }
+
+    /* ═══════ QUOTE SELECTED TEXT ═══════ */
+    var quotePop = null;
+    var QUOTE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>';
+
+    function hideQuotePop() {
+        if (quotePop) { quotePop.remove(); quotePop = null; }
+    }
+
+    function maybeShowQuote() {
+        var sel = window.getSelection();
+        if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+        var txt = sel.toString().trim();
+        if (txt.length < 2 || txt.length > 1500) return;
+        var n = sel.anchorNode;
+        var elem = n && (n.nodeType === 1 ? n : n.parentElement);
+        if (!elem || !elem.closest || !elem.closest('.msg .body')) return;
+        var rect = sel.getRangeAt(0).getBoundingClientRect();
+
+        hideQuotePop();
+        quotePop = document.createElement('div');
+        quotePop.className = 'quote-pop';
+
+        var qb = document.createElement('button');
+        qb.innerHTML = QUOTE_SVG + ' ' + t('quote');
+        qb.addEventListener('click', function () {
+            var quoted = txt.split('\n').map(function (l) { return '> ' + l; }).join('\n') + '\n\n';
+            el.input.value = quoted + el.input.value;
+            resizeInput();
+            updateSend();
+            el.input.focus();
+            el.input.setSelectionRange(el.input.value.length, el.input.value.length);
+            hideQuotePop();
+            window.getSelection().removeAllRanges();
+        });
+
+        var cb = document.createElement('button');
+        cb.innerHTML = COPY_SVG + ' ' + t('copy');
+        cb.addEventListener('click', function () {
+            navigator.clipboard.writeText(txt).then(function () { toast(t('copied')); });
+            hideQuotePop();
+            window.getSelection().removeAllRanges();
+        });
+
+        quotePop.appendChild(qb);
+        quotePop.appendChild(cb);
+        document.body.appendChild(quotePop);
+
+        var w = quotePop.offsetWidth;
+        var left = rect.left + rect.width / 2 - w / 2;
+        left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+        var top = rect.top - quotePop.offsetHeight - 8;
+        if (top < 8) top = rect.bottom + 8;
+        quotePop.style.left = left + 'px';
+        quotePop.style.top = top + 'px';
+    }
+
+    function initQuote() {
+        document.addEventListener('mouseup', function (e) {
+            if (quotePop && quotePop.contains(e.target)) return;
+            setTimeout(maybeShowQuote, 10);
+        });
+        document.addEventListener('mousedown', function (e) {
+            if (quotePop && !quotePop.contains(e.target)) hideQuotePop();
+        });
+        el.chatArea.addEventListener('scroll', hideQuotePop);
     }
 
     /* ═══════ VOICE INPUT ═══════ */
@@ -1945,6 +2347,54 @@
             if (e.target === scModal) toggleShortcuts(false);
         });
 
+        // Personalize modal
+        var personalizeBtn = $('personalizeBtn');
+        if (personalizeBtn) personalizeBtn.addEventListener('click', function () { toggleCi(true); });
+        var closeCi = $('closeCi');
+        if (closeCi) closeCi.addEventListener('click', function () { toggleCi(false); });
+        var ciModal = $('ciModal');
+        if (ciModal) ciModal.addEventListener('click', function (e) {
+            if (e.target === ciModal) toggleCi(false);
+        });
+        var ciSave = $('ciSave');
+        if (ciSave) ciSave.addEventListener('click', saveCi);
+        var ciClear = $('ciClear');
+        if (ciClear) ciClear.addEventListener('click', function () {
+            $('ciName').value = ''; $('ciAbout').value = ''; $('ciExtra').value = '';
+            customCfg = { name: '', about: '', extra: '' };
+            save('lord_custom', customCfg);
+            toast(t('ciClearedT'));
+        });
+
+        // Reply style chips
+        document.querySelectorAll('.style-chip').forEach(function (b) {
+            b.addEventListener('click', function () {
+                setStyle(b.getAttribute('data-style'));
+            });
+        });
+
+        // Command palette
+        var searchBtn = $('searchBtn');
+        if (searchBtn) searchBtn.addEventListener('click', function () { ckToggle(true); });
+        var ckModal = $('ckModal');
+        if (ckModal) ckModal.addEventListener('click', function (e) {
+            if (e.target === ckModal) ckToggle(false);
+        });
+        var ckInput = $('ckInput');
+        if (ckInput) {
+            ckInput.addEventListener('input', function () { ckBuild(ckInput.value); });
+            ckInput.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown') { e.preventDefault(); if (ckSel < ckItems.length - 1) ckSel++; ckPaint(); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); if (ckSel > 0) ckSel--; ckPaint(); }
+                else if (e.key === 'Enter') { e.preventDefault(); ckRun(ckSel); }
+            });
+        }
+        var ckList = $('ckList');
+        if (ckList) ckList.addEventListener('click', function (e) {
+            var it = e.target.closest('.ck-item');
+            if (it) ckRun(+it.getAttribute('data-i'));
+        });
+
         // Conversation search
         var convSearch = $('convSearch');
         if (convSearch) convSearch.addEventListener('input', applyConvFilter);
@@ -1955,8 +2405,11 @@
             el.chatArea.addEventListener('scroll', function () {
                 var gap = el.chatArea.scrollHeight - el.chatArea.scrollTop - el.chatArea.clientHeight;
                 scrollBtn.classList.toggle('show', gap > 240);
+                // Smart auto-scroll: stop following the stream once the user scrolls up
+                stickBottom = gap < 140;
             });
             scrollBtn.addEventListener('click', function () {
+                stickBottom = true;
                 el.chatArea.scrollTo({ top: el.chatArea.scrollHeight, behavior: 'smooth' });
             });
         }
@@ -1986,12 +2439,19 @@
             if (e.key === 'Escape') {
                 if (el.sidebar.classList.contains('open')) closeSB();
                 toggleShortcuts(false);
+                toggleCi(false);
+                ckToggle(false);
+                hideQuotePop();
             }
             if (e.ctrlKey && e.shiftKey && e.key === 'N') { e.preventDefault(); newConv(); }
+            if (e.ctrlKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); ckToggle(); return; }
             if (e.ctrlKey && e.key === '/') { e.preventDefault(); toggleShortcuts(); return; }
             if (e.key === '/' && document.activeElement !== el.input && !busy) {
-                e.preventDefault();
-                el.input.focus();
+                var typing = document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+                if (!typing) {
+                    e.preventDefault();
+                    el.input.focus();
+                }
             }
         });
 
@@ -2005,10 +2465,14 @@
         initTheme();
         initFirebase();
         loadConvs();
+        customCfg = get('lord_custom', { name: '', about: '', extra: '' });
+        replyStyle = get('lord_style', 'normal');
         trackPageView();
         renderList();
         renderChat();
         bind();
+        paintStyleChips();
+        initQuote();
         initPlaylist();
         initMic();
         updateSend();
