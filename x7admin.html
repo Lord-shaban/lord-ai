@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--b0:#141514;--b1:#1b1d1c;--b2:#232525;--b3:#333635;--b4:#434645;--t1:#e9ebe9;--t2:#b2b7b3;--t3:#7d827e;--ac:#62b3a1;--gn:#22c55e;--rd:#ef4444;--bl:#5b8def;--or:#f59e0b;--pu:#4a9d8c;--cy:#06b6d4;--r:14px;--f:'Inter','Noto Sans Arabic',sans-serif;--m:'JetBrains Mono',monospace}
+        :root{--b0:#141514;--b1:#1b1d1c;--b2:#232525;--b3:#333635;--b4:#434645;--t1:#e9ebe9;--t2:#b2b7b3;--t3:#7d827e;--ac:#62b3a1;--gn:#22c55e;--rd:#ef4444;--bl:#5b8def;--or:#f59e0b;--pu:#4a9d8c;--cy:#06b6d4;--pk:#ec4899;--r:14px;--f:'Inter','Noto Sans Arabic',sans-serif;--m:'JetBrains Mono',monospace}
         body{font-family:var(--f);background:var(--b0);color:var(--t1);min-height:100vh}
 
         .login-w{position:fixed;inset:0;background:var(--b0);display:flex;align-items:center;justify-content:center;z-index:99}
@@ -21,7 +21,7 @@
         @keyframes shake{25%,75%{transform:translateX(-5px)}50%{transform:translateX(5px)}}
 
         .D{max-width:1400px;margin:0 auto;padding:18px}
-        .hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 0 16px;border-bottom:1px solid var(--b3);margin-bottom:18px;flex-wrap:wrap;gap:10px}
+        .hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 0 16px;border-bottom:1px solid var(--b3);margin-bottom:14px;flex-wrap:wrap;gap:10px}
         .logo{display:flex;align-items:center;gap:10px}
         .logo i{width:36px;height:36px;background:linear-gradient(135deg,var(--ac),var(--pu));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;font-style:normal}
         .logo h1{font-size:16px}.logo span{font-size:10px;color:var(--t3);display:block}
@@ -29,53 +29,76 @@
         .bt{padding:6px 12px;border-radius:7px;border:1px solid var(--b3);background:var(--b2);color:var(--t2);font-family:var(--f);font-size:11px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;transition:all .15s}
         .bt:hover{background:var(--b3);color:var(--t1)}
 
-        /* Alert banner */
-        .alert{padding:12px 16px;border-radius:var(--r);margin-bottom:16px;font-size:12px;display:none}
+        .alert{padding:12px 16px;border-radius:var(--r);margin-bottom:14px;font-size:12px;display:none}
         .alert.on{display:block}
         .alert.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--gn)}
         .alert.bad{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--rd)}
         .alert.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--or)}
 
-        .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:18px}
+        /* Toolbar: range chips + search */
+        .tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+        .chips{display:flex;gap:6px;flex-wrap:wrap}
+        .chip{padding:6px 14px;border-radius:99px;border:1px solid var(--b3);background:var(--b1);color:var(--t2);font-family:var(--f);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+        .chip:hover{color:var(--t1);border-color:var(--b4)}
+        .chip.on{background:rgba(98,179,161,.14);border-color:var(--ac);color:var(--ac)}
+        .srch{display:flex;align-items:center;gap:8px;background:var(--b1);border:1px solid var(--b3);border-radius:99px;padding:7px 14px;min-width:260px;flex:1;max-width:380px}
+        .srch svg{flex-shrink:0;color:var(--t3)}
+        .srch input{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:var(--f);font-size:12px}
+        .upd{font-size:10px;color:var(--t3);white-space:nowrap}
+
+        .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
         .cd{background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;animation:fu .4s ease both}
         .cd::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
         .cd.g::before{background:var(--gn)}.cd.b::before{background:var(--bl)}.cd.p::before{background:var(--pu)}
-        .cd.o::before{background:var(--or)}.cd.r::before{background:var(--rd)}.cd.c::before{background:var(--cy)}
+        .cd.o::before{background:var(--or)}.cd.r::before{background:var(--rd)}.cd.c::before{background:var(--cy)}.cd.k::before{background:var(--pk)}
         .cd-h{display:flex;justify-content:space-between;margin-bottom:8px}
         .cd-l{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase}
-        .cd-v{font-size:24px;font-weight:800;letter-spacing:-1px;font-family:var(--m)}
+        .cd-v{font-size:23px;font-weight:800;letter-spacing:-1px;font-family:var(--m)}
         .cd-s{font-size:10px;color:var(--t3)}
         @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
         .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
         .fw{grid-column:1/-1}
         .sc{background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);overflow:hidden}
-        .sh{padding:10px 14px;border-bottom:1px solid var(--b3);font-size:12px;font-weight:600}
+        .sh{padding:10px 14px;border-bottom:1px solid var(--b3);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px}
+        .sh small{font-weight:400;color:var(--t3);font-size:10px}
         .sb{padding:14px}
-        .brs{display:flex;align-items:flex-end;gap:4px;height:130px}
-        .brc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-        .br{width:100%;min-height:2px;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--ac),rgba(98,179,161,.2))}
+        .cnt{background:rgba(239,68,68,.14);color:var(--rd);border-radius:99px;padding:2px 9px;font-size:10px;font-weight:700;font-family:var(--m)}
+
+        .brs{display:flex;align-items:flex-end;gap:4px;height:140px}
+        .brc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+        .stk{width:100%;display:flex;flex-direction:column-reverse;gap:1px}
+        .br{width:100%;min-height:1px;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--ac),rgba(98,179,161,.25))}
+        .br.m{background:linear-gradient(180deg,var(--bl),rgba(91,141,239,.25));border-radius:0}
         .bl2{font-size:8px;color:var(--t3);font-family:var(--m)}.bv{font-size:8px;color:var(--t2);font-family:var(--m);font-weight:600}
+        .lgnd{display:flex;gap:14px;margin-top:10px;font-size:10px;color:var(--t3)}
+        .lgnd i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-inline-end:4px;font-style:normal}
+
         table{width:100%;border-collapse:collapse}
         th{text-align:right;padding:7px 10px;font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;border-bottom:1px solid var(--b3)}
         td{padding:7px 10px;font-size:11px;color:var(--t2);border-bottom:1px solid var(--b3)}
         tr:last-child td{border:none}tr:hover td{background:var(--b2)}
         .bg{padding:2px 7px;border-radius:10px;font-size:9px;font-weight:600}
         .bg-g{background:rgba(34,197,94,.12);color:var(--gn)}.bg-b{background:rgba(59,130,246,.12);color:var(--bl)}
+        .bg-o{background:rgba(245,158,11,.12);color:var(--or)}.bg-r{background:rgba(239,68,68,.12);color:var(--rd)}
+        .bg-p{background:rgba(74,157,140,.15);color:var(--pu)}
+
         .pi{margin-bottom:10px}.pi:last-child{margin-bottom:0}
-        .pi label{font-size:11px;color:var(--t2);display:flex;justify-content:space-between;margin-bottom:3px}
+        .pi label{font-size:11px;color:var(--t2);display:flex;justify-content:space-between;margin-bottom:3px;gap:8px}
+        .pi label span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .pt{width:100%;height:6px;background:var(--b3);border-radius:3px;overflow:hidden}
         .pf{height:100%;border-radius:3px}
-        .pr{display:flex;justify-content:space-between;padding:7px 10px;background:var(--b2);border-radius:7px;margin-bottom:5px;font-size:11px}
+        .pr{display:flex;justify-content:space-between;padding:7px 10px;background:var(--b2);border-radius:7px;margin-bottom:5px;font-size:11px;gap:8px}
         .pr:last-child{margin-bottom:0}
-        .fd{max-height:280px;overflow-y:auto}
-        .fi{display:flex;gap:7px;padding:7px 0;border-bottom:1px solid var(--b3);font-size:11px;color:var(--t2)}
+        .fd{max-height:300px;overflow-y:auto}
+        .fi{display:flex;justify-content:space-between;gap:7px;padding:7px 0;border-bottom:1px solid var(--b3);font-size:11px;color:var(--t2)}
         .fi:last-child{border:none}
-        .fi small{font-size:9px;color:var(--t3)}
+        .fi small{font-size:9px;color:var(--t3);white-space:nowrap}
         .em{text-align:center;padding:24px;color:var(--t3);font-size:12px}
         .ld{text-align:center;padding:24px;color:var(--t3);font-size:12px}
-        #log{margin-top:14px;background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);padding:12px;font-family:var(--m);font-size:10px;color:var(--t3);white-space:pre-wrap;max-height:250px;overflow-y:auto}
-        @media(max-width:900px){.g2{grid-template-columns:1fr}}
+        .scroll-y{max-height:320px;overflow-y:auto}
+        #log{margin-top:14px;background:var(--b1);border:1px solid var(--b3);border-radius:var(--r);padding:12px;font-family:var(--m);font-size:10px;color:var(--t3);white-space:pre-wrap;max-height:220px;overflow-y:auto}
+        @media(max-width:900px){.g2{grid-template-columns:1fr}.srch{min-width:0;max-width:none;width:100%}}
         @media(max-width:600px){.cg{grid-template-columns:repeat(2,1fr);gap:8px}.hdr{flex-direction:column;align-items:flex-start}}
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px}
     </style>
@@ -94,26 +117,68 @@
 
 <div class="D" id="DC" style="display:none">
     <header class="hdr">
-        <div class="logo"><i>L</i><div><h1>لوحة تحكم الأدمن</h1><span>LORD AI Admin</span></div></div>
+        <div class="logo"><i>L</i><div><h1>لوحة تحكم الأدمن</h1><span>LORD AI Admin — نظرة شاملة</span></div></div>
         <div class="hbtns">
             <button class="bt" onclick="testConn()">🔌 اختبار الاتصال</button>
             <button class="bt" onclick="loadData()">🔄 تحديث</button>
             <a href="index.html" class="bt">💬 الشات</a>
-            <button class="bt" onclick="doExport()">📥 تصدير</button>
+            <button class="bt" onclick="exportJSON()">📥 JSON</button>
+            <button class="bt" onclick="exportCSV()">📊 CSV</button>
             <button class="bt" onclick="doLogout()">🚪 خروج</button>
         </div>
     </header>
 
     <div class="alert" id="alertBox"></div>
-    <div class="cg" id="cards"><div class="ld">⏳ جاري التحميل...</div></div>
-    <div class="g2">
-        <div class="sc fw"><div class="sh">📈 نشاط آخر 14 يوم</div><div class="sb"><div class="brs" id="chart"><div class="ld">⏳</div></div></div></div>
-        <div class="sc"><div class="sh">⚡ آخر الأحداث</div><div class="sb"><div class="fd" id="feed"><div class="ld">⏳</div></div></div></div>
-        <div class="sc"><div class="sh">🚀 الأداء</div><div class="sb" id="perf"><div class="ld">⏳</div></div></div>
-        <div class="sc"><div class="sh">🌐 اللغات</div><div class="sb" id="langs"><div class="ld">⏳</div></div></div>
-        <div class="sc"><div class="sh">💻 الأجهزة</div><div class="sb" id="devs"><div class="ld">⏳</div></div></div>
-        <div class="sc fw"><div class="sh">👤 المستخدمون <span style="float:left;color:var(--t3);font-weight:400" id="uc"></span></div><div class="sb" style="padding:0"><div id="utbl"><div class="ld">⏳</div></div></div></div>
+
+    <div class="tools">
+        <div class="chips" id="rangeChips">
+            <button class="chip" data-r="today">اليوم</button>
+            <button class="chip" data-r="7">7 أيام</button>
+            <button class="chip" data-r="30">30 يوم</button>
+            <button class="chip on" data-r="all">الكل</button>
+        </div>
+        <div class="srch">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="srchInp" placeholder="بحث في الجداول… (معرف زائر، أغنية، فيلم، خطأ)">
+        </div>
+        <span class="upd" id="updStamp">—</span>
     </div>
+
+    <div class="cg" id="cards"><div class="ld">⏳ جاري التحميل...</div></div>
+
+    <div class="g2">
+        <!-- Missing content — headline feature -->
+        <div class="sc fw">
+            <div class="sh"><span>🎯 المحتوى المطلوب وغير المتوفر <small>أغانٍ وأفلام طلبها الزوار ولم يجدوها — أضف الأكثر طلباً للمكتبة</small></span><span class="cnt" id="missCnt">0</span></div>
+            <div class="sb" style="padding:0"><div class="scroll-y" id="missTbl"><div class="ld">⏳</div></div></div>
+        </div>
+
+        <div class="sc fw">
+            <div class="sh"><span>📈 نشاط آخر 14 يوم</span></div>
+            <div class="sb">
+                <div class="brs" id="chart"><div class="ld">⏳</div></div>
+                <div class="lgnd"><span><i style="background:var(--ac)"></i>زيارات</span><span><i style="background:var(--bl)"></i>رسائل</span></div>
+            </div>
+        </div>
+
+        <div class="sc"><div class="sh"><span>🎵 الأغاني الأكثر تشغيلاً</span></div><div class="sb" id="topMusic"><div class="ld">⏳</div></div></div>
+        <div class="sc"><div class="sh"><span>🎬 الأفلام الأكثر مشاهدة</span></div><div class="sb" id="topMovies"><div class="ld">⏳</div></div></div>
+
+        <div class="sc"><div class="sh"><span>🕐 ساعات النشاط <small>بتوقيتك المحلي</small></span></div><div class="sb"><div class="brs" id="hourly" style="height:90px"><div class="ld">⏳</div></div></div></div>
+        <div class="sc"><div class="sh"><span>🚀 الأداء</span></div><div class="sb" id="perf"><div class="ld">⏳</div></div></div>
+
+        <div class="sc"><div class="sh"><span>👍 تقييمات الردود</span></div><div class="sb" id="fback"><div class="ld">⏳</div></div></div>
+        <div class="sc"><div class="sh"><span>🌐 اللغات</span></div><div class="sb" id="langs"><div class="ld">⏳</div></div></div>
+
+        <div class="sc"><div class="sh"><span>💻 الأجهزة</span></div><div class="sb" id="devs"><div class="ld">⏳</div></div></div>
+        <div class="sc"><div class="sh"><span>🔗 مصادر الزيارات</span></div><div class="sb" id="refs"><div class="ld">⏳</div></div></div>
+
+        <div class="sc"><div class="sh"><span>⚠️ سجل الأخطاء</span><span class="cnt" id="errCnt" style="display:none">0</span></div><div class="sb" style="padding:0"><div class="scroll-y" id="errTbl"><div class="ld">⏳</div></div></div></div>
+        <div class="sc"><div class="sh"><span>⚡ آخر الأحداث</span></div><div class="sb"><div class="fd" id="feed"><div class="ld">⏳</div></div></div></div>
+
+        <div class="sc fw"><div class="sh"><span>👤 المستخدمون</span><small id="uc"></small></div><div class="sb" style="padding:0"><div class="scroll-y" id="utbl"><div class="ld">⏳</div></div></div></div>
+    </div>
+
     <div id="log"></div>
 </div>
 
@@ -121,25 +186,30 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-var db=null,allLogs=[];
+var db=null,allLogs=[],range='all',term='';
 var logEl;
 
+/* ═══ Helpers ═══ */
 function log(m){
     console.log('[ADMIN]',m);
     if(logEl){logEl.textContent+='['+new Date().toLocaleTimeString()+'] '+m+'\n';logEl.scrollTop=9999}
 }
-
 function alert2(msg,type){
     var el=document.getElementById('alertBox');
     el.className='alert on '+type;
     el.innerHTML=msg;
 }
-
+function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':''+s);return d.innerHTML}
 function fN(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':(n||0).toString()}
 function tAgo(ts){if(!ts)return'—';var d=(Date.now()-ts)/1000;if(d<60)return'الآن';if(d<3600)return Math.floor(d/60)+' د';if(d<86400)return Math.floor(d/3600)+' س';return Math.floor(d/86400)+' يوم'}
-function pUA(ua){if(!ua)return'?';if(/iPhone|iPad/.test(ua))return'📱iOS';if(/Android/.test(ua))return'📱Android';if(/Windows/.test(ua))return'💻Win';if(/Mac/.test(ua))return'💻Mac';if(/Linux/.test(ua))return'🐧Linux';return'🌐Other'}
+function pUA(ua){if(!ua)return'?';if(/iPhone|iPad/.test(ua))return'📱 iOS';if(/Android/.test(ua))return'📱 Android';if(/Windows/.test(ua))return'💻 Windows';if(/Mac/.test(ua))return'💻 Mac';if(/Linux/.test(ua))return'🐧 Linux';return'🌐 أخرى'}
+function refHost(r){
+    if(!r||r==='direct')return 'مباشر';
+    try{return new URL(r).hostname.replace(/^www\./,'')}catch(e){return r.slice(0,30)}
+}
+function hit(str){return !term || (str||'').toLowerCase().indexOf(term)!==-1}
 
-/* AUTH */
+/* ═══ Auth ═══ */
 document.getElementById('LB').onclick=function(){
     if(typeof ADMIN_PASSWORD!=='undefined'&&document.getElementById('LP').value.trim()===ADMIN_PASSWORD){
         sessionStorage.setItem('la','1');showDash();
@@ -156,88 +226,65 @@ function showDash(){
 }
 if(sessionStorage.getItem('la')==='1')showDash();
 
-/* FIREBASE INIT */
+/* ═══ Firebase ═══ */
 function initFB(){
     log('Starting Firebase init...');
-
     if(typeof firebase==='undefined'){
         log('ERROR: Firebase SDK not loaded!');
         alert2('❌ Firebase SDK غير محمّل — تأكد من اتصال الإنترنت','bad');
         return;
     }
-    log('Firebase SDK loaded ✓');
-
     if(typeof FIREBASE_CONFIG==='undefined'||!FIREBASE_CONFIG.projectId){
         log('ERROR: FIREBASE_CONFIG not found');
         alert2('❌ إعدادات Firebase غير موجودة — تحقق من firebase-config.js','bad');
         return;
     }
     log('Config found: project='+FIREBASE_CONFIG.projectId);
-
     try{
         if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
         db=firebase.firestore();
         log('Firestore initialized ✓');
-        // Auto test
-        testConn();
+        loadData();
     }catch(e){
         log('ERROR init: '+e.message);
         alert2('❌ خطأ في تهيئة Firebase: '+e.message,'bad');
     }
 }
 
-/* TEST CONNECTION */
 window.testConn=function(){
     if(!db){alert2('❌ Firebase غير متصل','bad');return}
     log('Testing Firestore connection...');
     alert2('⏳ جاري اختبار الاتصال بـ Firestore...','warn');
-
     var testDoc={type:'_test',t:Date.now(),msg:'connection test'};
-
-    // Step 1: Try to WRITE
     db.collection('lord_logs').add(testDoc).then(function(ref){
         log('WRITE SUCCESS ✓ doc id='+ref.id);
-
-        // Step 2: Try to READ it back
         ref.get().then(function(snap){
             if(snap.exists){
-                log('READ SUCCESS ✓ data='+JSON.stringify(snap.data()));
+                log('READ SUCCESS ✓');
                 alert2('✅ <b>Firebase يعمل بنجاح!</b> — الكتابة والقراءة تعملان. جاري تحميل البيانات...','ok');
-
-                // Delete test doc
                 ref.delete().catch(function(){});
-
-                // Now load real data
                 loadData();
             }else{
-                log('READ FAIL: doc not found');
                 alert2('⚠️ تمت الكتابة لكن القراءة فشلت','warn');
             }
         }).catch(function(e){
-            log('READ ERROR: '+e.message);
-            alert2('⚠️ تمت الكتابة لكن القراءة فشلت: '+e.message,'warn');
+            alert2('⚠️ تمت الكتابة لكن القراءة فشلت: '+esc(e.message),'warn');
         });
-
     }).catch(function(e){
         log('WRITE ERROR: '+e.message);
-
         if(e.message.indexOf('PERMISSION_DENIED')!==-1||e.message.indexOf('permission')!==-1){
-            alert2('❌ <b>خطأ صلاحيات Firestore!</b><br><br>الحل: اذهب إلى <a href="https://console.firebase.google.com/project/'+FIREBASE_CONFIG.projectId+'/firestore/rules" target="_blank" style="color:var(--ac);text-decoration:underline">Firebase Console → Firestore → Rules</a> واستبدل القواعد بـ:<br><br><code style="background:var(--b2);padding:4px 8px;border-radius:4px;font-size:11px">rules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if true;\n    }\n  }\n}</code>','bad');
-        }
-        else if(e.message.indexOf('NOT_FOUND')!==-1||e.message.indexOf('not found')!==-1){
-            alert2('❌ <b>Firestore Database غير مُنشأ!</b><br><br>الحل: اذهب إلى <a href="https://console.firebase.google.com/project/'+FIREBASE_CONFIG.projectId+'/firestore" target="_blank" style="color:var(--ac);text-decoration:underline">Firebase Console → Build → Firestore Database</a> → اضغط <b>Create Database</b> → اختر <b>Start in test mode</b> → <b>Create</b>','bad');
-        }
-        else{
-            alert2('❌ خطأ في الكتابة: '+e.message,'bad');
+            alert2('❌ <b>خطأ صلاحيات Firestore!</b><br><br>الحل: اذهب إلى <a href="https://console.firebase.google.com/project/'+FIREBASE_CONFIG.projectId+'/firestore/rules" target="_blank" style="color:var(--ac);text-decoration:underline">Firebase Console → Firestore → Rules</a> واستبدل القواعد بقواعد تسمح بالقراءة والكتابة.','bad');
+        }else if(e.message.indexOf('NOT_FOUND')!==-1||e.message.indexOf('not found')!==-1){
+            alert2('❌ <b>Firestore Database غير مُنشأ!</b><br><br>الحل: Firebase Console → Build → Firestore Database → Create Database → Start in test mode','bad');
+        }else{
+            alert2('❌ خطأ في الكتابة: '+esc(e.message),'bad');
         }
     });
 };
 
-/* LOAD DATA */
 window.loadData=function(){
-    if(!db){return}
+    if(!db)return;
     log('Loading lord_logs...');
-
     db.collection('lord_logs').orderBy('t','desc').limit(5000).get().then(function(snap){
         allLogs=[];
         snap.forEach(function(d){
@@ -248,106 +295,309 @@ window.loadData=function(){
         if(allLogs.length===0){
             alert2('ℹ️ لا توجد بيانات بعد — افتح <a href="index.html" style="color:var(--ac)">صفحة الشات</a> وأرسل رسالة ثم عد هنا واضغط تحديث','warn');
         }
+        document.getElementById('updStamp').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-EG')+' · تلقائي كل دقيقتين';
         renderAll();
     }).catch(function(e){
         log('LOAD ERROR: '+e.message);
-        alert2('❌ خطأ في تحميل البيانات: '+e.message,'bad');
+        alert2('❌ خطأ في تحميل البيانات: '+esc(e.message),'bad');
     });
 };
 
-/* RENDER */
+/* ═══ Range & search ═══ */
+function rangeStart(){
+    var now=new Date();
+    if(range==='today')return new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+    if(range==='7')return Date.now()-7*86400000;
+    if(range==='30')return Date.now()-30*86400000;
+    return 0;
+}
+document.getElementById('rangeChips').addEventListener('click',function(e){
+    var c=e.target.closest('.chip');
+    if(!c)return;
+    range=c.getAttribute('data-r');
+    document.querySelectorAll('#rangeChips .chip').forEach(function(x){x.classList.toggle('on',x===c)});
+    renderAll();
+});
+var srchT=null;
+document.getElementById('srchInp').addEventListener('input',function(){
+    clearTimeout(srchT);
+    var v=this.value;
+    srchT=setTimeout(function(){term=v.trim().toLowerCase();renderAll()},200);
+});
+
+/* ═══ Aggregate + render ═══ */
 function renderAll(){
-    var visits=0,msgs=0,uMsgs=0,aMsgs=0,errs=0,uWords=0,aWords=0;
-    var visitors={},arC=0,enC=0,rts=[],devs={};
+    var start=rangeStart();
+    var logs=allLogs.filter(function(L){return (L.t||0)>=start});
+
+    var visits=0,uMsgs=0,aMsgs=0,uWords=0,aWords=0;
+    var visitors={},arC=0,enC=0,rts=[],loads=[],nets={},devs={},scrs={},refs={},hours=[];
+    var fbUp=0,fbDown=0,errors=[],missing={},playedMusic={},playedMovies={},mediaPlays=0;
+    for(var h=0;h<24;h++)hours.push(0);
     var daily={};
     for(var i=13;i>=0;i--){var dt=new Date();dt.setDate(dt.getDate()-i);daily[dt.toISOString().split('T')[0]]={v:0,m:0}}
-    var today=new Date().toISOString().split('T')[0];
+    var todayKey=new Date().toISOString().split('T')[0];
 
-    for(var j=0;j<allLogs.length;j++){
-        var L=allLogs[j];
+    for(var j=0;j<logs.length;j++){
+        var L=logs[j];
         var vid=L.vid||'?';
         var day=L.t?new Date(L.t).toISOString().split('T')[0]:'';
-        if(!visitors[vid])visitors[vid]={msgs:0,visits:0,last:0,ua:'',scr:''};
-        if(L.t>visitors[vid].last)visitors[vid].last=L.t;
-        if(L.ua)visitors[vid].ua=L.ua;
-        if(L.scr)visitors[vid].scr=L.scr;
+        if(!visitors[vid])visitors[vid]={msgs:0,visits:0,words:0,last:0,first:Infinity,ua:'',scr:''};
+        var V=visitors[vid];
+        if(L.t>V.last)V.last=L.t;
+        if(L.t<V.first)V.first=L.t;
+        if(L.ua)V.ua=L.ua;
+        if(L.scr)V.scr=L.scr;
+        if(L.t)hours[new Date(L.t).getHours()]++;
 
         if(L.type==='visit'){
-            visits++;visitors[vid].visits++;
+            visits++;V.visits++;
             if(day in daily)daily[day].v++;
+            if(L.loadMs&&L.loadMs>0&&L.loadMs<60000)loads.push(L.loadMs);
+            if(L.net)nets[L.net]=(nets[L.net]||0)+1;
+            var rh=refHost(L.ref);refs[rh]=(refs[rh]||0)+1;
+            var dv=pUA(L.ua);devs[dv]=(devs[dv]||0)+1;
+            if(L.scr)scrs[L.scr]=(scrs[L.scr]||0)+1;
         }else if(L.type==='msg'){
-            msgs++;
-            if(L.role==='user'){uMsgs++;uWords+=(L.words||0);visitors[vid].msgs++}
+            if(L.role==='user'){uMsgs++;uWords+=(L.words||0);V.msgs++;V.words+=(L.words||0)}
             else{aMsgs++;aWords+=(L.words||0)}
             if(L.mlang==='ar')arC++;else if(L.mlang==='en')enC++;
             if(L.rt)rts.push(L.rt);
             if(day in daily)daily[day].m++;
-        }else if(L.type==='error'){errs++}
-        var dv=pUA(L.ua);devs[dv]=(devs[dv]||0)+1;
+        }else if(L.type==='error'){
+            errors.push(L);
+        }else if(L.type==='feedback'){
+            if(L.val===1)fbUp++;else if(L.val===-1)fbDown++;
+        }else if(L.type==='missing'){
+            var mk=(L.kind||'?')+'|'+(L.q||'').toLowerCase().trim();
+            if(!missing[mk])missing[mk]={kind:L.kind||'?',q:L.q||'?',count:0,last:0};
+            missing[mk].count++;
+            if(L.t>missing[mk].last)missing[mk].last=L.t;
+        }else if(L.type==='media'){
+            mediaPlays++;
+            var pool=(L.kind==='movie')?playedMovies:playedMusic;
+            var nm=(L.name||'?').trim();
+            pool[nm]=(pool[nm]||0)+1;
+        }
     }
 
+    var msgs=uMsgs+aMsgs;
     var uCnt=Object.keys(visitors).length;
-    var activeToday=0;
-    for(var vk in visitors){if(new Date(visitors[vk].last).toISOString().split('T')[0]===today)activeToday++}
+    var activeToday=0,onlineNow=0;
+    for(var vk in visitors){
+        if(new Date(visitors[vk].last).toISOString().split('T')[0]===todayKey)activeToday++;
+        if(Date.now()-visitors[vk].last<300000)onlineNow++;
+    }
     var avgRT=rts.length?Math.round(rts.reduce(function(a,b){return a+b},0)/rts.length):0;
+    var avgLoad=loads.length?Math.round(loads.reduce(function(a,b){return a+b},0)/loads.length):0;
+    var missArr=Object.values(missing).sort(function(a,b){return b.count-a.count});
+    var missTotal=missArr.reduce(function(s,m){return s+m.count},0);
+    var satisfaction=(fbUp+fbDown)?Math.round(fbUp/(fbUp+fbDown)*100):null;
 
-    /* CARDS */
+    /* KPI cards */
     var cds=[
-        {l:'الزوار',v:fN(uCnt),e:'👥',c:'b',s:'زائر فريد'},
-        {l:'الزيارات',v:fN(visits),e:'👁️',c:'c',s:'إجمالي مشاهدات'},
-        {l:'نشطون اليوم',v:fN(activeToday),e:'🟢',c:'g',s:'نشطون اليوم'},
-        {l:'الرسائل',v:fN(msgs),e:'💬',c:'b',s:'مستخدم '+fN(uMsgs)+' · ذكاء '+fN(aMsgs)},
-        {l:'الأسئلة',v:fN(uMsgs),e:'❓',c:'o',s:'أسئلة المستخدمين'},
-        {l:'ردود AI',v:fN(aMsgs),e:'🤖',c:'p',s:fN(aWords)+' كلمة'},
+        {l:'زوار فريدون',v:fN(uCnt),e:'👥',c:'b',s:'إجمالي المعرّفات'},
+        {l:'الزيارات',v:fN(visits),e:'👁️',c:'c',s:'مشاهدات الصفحة'},
+        {l:'متصلون الآن',v:fN(onlineNow),e:'🟢',c:'g',s:'آخر 5 دقائق'},
+        {l:'نشطون اليوم',v:fN(activeToday),e:'📅',c:'g',s:'زاروا اليوم'},
+        {l:'الرسائل',v:fN(msgs),e:'💬',c:'b',s:'أسئلة '+fN(uMsgs)+' · ردود '+fN(aMsgs)},
         {l:'الكلمات',v:fN(uWords+aWords),e:'📝',c:'p',s:'مستخدم '+fN(uWords)+' · AI '+fN(aWords)},
-        {l:'الأخطاء',v:fN(errs),e:'⚠️',c:'r',s:errs?'أخطاء':'لا أخطاء ✓'},
+        {l:'متوسط الرد',v:avgRT?(avgRT/1000).toFixed(1)+'s':'—',e:'⚡',c:'c',s:'زمن استجابة AI'},
+        {l:'رضا المستخدمين',v:satisfaction===null?'—':satisfaction+'%',e:'👍',c:satisfaction!==null&&satisfaction<60?'o':'g',s:'👍 '+fbUp+' · 👎 '+fbDown},
+        {l:'طلبات ناقصة',v:fN(missTotal),e:'🎯',c:missTotal?'r':'g',s:missArr.length+' عنصر مختلف'},
+        {l:'تشغيلات ميديا',v:fN(mediaPlays),e:'▶️',c:'k',s:'أغانٍ وأفلام'},
+        {l:'الأخطاء',v:fN(errors.length),e:'⚠️',c:errors.length?'r':'g',s:errors.length?'راجع السجل':'لا أخطاء ✓'},
+        {l:'تحميل الصفحة',v:avgLoad?(avgLoad/1000).toFixed(1)+'s':'—',e:'🚀',c:'o',s:'متوسط زمن التحميل'}
     ];
-    var h='';for(var ci=0;ci<cds.length;ci++){var cc=cds[ci];h+='<div class="cd '+cc.c+'" style="animation-delay:'+(ci*.04)+'s"><div class="cd-h"><span class="cd-l">'+cc.l+'</span><span>'+cc.e+'</span></div><div class="cd-v">'+cc.v+'</div><div class="cd-s">'+cc.s+'</div></div>'}
-    document.getElementById('cards').innerHTML=h;
+    var h2='';for(var ci=0;ci<cds.length;ci++){var cc=cds[ci];h2+='<div class="cd '+cc.c+'" style="animation-delay:'+(ci*.03)+'s"><div class="cd-h"><span class="cd-l">'+cc.l+'</span><span>'+cc.e+'</span></div><div class="cd-v">'+cc.v+'</div><div class="cd-s">'+cc.s+'</div></div>'}
+    document.getElementById('cards').innerHTML=h2;
 
-    /* CHART */
+    renderMissing(missArr);
+    renderChart(daily);
+    renderTop('topMusic',playedMusic,'🎵');
+    renderTop('topMovies',playedMovies,'🎬');
+    renderHourly(hours);
+    renderPerf(avgRT,rts,msgs,errors.length,avgLoad,nets);
+    renderFeedback(fbUp,fbDown);
+    renderLangs(arC,enC);
+    renderBars('devs',devs);
+    renderBars('refs',refs);
+    renderErrors(errors);
+    renderFeed(logs);
+    renderUsers(visitors);
+}
+
+/* 🎯 Missing content */
+function renderMissing(arr){
+    document.getElementById('missCnt').textContent=arr.length;
+    var rows=arr.filter(function(m){return hit(m.q)||hit(m.kind)});
+    if(!rows.length){
+        document.getElementById('missTbl').innerHTML='<div class="em">'+(term?'لا نتائج مطابقة للبحث':'لا توجد طلبات ناقصة — كل طلبات الزوار متوفرة ✓<br><small style="font-size:10px">عندما يطلب زائر أغنية أو فيلماً غير موجود سيظهر هنا تلقائياً</small>')+'</div>';
+        return;
+    }
+    var tb='<table><thead><tr><th>#</th><th>الاسم المطلوب</th><th>النوع</th><th>عدد الطلبات</th><th>آخر طلب</th><th>أولوية</th></tr></thead><tbody>';
+    for(var i=0;i<Math.min(rows.length,40);i++){
+        var m=rows[i];
+        var pr=m.count>=5?'<span class="bg bg-r">عالية 🔥</span>':m.count>=2?'<span class="bg bg-o">متوسطة</span>':'<span class="bg bg-b">منخفضة</span>';
+        tb+='<tr><td>'+(i+1)+'</td><td style="color:var(--t1);font-weight:600">'+esc(m.q)+'</td><td>'+(m.kind==='movie'?'🎬 فيلم':'🎵 أغنية')+'</td><td><b style="font-family:var(--m)">'+m.count+'</b></td><td style="font-size:10px">'+tAgo(m.last)+'</td><td>'+pr+'</td></tr>';
+    }
+    tb+='</tbody></table>';
+    document.getElementById('missTbl').innerHTML=tb;
+}
+
+/* 📈 14-day stacked chart */
+function renderChart(daily){
     var dk=Object.keys(daily),mx=1;
     for(var x in daily){var tt=daily[x].v+daily[x].m;if(tt>mx)mx=tt}
-    var bh='';for(var bi=0;bi<dk.length;bi++){var bk=dk[bi],bt2=daily[bk].v+daily[bk].m,hh=Math.max(2,(bt2/mx)*110);bh+='<div class="brc"><span class="bv">'+(bt2||'')+'</span><div class="br" style="height:'+hh+'px;transition:height .5s" title="'+bk+'"></div><span class="bl2">'+bk.slice(8)+'</span></div>'}
+    var bh='';
+    for(var bi=0;bi<dk.length;bi++){
+        var bk=dk[bi],d=daily[bk],tt2=d.v+d.m;
+        var hv=Math.round((d.v/mx)*110),hm=Math.round((d.m/mx)*110);
+        bh+='<div class="brc"><span class="bv">'+(tt2||'')+'</span><div class="stk" title="'+bk+' — زيارات '+d.v+' · رسائل '+d.m+'"><div class="br" style="height:'+Math.max(hv,d.v?2:0)+'px"></div><div class="br m" style="height:'+Math.max(hm,d.m?2:0)+'px"></div></div><span class="bl2">'+bk.slice(8)+'</span></div>';
+    }
     document.getElementById('chart').innerHTML=bh;
+}
 
-    /* FEED */
-    var fh='',rc=allLogs.slice(0,25);
-    if(!rc.length){fh='<div class="em">لا أحداث</div>'}
-    for(var fi=0;fi<rc.length;fi++){var F=rc[fi];var desc=F.type==='visit'?'🔵 زيارة':F.type==='msg'?(F.role==='user'?'🟢 سؤال':'🟣 رد AI')+' ('+fN(F.words||0)+' كلمة)':'🔴 خطأ';fh+='<div class="fi"><span>'+desc+'</span> <small>'+tAgo(F.t)+' · '+(F.vid||'').slice(0,8)+'</small></div>'}
-    document.getElementById('feed').innerHTML=fh;
+/* ▶️ Top played lists */
+function renderTop(elId,pool,icon){
+    var arr=Object.entries(pool).filter(function(e){return hit(e[0])}).sort(function(a,b){return b[1]-a[1]}).slice(0,8);
+    if(!arr.length){document.getElementById(elId).innerHTML='<div class="em">لا تشغيلات بعد</div>';return}
+    var mx=arr[0][1]||1,h='';
+    var cls=['var(--ac)','var(--gn)','var(--bl)','var(--or)','var(--pu)','var(--cy)','var(--pk)','var(--rd)'];
+    for(var i=0;i<arr.length;i++){
+        var p=Math.round(arr[i][1]/mx*100);
+        h+='<div class="pi"><label><span>'+icon+' '+esc(arr[i][0])+'</span><b style="font-family:var(--m)">'+arr[i][1]+'</b></label><div class="pt"><div class="pf" style="width:'+p+'%;background:'+cls[i%8]+'"></div></div></div>';
+    }
+    document.getElementById(elId).innerHTML=h;
+}
 
-    /* PERF */
-    document.getElementById('perf').innerHTML='<div class="pr"><span>متوسط الاستجابة</span><span style="color:var(--gn)">'+(avgRT?(avgRT/1000).toFixed(1)+'s':'—')+'</span></div><div class="pr"><span>أسرع</span><span style="color:var(--bl)">'+(rts.length?(Math.min.apply(null,rts)/1000).toFixed(1)+'s':'—')+'</span></div><div class="pr"><span>أبطأ</span><span style="color:var(--or)">'+(rts.length?(Math.max.apply(null,rts)/1000).toFixed(1)+'s':'—')+'</span></div><div class="pr"><span>نسبة النجاح</span><span style="color:var(--gn)">'+(msgs?Math.round(msgs/(msgs+errs)*100)+'%':'—')+'</span></div>';
+/* 🕐 Hourly activity */
+function renderHourly(hours){
+    var mx=Math.max.apply(null,hours)||1,h='';
+    for(var i=0;i<24;i++){
+        var hh=Math.max(hours[i]?3:1,Math.round(hours[i]/mx*70));
+        h+='<div class="brc"><div class="br" style="height:'+hh+'px" title="'+i+':00 — '+hours[i]+' حدث"></div>'+(i%4===0?'<span class="bl2">'+i+'</span>':'')+'</div>';
+    }
+    document.getElementById('hourly').innerHTML=h;
+}
 
-    /* LANGS */
-    var tL=arC+enC||1;
-    document.getElementById('langs').innerHTML='<div class="pi"><label><span>🇸🇦 عربي</span><b>'+Math.round(arC/tL*100)+'% ('+arC+')</b></label><div class="pt"><div class="pf" style="width:'+Math.round(arC/tL*100)+'%;background:var(--ac)"></div></div></div><div class="pi"><label><span>🇺🇸 إنجليزي</span><b>'+Math.round(enC/tL*100)+'% ('+enC+')</b></label><div class="pt"><div class="pf" style="width:'+Math.round(enC/tL*100)+'%;background:var(--bl)"></div></div></div>';
+/* 🚀 Performance */
+function renderPerf(avgRT,rts,msgs,errCnt,avgLoad,nets){
+    var netStr=Object.entries(nets).sort(function(a,b){return b[1]-a[1]}).map(function(e){return e[0]+' ('+e[1]+')'}).join(' · ')||'—';
+    document.getElementById('perf').innerHTML=
+        '<div class="pr"><span>متوسط استجابة AI</span><span style="color:var(--gn);font-family:var(--m)">'+(avgRT?(avgRT/1000).toFixed(1)+'s':'—')+'</span></div>'
+        +'<div class="pr"><span>أسرع رد</span><span style="color:var(--bl);font-family:var(--m)">'+(rts.length?(Math.min.apply(null,rts)/1000).toFixed(1)+'s':'—')+'</span></div>'
+        +'<div class="pr"><span>أبطأ رد</span><span style="color:var(--or);font-family:var(--m)">'+(rts.length?(Math.max.apply(null,rts)/1000).toFixed(1)+'s':'—')+'</span></div>'
+        +'<div class="pr"><span>نسبة نجاح الردود</span><span style="color:var(--gn);font-family:var(--m)">'+(msgs?Math.round(msgs/(msgs+errCnt)*100)+'%':'—')+'</span></div>'
+        +'<div class="pr"><span>متوسط تحميل الصفحة</span><span style="color:var(--cy);font-family:var(--m)">'+(avgLoad?(avgLoad/1000).toFixed(1)+'s':'—')+'</span></div>'
+        +'<div class="pr"><span>أنواع الشبكات</span><span style="font-size:10px">'+esc(netStr)+'</span></div>';
+}
 
-    /* DEVICES */
-    var da=Object.entries(devs).sort(function(a,b){return b[1]-a[1]});
-    var dT=da.reduce(function(s,e){return s+e[1]},0)||1;
-    var dh='';var cls=['var(--ac)','var(--gn)','var(--bl)','var(--or)','var(--pu)'];
-    for(var di=0;di<da.length;di++){var dp=Math.round(da[di][1]/dT*100);dh+='<div class="pi"><label><span>'+da[di][0]+'</span><b>'+dp+'%</b></label><div class="pt"><div class="pf" style="width:'+dp+'%;background:'+cls[di%5]+'"></div></div></div>'}
-    document.getElementById('devs').innerHTML=dh||'<div class="em">—</div>';
+/* 👍 Feedback */
+function renderFeedback(up,down){
+    var tot=up+down;
+    if(!tot){document.getElementById('fback').innerHTML='<div class="em">لا تقييمات بعد</div>';return}
+    var pu=Math.round(up/tot*100),pd=100-pu;
+    document.getElementById('fback').innerHTML=
+        '<div class="pi"><label><span>👍 ردود مفيدة</span><b>'+pu+'% ('+up+')</b></label><div class="pt"><div class="pf" style="width:'+pu+'%;background:var(--gn)"></div></div></div>'
+        +'<div class="pi"><label><span>👎 ردود غير مفيدة</span><b>'+pd+'% ('+down+')</b></label><div class="pt"><div class="pf" style="width:'+pd+'%;background:var(--rd)"></div></div></div>'
+        +'<div class="pr" style="margin-top:10px"><span>مؤشر الرضا العام</span><span style="color:'+(pu>=60?'var(--gn)':'var(--or)')+';font-weight:700">'+(pu>=80?'ممتاز 🌟':pu>=60?'جيد ✓':'يحتاج تحسين ⚠️')+'</span></div>';
+}
 
-    /* USERS */
+/* 🌐 Languages */
+function renderLangs(ar,en){
+    var tL=ar+en||1;
+    document.getElementById('langs').innerHTML=
+        '<div class="pi"><label><span>🇪🇬 عربي</span><b>'+Math.round(ar/tL*100)+'% ('+ar+')</b></label><div class="pt"><div class="pf" style="width:'+Math.round(ar/tL*100)+'%;background:var(--ac)"></div></div></div>'
+        +'<div class="pi"><label><span>🇺🇸 إنجليزي</span><b>'+Math.round(en/tL*100)+'% ('+en+')</b></label><div class="pt"><div class="pf" style="width:'+Math.round(en/tL*100)+'%;background:var(--bl)"></div></div></div>';
+}
+
+/* Generic ranked bars (devices / referrers) */
+function renderBars(elId,map){
+    var arr=Object.entries(map).sort(function(a,b){return b[1]-a[1]}).slice(0,7);
+    var tot=arr.reduce(function(s,e){return s+e[1]},0)||1;
+    if(!arr.length){document.getElementById(elId).innerHTML='<div class="em">—</div>';return}
+    var cls=['var(--ac)','var(--gn)','var(--bl)','var(--or)','var(--pu)','var(--cy)','var(--pk)'];
+    var h='';
+    for(var i=0;i<arr.length;i++){
+        var p=Math.round(arr[i][1]/tot*100);
+        h+='<div class="pi"><label><span>'+esc(arr[i][0])+'</span><b>'+p+'% ('+arr[i][1]+')</b></label><div class="pt"><div class="pf" style="width:'+p+'%;background:'+cls[i%7]+'"></div></div></div>';
+    }
+    document.getElementById(elId).innerHTML=h;
+}
+
+/* ⚠️ Errors */
+function renderErrors(errors){
+    var cEl=document.getElementById('errCnt');
+    cEl.style.display=errors.length?'':'none';
+    cEl.textContent=errors.length;
+    var rows=errors.filter(function(E){return hit(E.err)||hit(E.vid)}).slice(0,15);
+    if(!rows.length){document.getElementById('errTbl').innerHTML='<div class="em">'+(term?'لا نتائج':'لا أخطاء ✓')+'</div>';return}
+    var tb='<table><thead><tr><th>الخطأ</th><th>الزائر</th><th>الوقت</th></tr></thead><tbody>';
+    for(var i=0;i<rows.length;i++){
+        tb+='<tr><td style="color:var(--rd);font-size:10px">'+esc((rows[i].err||'').slice(0,90))+'</td><td style="font-family:var(--m);font-size:9px">'+esc((rows[i].vid||'').slice(0,10))+'</td><td style="font-size:10px">'+tAgo(rows[i].t)+'</td></tr>';
+    }
+    tb+='</tbody></table>';
+    document.getElementById('errTbl').innerHTML=tb;
+}
+
+/* ⚡ Feed */
+function renderFeed(logs){
+    var fh='',shown=0;
+    for(var i=0;i<logs.length&&shown<30;i++){
+        var F=logs[i],desc='';
+        if(F.type==='visit')desc='🔵 زيارة'+(F.ref&&F.ref!=='direct'?' من '+esc(refHost(F.ref)):'');
+        else if(F.type==='msg')desc=F.role==='user'?'🟢 سؤال ('+fN(F.words||0)+' كلمة)':'🟣 رد AI ('+fN(F.words||0)+' كلمة'+(F.rt?' · '+(F.rt/1000).toFixed(1)+'s':'')+')';
+        else if(F.type==='error')desc='🔴 خطأ: '+esc((F.err||'').slice(0,40));
+        else if(F.type==='feedback')desc=F.val===1?'👍 تقييم إيجابي':'👎 تقييم سلبي';
+        else if(F.type==='missing')desc='🎯 طلب ناقص: '+esc((F.q||'').slice(0,40))+' ('+(F.kind==='movie'?'فيلم':'أغنية')+')';
+        else if(F.type==='media')desc='▶️ تشغيل '+(F.kind==='movie'?'فيلم':'أغنية')+': '+esc((F.name||'').slice(0,40));
+        else continue;
+        if(!hit(desc)&&!hit(F.vid))continue;
+        fh+='<div class="fi"><span>'+desc+'</span><small>'+tAgo(F.t)+' · '+esc((F.vid||'').slice(0,8))+'</small></div>';
+        shown++;
+    }
+    document.getElementById('feed').innerHTML=fh||'<div class="em">لا أحداث</div>';
+}
+
+/* 👤 Users */
+function renderUsers(visitors){
     var va=Object.entries(visitors).sort(function(a,b){return b[1].last-a[1].last});
+    va=va.filter(function(e){return hit(e[0])||hit(pUA(e[1].ua))});
     document.getElementById('uc').textContent=va.length+' مستخدم';
-    if(!va.length){document.getElementById('utbl').innerHTML='<div class="em">لا مستخدمون</div>';return}
-    var tb='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>الرسائل</th><th>الزيارات</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
-    for(var ui=0;ui<Math.min(va.length,50);ui++){var uid=va[ui][0],uv=va[ui][1];var on2=Date.now()-uv.last<300000;tb+='<tr><td style="font-family:var(--m);font-size:10px">'+uid.slice(0,12)+'</td><td>'+pUA(uv.ua)+'</td><td style="font-family:var(--m);font-size:10px">'+(uv.scr||'—')+'</td><td><b>'+uv.msgs+'</b></td><td>'+uv.visits+'</td><td style="font-size:10px">'+tAgo(uv.last)+'</td><td><span class="bg '+(on2?'bg-g':'bg-b')+'">'+(on2?'متصل':'غير متصل')+'</span></td></tr>'}
+    if(!va.length){document.getElementById('utbl').innerHTML='<div class="em">'+(term?'لا نتائج':'لا مستخدمون')+'</div>';return}
+    var tb='<table><thead><tr><th>المعرف</th><th>الجهاز</th><th>الشاشة</th><th>الرسائل</th><th>الكلمات</th><th>الزيارات</th><th>أول ظهور</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody>';
+    for(var ui=0;ui<Math.min(va.length,100);ui++){
+        var uid=va[ui][0],uv=va[ui][1];
+        var on2=Date.now()-uv.last<300000;
+        tb+='<tr><td style="font-family:var(--m);font-size:10px">'+esc(uid.slice(0,12))+'</td><td>'+pUA(uv.ua)+'</td><td style="font-family:var(--m);font-size:10px">'+esc(uv.scr||'—')+'</td><td><b>'+uv.msgs+'</b></td><td>'+fN(uv.words)+'</td><td>'+uv.visits+'</td><td style="font-size:10px">'+(uv.first===Infinity?'—':tAgo(uv.first))+'</td><td style="font-size:10px">'+tAgo(uv.last)+'</td><td><span class="bg '+(on2?'bg-g':'bg-b')+'">'+(on2?'متصل':'غير متصل')+'</span></td></tr>';
+    }
     tb+='</tbody></table>';
     document.getElementById('utbl').innerHTML=tb;
 }
 
-/* EXPORT */
-window.doExport=function(){
+/* ═══ Export ═══ */
+window.exportJSON=function(){
     var b=new Blob([JSON.stringify({date:new Date().toISOString(),count:allLogs.length,logs:allLogs},null,2)],{type:'application/json'});
-    var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lord-admin-'+today+'.json';a.click();
+    var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lord-admin-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+};
+window.exportCSV=function(){
+    var cols=['type','t','vid','role','words','mlang','rt','err','val','kind','q','name','ref','page','loadMs','net','scr','lang','ua'];
+    var lines=[cols.join(',')];
+    for(var i=0;i<allLogs.length;i++){
+        var L=allLogs[i],row=[];
+        for(var c=0;c<cols.length;c++){
+            var v=L[cols[c]];
+            v=(v==null?'':''+v).replace(/"/g,'""');
+            row.push(/[",\n]/.test(v)?'"'+v+'"':v);
+        }
+        lines.push(row.join(','));
+    }
+    var b=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lord-logs-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
 };
 
-/* AUTO */
+/* Auto refresh */
 setInterval(function(){if(db&&sessionStorage.getItem('la')==='1')loadData()},120000);
 </script>
 </body>

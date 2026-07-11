@@ -40,7 +40,65 @@
         { id: 'nano', name: 'TUL8TE & Saint Levant - Nano', file: R2 + 'tul8te-saint-levant-nano.mp3', artist: 'TUL8TE & Saint Levant', genre: 'Arabic/Pop', tags: ['تووليت', 'ساينت ليفانت', 'نانو', 'حب', 'عربي'] },
         { id: 'mashrebtesh', name: 'Sherine - Mashrebtesh Men Nilha', file: R2 + 'sherine-mashrebtesh-men-nilha.mp3', artist: 'شيرين', genre: 'Arabic/Pop', tags: ['شيرين', 'مشربتش', 'نيلها', 'وطني', 'مصر', 'حب'] },
         { id: 'henamsr', name: 'Hena Masr - Bank Misr', file: R2 + 'hena-masr-bank-misr.mp3', artist: 'العسيلي و بهاء سلطان', genre: 'Arabic/Pop', tags: ['عسيلي', 'بهاء سلطان', 'مصر', 'وطني', 'رمضان', 'بنك مصر'] },
-        { id: 'lesabtesaly', name: 'Hany Shaker - Lesa Btesaly', file: R2 + 'hany-shaker-lesa-btesaly.mp3', artist: 'هاني شاكر', genre: 'Arabic/Classic', tags: ['هاني شاكر', 'لسه بتسألي', 'حب', 'رومانسي', 'حزن', 'عربي', 'طرب'] }
+        { id: 'lesabtesaly', name: 'Hany Shaker - Lesa Btesaly', file: R2 + 'hany-shaker-lesa-btesaly.mp3', artist: 'هاني شاكر', genre: 'Arabic/Classic', tags: ['هاني شاكر', 'لسه بتسألي', 'حب', 'رومانسي', 'حزن', 'عربي', 'طرب'] },
+        { id: 'akher-zapheer-akherto-lahen-hazeen', name: 'Akher Zapheer - Akherto Lahen Hazeen', file: R2 + 'akher-zapheer-akherto-lahen-hazeen.mp3', artist: 'اخر زفير', genre: 'Arabic/Alternative', tags: ['اخر زفير', 'اخرتو لحن حزين', 'حزن', 'بديل', 'اندي'] },
+        { id: 'akher-zapheer-cacharel', name: 'Akher Zapheer - Cacharel', file: R2 + 'akher-zapheer-cacharel.mp3', artist: 'اخر زفير', genre: 'Arabic/Alternative', tags: ['اخر زفير', 'كاشاريل', 'بديل', 'اندي'] },
+        { id: 'akher-zapheer-feekee', name: 'Akher Zapheer - Feekee', file: R2 + 'akher-zapheer-feekee.mp3', artist: 'اخر زفير', genre: 'Arabic/Alternative', tags: ['اخر زفير', 'فيكي', 'حب', 'بديل'] },
+        { id: 'amer-mounib-amel-eih-fe-hayatak', name: 'Amer Mounib - Amel Eih Fe Hayatak', file: R2 + 'amer-mounib-amel-eih-fe-hayatak.mp3', artist: 'عامر منيب', genre: 'Arabic/Pop', tags: ['عامر منيب', 'عامل ايه في حياتك', 'حب', 'حزن'] },
+        { id: 'amer-mounib-beena-naeesh', name: 'Amer Mounib - Beena Naeesh', file: R2 + 'amer-mounib-beena-naeesh.mp3', artist: 'عامر منيب', genre: 'Arabic/Pop', tags: ['عامر منيب', 'بينا نعيش', 'حب', 'رومانسي'] },
+        { id: 'amer-mounib-ayamna-betwadina', name: 'Amer Mounib - Ayamna Betwadina', file: R2 + 'amer-mounib-ayamna-betwadina.mp3', artist: 'عامر منيب', genre: 'Arabic/Pop', tags: ['عامر منيب', 'ايامنا بتودينا', 'حب', 'حزن'] },
+        { id: 'cairokee-ana-el-segara', name: 'Cairokee - Ana El Segara', file: R2 + 'cairokee-ana-el-segara.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'انا السيجارة', 'روك', 'بديل'] },
+        { id: 'cairokee-ana-negm', name: 'Cairokee - Ana Negm', file: R2 + 'cairokee-ana-negm.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'انا نجم', 'روك', 'حماس'] },
+        { id: 'cairokee-basrah-w-atoh', name: 'Cairokee - Basrah w Atoh', file: R2 + 'cairokee-basrah-w-atoh.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'بسرح واتوه', 'روك', 'تايه'] },
+        { id: 'cairokee-ceasefire', name: 'Cairokee - Ceasefire (Hodna)', file: R2 + 'cairokee-ceasefire.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'هدنة', 'ceasefire', 'روك', 'سلام'] },
+        { id: 'cairokee-dinosaur', name: 'Cairokee - Dinosaur', file: R2 + 'cairokee-dinosaur.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'الديناصور', 'روك', 'حماس'] },
+        { id: 'cairokee-el-baka-baka', name: 'Cairokee - El Baka Baka', file: R2 + 'cairokee-el-baka-baka.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'الباكا باكا', 'روك'] },
+        { id: 'cairokee-hatlena-bel-ba2y-leban', name: 'Cairokee - Hatlena Bel Ba2y Leban', file: R2 + 'cairokee-hatlena-bel-ba2y-leban.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'هاتلنا بالباقي لبان', 'روك'] },
+        { id: 'cairokee-kont-faker', name: 'Cairokee - Kont Faker', file: R2 + 'cairokee-kont-faker.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'كنت فاكر', 'روك', 'حزن'] },
+        { id: 'cairokee-james-dean', name: 'Cairokee - James Dean', file: R2 + 'cairokee-james-dean.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'جيمس دين', 'روك'] },
+        { id: 'cairokee-kan-lak-maaya', name: 'Cairokee - Kan Lak Maaya', file: R2 + 'cairokee-kan-lak-maaya.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'كان لك معايا', 'روك', 'حزن', 'حب'] },
+        { id: 'cairokee-kol-haga-betady', name: 'Cairokee - Kol Haga Betady', file: R2 + 'cairokee-kol-haga-betady.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'كل حاجة بتعدي', 'روك', 'امل'] },
+        { id: 'cairokee-layla', name: 'Cairokee - Layla', file: R2 + 'cairokee-layla.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'ليلى', 'روك', 'حب'] },
+        { id: 'cairokee-marboot-be-astek', name: 'Cairokee - Marboot Be Astek', file: R2 + 'cairokee-marboot-be-astek.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'مربوط باستك', 'روك'] },
+        { id: 'cairokee-roma', name: 'Cairokee - Roma', file: R2 + 'cairokee-roma.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'روما', 'روك'] },
+        { id: 'cairokee-samurai', name: 'Cairokee - Samurai', file: R2 + 'cairokee-samurai.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'ساموراي', 'روك', 'حماس'] },
+        { id: 'cairokee-wrong-way-blues', name: 'Cairokee - Wrong Way Blues', file: R2 + 'cairokee-wrong-way-blues.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'السكه شمال في شمال', 'روك', 'بلوز'] },
+        { id: 'cairokee-ya-abyad-ya-eswed', name: 'Cairokee - Ya Abyad Ya Eswed', file: R2 + 'cairokee-ya-abyad-ya-eswed.mp3', artist: 'كايروكي', genre: 'Arabic/Rock', tags: ['كايروكي', 'يا ابيض يا اسود', 'روك'] },
+        { id: 'cairokee-nefsy-ahbek', name: 'Cairokee ft Sara - Nefsy Ahbek', file: R2 + 'cairokee-nefsy-ahbek.mp3', artist: 'كايروكي & سارة مول البلاد', genre: 'Arabic/Rock', tags: ['كايروكي', 'سارة مول البلاد', 'نفسي احبك', 'حب', 'روك'] },
+        { id: 'cairokee-noqta-bayda', name: 'Cairokee - Noqta Bayda', file: R2 + 'cairokee-noqta-bayda.mp3', artist: 'كايروكي & عبد الرحمن رشدي', genre: 'Arabic/Rock', tags: ['كايروكي', 'عبد الرحمن رشدي', 'نقطة بيضا', 'روك'] },
+        { id: 'cairokee-el-keif', name: 'Cairokee ft Tarek El Sheikh - El Keif', file: R2 + 'cairokee-el-keif.mp3', artist: 'كايروكي & طارق الشيخ', genre: 'Arabic/Rock', tags: ['كايروكي', 'طارق الشيخ', 'الكيف', 'روك', 'شعبي'] },
+        { id: 'massar-egbari-had-tayeh', name: 'Massar Egbari - Had Tayeh', file: R2 + 'massar-egbari-had-tayeh.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'حد تايه', 'حزن', 'بديل'] },
+        { id: 'massar-egbari-ba2eit-ghareeb', name: 'Massar Egbari - Ba2eit Ghareeb', file: R2 + 'massar-egbari-ba2eit-ghareeb.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'بقيت غريب', 'حزن', 'غربة'] },
+        { id: 'massar-egbari-bamby', name: 'Massar Egbari - Bamby', file: R2 + 'massar-egbari-bamby.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'بمبي', 'بديل'] },
+        { id: 'massar-egbari-lel-hozn-osoul', name: 'Massar Egbari - Lel Hozn Osoul', file: R2 + 'massar-egbari-lel-hozn-osoul.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'للحزن اصول', 'حزن', 'بديل'] },
+        { id: 'massar-egbari-matlob-habib', name: 'Massar Egbari - Matlob Habib', file: R2 + 'massar-egbari-matlob-habib.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'مطلوب حبيب', 'حب', 'بديل'] },
+        { id: 'massar-egbari-mosawmat', name: 'Massar Egbari - Mosawmat', file: R2 + 'massar-egbari-mosawmat.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'مساومات', 'بديل'] },
+        { id: 'massar-egbari-nehayat-el-hakawy', name: 'Massar Egbari - Nehayat El Hakawy', file: R2 + 'massar-egbari-nehayat-el-hakawy.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'نهايات الحكاوي', 'حزن', 'بديل'] },
+        { id: 'massar-egbari-nos-el-hagat', name: 'Massar Egbari - Nos El Hagat', file: R2 + 'massar-egbari-nos-el-hagat.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'نص الحاجات', 'بديل'] },
+        { id: 'massar-egbari-sayyad', name: 'Massar Egbari - Sayyad', file: R2 + 'massar-egbari-sayyad.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'صياد', 'بديل'] },
+        { id: 'massar-egbari-wahashni-sotek', name: 'Massar Egbari - Wahashni Sotek', file: R2 + 'massar-egbari-wahashni-sotek.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'وحشني صوتك', 'حب', 'حنين'] },
+        { id: 'massar-egbari-zayek-ana', name: 'Massar Egbari - Zayek Ana', file: R2 + 'massar-egbari-zayek-ana.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'زيك انا', 'بديل'] },
+        { id: 'massar-egbari-ana-hawet', name: 'Massar Egbari - Ana Hawet', file: R2 + 'massar-egbari-ana-hawet.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'انا هويت', 'حب', 'بديل'] },
+        { id: 'massar-egbari-toaa-we-teoam', name: 'Massar Egbari - Toaa We Teoam', file: R2 + 'massar-egbari-toaa-we-teoam.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'تقع وتقوم', 'تحفيز', 'بديل'] },
+        { id: 'massar-egbari-sabahek', name: 'Massar Egbari - Sabahek', file: R2 + 'massar-egbari-sabahek.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'صباحك', 'هدوء', 'صباح'] },
+        { id: 'massar-egbari-cherophobia', name: 'Massar Egbari - Cherophobia', file: R2 + 'massar-egbari-cherophobia.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'شيروفوبيا', 'حزن', 'بديل'] },
+        { id: 'massar-egbari-albak-da-enwany', name: 'Massar Egbari - Albak Da Enwany', file: R2 + 'massar-egbari-albak-da-enwany.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'قلبك دا عنواني', 'حب', 'بديل'] },
+        { id: 'massar-egbari-kanet-hatfre2-fel-wedaa', name: 'Massar Egbari - Kanet Hatfre2 Fel Wedaa', file: R2 + 'massar-egbari-kanet-hatfre2-fel-wedaa.mp3', artist: 'مسار إجباري', genre: 'Arabic/Alternative', tags: ['مسار اجباري', 'كانت هتفرق في الوداع', 'حزن', 'فراق'] },
+        { id: 'raghm-el-masafa', name: 'Raghm El Masafa ft Asmaa Abo El Yazid', file: R2 + 'raghm-el-masafa.mp3', artist: 'أسماء أبو اليزيد', genre: 'Arabic/Pop', tags: ['رغم المسافة', 'اسماء ابو اليزيد', 'فودافون', 'حب', 'بعد'] },
+        { id: 'ramy-sabry-bahkelak-an-el-ayam', name: 'Ramy Sabry - Bahkelak An El Ayam', file: R2 + 'ramy-sabry-bahkelak-an-el-ayam.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'بحكيلك عن الايام', 'حب', 'حنين'] },
+        { id: 'ramy-sabry-bahki-aleky', name: 'Ramy Sabry - Bahki Aleky', file: R2 + 'ramy-sabry-bahki-aleky.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'بحكي عليكي', 'حب', 'رومانسي'] },
+        { id: 'ramy-sabry-bteftkerny-sa3at', name: 'Ramy Sabry - Bteftkerny Sa3at', file: R2 + 'ramy-sabry-bteftkerny-sa3at.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'بتفتكرني ساعات', 'حب', 'حزن'] },
+        { id: 'ramy-sabry-enty-genan', name: 'Ramy Sabry - Enty Genan', file: R2 + 'ramy-sabry-enty-genan.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'انتي جنان', 'حب', 'رومانسي'] },
+        { id: 'ramy-sabry-lama-bywhashny', name: 'Ramy Sabry - Lama Bywhashny', file: R2 + 'ramy-sabry-lama-bywhashny.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'لما بيوحشني', 'حب', 'حنين'] },
+        { id: 'ramy-sabry-oyouno-lama-ablony', name: 'Ramy Sabry - Oyouno Lama Ablony', file: R2 + 'ramy-sabry-oyouno-lama-ablony.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'عيونه لما قابلوني', 'حب', 'رومانسي'] },
+        { id: 'ramy-sabry-ymken-kher', name: 'Ramy Sabry - Ymken Kher', file: R2 + 'ramy-sabry-ymken-kher.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'يمكن خير', 'امل', 'تحفيز'] },
+        { id: 'ramy-sabry-hayaty-msh-tamam', name: 'Ramy Sabry - Hayaty Msh Tamam', file: R2 + 'ramy-sabry-hayaty-msh-tamam.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'حياتي مش تمام', 'حزن', 'حب'] },
+        { id: 'ramy-sabry-ghareeb-el-hob', name: 'Ramy Sabry - Ghareeb El Hob', file: R2 + 'ramy-sabry-ghareeb-el-hob.mp3', artist: 'رامي صبري', genre: 'Arabic/Pop', tags: ['رامي صبري', 'غريب الحب', 'حب', 'حزن'] },
+        { id: 'wust-el-balad-3al-wa3d', name: 'Wust El Balad - 3al Wa3d', file: R2 + 'wust-el-balad-3al-wa3d.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'ع الوعد', 'روك', 'حب'] },
+        { id: 'wust-el-balad-ah-ya-lalaly', name: 'Wust El Balad - Ah Ya Lalaly', file: R2 + 'wust-el-balad-ah-ya-lalaly.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'اه يا لالالي', 'روك', 'طرب'] },
+        { id: 'wust-el-balad-antika', name: 'Wust El Balad - Antika', file: R2 + 'wust-el-balad-antika.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'انتيكا', 'روك', 'حب'] },
+        { id: 'wust-el-balad-nefsy-ahbek', name: 'Wust El Balad - Nefsy Ahbek', file: R2 + 'wust-el-balad-nefsy-ahbek.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'نفسي احبك', 'حب', 'روك'] },
+        { id: 'wust-el-balad-yama', name: 'Wust El Balad - Yama', file: R2 + 'wust-el-balad-yama.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'ياما', 'روك'] }
     ];
 
     /* ═══════ MOVIE CATALOG ═══════ */
@@ -145,6 +203,27 @@
         }
         scored.sort(function (a, b) { return b.score - a.score; });
         return scored.map(function (s) { return s.movie; });
+    }
+
+    /* ═══════ CATALOG MATCHING (shared by renderer + missing-content logger) ═══════ */
+    function matchMusic(name) {
+        var q = (name || '').trim().toLowerCase();
+        if (!q) return null;
+        for (var i = 0; i < MUSIC.length; i++) {
+            var n = MUSIC[i].name.toLowerCase();
+            if (n.indexOf(q) !== -1 || q.indexOf(n) !== -1) return MUSIC[i];
+        }
+        return null;
+    }
+
+    function matchMovie(name) {
+        var q = (name || '').trim().toLowerCase();
+        if (!q) return null;
+        for (var i = 0; i < MOVIES.length; i++) {
+            var n = MOVIES[i].name.toLowerCase();
+            if (n.indexOf(q) !== -1 || q.indexOf(n) !== -1) return MOVIES[i];
+        }
+        return null;
     }
 
     /* ═══════ MUSIC PLAYER HTML ═══════ */
@@ -267,151 +346,80 @@
         }
     }
 
-    var SYSTEM_PROMPT = [
-        'أنت LORD AI، مساعد ذكي متقدم.',
+    /* ═══════ SYSTEM PROMPT (modular — token-efficient) ═══════
+       CORE_PROMPT is always sent (small). The music/movie guides are heavy,
+       so they are appended ONLY when the conversation actually needs them,
+       and their song/film lists are auto-generated from the catalogs above. */
+
+    var CORE_PROMPT = [
+        'أنت LORD AI، مساعد ذكي متقدم وسريع.',
         '',
-        '## أسلوبك:',
-        '- أجب بلغة المستخدم دائماً.',
-        '- كن مختصراً ومباشراً. لا مقدمات، لا تكرار للسؤال، لا عبارات مجاملة فارغة.',
-        '- أجب بأقل كلمات ممكنة مع الحفاظ على الدقة والشمولية.',
-        '- استخدم Markdown عند الحاجة فقط (أكواد، قوائم، جداول).',
-        '- لا تختلق معلومات. إذا لم تعرف، قل ذلك.',
-        '- لا تبدأ بـ "بالتأكيد" أو "بالطبع" أو "بكل سرور" — ادخل في الموضوع.',
-        '- عند كتابة أكواد، اكتب كوداً نظيفاً مع تعليقات.',
-        '',
-        '## مكتبة الأغاني (30 أغنية):',
-        '',
-        '### إنجليزي:',
-        '- Ed Sheeran - Perfect (رومانسية/حب)',
-        '- Justin Bieber - Never Say Never ft. Jaden (تحفيزية/حماس)',
-        '- ABBA - The Winner Takes It All (كلاسيك/حزن)',
-        '- Michael Jackson - Billie Jean (كلاسيك/رقص)',
-        '',
-        '### عربي كلاسيكي:',
-        '- Hany Shaker - Lesa Btesaly (هاني شاكر - لسه بتسألي)',
-        '- Umm Kulthum - Ansak (أم كلثوم - انساك)',
-        '- Abdel Halim Hafez - Awel Mara (عبد الحليم - أول مرة)',
-        '- Fairuz - Kifak Inta (فيروز - كيفك إنت)',
-        '- Sabah Fakhri - Aynak (صباح فخري - عيناك)',
-        '- George Wassouf - Halaf Al Qamar (جورج وسوف - حلف القمر)',
-        '- Wadih Mrad - Amar Al Zaman (وديع مراد - قمر الزمان)',
-        '- Dalida - Helwa Ya Baladi (داليدا - حلوة يا بلدي)',
-        '- Mohamed Mounir - Fi 3esh2 El Banat (محمد منير - في عشق البنات)',
-        '',
-        '### عربي حديث:',
-        '- Amer Mounib - Gait Ala Bali (عامر منيب - جيت على بالي)',
-        '- Aida El Ayoubi - En Kont Ghaly (عايدة الأيوبي - إن كنت غالي)',
-        '- Cairokee ft Aida - Ya El Medan (كايروكي - يا الميدان)',
-        '- Massar Egbari - Fakra (مسار إجباري - فاكرة)',
-        '- Nabil - Tayeh Fel Amaken (نبيل - تايه في الأماكن)',
-        '- TUL8TE - Heseeny (تووليت - حسيني)',
-        '- TUL8TE & Saint Levant - Nano (تووليت و ساينت ليفانت - نانو)',
-        '- Kedah Kifayah (كده كفاية)',
-        '- Isma\'ini BiKilmat (اسمعيني بكلمة)',
-        '- Zain Obaid - Shu Bishbahak Tishreen (زين عبيد - تشرين)',
-        '- Hamaki - Ma Balash (حماقي - ما بلاش)',
-        '- Hamza Namira - Dari Ya Alby (حمزة نمرة - داري يا قلبي)',
-        '- Ramy Sabry - Kelma (رامي صبري - كلمة)',
-        '- Sherine - Mashrebtesh Men Nilha (شيرين - مشربتش من نيلها)',
-        '- Hena Masr - Bank Misr (العسيلي و بهاء سلطان - هنا مصر)',
-        '- Balti - Allo (بلطي - الو)',
-        '- EL Waili - El Abd Wel Waili (الوايلي و الحسيني - مهرجانات)',
-        '',
-        '## قواعد الأغاني (صارمة):',
-        '- لإرسال أغنية واحدة اكتب [MUSIC:الاسم] — مثال: [MUSIC:Ed Sheeran - Perfect]',
-        '- للأغاني العربية استخدم الاسم الإنجليزي: [MUSIC:Fairuz - Kifak Inta]',
-        '- اختر حسب مزاج/طلب المستخدم:',
-        '  - حب/رومانسية → Perfect أو Awel Mara أو Gait Ala Bali أو Dari Ya Alby أو Kelma أو Lesa Btesaly',
-        '  - حماس/تحفيز → Never Say Never أو Ya El Medan أو Allo',
-        '  - حزن → Winner Takes It All أو Tayeh أو Heseeny أو Ma Balash أو Lesa Btesaly',
-        '  - طرب/كلاسيك → Ansak أو Kifak Inta أو Aynak أو Halaf Al Qamar أو Fi 3esh2 El Banat أو Lesa Btesaly',
-        '  - صباح/هدوء → Kifak Inta أو Helwa Ya Baladi',
-        '  - وطني/مصر → Helwa Ya Baladi أو Mashrebtesh Men Nilha أو Hena Masr',
-        '  - رقص/حفلات → Billie Jean أو El Abd Wel Waili أو Nano',
-        '  - مهرجانات/شعبي → El Abd Wel Waili',
-        '- إذا طلب أغنية غير متوفرة، اقترح الأقرب من القائمة (واحدة فقط).',
-        '- لا ترسل أغنية تلقائياً إلا إذا طلب المستخدم أغنية/موسيقى.',
-        '- عند إرسال أغنية واحدة: جملة قصيرة ثم [MUSIC:...] مباشرة.',
-        '',
-        '## قواعد البلايليست (مهمة جداً):',
-        '- عندما يطلب المستخدم بلايليست/قائمة أغاني/مجموعة أغاني/أغاني لمزاج معين، استخدم تاج البلايليست.',
-        '- التنسيق: [PLAYLIST:عنوان البلايليست|أغنية1|أغنية2|أغنية3]',
-        '- العنوان أولاً ثم الأغاني مفصولة بـ |',
-        '- استخدم الاسم الإنجليزي للأغاني كما في [MUSIC:]',
-        '- مثال: [PLAYLIST:أغاني رومانسية|Ed Sheeran - Perfect|Dari Ya Alby|Kelma|Awel Mara]',
-        '- مثال: [PLAYLIST:أغاني حماسية|Never Say Never|Ya El Medan|Allo|Billie Jean]',
-        '- اختر 3-8 أغاني مناسبة للمزاج المطلوب.',
-        '- اكتب جملة قصيرة عن البلايليست ثم التاج مباشرة.',
-        '- لا تكرر اسماء الأغاني بعد التاج — البلايليست ستعرضهم تلقائياً.',
-        '- عند طلب أغنية واحدة فقط استخدم [MUSIC:] وليس [PLAYLIST:]',
-        '',
-        '## مكتبة الأفلام (56 فيلم):',
-        '- فيلم برشامة 2026 (كوميدي/مصري)',
-        '- فيلم الكلام على ايه (مصري)',
-        '- فيلم كولونيا (دراما/مصري)',
-        '- فيلم ان غاب القط (كوميدي/مصري)',
-        '- فيلم عيال حبيبة (كوميدي/رومانسي/مصري)',
-        '- فيلم افواه وارانب (دراما/مصري/كلاسيك)',
-        '- فيلم الانسة مامي (كوميدي/مصري)',
-        '- فيلم حلم العمر (أكشن/دراما/مصري)',
-        '- فيلم عسل اسود (كوميدي/دراما/مصري)',
-        '- فيلم الارهاب والكباب (كوميدي/مصري/كلاسيك)',
-        '- فيلم عنتر ابن شداد (تاريخي/مصري/كلاسيك)',
-        '- فيلم احلام عمرنا (رومانسي/دراما/مصري)',
-        '- فيلم لخمة راس (كوميدي/مصري)',
-        '- فيلم المش مهندس حسن (كوميدي/مصري)',
-        '- فيلم كود 36 (أكشن/مصري)',
-        '- فيلم ابن حميدو (كوميدي/مصري/كلاسيك)',
-        '- فيلم سر طاقية الاخفاء (كوميدي/مصري/كلاسيك)',
-        '- فيلم اسماعيل يس في الاسطول (كوميدي/مصري/كلاسيك)',
-        '- فيلم كتيبة الاعدام (أكشن/دراما/مصري/كلاسيك)',
-        '- فيلم العفاريت (دراما/مصري/كلاسيك)',
-        '- فيلم على باب الوزير (كوميدي/مصري/كلاسيك)',
-        '- فيلم الرصاصة لا تزال في جيبي (حربي/تاريخي/مصري)',
-        '- فيلم وا اسلاماه (تاريخي/مصري/كلاسيك)',
-        '- فيلم المولد (أكشن/دراما/مصري/كلاسيك)',
-        '- فيلم اشاعة حب (كوميدي/مصري/كلاسيك)',
-        '- فيلم اقوى الرجال (أكشن/دراما/مصري)',
-        '- فيلم الزوجة 13 (كوميدي/مصري/كلاسيك)',
-        '- فيلم البعض لا يذهب للمأذون مرتين (كوميدي/مصري/كلاسيك)',
-        '- فيلم المشبوه (أكشن/دراما/مصري/كلاسيك)',
-        '- فيلم قبضة الهلالي (أكشن/مصري/كلاسيك)',
-        '- فيلم المتسول (كوميدي/مصري/كلاسيك)',
-        '- فيلم في بيتنا رجل (دراما/تاريخي/مصري/كلاسيك)',
-        '- فيلم عروس النيل (كوميدي/رومانسي/مصري/كلاسيك)',
-        '- فيلم عصابة حمادة وتوتو (كوميدي/مصري/كلاسيك)',
-        '- فيلم التعويذة (رعب/مصري/كلاسيك)',
-        '- فيلم رجل فقد عقله (كوميدي/مصري/كلاسيك)',
-        '- فيلم اسماعيل يس في الطيران (كوميدي/مصري/كلاسيك)',
-        '- فيلم البيه البواب (كوميدي/مصري/كلاسيك)',
-        '- فيلم مهمة في تل ابيب (أكشن/جاسوسية/مصري)',
-        '- فيلم صراع في النيل (دراما/مصري/كلاسيك)',
-        '- فيلم بطل من ورق (كوميدي/أكشن/مصري/كلاسيك)',
-        '- فيلم اسماعيل يس يقابل ريا وسكينة (كوميدي/مصري/كلاسيك)',
-        '- فيلم الغول (دراما/أكشن/مصري/كلاسيك)',
-        '- فيلم انا حرة (دراما/مصري/كلاسيك)',
-        '- فيلم النمر الاسود (دراما/أكشن/مصري/كلاسيك)',
-        '- فيلم عنتر شايل سيفه (كوميدي/مصري/كلاسيك)',
-        '- فيلم مرجان احمد مرجان (كوميدي/مصري)',
-        '- فيلم امبراطورية ميم (دراما/مصري/كلاسيك)',
-        '- فيلم شعبان تحت الصفر (كوميدي/مصري/كلاسيك)',
-        '- فيلم فتوة الناس الغلابة (دراما/أكشن/مصري/كلاسيك)',
-        '- فيلم الكيت كات (كوميدي/دراما/مصري/كلاسيك)',
-        '- فيلم خلي بالك من جيرانك (كوميدي/مصري/كلاسيك)',
-        '- فيلم الشيطانة التي احبتني (كوميدي/مصري/كلاسيك)',
-        '- فيلم بين السما والارض (كوميدي/دراما/مصري/كلاسيك)',
-        '- فيلم الانس والجن (رعب/مصري/كلاسيك)',
-        '- فيلم رمضان فوق البركان (كوميدي/مصري/كلاسيك)',
-        '',
-        '## قواعد الأفلام (مهمة جداً):',
-        '- عند طلب فيلم أو مشاهدة أو تفرج، يجب كتابة التاج هكذا بالضبط:',
-        '  [MOVIE:فيلم برشامة 2026]',
-        '- هذا التاج إلزامي — بدونه لن يظهر مشغل الفيلم للمستخدم.',
-        '- مثال صحيح: اتفضل شاهد الفيلم [MOVIE:فيلم برشامة 2026]',
-        '- مثال خاطئ: اتفضل فيلم برشامة (بدون التاج)',
-        '- لا ترسل فيلم تلقائياً إلا إذا طلب المستخدم فيلم/مشاهدة/تفرج.',
-        '- إذا طلب فيلم غير متوفر، أخبره بالأفلام المتاحة واعرض عليه فيلم برشامة.'
+        '## قواعد أساسية:',
+        '- أجب دائماً بلغة المستخدم ولهجته (لو كتب بالعامية المصرية رُدّ بالعامية المصرية).',
+        '- ادخل في الإجابة مباشرة: بلا مقدمات ولا مجاملات ولا تكرار للسؤال، ولا تبدأ بـ"بالتأكيد/بالطبع/بكل سرور".',
+        '- الدقة أولاً: لا تختلق معلومات أو أرقاماً أو مصادر. إن لم تكن متأكداً قل ذلك صراحة.',
+        '- طابق حجم الإجابة مع السؤال: سؤال بسيط = سطر أو سطران، طلب معقد = إجابة منظمة بعناوين وقوائم.',
+        '- استخدم Markdown عند الحاجة فقط، وحدد لغة الكود في code blocks.',
+        '- الأكواد: نظيفة وكاملة وقابلة للتشغيل مباشرة، مع تعليقات قصيرة للأجزاء المهمة فقط.',
+        '- إذا كان الطلب غامضاً اسأل سؤال توضيح واحداً قصيراً بدل التخمين.',
+        '- في الحساب والمنطق راجع خطواتك قبل إعطاء النتيجة النهائية.',
+        '- لديك مكتبة أغانٍ وأفلام يمكنك تشغيلها داخل الشات عندما يطلب المستخدم موسيقى أو فيلماً.'
     ].join('\n');
+
+    /* Media detection — heavy catalogs are attached only when relevant */
+    var MUSIC_RE = /أغنيه|أغنية|اغنية|أغاني|اغاني|غنوة|موسيقى|مزيكا|اسمع|سمعني|بلايليست|بلاي ليست|طرب|مهرجان|شغل|كايروكي|مسار اجباري|مسار إجباري|وسط البلد|رامي صبري|حماقي|فيروز|كلثوم|منير|شيرين|حليم|وسوف|داليدا|بلطي|تووليت|زفير|عامر منيب|music|song|playlist|listen|cairokee|massar|fairuz/i;
+    var MOVIE_RE = /فيلم|فلم|أفلام|افلام|اتفرج|أتفرج|تفرج|مشاهدة|شاهد|سينما|movie|film|watch|cinema/i;
+
+    var _musicGuide = null;
+    function musicGuide() {
+        if (_musicGuide) return _musicGuide;
+        var names = [];
+        for (var i = 0; i < MUSIC.length; i++) names.push(MUSIC[i].name);
+        _musicGuide = [
+            '',
+            '## مكتبة الأغاني المتاحة:',
+            names.join(' | '),
+            '',
+            '## قواعد الأغاني (صارمة):',
+            '- أغنية واحدة: جملة قصيرة ثم [MUSIC:اسم الأغنية كاملاً كما في القائمة]. مثال: [MUSIC:Fairuz - Kifak Inta]',
+            '- بلايليست (عند طلب قائمة/مجموعة/أغاني لمزاج): [PLAYLIST:عنوان|اسم1|اسم2|...] من 4-8 أغاني بأسمائها الكاملة.',
+            '- لا تكرر أسماء الأغاني نصاً بعد التاج، ولا ترسل موسيقى دون طلب صريح.',
+            '- أغنية غير متوفرة؟ اقترح الأقرب لها من القائمة (واحدة فقط)، وأضف في نهاية ردك التاج: [NOTFOUND:music:الاسم المطلوب] — تاج داخلي لن يظهر للمستخدم.',
+            '',
+            '## دليل الاختيار حسب المزاج:',
+            '- حب/رومانسي: Perfect، Enty Genan، Bahki Aleky، Dari Ya Alby، Kelma، Layla، Awel Mara، Albak Da Enwany، Beena Naeesh',
+            '- حزن/فراق: Lel Hozn Osoul، Kanet Hatfre2 Fel Wedaa، Hayaty Msh Tamam، Kont Faker، Tayeh Fel Amaken، Heseeny، The Winner Takes It All، Akherto Lahen Hazeen',
+            '- حماس/تحفيز: Never Say Never، Ana Negm، Samurai، Dinosaur، Ya El Medan، Toaa We Teoam، Ymken Kher، Allo',
+            '- طرب/كلاسيك: Ansak، Kifak Inta، Aynak، Halaf Al Qamar، Lesa Btesaly، Fi 3esh2 El Banat، Amar Al Zaman',
+            '- روك/بديل: أغاني كايروكي ومسار إجباري ووسط البلد واخر زفير',
+            '- صباح/هدوء: Sabahek، Kifak Inta، Helwa Ya Baladi',
+            '- حنين/ذكريات: Wahashni Sotek، Fakra، Bahkelak An El Ayam، Lama Bywhashny، Ayamna Betwadina',
+            '- وطني/مصر: Helwa Ya Baladi، Mashrebtesh Men Nilha، Hena Masr، Ya El Medan',
+            '- رقص/مهرجانات: Billie Jean، El Abd Wel Waili، Nano'
+        ].join('\n');
+        return _musicGuide;
+    }
+
+    var _movieGuide = null;
+    function movieGuide() {
+        if (_movieGuide) return _movieGuide;
+        var names = [];
+        for (var i = 0; i < MOVIES.length; i++) {
+            names.push(MOVIES[i].name + ' (' + MOVIES[i].genre.split('/')[0] + ')');
+        }
+        _movieGuide = [
+            '',
+            '## مكتبة الأفلام المتاحة (النوع بين قوسين):',
+            names.join(' | '),
+            '',
+            '## قواعد الأفلام (صارمة):',
+            '- عند طلب مشاهدة فيلم اكتب جملة قصيرة ثم التاج: [MOVIE:اسم الفيلم كاملاً كما في القائمة]',
+            '- التاج إلزامي — بدونه لن يظهر مشغل الفيلم. مثال صحيح: اتفضل [MOVIE:فيلم برشامة 2026]',
+            '- اختر حسب النوع المطلوب (كوميدي/أكشن/رعب/رومانسي/تاريخي...)، ولا ترسل فيلماً دون طلب صريح.',
+            '- فيلم غير متوفر؟ اذكر أنه غير متاح واقترح الأقرب له من القائمة، وأضف في نهاية ردك التاج: [NOTFOUND:movie:الاسم المطلوب] — تاج داخلي لن يظهر للمستخدم.'
+        ].join('\n');
+        return _movieGuide;
+    }
 
     /* ═══════ STATE ═══════ */
     var convs = [];
@@ -423,8 +431,8 @@
     var stickBottom = true;      // Smart auto-scroll: follow stream only while user is near the bottom
 
     /* ═══════ PERSONALIZED SYSTEM PROMPT ═══════ */
-    function buildSystemPrompt() {
-        var p = SYSTEM_PROMPT;
+    function buildSystemPrompt(recent) {
+        var p = CORE_PROMPT;
         if (replyStyle === 'concise') {
             p += '\n\n## أسلوب الرد المطلوب من المستخدم:\n- أجب بإيجاز شديد. أقصر إجابة صحيحة ممكنة، بدون أي تفاصيل إضافية.';
         } else if (replyStyle === 'detailed') {
@@ -435,6 +443,24 @@
         if (customCfg.about) c.push('- معلومات عن المستخدم: ' + customCfg.about);
         if (customCfg.extra) c.push('- تعليمات من المستخدم لطريقة الرد (اتبعها دائماً): ' + customCfg.extra);
         if (c.length) p += '\n\n## تخصيص المستخدم:\n' + c.join('\n');
+
+        // Attach the heavy media guides only when the recent conversation needs them:
+        // user keywords, or media tags in previous assistant replies (covers follow-ups)
+        var wantMusic = false, wantMovie = false;
+        var tail = (recent || []).slice(-6);
+        for (var i = 0; i < tail.length; i++) {
+            var txt = tail[i].content || '';
+            if (tail[i].role === 'user') {
+                if (!wantMusic && MUSIC_RE.test(txt)) wantMusic = true;
+                if (!wantMovie && MOVIE_RE.test(txt)) wantMovie = true;
+            } else {
+                if (!wantMusic && (txt.indexOf('[MUSIC:') !== -1 || txt.indexOf('[PLAYLIST:') !== -1)) wantMusic = true;
+                if (!wantMovie && txt.indexOf('[MOVIE:') !== -1) wantMovie = true;
+            }
+            if (wantMusic && wantMovie) break;
+        }
+        if (wantMusic) p += '\n' + musicGuide();
+        if (wantMovie) p += '\n' + movieGuide();
         return p;
     }
 
@@ -498,7 +524,14 @@
 
     function trackPageView() {
         getVisitorId();
-        fbLog('visit', { ref: document.referrer || 'direct', page: location.pathname });
+        var data = { ref: document.referrer || 'direct', page: location.pathname };
+        try {
+            data.loadMs = Math.round(performance.now());
+            if (navigator.connection && navigator.connection.effectiveType) {
+                data.net = navigator.connection.effectiveType;
+            }
+        } catch (e) { }
+        fbLog('visit', data);
     }
 
     function trackMessage(role, text, responseTime) {
@@ -511,6 +544,43 @@
 
     function trackError(msg) {
         fbLog('error', { err: (msg || '').substring(0, 200) });
+    }
+
+    /* ═══════ MISSING-CONTENT TRACKING ═══════
+       Runs once per completed AI reply (not on re-renders):
+       - [NOTFOUND:kind:name] — the model reports an unavailable request
+       - [MUSIC:]/[MOVIE:]/[PLAYLIST:] tags that don't match the catalogs */
+    function logMissingFromReply(txt) {
+        if (!txt) return;
+        var seen = {};
+        function report(kind, q) {
+            q = (q || '').trim().slice(0, 120);
+            if (!q) return;
+            var key = kind + '|' + q.toLowerCase();
+            if (seen[key]) return;
+            seen[key] = true;
+            fbLog('missing', { kind: kind, q: q });
+        }
+        var m;
+        var reNF = /\[NOTFOUND:(music|movie)\s*:\s*([^\]]+)\]/gi;
+        while ((m = reNF.exec(txt))) report(m[1].toLowerCase(), m[2]);
+        var reMu = /\[MUSIC:([^\]]+)\]/g;
+        while ((m = reMu.exec(txt))) { if (!matchMusic(m[1])) report('music', m[1]); }
+        var reMv = /\[MOVIE:([^\]]+)\]/g;
+        while ((m = reMv.exec(txt))) { if (!matchMovie(m[1])) report('movie', m[1]); }
+        var rePl = /\[PLAYLIST:([^\]]+)\]/g;
+        while ((m = rePl.exec(txt))) {
+            var parts = m[1].split('|');
+            for (var i = 1; i < parts.length; i++) {
+                if (parts[i].trim() && !matchMusic(parts[i])) report('music', parts[i]);
+            }
+        }
+    }
+
+    /* Media play tracking — powers the "most played" admin stats */
+    function trackMedia(kind, name) {
+        if (!name) return;
+        fbLog('media', { kind: kind, name: ('' + name).trim().slice(0, 120) });
     }
 
     /* ═══════ DOM ═══════ */
@@ -774,17 +844,15 @@
     function md(text) {
         if (!text) return '';
 
+        // [NOTFOUND:kind:name] is an internal reporting tag — never displayed
+        // (\]? also hides a partially-streamed tag at the end of the text)
+        text = text.replace(/\[NOTFOUND:[^\]]*\]?/g, '').trim();
+
         // Preserve music tags
         var musicBlocks = [];
         text = text.replace(/\[MUSIC:([^\]]+)\]/g, function (_, name) {
             var idx = musicBlocks.length;
-            var found = null;
-            for (var i = 0; i < MUSIC.length; i++) {
-                if (MUSIC[i].name.toLowerCase().indexOf(name.trim().toLowerCase()) !== -1
-                    || name.trim().toLowerCase().indexOf(MUSIC[i].name.toLowerCase()) !== -1) {
-                    found = MUSIC[i]; break;
-                }
-            }
+            var found = matchMusic(name);
             musicBlocks.push(found ? musicPlayerHTML(found) : '<p>🎵 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%MUSIC_' + idx + '%%';
         });
@@ -793,13 +861,7 @@
         var movieBlocks = [];
         text = text.replace(/\[MOVIE:([^\]]+)\]/g, function (_, name) {
             var idx = movieBlocks.length;
-            var found = null;
-            for (var i = 0; i < MOVIES.length; i++) {
-                if (MOVIES[i].name.toLowerCase().indexOf(name.trim().toLowerCase()) !== -1
-                    || name.trim().toLowerCase().indexOf(MOVIES[i].name.toLowerCase()) !== -1) {
-                    found = MOVIES[i]; break;
-                }
-            }
+            var found = matchMovie(name);
             movieBlocks.push(found ? moviePlayerHTML(found) : '<p>🎬 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%MOVIE_' + idx + '%%';
         });
@@ -823,14 +885,8 @@
             var songNames = parts.slice(1);
             var foundSongs = [];
             for (var s = 0; s < songNames.length; s++) {
-                var sn = songNames[s].toLowerCase();
-                for (var mi2 = 0; mi2 < MUSIC.length; mi2++) {
-                    if (MUSIC[mi2].name.toLowerCase().indexOf(sn) !== -1
-                        || sn.indexOf(MUSIC[mi2].name.toLowerCase()) !== -1) {
-                        foundSongs.push(MUSIC[mi2]);
-                        break;
-                    }
-                }
+                var fs = matchMusic(songNames[s]);
+                if (fs) foundSongs.push(fs);
             }
             if (foundSongs.length > 0) {
                 playlistBlocks.push(chatPlaylistHTML(foundSongs, plTitle));
@@ -963,6 +1019,8 @@
                 // Stop hidden audio to avoid two songs playing
                 if (plHiddenAudio) { plHiddenAudio.pause(); }
                 a.play();
+                var mpTitle = p.querySelector('.mp-title');
+                trackMedia('music', mpTitle ? mpTitle.textContent : '');
                 btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
             } else {
                 a.pause();
@@ -1047,6 +1105,7 @@
                     aiMsg.content = txt;
                     c.msgs.push(aiMsg);
                     saveAll();
+                    logMissingFromReply(txt);
                 });
             }).catch(function (err) {
                 hideDots();
@@ -1056,6 +1115,8 @@
         playMovie: function (id, embedUrl) {
             var player = document.getElementById(id);
             if (!player) return;
+            var mvTitle = player.querySelector('.mv-title');
+            trackMedia('movie', mvTitle ? mvTitle.textContent : '');
             var poster = player.querySelector('.mv-poster');
             var screen = document.getElementById(id + '_screen');
             if (poster) poster.style.display = 'none';
@@ -1134,6 +1195,7 @@
             plIdx = idx;
             plActive = true;
             var song = playlist[idx];
+            trackMedia('music', song.name);
             // Stop all visible audio players
             document.querySelectorAll('.music-player audio').forEach(function (a) {
                 a.pause();
@@ -1862,12 +1924,26 @@
     }
 
     /* ═══════ API ═══════ */
+    var MAX_HISTORY = 16;      // send at most the last N messages (older context rarely helps)
+    var MAX_MSG_CHARS = 6000;  // trim pathologically long single messages
+
+    function trimForApi(text) {
+        if (!text || text.length <= MAX_MSG_CHARS) return text;
+        // Keep the head (context/question) and the tail (latest details)
+        return text.slice(0, 3400) + '\n[…تم اختصار جزء طويل من الرسالة…]\n' + text.slice(-2200);
+    }
+
     function callAPI(msgs) {
-        var contents = [{ role: 'system', content: buildSystemPrompt() }];
-        for (var i = 0; i < msgs.length; i++) {
+        var recent = msgs.slice(-MAX_HISTORY);
+        var contents = [{ role: 'system', content: buildSystemPrompt(recent) }];
+        for (var i = 0; i < recent.length; i++) {
+            var m = recent[i];
+            if (!m.content) continue;
+            // Stored error toasts (⚠️/⏳) waste tokens and confuse the model — skip them
+            if (m.role === 'assistant' && /^[⚠⏳]/.test(m.content)) continue;
             contents.push({
-                role: msgs[i].role === 'user' ? 'user' : 'assistant',
-                content: msgs[i].content
+                role: m.role === 'user' ? 'user' : 'assistant',
+                content: trimForApi(m.content)
             });
         }
 
@@ -2025,6 +2101,7 @@
                 c.msgs.push(aiMsg);
                 saveAll();
                 trackMessage('assistant', txt, Date.now() - sendTime);
+                logMissingFromReply(txt);
                 if (c.msgs.length === 2) aiAutoTitle(c, text, txt);
             });
         }).catch(function (err) {
