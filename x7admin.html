@@ -121,6 +121,7 @@
         <div class="hbtns">
             <button class="bt" onclick="testConn()">🔌 اختبار الاتصال</button>
             <button class="bt" onclick="loadData()">🔄 تحديث</button>
+            <button class="bt" onclick="fullReload()" title="مسح الكاش المحلي وإعادة جلب كل السجلات من Firestore">🧹 تحديث كامل</button>
             <a href="index.html" class="bt">💬 الشات</a>
             <button class="bt" onclick="exportJSON()">📥 JSON</button>
             <button class="bt" onclick="exportCSV()">📊 CSV</button>
@@ -189,6 +190,17 @@
 var db=null,allLogs=[],range='all',term='';
 var logEl;
 
+/* ═══ Read-saving config ═══
+   Logs are cached in localStorage; refreshes fetch ONLY documents newer
+   than the newest cached one (delta fetch). An idle open tab costs ~1 read
+   per refresh instead of thousands. */
+var CACHE_KEY='lord_admin_cache_v1';
+var CACHE_MAX=4000;     // newest docs kept in localStorage
+var MEM_MAX=6000;       // hard cap in memory
+var FIRST_LIMIT=1500;   // docs fetched on first-ever load
+var DELTA_LIMIT=1000;   // max docs per delta fetch
+var readsSession=0;     // Firestore reads consumed by this tab (visible in UI)
+
 /* ═══ Helpers ═══ */
 function log(m){
     console.log('[ADMIN]',m);
@@ -244,6 +256,7 @@ function initFB(){
         if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
         db=firebase.firestore();
         log('Firestore initialized ✓');
+        bootFromCache();
         loadData();
     }catch(e){
         log('ERROR init: '+e.message);
@@ -282,20 +295,73 @@ window.testConn=function(){
     });
 };
 
+/* ═══ Cache helpers ═══ */
+function bootFromCache(){
+    try{
+        var c=JSON.parse(localStorage.getItem(CACHE_KEY));
+        if(c&&c.logs&&c.logs.length){
+            allLogs=c.logs;
+            log('Cache: loaded '+allLogs.length+' records from localStorage (0 reads)');
+            stamp('من الكاش');
+            renderAll();
+        }
+    }catch(e){log('Cache read error: '+e.message)}
+}
+function saveCache(){
+    try{
+        localStorage.setItem(CACHE_KEY,JSON.stringify({logs:allLogs.slice(0,CACHE_MAX),saved:Date.now()}));
+    }catch(e){
+        // Quota exceeded — retry with a smaller slice, otherwise skip caching
+        try{localStorage.setItem(CACHE_KEY,JSON.stringify({logs:allLogs.slice(0,1500),saved:Date.now()}))}catch(e2){}
+    }
+}
+function stamp(extra){
+    document.getElementById('updStamp').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-EG')+(extra?' ('+extra+')':'')+' · قراءات الجلسة: '+readsSession;
+}
+window.fullReload=function(){
+    localStorage.removeItem(CACHE_KEY);
+    allLogs=[];
+    log('Cache cleared — full refetch');
+    loadData();
+};
+
+/* ═══ Incremental load: only NEW docs since the newest cached one ═══ */
 window.loadData=function(){
     if(!db)return;
-    log('Loading lord_logs...');
-    db.collection('lord_logs').orderBy('t','desc').limit(5000).get().then(function(snap){
-        allLogs=[];
+    var newestT=0;
+    for(var i=0;i<allLogs.length;i++){if((allLogs[i].t||0)>newestT)newestT=allLogs[i].t}
+    var isDelta=!!newestT;
+    var q=isDelta
+        ? db.collection('lord_logs').where('t','>',newestT).orderBy('t','desc').limit(DELTA_LIMIT)
+        : db.collection('lord_logs').orderBy('t','desc').limit(FIRST_LIMIT);
+    log(isDelta?'Delta fetch (only docs newer than cache)...':'Initial fetch (limit '+FIRST_LIMIT+')...');
+    q.get().then(function(snap){
+        readsSession+=Math.max(snap.size,1); // an empty query still bills one read
+        var seen={};
+        for(var i=0;i<allLogs.length;i++){if(allLogs[i]._id)seen[allLogs[i]._id]=1}
+        var fresh=[];
         snap.forEach(function(d){
             var data=d.data();
-            if(data.type!=='_test') allLogs.push(data);
+            if(data.type==='_test')return;
+            if(seen[d.id])return;
+            data._id=d.id;
+            fresh.push(data);
         });
-        log('Loaded '+allLogs.length+' records');
+        if(isDelta&&fresh.length>=DELTA_LIMIT){
+            // Gap too large to bridge safely — start over with a clean full fetch
+            log('Delta overflow ('+fresh.length+' docs) — falling back to full reload');
+            allLogs=[];
+            return window.loadData();
+        }
+        allLogs=isDelta?fresh.concat(allLogs):fresh;
+        allLogs.sort(function(a,b){return (b.t||0)-(a.t||0)});
+        if(allLogs.length>MEM_MAX)allLogs=allLogs.slice(0,MEM_MAX);
+        log((isDelta?'Delta':'Initial')+' loaded: +'+fresh.length+' new · total '+allLogs.length+' · session reads: '+readsSession);
+        saveCache();
         if(allLogs.length===0){
             alert2('ℹ️ لا توجد بيانات بعد — افتح <a href="index.html" style="color:var(--ac)">صفحة الشات</a> وأرسل رسالة ثم عد هنا واضغط تحديث','warn');
         }
-        document.getElementById('updStamp').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-EG')+' · تلقائي كل دقيقتين';
+        stamp(isDelta?('+'+fresh.length+' جديد'):null);
         renderAll();
     }).catch(function(e){
         log('LOAD ERROR: '+e.message);
@@ -597,8 +663,13 @@ window.exportCSV=function(){
     var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lord-logs-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
 };
 
-/* Auto refresh */
-setInterval(function(){if(db&&sessionStorage.getItem('la')==='1')loadData()},120000);
+/* Auto refresh — delta fetches only, paused while the tab is hidden */
+setInterval(function(){
+    if(db&&sessionStorage.getItem('la')==='1'&&!document.hidden)loadData();
+},180000);
+document.addEventListener('visibilitychange',function(){
+    if(!document.hidden&&db&&sessionStorage.getItem('la')==='1')loadData();
+});
 </script>
 </body>
 </html>
