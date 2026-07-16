@@ -3,7 +3,7 @@
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'AQ.Ab' + '8RN6Ij2QlETeLUmv' + 'qR60aOB8a8Ac_v' + 'hjWBY08Fq4v8wwTdOQ';
+    var API_KEY = 'AQ.Ab' + '8RN6K9TLce5TesKU' + 'QmFENFTSk8zv4h8M-f' + 'Mqs2MgUOjGCvPw';
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
     var MODEL = 'gemini-3.1-flash-lite';
 
