@@ -1,8 +1,12 @@
 /* ═══════════════════════════════════════════════════════════
-   LORD AI — Games Hub (11 games)
-   Standalone module (no dependency on app.js at load time).
-   Exposes window.LordGames = { list, open, match }.
-   app.js integrates via [GAME:name] tags and LORD.openGame().
+   LORD AI — Games (inline-in-chat system)
+   Games render INSIDE chat messages as .game-frame blocks:
+   - [GAMEHUB]      → hub grid (solo + online sections)
+   - [GAME:name]    → poster → click mounts the game in place
+   - [GAMEJOIN:G-X] → joins an online room by code
+   Online multiplayer (XO / Connect-4 / RPS) rides on Firestore
+   ('lord_rooms' collection, one tiny doc per room, onSnapshot).
+   Exposes window.LordGames — app.js calls it from md()/send().
    ═══════════════════════════════════════════════════════════ */
 (function () {
     'use strict';
@@ -29,6 +33,37 @@
     function isDark() {
         return (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     }
+    function vid() {
+        try { return JSON.parse(localStorage.getItem('lord_visitor_id')) || ('v' + Date.now()); }
+        catch (e) { return 'v' + Date.now(); }
+    }
+    function gToast(msg) {
+        var old = document.querySelector('.toast');
+        if (old) old.remove();
+        var t = document.createElement('div');
+        t.className = 'toast show';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(function () { t.remove(); }, 2000);
+    }
+
+    /* tiny sfx — WebAudio beeps, no assets needed */
+    var audioCtx = null;
+    function beep(freq, dur, type, vol) {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+            o.type = type || 'sine';
+            o.frequency.value = freq;
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            var t0 = audioCtx.currentTime;
+            g.gain.setValueAtTime(vol || 0.06, t0);
+            g.gain.exponentialRampToValueAtTime(0.001, t0 + (dur || 0.15));
+            o.start(t0);
+            o.stop(t0 + (dur || 0.15));
+        } catch (e) { }
+    }
 
     /* ═══════ SCORES (localStorage) ═══════ */
     var SCORE_KEY = 'lord_games_v1';
@@ -42,17 +77,32 @@
         try { localStorage.setItem(SCORE_KEY, JSON.stringify(all)); } catch (e) { }
     }
     function score(id) { return loadScores()[id] || {}; }
+    function bumpWLD(id, key) {
+        var s = score(id);
+        s[key] = (s[key] || 0) + 1;
+        saveScore(id, s);
+    }
+    function wldHTML(id) {
+        var s = score(id);
+        return gt('فوز', 'W') + ' <b>' + (s.w || 0) + '</b> · '
+            + gt('خسارة', 'L') + ' <b>' + (s.l || 0) + '</b> · '
+            + gt('تعادل', 'D') + ' <b>' + (s.d || 0) + '</b>';
+    }
 
     /* ═══════ CATALOG ═══════ */
     var GAMES = [
-        { id: 'xo', name: 'إكس أو', en: 'Tic-Tac-Toe', emoji: '⭕', desc: 'تحدَّ ذكاءً لا يُهزم', descEn: 'Face an unbeatable AI', aliases: ['اكس او', 'xo', 'x o', 'tic tac', 'تيك تاك'] },
-        { id: 'rps', name: 'حجر ورقة مقص', en: 'Rock Paper Scissors', emoji: '✂️', desc: 'الكلاسيكية ضد الكمبيوتر', descEn: 'The classic vs computer', aliases: ['حجر', 'ورقة', 'مقص', 'rock', 'rps'] },
+        { id: 'xo', name: 'إكس أو', en: 'Tic-Tac-Toe', emoji: '⭕', desc: 'تحدَّ ذكاءً لا يُهزم', descEn: 'Face an unbeatable AI', net: true, aliases: ['اكس او', 'xo', 'x o', 'tic tac', 'تيك تاك'] },
+        { id: 'c4', name: 'أربعة في صف', en: 'Connect 4', emoji: '🔴', desc: 'اصطف أربع قطع قبل الخصم', descEn: 'Line up four before your rival', net: true, aliases: ['كونكت', 'connect', 'اربعة في صف', 'اربعه'] },
+        { id: 'rps', name: 'حجر ورقة مقص', en: 'Rock Paper Scissors', emoji: '✂️', desc: 'الكلاسيكية — ضد الكمبيوتر', descEn: 'The classic vs computer', net: true, aliases: ['حجر', 'ورقة', 'مقص', 'rock', 'rps'] },
         { id: 'memory', name: 'الذاكرة', en: 'Memory', emoji: '🧠', desc: 'طابق الأزواج بأقل نقلات', descEn: 'Match pairs in fewest moves', aliases: ['ذاكرة', 'memory', 'كوتشينة', 'مطابقة'] },
-        { id: 'simon', name: 'سلسلة الألوان', en: 'Simon', emoji: '🎨', desc: 'احفظ التسلسل وكرّره', descEn: 'Memorize and repeat the sequence', aliases: ['سايمون', 'simon', 'الوان', 'ألوان', 'تسلسل'] },
+        { id: 'simon', name: 'سلسلة الألوان', en: 'Simon', emoji: '🎨', desc: 'احفظ التسلسل وكرّره — بأصوات', descEn: 'Memorize and repeat — with sound', aliases: ['سايمون', 'simon', 'الوان', 'ألوان', 'تسلسل'] },
+        { id: 'digits', name: 'ذاكرة الأرقام', en: 'Number Memory', emoji: '💭', desc: 'كم رقماً تحفظ في نظرة؟', descEn: 'How many digits can you hold?', aliases: ['ارقام', 'أرقام', 'digit', 'رقم'] },
         { id: 'reaction', name: 'رد الفعل', en: 'Reaction Time', emoji: '⚡', desc: 'قيس سرعتك بالملي ثانية', descEn: 'Measure your speed in ms', aliases: ['رد فعل', 'سرعة', 'reaction', 'رياكشن'] },
         { id: 'math', name: 'سباق الحساب', en: 'Math Sprint', emoji: '➗', desc: 'أكبر عدد إجابات في 30 ثانية', descEn: 'Solve as many as you can in 30s', aliases: ['حساب', 'رياضيات', 'math', 'جمع', 'ضرب'] },
         { id: 'snake', name: 'الثعبان', en: 'Snake', emoji: '🐍', desc: 'كُل التفاح واحذر من نفسك', descEn: 'Eat apples, don\'t bite yourself', aliases: ['ثعبان', 'snake', 'سنيك'] },
         { id: '2048', name: '2048', en: '2048', emoji: '🔢', desc: 'ادمج الأرقام ووصّل لـ 2048', descEn: 'Merge numbers to reach 2048', aliases: ['٢٠٤٨', '2048'] },
+        { id: 'tetris', name: 'تتريس', en: 'Tetris', emoji: '🧩', desc: 'الكلاسيكية الخالدة — رتّب القطع', descEn: 'The timeless classic', aliases: ['tetris', 'مكعبات', 'تترس'] },
+        { id: 'breakout', name: 'كسر الطوب', en: 'Breakout', emoji: '🧱', desc: 'حطّم كل الطوب بالكرة', descEn: 'Smash all the bricks', aliases: ['طوب', 'بريك', 'breakout', 'اركانويد'] },
         { id: 'mole', name: 'اضرب الخلد', en: 'Whack-a-Mole', emoji: '🐹', desc: 'اضرب أكبر عدد في 30 ثانية', descEn: 'Whack as many as you can in 30s', aliases: ['خلد', 'whack', 'mole', 'اضرب'] },
         { id: 'flappy', name: 'الطير النطاط', en: 'Flappy Bird', emoji: '🐤', desc: 'اضغط للطيران وتجنب الأعمدة', descEn: 'Tap to fly, dodge the pipes', aliases: ['فلابي', 'flappy', 'طير', 'عصفور', 'العصفورة'] },
         { id: 'mines', name: 'كاسحة الألغام', en: 'Minesweeper', emoji: '💣', desc: 'اكشف الخانات وتجنب الألغام', descEn: 'Clear the board, avoid the mines', aliases: ['الغام', 'ألغام', 'لغم', 'minesweeper', 'mines'] }
@@ -72,54 +122,118 @@
         return null;
     }
 
-    /* ═══════ MODAL SHELL ═══════ */
-    var modal = null;
-    var current = null; // { destroy: fn } of the running game
-
-    function buildModal() {
-        if (modal) return;
-        modal = document.createElement('div');
-        modal.className = 'gm-modal none';
-        modal.id = 'gmModal';
-        modal.innerHTML =
-            '<div class="gm-box">'
-            + '<div class="gm-head">'
-            + '<button class="gm-back hid" id="gmBack">‹</button>'
-            + '<span class="gm-title" id="gmTitle">🎮</span>'
-            + '<button class="gm-close" id="gmClose">✕</button>'
-            + '</div>'
-            + '<div class="gm-body" id="gmBody"></div>'
-            + '</div>';
-        document.body.appendChild(modal);
-        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-        document.getElementById('gmClose').addEventListener('click', close);
-        document.getElementById('gmBack').addEventListener('click', function () { renderHub(); });
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && modal && !modal.classList.contains('none')) close();
-        });
+    /* ═══════ SHARED GAME LOGIC (used by local + online modes) ═══════ */
+    var XO_WINS = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    function xoWin(b) {
+        for (var i = 0; i < XO_WINS.length; i++) {
+            var w = XO_WINS[i];
+            if (b[w[0]] && b[w[0]] === b[w[1]] && b[w[1]] === b[w[2]]) return { p: b[w[0]], line: w };
+        }
+        return null;
+    }
+    function xoFull(b) {
+        for (var i = 0; i < 9; i++) if (!b[i]) return false;
+        return true;
     }
 
-    function destroyCurrent() {
-        if (current && current.destroy) { try { current.destroy(); } catch (e) { } }
-        current = null;
+    function c4DropRow(b, col) {
+        for (var r = 5; r >= 0; r--) if (!b[r * 7 + col]) return r;
+        return -1;
+    }
+    function c4Win(b) {
+        var r, c, i, v;
+        for (r = 0; r < 6; r++) for (c = 0; c <= 3; c++) {
+            i = r * 7 + c; v = b[i];
+            if (v && v === b[i + 1] && v === b[i + 2] && v === b[i + 3]) return { p: v, line: [i, i + 1, i + 2, i + 3] };
+        }
+        for (c = 0; c < 7; c++) for (r = 0; r <= 2; r++) {
+            i = r * 7 + c; v = b[i];
+            if (v && v === b[i + 7] && v === b[i + 14] && v === b[i + 21]) return { p: v, line: [i, i + 7, i + 14, i + 21] };
+        }
+        for (r = 0; r <= 2; r++) for (c = 0; c <= 3; c++) {
+            i = r * 7 + c; v = b[i];
+            if (v && v === b[i + 8] && v === b[i + 16] && v === b[i + 24]) return { p: v, line: [i, i + 8, i + 16, i + 24] };
+        }
+        for (r = 0; r <= 2; r++) for (c = 3; c < 7; c++) {
+            i = r * 7 + c; v = b[i];
+            if (v && v === b[i + 6] && v === b[i + 12] && v === b[i + 18]) return { p: v, line: [i, i + 6, i + 12, i + 18] };
+        }
+        return null;
+    }
+    function c4Full(b) {
+        for (var c = 0; c < 7; c++) if (c4DropRow(b, c) >= 0) return false;
+        return true;
+    }
+    function c4AiPick(b, me, foe) {
+        function winsAfter(col, who) {
+            var r = c4DropRow(b, col);
+            if (r < 0) return false;
+            b[r * 7 + col] = who;
+            var w = c4Win(b);
+            b[r * 7 + col] = '';
+            return !!(w && w.p === who);
+        }
+        var order = [3, 2, 4, 1, 5, 0, 6], c;
+        for (c = 0; c < 7; c++) if (winsAfter(c, me)) return c;
+        for (c = 0; c < 7; c++) if (winsAfter(c, foe)) return c;
+        for (var oi = 0; oi < order.length; oi++) {
+            c = order[oi];
+            var r = c4DropRow(b, c);
+            if (r < 0) continue;
+            // avoid moves that let the opponent win right on top of ours
+            b[r * 7 + c] = me;
+            var bad = false;
+            var r2 = c4DropRow(b, c);
+            if (r2 >= 0) {
+                b[r2 * 7 + c] = foe;
+                var w = c4Win(b);
+                if (w && w.p === foe) bad = true;
+                b[r2 * 7 + c] = '';
+            }
+            b[r * 7 + c] = '';
+            if (!bad) return c;
+        }
+        for (var oj = 0; oj < order.length; oj++) if (c4DropRow(b, order[oj]) >= 0) return order[oj];
+        return -1;
     }
 
-    function close() {
-        destroyCurrent();
-        if (modal) modal.classList.add('none');
+    var RPS_OPTS = [
+        { id: 'rock', e: '✊', ar: 'حجر', en: 'Rock' },
+        { id: 'paper', e: '✋', ar: 'ورقة', en: 'Paper' },
+        { id: 'scissors', e: '✌️', ar: 'مقص', en: 'Scissors' }
+    ];
+    var RPS_BEATS = { rock: 'scissors', paper: 'rock', scissors: 'paper' };
+    function rpsEmoji(id) {
+        for (var i = 0; i < 3; i++) if (RPS_OPTS[i].id === id) return RPS_OPTS[i].e;
+        return '❔';
     }
 
-    function open(id) {
-        buildModal();
-        modal.classList.remove('none');
-        var g = id ? matchGame(id) : null;
-        if (g) openGame(g); else renderHub();
+    /* ═══════ FRAME SYSTEM (inline in chat messages) ═══════ */
+    var fidSeq = 0;
+    var mounts = []; // { el: frameEl, inst: {destroy} }
+
+    function frameId() { return 'gf_' + (++fidSeq) + '_' + Math.random().toString(36).slice(2, 6); }
+
+    function sweep() {
+        for (var i = mounts.length - 1; i >= 0; i--) {
+            if (!document.contains(mounts[i].el)) {
+                try { if (mounts[i].inst && mounts[i].inst.destroy) mounts[i].inst.destroy(); } catch (e) { }
+                mounts.splice(i, 1);
+            }
+        }
+    }
+    function unmountFrame(frame) {
+        for (var i = mounts.length - 1; i >= 0; i--) {
+            if (mounts[i].el === frame) {
+                try { if (mounts[i].inst && mounts[i].inst.destroy) mounts[i].inst.destroy(); } catch (e) { }
+                mounts.splice(i, 1);
+            }
+        }
     }
 
-    /* ═══════ HUB ═══════ */
     function bestLine(g) {
         var s = score(g.id);
-        if (g.id === 'xo' || g.id === 'rps') {
+        if (g.id === 'xo' || g.id === 'rps' || g.id === 'c4') {
             if (s.w === undefined && s.l === undefined) return '';
             return '🏆 ' + (s.w || 0) + ' — ' + (s.l || 0) + ' 💀';
         }
@@ -128,60 +242,406 @@
         return s.best ? '🏆 ' + s.best : '';
     }
 
-    function renderHub() {
-        destroyCurrent();
-        document.getElementById('gmTitle').textContent = '🎮 ' + gt('الألعاب', 'Games');
-        document.getElementById('gmBack').classList.add('hid');
-        var h = '<div class="gm-grid">';
-        for (var i = 0; i < GAMES.length; i++) {
-            var g = GAMES[i];
+    function posterInner(fid, g) {
+        return '<button class="gf-poster" onclick="LordGames.mount(\'' + fid + '\',\'' + g.id + '\',false)">'
+            + '<span class="gf-emoji">' + g.emoji + '</span>'
+            + '<span class="gf-info"><span class="gf-name">' + esc(lang() === 'en' ? g.en : g.name) + '</span>'
+            + '<span class="gf-sub">' + esc(lang() === 'en' ? g.descEn : g.desc) + '</span></span>'
+            + '<span class="gf-play">▶ ' + gt('العب', 'Play') + '</span></button>';
+    }
+    function joinPosterInner(fid, code) {
+        return '<button class="gf-poster" onclick="LordGames.mountJoin(\'' + fid + '\')">'
+            + '<span class="gf-emoji">🌐</span>'
+            + '<span class="gf-info"><span class="gf-name">' + gt('انضمام لروم ', 'Join room ') + esc(code) + '</span>'
+            + '<span class="gf-sub">' + gt('لعب أونلاين مع صاحبك', 'Online multiplayer') + '</span></span>'
+            + '<span class="gf-play">▶</span></button>';
+    }
+    function hubInner(fid) {
+        function card(g, net) {
             var best = bestLine(g);
-            h += '<button class="gm-card" data-game="' + g.id + '">'
+            return '<button class="gm-card" onclick="LordGames.mount(\'' + fid + '\',\'' + g.id + '\',' + (net ? 'true' : 'false') + ')">'
                 + '<span class="gm-emoji">' + g.emoji + '</span>'
-                + '<span class="gm-name">' + esc(lang() === 'en' ? g.en : g.name) + '</span>'
-                + '<span class="gm-desc">' + esc(lang() === 'en' ? g.descEn : g.desc) + '</span>'
-                + (best ? '<span class="gm-best">' + best + '</span>' : '')
+                + '<span class="gm-name">' + esc(lang() === 'en' ? g.en : g.name) + (net ? ' 🌐' : '') + '</span>'
+                + '<span class="gm-desc">' + esc(net ? gt('العب مع صاحبك بكود', 'Play a friend via code') : (lang() === 'en' ? g.descEn : g.desc)) + '</span>'
+                + (best && !net ? '<span class="gm-best">' + best + '</span>' : '')
                 + '</button>';
         }
+        var h = '<div class="gf-sec">🕹 ' + gt('العب لوحدك', 'Play solo') + '</div><div class="gm-grid">';
+        for (var i = 0; i < GAMES.length; i++) h += card(GAMES[i], false);
         h += '</div>';
-        var body = document.getElementById('gmBody');
-        body.innerHTML = h;
-        body.querySelectorAll('.gm-card').forEach(function (c) {
-            c.addEventListener('click', function () {
-                var g = matchGame(c.getAttribute('data-game'));
-                if (g) openGame(g);
-            });
+        if (netDb()) {
+            h += '<div class="gf-sec">🌐 ' + gt('مع صاحبك أونلاين — اعمل روم وابعتله الكود', 'Online with a friend — create a room, share the code') + '</div><div class="gm-grid">';
+            for (var j = 0; j < GAMES.length; j++) if (GAMES[j].net) h += card(GAMES[j], true);
+            h += '</div>';
+        }
+        return h;
+    }
+
+    /* frame HTML factories — called from app.js md() */
+    function posterFrameHTML(g) {
+        var fid = frameId();
+        return '<div class="game-frame" id="' + fid + '" data-gid="' + g.id + '">' + posterInner(fid, g) + '</div>';
+    }
+    function hubFrameHTML() {
+        var fid = frameId();
+        return '<div class="game-frame gf-hubframe" id="' + fid + '" data-gid="__hub__">' + hubInner(fid) + '</div>';
+    }
+    function joinFrameHTML(code) {
+        var fid = frameId();
+        return '<div class="game-frame" id="' + fid + '" data-gid="__join__" data-code="' + esc(code) + '">' + joinPosterInner(fid, code) + '</div>';
+    }
+
+    function restoreFrame(frame) {
+        var gid = frame.getAttribute('data-gid');
+        if (gid === '__hub__') { frame.classList.add('gf-hubframe'); frame.innerHTML = hubInner(frame.id); return; }
+        if (gid === '__join__') { frame.innerHTML = joinPosterInner(frame.id, frame.getAttribute('data-code') || ''); return; }
+        var g = matchGame(gid);
+        frame.innerHTML = g ? posterInner(frame.id, g) : '';
+    }
+
+    function buildChrome(frame, titleHTML) {
+        var isHub = frame.getAttribute('data-gid') === '__hub__';
+        frame.classList.remove('gf-hubframe'); // hub padding is for the grid view only
+        frame.innerHTML =
+            '<div class="gf-head"><span class="gf-title">' + titleHTML + '</span>'
+            + '<span class="gf-acts">'
+            + (isHub ? '<button class="gf-hbtn" data-act="hub" title="' + gt('كل الألعاب', 'All games') + '">🎮</button>' : '')
+            + '<button class="gf-hbtn" data-act="close" title="' + gt('إغلاق', 'Close') + '">✕</button>'
+            + '</span></div>'
+            + '<div class="gf-body"></div>';
+        frame.querySelector('.gf-acts').addEventListener('click', function (e) {
+            var b = e.target.closest('button');
+            if (!b) return;
+            unmountFrame(frame);
+            if (b.getAttribute('data-act') === 'hub') {
+                frame.classList.add('gf-hubframe');
+                frame.innerHTML = hubInner(frame.id);
+            } else restoreFrame(frame);
         });
     }
 
-    function openGame(g) {
-        destroyCurrent();
-        document.getElementById('gmTitle').textContent = g.emoji + ' ' + (lang() === 'en' ? g.en : g.name);
-        document.getElementById('gmBack').classList.remove('hid');
-        var body = document.getElementById('gmBody');
-        body.innerHTML = '';
-        try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame(g.name); } catch (e) { }
-        current = STARTERS[g.id](body);
+    function mount(fidOrEl, gid, net) {
+        var frame = typeof fidOrEl === 'string' ? document.getElementById(fidOrEl) : fidOrEl;
+        if (!frame) return;
+        var g = matchGame(gid);
+        if (!g) return;
+        sweep();
+        unmountFrame(frame);
+        buildChrome(frame, g.emoji + ' ' + esc(lang() === 'en' ? g.en : g.name) + (net ? ' 🌐' : ''));
+        var body = frame.querySelector('.gf-body');
+        try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame(g.name + (net ? ' أونلاين' : '')); } catch (e) { }
+        var inst = net ? startNetGame(body, g, null) : STARTERS[g.id](body);
+        mounts.push({ el: frame, inst: inst || { destroy: function () { } } });
     }
 
-    /* Shared W/L/D score painter */
-    function wldHTML(id) {
-        var s = score(id);
-        return gt('فوز', 'W') + ' <b>' + (s.w || 0) + '</b> · '
-            + gt('خسارة', 'L') + ' <b>' + (s.l || 0) + '</b> · '
-            + gt('تعادل', 'D') + ' <b>' + (s.d || 0) + '</b>';
+    function mountJoin(fidOrEl, code) {
+        var frame = typeof fidOrEl === 'string' ? document.getElementById(fidOrEl) : fidOrEl;
+        if (!frame) return;
+        code = code || frame.getAttribute('data-code') || '';
+        sweep();
+        unmountFrame(frame);
+        buildChrome(frame, '🌐 ' + esc(code));
+        var body = frame.querySelector('.gf-body');
+        try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame('انضمام أونلاين'); } catch (e) { }
+        var inst = startNetGame(body, null, { code: code });
+        mounts.push({ el: frame, inst: inst || { destroy: function () { } } });
     }
-    function bumpWLD(id, key) {
-        var s = score(id);
-        s[key] = (s[key] || 0) + 1;
-        saveScore(id, s);
+
+    /* ═══════ ONLINE ENGINE (Firestore rooms) ═══════ */
+    function netDb() {
+        try {
+            if (window.firebase && firebase.apps && firebase.apps.length && firebase.firestore) return firebase.firestore();
+        } catch (e) { }
+        return null;
     }
+    var CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    function genCode() {
+        var s = 'G-';
+        for (var i = 0; i < 4; i++) s += CODE_CHARS[rnd(CODE_CHARS.length)];
+        return s;
+    }
+    function normalizeCode(s) {
+        s = (s || '').toUpperCase().replace(/[^A-Z2-9]/g, '');
+        if (s.charAt(0) === 'G' && s.length === 5) s = s.slice(1);
+        return /^[A-Z2-9]{4}$/.test(s) ? 'G-' + s : null;
+    }
+    var NET_INIT = {
+        xo: function () { return { b: ['', '', '', '', '', '', '', '', ''], n: 'h', s: 'h', hw: 0, gw: 0, d: 0 }; },
+        c4: function () {
+            var b = [];
+            for (var i = 0; i < 42; i++) b.push('');
+            return { b: b, n: 'h', s: 'h', hw: 0, gw: 0, d: 0 };
+        },
+        rps: function () { return { h: null, g: null, hs: 0, gs: 0, res: 0, rnd: 1 }; }
+    };
+    function createRoom(gid) {
+        var code = genCode();
+        return netDb().collection('lord_rooms').doc(code)
+            .set({ g: gid, host: vid(), guest: null, st: NET_INIT[gid](), seq: 0, t: Date.now() })
+            .then(function () { return code; });
+    }
+    function joinRoom(code) {
+        var ref = netDb().collection('lord_rooms').doc(code);
+        return ref.get().then(function (snap) {
+            if (!snap.exists) throw new Error(gt('الكود ده مش موجود — اتأكد منه', 'Room not found — check the code'));
+            var d = snap.data();
+            var me = vid();
+            if (d.host === me || d.guest === me) return d;   // rejoin
+            if (d.guest) throw new Error(gt('الروم ده مليان بالفعل', 'This room is already full'));
+            return ref.update({ guest: me, t: Date.now() }).then(function () { return d; });
+        });
+    }
+    function waitingHTML(code) {
+        return '<div class="net-wait">'
+            + '<div class="gm-status">' + gt('ابعت الكود ده لصاحبك:', 'Send this code to your friend:') + '</div>'
+            + '<div class="net-code" dir="ltr">' + esc(code) + '</div>'
+            + '<button class="gm-btn" onclick="LordGames.copyCode(\'' + code + '\')">📋 ' + gt('نسخ الكود', 'Copy code') + '</button>'
+            + '<div class="gm-status net-hint">' + gt('صاحبك يكتب الكود في شات LORD AI عنده — اللعبة هتبدأ أول ما يدخل ⏳', 'Your friend types this code in their LORD AI chat — the game starts once they join ⏳') + '</div>'
+            + '</div>';
+    }
+
+    function startNetGame(body, g, pre) {
+        var db = netDb();
+        var unsub = null, alive = true, code = null, gid = g ? g.id : null;
+        function cleanup() {
+            alive = false;
+            if (unsub) { try { unsub(); } catch (e) { } unsub = null; }
+        }
+        if (!db) {
+            body.innerHTML = '<div class="gm-status">⚠️ ' + gt('الأونلاين غير متاح دلوقتي', 'Online play is unavailable right now') + '</div>';
+            return { destroy: cleanup };
+        }
+        function ref() { return db.collection('lord_rooms').doc(code); }
+        function write(patch) {
+            patch.t = Date.now();
+            ref().update(patch).catch(function () { });
+        }
+        function fail(msg) {
+            if (!alive) return;
+            body.innerHTML = '<div class="gm-status">⚠️ ' + esc(msg) + '</div>'
+                + (gid ? '<button class="gm-btn" id="netBack">' + gt('رجوع', 'Back') + '</button>' : '');
+            var b = body.querySelector('#netBack');
+            if (b) b.addEventListener('click', lobby);
+        }
+        function begin(c) {
+            code = c;
+            unsub = ref().onSnapshot(function (snap) {
+                if (!alive) return;
+                var d = snap.data();
+                if (!d) { fail(gt('الروم اتقفل', 'Room was closed')); return; }
+                if (gid !== d.g) {
+                    gid = d.g;
+                    var frame = body.closest('.game-frame');
+                    var gg = matchGame(gid);
+                    if (frame && gg) {
+                        var tt = frame.querySelector('.gf-title');
+                        if (tt) tt.textContent = gg.emoji + ' ' + (lang() === 'en' ? gg.en : gg.name) + ' 🌐';
+                    }
+                }
+                var role = d.host === vid() ? 'h' : 'g';
+                if (!d.guest) { body.innerHTML = waitingHTML(code); return; }
+                var render = NET_RENDER[gid];
+                if (!render) { fail(gt('لعبة غير معروفة', 'Unknown game')); return; }
+                render(body, d, { role: role, write: write });
+            }, function () { if (alive) fail(gt('حصل خطأ في الاتصال', 'Connection error')); });
+        }
+        function lobby() {
+            body.innerHTML =
+                '<div class="gm-status">' + gt('العب مع صاحبك من أي جهاز 🌍', 'Play with a friend on any device 🌍') + '</div>'
+                + '<button class="gm-btn" id="netCreate">➕ ' + gt('إنشاء روم جديد', 'Create a room') + '</button>'
+                + '<div class="net-or">' + gt('— أو —', '— or —') + '</div>'
+                + '<div class="net-row"><input class="net-input" id="netCode" maxlength="6" placeholder="G-ABCD" dir="ltr" autocomplete="off">'
+                + '<button class="gm-btn" id="netJoin">' + gt('انضم', 'Join') + '</button></div>'
+                + '<div class="gm-status" id="netMsg"></div>';
+            body.querySelector('#netCreate').addEventListener('click', function () {
+                body.innerHTML = '<div class="gm-status">⏳ ' + gt('جاري إنشاء الروم…', 'Creating room…') + '</div>';
+                createRoom(gid).then(begin).catch(function () { fail(gt('معرفناش نعمل الروم — جرب تاني', 'Could not create the room — try again')); });
+            });
+            function doJoin() {
+                var norm = normalizeCode(body.querySelector('#netCode').value);
+                if (!norm) { body.querySelector('#netMsg').textContent = gt('اكتب كود صحيح زي G-ABCD', 'Enter a valid code like G-ABCD'); return; }
+                body.innerHTML = '<div class="gm-status">⏳ ' + gt('جاري الانضمام…', 'Joining…') + '</div>';
+                joinRoom(norm).then(function () { begin(norm); }).catch(function (e) { fail(e.message); });
+            }
+            body.querySelector('#netJoin').addEventListener('click', doJoin);
+            body.querySelector('#netCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') doJoin(); });
+        }
+        if (pre && pre.code) {
+            var norm = normalizeCode(pre.code);
+            if (!norm) { fail(gt('كود غير صالح', 'Invalid code')); return { destroy: cleanup }; }
+            body.innerHTML = '<div class="gm-status">⏳ ' + gt('جاري الانضمام…', 'Joining…') + '</div>';
+            joinRoom(norm).then(function () { begin(norm); }).catch(function (e) { fail(e.message); });
+        } else {
+            lobby();
+        }
+        return { destroy: cleanup };
+    }
+
+    /* ── online renderers (rebuilt on every snapshot — boards are tiny) ── */
+    function netScoreRow(st, my) {
+        var mine = my === 'h' ? st.hw : st.gw;
+        var theirs = my === 'h' ? st.gw : st.hw;
+        return '<div class="gm-score">' + gt('أنت', 'You') + ' <b>' + (mine || 0) + '</b> · '
+            + gt('خصمك', 'Rival') + ' <b>' + (theirs || 0) + '</b> · '
+            + gt('تعادل', 'Draws') + ' <b>' + (st.d || 0) + '</b></div>';
+    }
+
+    var NET_RENDER = {
+        xo: function (body, d, ctx) {
+            var st = d.st, my = ctx.role, opp = my === 'h' ? 'g' : 'h';
+            var SYM = { h: 'X', g: 'O' };
+            var win = xoWin(st.b);
+            var over = win || xoFull(st.b);
+            var h = netScoreRow(st, my) + '<div class="xo-board xo-net">';
+            for (var i = 0; i < 9; i++) {
+                var cls = 'xo-cell' + (st.b[i] === 'h' ? ' x' : st.b[i] === 'g' ? ' o' : '')
+                    + (win && win.line.indexOf(i) !== -1 ? ' win' : '');
+                h += '<button class="' + cls + '" data-i="' + i + '">' + (st.b[i] ? SYM[st.b[i]] : '') + '</button>';
+            }
+            h += '</div><div class="gm-status">';
+            if (win) h += win.p === my ? '🎉 ' + gt('كسبت!', 'You win!') : '💀 ' + gt('خصمك كسب!', 'Rival wins!');
+            else if (over) h += '🤝 ' + gt('تعادل!', 'Draw!');
+            else h += st.n === my ? '👆 ' + gt('دورك — أنت ', 'Your turn — you are ') + SYM[my] : '⏳ ' + gt('دور خصمك…', 'Rival\'s turn…');
+            h += '</div>';
+            if (over) h += '<button class="gm-btn" id="netAgain">🔁 ' + gt('جولة جديدة', 'Rematch') + '</button>';
+            body.innerHTML = h;
+            if (!over && st.n === my) {
+                body.querySelectorAll('.xo-cell').forEach(function (cell) {
+                    cell.addEventListener('click', function () {
+                        var i2 = +cell.getAttribute('data-i');
+                        if (st.b[i2]) return;
+                        var ns = JSON.parse(JSON.stringify(st));
+                        ns.b[i2] = my;
+                        var w2 = xoWin(ns.b);
+                        if (w2) ns[my + 'w'] = (ns[my + 'w'] || 0) + 1;
+                        else if (xoFull(ns.b)) ns.d = (ns.d || 0) + 1;
+                        else ns.n = opp;
+                        ctx.write({ st: ns, seq: (d.seq || 0) + 1 });
+                    });
+                });
+            }
+            var again = body.querySelector('#netAgain');
+            if (again) again.addEventListener('click', function () {
+                var ns = JSON.parse(JSON.stringify(st));
+                ns.b = ['', '', '', '', '', '', '', '', ''];
+                ns.s = st.s === 'h' ? 'g' : 'h';
+                ns.n = ns.s;
+                ctx.write({ st: ns, seq: (d.seq || 0) + 1 });
+            });
+        },
+
+        c4: function (body, d, ctx) {
+            var st = d.st, my = ctx.role, opp = my === 'h' ? 'g' : 'h';
+            var win = c4Win(st.b);
+            var over = win || c4Full(st.b);
+            var myDisc = my === 'h' ? '🔴' : '🟡';
+            var h = netScoreRow(st, my) + '<div class="c4-grid c4-net" dir="ltr">';
+            for (var i = 0; i < 42; i++) {
+                var cls = 'c4-cell' + (st.b[i] === 'h' ? ' red' : st.b[i] === 'g' ? ' yel' : '')
+                    + (win && win.line.indexOf(i) !== -1 ? ' win' : '');
+                h += '<button class="' + cls + '" data-c="' + (i % 7) + '"></button>';
+            }
+            h += '</div><div class="gm-status">';
+            if (win) h += win.p === my ? '🎉 ' + gt('كسبت!', 'You win!') : '💀 ' + gt('خصمك كسب!', 'Rival wins!');
+            else if (over) h += '🤝 ' + gt('تعادل!', 'Draw!');
+            else h += st.n === my ? '👆 ' + gt('دورك — قطعتك ', 'Your turn — your disc ') + myDisc : '⏳ ' + gt('دور خصمك…', 'Rival\'s turn…');
+            h += '</div>';
+            if (over) h += '<button class="gm-btn" id="netAgain">🔁 ' + gt('جولة جديدة', 'Rematch') + '</button>';
+            body.innerHTML = h;
+            if (!over && st.n === my) {
+                body.querySelectorAll('.c4-cell').forEach(function (cell) {
+                    cell.addEventListener('click', function () {
+                        var col = +cell.getAttribute('data-c');
+                        var r = c4DropRow(st.b, col);
+                        if (r < 0) return;
+                        var ns = JSON.parse(JSON.stringify(st));
+                        ns.b[r * 7 + col] = my;
+                        var w2 = c4Win(ns.b);
+                        if (w2) ns[my + 'w'] = (ns[my + 'w'] || 0) + 1;
+                        else if (c4Full(ns.b)) ns.d = (ns.d || 0) + 1;
+                        else ns.n = opp;
+                        ctx.write({ st: ns, seq: (d.seq || 0) + 1 });
+                    });
+                });
+            }
+            var again = body.querySelector('#netAgain');
+            if (again) again.addEventListener('click', function () {
+                var ns = JSON.parse(JSON.stringify(st));
+                ns.b = [];
+                for (var k = 0; k < 42; k++) ns.b.push('');
+                ns.s = st.s === 'h' ? 'g' : 'h';
+                ns.n = ns.s;
+                ctx.write({ st: ns, seq: (d.seq || 0) + 1 });
+            });
+        },
+
+        rps: function (body, d, ctx) {
+            var st = d.st, my = ctx.role, opp = my === 'h' ? 'g' : 'h';
+            var myPick = st[my], oppPick = st[opp];
+            var resolved = st.res === st.rnd;
+            // both picked but round not resolved (simultaneous submit race) → host resolves
+            if (myPick && oppPick && !resolved && my === 'h') {
+                var fix = JSON.parse(JSON.stringify(st));
+                if (fix.h !== fix.g) {
+                    if (RPS_BEATS[fix.h] === fix.g) fix.hs++; else fix.gs++;
+                }
+                fix.res = fix.rnd;
+                ctx.write({ st: fix, seq: (d.seq || 0) + 1 });
+                return;
+            }
+            var myScore = my === 'h' ? st.hs : st.gs;
+            var oppScore = my === 'h' ? st.gs : st.hs;
+            var h = '<div class="gm-score">' + gt('أنت', 'You') + ' <b>' + myScore + '</b> · '
+                + gt('خصمك', 'Rival') + ' <b>' + oppScore + '</b> · '
+                + gt('الجولة', 'Round') + ' <b>' + st.rnd + '</b></div>';
+            var oppShow = resolved ? rpsEmoji(oppPick) : (oppPick ? '🤔' : '❔');
+            h += '<div class="rps-arena"><span>' + (myPick ? rpsEmoji(myPick) : '❔') + '</span><span class="rps-vs">VS</span><span>' + oppShow + '</span></div>';
+            h += '<div class="gm-status">';
+            if (resolved) {
+                if (myPick === oppPick) h += '🤝 ' + gt('تعادل!', 'Draw!');
+                else if (RPS_BEATS[myPick] === oppPick) h += '🎉 ' + gt('كسبت الجولة!', 'You win the round!');
+                else h += '💀 ' + gt('خصمك كسب الجولة!', 'Rival wins the round!');
+            } else if (myPick) h += '⏳ ' + gt('مستني خصمك يختار…', 'Waiting for your rival…');
+            else h += '👆 ' + gt('اختار سلاحك', 'Pick your weapon');
+            h += '</div>';
+            if (!myPick && !resolved) {
+                h += '<div class="rps-row" id="netRps">';
+                for (var i = 0; i < 3; i++) {
+                    var o = RPS_OPTS[i];
+                    h += '<button data-id="' + o.id + '"><span>' + o.e + '</span><small>' + gt(o.ar, o.en) + '</small></button>';
+                }
+                h += '</div>';
+            }
+            if (resolved) h += '<button class="gm-btn" id="netAgain">▶ ' + gt('الجولة الجاية', 'Next round') + '</button>';
+            body.innerHTML = h;
+            var row = body.querySelector('#netRps');
+            if (row) row.addEventListener('click', function (e) {
+                var b = e.target.closest('button');
+                if (!b) return;
+                var pick = b.getAttribute('data-id');
+                var ns = JSON.parse(JSON.stringify(st));
+                ns[my] = pick;
+                if (ns[opp]) { // I'm second — resolve in the same write
+                    if (ns.h !== ns.g) {
+                        if (RPS_BEATS[ns.h] === ns.g) ns.hs++; else ns.gs++;
+                    }
+                    ns.res = ns.rnd;
+                }
+                ctx.write({ st: ns, seq: (d.seq || 0) + 1 });
+            });
+            var again = body.querySelector('#netAgain');
+            if (again) again.addEventListener('click', function () {
+                var ns = JSON.parse(JSON.stringify(st));
+                ns.h = null; ns.g = null; ns.rnd++;
+                ctx.write({ st: ns, seq: (d.seq || 0) + 1 });
+            });
+        }
+    };
 
     /* ═══════ 1) TIC-TAC-TOE (vs AI) ═══════ */
     function startXO(root) {
         var board, over, lock = false, hard = true, humanStarts = true;
         var HU = 'X', AI = 'O';
-        var WINS = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
         root.innerHTML =
             '<div class="xo-top">'
@@ -199,21 +659,13 @@
         var statusEl = root.querySelector('#xoStatus');
 
         function paintScore() { root.querySelector('#xoScore').innerHTML = wldHTML('xo'); }
-
-        function winner(b) {
-            for (var i = 0; i < WINS.length; i++) {
-                var w = WINS[i];
-                if (b[w[0]] && b[w[0]] === b[w[1]] && b[w[1]] === b[w[2]]) return { p: b[w[0]], line: w };
-            }
-            return null;
-        }
         function empties(b) {
             var out = [];
             for (var i = 0; i < 9; i++) if (!b[i]) out.push(i);
             return out;
         }
         function minimax(b, player, depth) {
-            var w = winner(b);
+            var w = xoWin(b);
             if (w) return { score: w.p === AI ? 10 - depth : depth - 10 };
             var free = empties(b);
             if (!free.length) return { score: 0 };
@@ -243,7 +695,7 @@
             if (!over) statusEl.textContent = gt('دورك — أنت X', 'Your turn — you are X');
         }
         function check() {
-            var w = winner(board);
+            var w = xoWin(board);
             if (w) {
                 over = true;
                 if (w.p === HU) { bumpWLD('xo', 'w'); statusEl.textContent = '🎉 ' + gt('مبروك! كسبت', 'You win!'); }
@@ -280,7 +732,7 @@
                         paint();
                         check();
                         if (!over) {
-                            lock = true; // block input while the AI "thinks"
+                            lock = true;
                             statusEl.textContent = '🤖 …';
                             setTimeout(aiMove, 250);
                         }
@@ -288,14 +740,12 @@
                 })(i);
                 boardEl.appendChild(c);
             }
-            // fairness: alternate who opens each round
             if (humanStarts) {
                 statusEl.textContent = gt('دورك — أنت X تبدأ', 'Your turn — you (X) start');
             } else {
                 statusEl.textContent = gt('الكمبيوتر يبدأ…', 'Computer starts…');
                 lock = true;
                 setTimeout(function () {
-                    // opening book: center or a corner keeps it interesting
                     var opens = [4, 0, 2, 6, 8];
                     board[hard ? opens[rnd(2) === 0 ? 0 : 1 + rnd(4)] : opens[rnd(5)]] = AI;
                     paint();
@@ -319,14 +769,102 @@
         return { destroy: function () { } };
     }
 
-    /* ═══════ 2) ROCK PAPER SCISSORS ═══════ */
+    /* ═══════ 2) CONNECT 4 (vs AI) ═══════ */
+    function startC4(root) {
+        var board, over, lock = false, humanStarts = true;
+        var HU = 'p', AI = 'a';
+
+        root.innerHTML =
+            '<div class="gm-score" id="c4Score"></div>'
+            + '<div class="c4-grid" id="c4Grid" dir="ltr"></div>'
+            + '<div class="gm-status" id="c4Status"></div>'
+            + '<button class="gm-btn" id="c4Reset">' + gt('جولة جديدة', 'New round') + '</button>';
+
+        var gridEl = root.querySelector('#c4Grid');
+        var statusEl = root.querySelector('#c4Status');
+
+        function paintScore() { root.querySelector('#c4Score').innerHTML = wldHTML('c4'); }
+        function paint(winLine) {
+            for (var i = 0; i < 42; i++) {
+                var cell = gridEl.children[i];
+                cell.classList.toggle('red', board[i] === HU);
+                cell.classList.toggle('yel', board[i] === AI);
+                cell.classList.toggle('win', !!(winLine && winLine.indexOf(i) !== -1));
+            }
+        }
+        function finish(w) {
+            over = true;
+            if (w) {
+                if (w.p === HU) { bumpWLD('c4', 'w'); statusEl.textContent = '🎉 ' + gt('كسبت! 🔴', 'You win! 🔴'); }
+                else { bumpWLD('c4', 'l'); statusEl.textContent = '💀 ' + gt('الكمبيوتر كسب! 🟡', 'Computer wins! 🟡'); }
+                paint(w.line);
+            } else {
+                bumpWLD('c4', 'd');
+                statusEl.textContent = '🤝 ' + gt('تعادل!', 'Draw!');
+            }
+            paintScore();
+        }
+        function drop(col, who) {
+            var r = c4DropRow(board, col);
+            if (r < 0) return false;
+            board[r * 7 + col] = who;
+            paint();
+            var w = c4Win(board);
+            if (w) { finish(w); return true; }
+            if (c4Full(board)) { finish(null); return true; }
+            return true;
+        }
+        function aiTurn() {
+            if (over) { lock = false; return; }
+            var col = c4AiPick(board, AI, HU);
+            if (col >= 0) drop(col, AI);
+            lock = false;
+            if (!over) statusEl.textContent = gt('دورك 🔴', 'Your turn 🔴');
+        }
+        function reset() {
+            board = [];
+            for (var i = 0; i < 42; i++) board.push('');
+            over = false;
+            lock = false;
+            gridEl.innerHTML = '';
+            for (var j = 0; j < 42; j++) {
+                var cell = document.createElement('button');
+                cell.className = 'c4-cell';
+                (function (col) {
+                    cell.addEventListener('click', function () {
+                        if (over || lock) return;
+                        if (c4DropRow(board, col) < 0) return;
+                        drop(col, HU);
+                        if (!over) {
+                            lock = true;
+                            statusEl.textContent = '🤖 …';
+                            setTimeout(aiTurn, 300);
+                        }
+                    });
+                })(j % 7);
+                gridEl.appendChild(cell);
+            }
+            if (humanStarts) {
+                statusEl.textContent = gt('دورك — قطعتك 🔴', 'Your turn — you are 🔴');
+            } else {
+                statusEl.textContent = gt('الكمبيوتر يبدأ…', 'Computer starts…');
+                lock = true;
+                setTimeout(function () {
+                    drop(3, AI);
+                    lock = false;
+                    if (!over) statusEl.textContent = gt('دورك 🔴', 'Your turn 🔴');
+                }, 350);
+            }
+            humanStarts = !humanStarts;
+        }
+        root.querySelector('#c4Reset').addEventListener('click', reset);
+        paintScore();
+        reset();
+        return { destroy: function () { } };
+    }
+
+    /* ═══════ 3) ROCK PAPER SCISSORS (vs computer) ═══════ */
     function startRPS(root) {
-        var OPTS = [
-            { id: 'rock', e: '✊', ar: 'حجر', en: 'Rock' },
-            { id: 'paper', e: '✋', ar: 'ورقة', en: 'Paper' },
-            { id: 'scissors', e: '✌️', ar: 'مقص', en: 'Scissors' }
-        ];
-        var BEATS = { rock: 'scissors', paper: 'rock', scissors: 'paper' };
         var revealing = false, revealTimer = null;
 
         root.innerHTML =
@@ -334,27 +872,25 @@
             + '<div class="rps-arena"><span id="rpsYou">❔</span><span class="rps-vs">VS</span><span id="rpsCpu">❔</span></div>'
             + '<div class="gm-status" id="rpsStatus">' + gt('اختار سلاحك 👇', 'Pick your weapon 👇') + '</div>'
             + '<div class="rps-row" id="rpsRow">'
-            + OPTS.map(function (o) {
+            + RPS_OPTS.map(function (o) {
                 return '<button data-id="' + o.id + '"><span>' + o.e + '</span><small>' + gt(o.ar, o.en) + '</small></button>';
             }).join('')
             + '</div>';
 
         function paintScore() { root.querySelector('#rpsScore').innerHTML = wldHTML('rps'); }
         function play(mine) {
-            if (revealing) return; // ignore clicks while the previous round resolves
+            if (revealing) return;
             revealing = true;
-            var cpu = OPTS[rnd(3)];
-            var me = null;
-            for (var i = 0; i < OPTS.length; i++) if (OPTS[i].id === mine) me = OPTS[i];
-            root.querySelector('#rpsYou').textContent = me.e;
+            var cpu = RPS_OPTS[rnd(3)];
+            root.querySelector('#rpsYou').textContent = rpsEmoji(mine);
             var cpuEl = root.querySelector('#rpsCpu');
             cpuEl.textContent = '🤔';
             var statusEl = root.querySelector('#rpsStatus');
             statusEl.textContent = '…';
             revealTimer = setTimeout(function () {
                 cpuEl.textContent = cpu.e;
-                if (me.id === cpu.id) { bumpWLD('rps', 'd'); statusEl.textContent = '🤝 ' + gt('تعادل!', 'Draw!'); }
-                else if (BEATS[me.id] === cpu.id) { bumpWLD('rps', 'w'); statusEl.textContent = '🎉 ' + gt('كسبت!', 'You win!'); }
+                if (mine === cpu.id) { bumpWLD('rps', 'd'); statusEl.textContent = '🤝 ' + gt('تعادل!', 'Draw!'); }
+                else if (RPS_BEATS[mine] === cpu.id) { bumpWLD('rps', 'w'); statusEl.textContent = '🎉 ' + gt('كسبت!', 'You win!'); }
                 else { bumpWLD('rps', 'l'); statusEl.textContent = '💀 ' + gt('خسرت!', 'You lose!'); }
                 paintScore();
                 revealing = false;
@@ -368,7 +904,7 @@
         return { destroy: function () { if (revealTimer) clearTimeout(revealTimer); } };
     }
 
-    /* ═══════ 3) MEMORY MATCH ═══════ */
+    /* ═══════ 4) MEMORY MATCH ═══════ */
     function startMemory(root) {
         var EMOJI = ['🍉', '🚀', '🎸', '🐪', '⚽', '🌙', '🍕', '🎁'];
         var moves, matched, first, lock, secs, timer = null;
@@ -417,6 +953,7 @@
                 first.classList.add('ok'); c.classList.add('ok');
                 first = null;
                 matched++;
+                beep(520 + matched * 40, 0.08);
                 if (matched === EMOJI.length) {
                     stopTimer();
                     var s = score('memory');
@@ -438,8 +975,9 @@
         return { destroy: stopTimer };
     }
 
-    /* ═══════ 4) SIMON (color sequence) ═══════ */
+    /* ═══════ 5) SIMON (color sequence, with tones) ═══════ */
     function startSimon(root) {
+        var TONES = [330, 262, 220, 165];
         var seq = [], pos = 0, playing = false, over = false;
         var timers = [];
 
@@ -466,6 +1004,7 @@
 
         function flash(p, ms) {
             pads[p].classList.add('lit');
+            beep(TONES[p], (ms || speed() * 0.6) / 1000 + 0.05);
             later(function () { pads[p].classList.remove('lit'); }, ms || speed() * 0.6);
         }
         function playback() {
@@ -505,6 +1044,7 @@
                 }
             } else {
                 over = true;
+                beep(110, 0.35, 'square');
                 statusEl.textContent = '💀 ' + gt('غلط! وصلت لجولة ', 'Wrong! You reached round ') + seq.length;
                 root.querySelector('#siStart').textContent = gt('العب تاني', 'Play again');
             }
@@ -523,10 +1063,86 @@
         return { destroy: clearTimers };
     }
 
-    /* ═══════ 5) REACTION TIME ═══════ */
+    /* ═══════ 6) NUMBER MEMORY (digit span) ═══════ */
+    function startDigits(root) {
+        var level, num, state = 'idle', showTimer = null;
+
+        root.innerHTML =
+            '<div class="gm-score-row">'
+            + '<span>' + gt('الأرقام', 'Digits') + ': <b id="dgLvl">—</b></span>'
+            + '<span>🏆 <b id="dgBest">' + (score('digits').best || 0) + '</b></span>'
+            + '</div>'
+            + '<div class="dg-display" id="dgDisp" dir="ltr">…</div>'
+            + '<div class="net-row none" id="dgRow">'
+            + '<input class="net-input" id="dgInput" inputmode="numeric" autocomplete="off" dir="ltr" placeholder="…">'
+            + '<button class="gm-btn" id="dgOk">✓</button>'
+            + '</div>'
+            + '<div class="gm-status" id="dgStatus">' + gt('هيظهر رقم لثواني — احفظه واكتبه', 'A number flashes for seconds — memorize and type it') + '</div>'
+            + '<button class="gm-btn" id="dgStart">' + gt('ابدأ', 'Start') + '</button>';
+
+        var disp = root.querySelector('#dgDisp');
+        var row = root.querySelector('#dgRow');
+        var input = root.querySelector('#dgInput');
+        var statusEl = root.querySelector('#dgStatus');
+
+        function clearShow() { if (showTimer) { clearTimeout(showTimer); showTimer = null; } }
+        function genNum(len) {
+            var s = '' + (1 + rnd(9));
+            for (var i = 1; i < len; i++) s += rnd(10);
+            return s;
+        }
+        function round() {
+            state = 'show';
+            num = genNum(level);
+            root.querySelector('#dgLvl').textContent = level;
+            disp.textContent = num;
+            disp.classList.remove('none');
+            row.classList.add('none');
+            statusEl.textContent = '👀 ' + gt('احفظ…', 'Memorize…');
+            clearShow();
+            showTimer = setTimeout(function () {
+                state = 'input';
+                disp.textContent = '❓';
+                row.classList.remove('none');
+                input.value = '';
+                input.focus();
+                statusEl.textContent = '⌨️ ' + gt('اكتب الرقم', 'Type the number');
+            }, 700 + level * 320);
+        }
+        function submit() {
+            if (state !== 'input') return;
+            var v = input.value.trim();
+            if (!v) return;
+            if (v === num) {
+                beep(600, 0.08);
+                level++;
+                statusEl.textContent = '✅ ' + gt('صح!', 'Correct!');
+                setTimeout(round, 600);
+            } else {
+                state = 'over';
+                beep(110, 0.35, 'square');
+                row.classList.add('none');
+                disp.textContent = num;
+                var reached = level - 1;
+                statusEl.textContent = '💀 ' + gt('غلط — كتبت ', 'Wrong — you typed ') + v + ' · ' + gt('وصلت لـ ', 'you reached ') + reached + ' ' + gt('أرقام', 'digits');
+                var s = score('digits');
+                if (reached > (s.best || 0)) { s.best = reached; saveScore('digits', s); root.querySelector('#dgBest').textContent = reached; }
+                root.querySelector('#dgStart').textContent = gt('العب تاني', 'Play again');
+            }
+        }
+        root.querySelector('#dgOk').addEventListener('click', submit);
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+        root.querySelector('#dgStart').addEventListener('click', function () {
+            level = 3;
+            round();
+        });
+        return { destroy: clearShow };
+    }
+
+    /* ═══════ 7) REACTION TIME ═══════ */
     function startReaction(root) {
         var ROUNDS = 5;
-        var state = 'idle'; // idle | waiting | cooldown | go | done
+        var state = 'idle';
         var round, times, t0, waitTimer = null;
 
         root.innerHTML =
@@ -595,7 +1211,7 @@
         return { destroy: clearWait };
     }
 
-    /* ═══════ 6) MATH SPRINT ═══════ */
+    /* ═══════ 8) MATH SPRINT ═══════ */
     function startMath(root) {
         var DURATION = 30;
         var scoreNow, left, timer = null, answer, running = false;
@@ -623,7 +1239,6 @@
             else if (kind === 1) { a = 10 + rnd(70); b = 1 + rnd(a - 1); answer = a - b; txt = a + ' − ' + b; }
             else { a = 2 + rnd(11); b = 2 + rnd(11); answer = a * b; txt = a + ' × ' + b; }
             qEl.textContent = txt + ' = ?';
-            // one correct + three unique near-miss distractors
             var opts = [answer];
             while (opts.length < 4) {
                 var d = answer + (rnd(2) ? 1 : -1) * (1 + rnd(9));
@@ -646,7 +1261,7 @@
                 root.querySelector('#maScore').textContent = scoreNow;
                 nextQ();
             } else {
-                btn.classList.add('bad'); // visual penalty, question stays
+                btn.classList.add('bad');
             }
         }
         function finish() {
@@ -681,7 +1296,7 @@
         return { destroy: stopTimer };
     }
 
-    /* ═══════ 7) SNAKE ═══════ */
+    /* ═══════ 9) SNAKE ═══════ */
     function startSnake(root) {
         var N = 18;
         var timer = null, snake, dir, dirQueue, food, scoreNow, speed, running = false, paused = false;
@@ -720,7 +1335,6 @@
             }
         }
         function draw() {
-            // theme-aware board colors (fallbacks per theme, since not every var exists)
             var bg = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
             var acc = cssVar('--accent', '#3e8e7e');
             ctx.fillStyle = bg;
@@ -781,7 +1395,6 @@
         }
         function turn(d) {
             if (!running || paused) return;
-            // compare against the last queued direction so quick double-taps can't reverse
             var last = dirQueue.length ? dirQueue[dirQueue.length - 1] : dir;
             if (d === last || d === OPP[last]) return;
             if (dirQueue.length < 3) dirQueue.push(d);
@@ -790,11 +1403,10 @@
         function onKey(e) {
             var map = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right' };
             var d = map[e.key];
-            if (d) { e.preventDefault(); turn(d); }
+            if (d && running) { e.preventDefault(); turn(d); }
         }
         document.addEventListener('keydown', onKey);
 
-        // auto-pause when the tab is hidden
         function onVis() {
             if (!running) return;
             if (document.hidden) {
@@ -827,7 +1439,6 @@
         });
         root.querySelector('#snStart').addEventListener('click', start);
 
-        // initial preview frame
         snake = [[9, 9], [8, 9], [7, 9]];
         food = [13, 9];
         draw();
@@ -841,7 +1452,7 @@
         };
     }
 
-    /* ═══════ 8) 2048 ═══════ */
+    /* ═══════ 10) 2048 ═══════ */
     function start2048(root) {
         var grid, scoreNow, over, won;
 
@@ -876,7 +1487,6 @@
             }
             root.querySelector('#g4Score').textContent = scoreNow;
         }
-        // slide+merge one line of 4 values toward index 0
         function slideRow(row) {
             var vals = row.filter(function (v) { return v; });
             var out = [], gain = 0;
@@ -922,7 +1532,7 @@
                 over = true;
                 root.querySelector('#g4Status').textContent = '💀 ' + gt('انتهت اللعبة! النقاط: ', 'Game over! Score: ') + scoreNow;
             } else if (won) {
-                won = false; // announce once
+                won = false;
                 root.querySelector('#g4Status').textContent = '🎉 ' + gt('وصلت 2048! كمّل لو عايز', 'You reached 2048! Keep going');
             }
         }
@@ -970,7 +1580,388 @@
         };
     }
 
-    /* ═══════ 9) WHACK-A-MOLE ═══════ */
+    /* ═══════ 11) TETRIS ═══════ */
+    function startTetris(root) {
+        var COLS = 10, ROWS = 18;
+        var SHAPES = [
+            { m: [[1, 1, 1, 1]], c: '#4a90d9' },
+            { m: [[1, 1], [1, 1]], c: '#e8b93d' },
+            { m: [[0, 1, 0], [1, 1, 1]], c: '#9d4edd' },
+            { m: [[0, 1, 1], [1, 1, 0]], c: '#2f9e6e' },
+            { m: [[1, 1, 0], [0, 1, 1]], c: '#d9534f' },
+            { m: [[1, 0, 0], [1, 1, 1]], c: '#3e8e7e' },
+            { m: [[0, 0, 1], [1, 1, 1]], c: '#f2913d' }
+        ];
+        var timer = null, board, cur, next, scoreNow, lines, level, over, running = false;
+
+        root.innerHTML =
+            '<div class="gm-score-row">'
+            + '<span>' + gt('النقاط', 'Score') + ': <b id="tzScore">0</b></span>'
+            + '<span>' + gt('صفوف', 'Lines') + ': <b id="tzLines">0</b></span>'
+            + '<span>🏆 <b id="tzBest">' + (score('tetris').best || 0) + '</b></span>'
+            + '</div>'
+            + '<div class="tz-wrap" dir="ltr"><canvas id="tzCanvas" class="sn-canvas"></canvas>'
+            + '<canvas id="tzNext" class="tz-next"></canvas></div>'
+            + '<div class="gm-status" id="tzStatus">' + gt('الأسهم للتحريك، ⬆ للف، مسطرة للإسقاط', 'Arrows to move, ⬆ rotates, Space drops') + '</div>'
+            + '<div class="tz-controls" id="tzCtl">'
+            + '<button data-a="left">◀</button><button data-a="rot">🔄</button><button data-a="right">▶</button>'
+            + '<button data-a="down">⬇</button><button data-a="drop">⤓</button>'
+            + '</div>'
+            + '<button class="gm-btn" id="tzStart">' + gt('ابدأ', 'Start') + '</button>';
+
+        var cv = root.querySelector('#tzCanvas');
+        var ctx = cv.getContext('2d');
+        var ncv = root.querySelector('#tzNext');
+        var nctx = ncv.getContext('2d');
+        var cell = 19;
+        cv.width = COLS * cell;
+        cv.height = ROWS * cell;
+        ncv.width = 4 * 13;
+        ncv.height = 4 * 13;
+
+        function randShape() {
+            var s = SHAPES[rnd(SHAPES.length)];
+            return { m: s.m.map(function (r) { return r.slice(); }), c: s.c };
+        }
+        function rotate(m) {
+            var h = m.length, w = m[0].length, out = [];
+            for (var x = 0; x < w; x++) {
+                var row = [];
+                for (var y = h - 1; y >= 0; y--) row.push(m[y][x]);
+                out.push(row);
+            }
+            return out;
+        }
+        function collide(px, py, m) {
+            for (var y = 0; y < m.length; y++) {
+                for (var x = 0; x < m[y].length; x++) {
+                    if (!m[y][x]) continue;
+                    var bx = px + x, by = py + y;
+                    if (bx < 0 || bx >= COLS || by >= ROWS) return true;
+                    if (by >= 0 && board[by * COLS + bx]) return true;
+                }
+            }
+            return false;
+        }
+        function spawn() {
+            cur = next || randShape();
+            next = randShape();
+            cur.x = Math.floor((COLS - cur.m[0].length) / 2);
+            cur.y = 0;
+            drawNext();
+            if (collide(cur.x, cur.y, cur.m)) gameOver();
+        }
+        function merge() {
+            for (var y = 0; y < cur.m.length; y++) {
+                for (var x = 0; x < cur.m[y].length; x++) {
+                    if (cur.m[y][x]) {
+                        var by = cur.y + y;
+                        if (by < 0) { gameOver(); return; }
+                        board[by * COLS + cur.x + x] = cur.c;
+                    }
+                }
+            }
+        }
+        function clearLines() {
+            var cleared = 0;
+            for (var r = ROWS - 1; r >= 0; r--) {
+                var full = true;
+                for (var c = 0; c < COLS; c++) if (!board[r * COLS + c]) { full = false; break; }
+                if (full) {
+                    board.splice(r * COLS, COLS);
+                    for (var k = 0; k < COLS; k++) board.unshift('');
+                    cleared++;
+                    r++; // recheck the same row index after shifting
+                }
+            }
+            if (cleared) {
+                beep(400 + cleared * 120, 0.12);
+                scoreNow += [0, 100, 300, 500, 800][cleared] * (level + 1);
+                lines += cleared;
+                var nl = Math.floor(lines / 10);
+                if (nl !== level) { level = nl; restartTimer(); }
+                root.querySelector('#tzScore').textContent = scoreNow;
+                root.querySelector('#tzLines').textContent = lines;
+                var s = score('tetris');
+                if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('tetris', s); root.querySelector('#tzBest').textContent = scoreNow; }
+            }
+        }
+        function speedMs() { return Math.max(110, 520 - level * 40); }
+        function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+        function restartTimer() { stopTimer(); timer = setInterval(step, speedMs()); }
+        function gameOver() {
+            stopTimer();
+            running = false;
+            over = true;
+            root.querySelector('#tzStatus').textContent = '💀 ' + gt('انتهت! النقاط: ', 'Game over! Score: ') + scoreNow;
+            root.querySelector('#tzStart').textContent = gt('العب تاني', 'Play again');
+        }
+        function step() {
+            if (over) return;
+            if (!collide(cur.x, cur.y + 1, cur.m)) cur.y++;
+            else {
+                merge();
+                if (over) return;
+                clearLines();
+                spawn();
+            }
+            draw();
+        }
+        function act(a) {
+            if (!running || over) return;
+            if (a === 'left' && !collide(cur.x - 1, cur.y, cur.m)) cur.x--;
+            else if (a === 'right' && !collide(cur.x + 1, cur.y, cur.m)) cur.x++;
+            else if (a === 'down') step();
+            else if (a === 'rot') {
+                var rm = rotate(cur.m);
+                var kicks = [0, -1, 1, -2, 2];
+                for (var i = 0; i < kicks.length; i++) {
+                    if (!collide(cur.x + kicks[i], cur.y, rm)) {
+                        cur.x += kicks[i];
+                        cur.m = rm;
+                        break;
+                    }
+                }
+            } else if (a === 'drop') {
+                while (!collide(cur.x, cur.y + 1, cur.m)) cur.y++;
+                step();
+            }
+            draw();
+        }
+        function draw() {
+            ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
+            ctx.fillRect(0, 0, cv.width, cv.height);
+            for (var i = 0; i < board.length; i++) {
+                if (board[i]) {
+                    ctx.fillStyle = board[i];
+                    ctx.fillRect((i % COLS) * cell + 1, Math.floor(i / COLS) * cell + 1, cell - 2, cell - 2);
+                }
+            }
+            if (cur && running) {
+                ctx.fillStyle = cur.c;
+                for (var y = 0; y < cur.m.length; y++) {
+                    for (var x = 0; x < cur.m[y].length; x++) {
+                        if (cur.m[y][x] && cur.y + y >= 0) {
+                            ctx.fillRect((cur.x + x) * cell + 1, (cur.y + y) * cell + 1, cell - 2, cell - 2);
+                        }
+                    }
+                }
+            }
+        }
+        function drawNext() {
+            nctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
+            nctx.fillRect(0, 0, ncv.width, ncv.height);
+            if (!next) return;
+            nctx.fillStyle = next.c;
+            var offX = Math.floor((4 - next.m[0].length) / 2);
+            var offY = Math.floor((4 - next.m.length) / 2);
+            for (var y = 0; y < next.m.length; y++) {
+                for (var x = 0; x < next.m[y].length; x++) {
+                    if (next.m[y][x]) nctx.fillRect((offX + x) * 13 + 1, (offY + y) * 13 + 1, 11, 11);
+                }
+            }
+        }
+        function start() {
+            board = [];
+            for (var i = 0; i < COLS * ROWS; i++) board.push('');
+            scoreNow = 0; lines = 0; level = 0; over = false; running = true;
+            next = null;
+            root.querySelector('#tzScore').textContent = '0';
+            root.querySelector('#tzLines').textContent = '0';
+            root.querySelector('#tzStatus').textContent = gt('يلا! 🧩', 'Go! 🧩');
+            root.querySelector('#tzStart').textContent = gt('إعادة', 'Restart');
+            spawn();
+            draw();
+            restartTimer();
+        }
+        function onKey(e) {
+            if (!running) return;
+            var map = { ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'down', ArrowUp: 'rot', ' ': 'drop' };
+            var a = map[e.key];
+            if (a) { e.preventDefault(); act(a); }
+        }
+        document.addEventListener('keydown', onKey);
+        root.querySelector('#tzCtl').addEventListener('click', function (e) {
+            var b = e.target.closest('button');
+            if (b) act(b.getAttribute('data-a'));
+        });
+        root.querySelector('#tzStart').addEventListener('click', start);
+        draw();
+        return {
+            destroy: function () {
+                stopTimer();
+                document.removeEventListener('keydown', onKey);
+            }
+        };
+    }
+
+    /* ═══════ 12) BREAKOUT ═══════ */
+    function startBreakout(root) {
+        var W, H, raf = null, running = false;
+        var paddle, ball, bricks, scoreNow, livesNow, levelNow;
+
+        root.innerHTML =
+            '<div class="gm-score-row">'
+            + '<span>' + gt('النقاط', 'Score') + ': <b id="bkScore">0</b></span>'
+            + '<span>❤️ <b id="bkLives">3</b></span>'
+            + '<span>🏆 <b id="bkBest">' + (score('breakout').best || 0) + '</b></span>'
+            + '</div>'
+            + '<canvas id="bkCanvas" class="sn-canvas"></canvas>'
+            + '<div class="gm-status" id="bkStatus">' + gt('حرّك المضرب بالماوس أو صباعك — اضغط للإطلاق', 'Move the paddle with mouse or finger — tap to launch') + '</div>'
+            + '<button class="gm-btn" id="bkStart">' + gt('ابدأ', 'Start') + '</button>';
+
+        var cv = root.querySelector('#bkCanvas');
+        var ctx = cv.getContext('2d');
+        W = Math.min(340, (root.clientWidth || 320) - 8);
+        H = Math.round(W * 0.88);
+        cv.width = W;
+        cv.height = H;
+
+        var BR_COLS = 7, BR_ROWS = 5, BR_H = 14, BR_GAP = 5, BR_TOP = 32, BR_PAD = 8;
+        var BR_W = (W - BR_PAD * 2 - BR_GAP * (BR_COLS - 1)) / BR_COLS;
+        var ROW_COLORS = ['#d9534f', '#f2913d', '#e8b93d', '#2f9e6e', '#4a90d9'];
+
+        function buildBricks() {
+            bricks = [];
+            for (var r = 0; r < BR_ROWS; r++) {
+                for (var c = 0; c < BR_COLS; c++) {
+                    bricks.push({ x: BR_PAD + c * (BR_W + BR_GAP), y: BR_TOP + r * (BR_H + BR_GAP), c: ROW_COLORS[r], alive: true });
+                }
+            }
+        }
+        function resetBall() {
+            ball = { x: paddle.x + paddle.w / 2, y: H - 26, vx: 0, vy: 0, r: 5.5, stuck: true };
+        }
+        function launch() {
+            if (!ball.stuck) return;
+            ball.stuck = false;
+            var sp = 3 + levelNow * 0.4;
+            ball.vx = (Math.random() < 0.5 ? -1 : 1) * sp * 0.6;
+            ball.vy = -sp;
+        }
+        function loseLife() {
+            livesNow--;
+            root.querySelector('#bkLives').textContent = livesNow;
+            if (livesNow <= 0) {
+                running = false;
+                if (raf) { cancelAnimationFrame(raf); raf = null; }
+                var s = score('breakout');
+                if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('breakout', s); root.querySelector('#bkBest').textContent = scoreNow; }
+                root.querySelector('#bkStatus').textContent = '💀 ' + gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow;
+                root.querySelector('#bkStart').textContent = gt('العب تاني', 'Play again');
+            } else {
+                resetBall();
+            }
+        }
+        function loop() {
+            if (!running) return;
+            if (ball.stuck) {
+                ball.x = paddle.x + paddle.w / 2;
+                ball.y = H - 26;
+            } else {
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                if (ball.x - ball.r < 0) { ball.x = ball.r; ball.vx = Math.abs(ball.vx); }
+                if (ball.x + ball.r > W) { ball.x = W - ball.r; ball.vx = -Math.abs(ball.vx); }
+                if (ball.y - ball.r < 0) { ball.y = ball.r; ball.vy = Math.abs(ball.vy); }
+                // paddle
+                if (ball.vy > 0 && ball.y + ball.r >= paddle.y && ball.y + ball.r <= paddle.y + paddle.h + 6
+                    && ball.x >= paddle.x - ball.r && ball.x <= paddle.x + paddle.w + ball.r) {
+                    var rel = (ball.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2);
+                    var sp = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+                    ball.vx = rel * sp * 0.85;
+                    ball.vy = -Math.abs(Math.sqrt(Math.max(sp * sp - ball.vx * ball.vx, 1)));
+                }
+                // bricks
+                var aliveCount = 0;
+                for (var i = 0; i < bricks.length; i++) {
+                    var b = bricks[i];
+                    if (!b.alive) continue;
+                    aliveCount++;
+                    if (ball.x + ball.r > b.x && ball.x - ball.r < b.x + BR_W
+                        && ball.y + ball.r > b.y && ball.y - ball.r < b.y + BR_H) {
+                        b.alive = false;
+                        aliveCount--;
+                        scoreNow += 10;
+                        root.querySelector('#bkScore').textContent = scoreNow;
+                        ball.vy = -ball.vy;
+                        beep(500 + rnd(200), 0.04);
+                        break;
+                    }
+                }
+                if (!aliveCount) {
+                    levelNow++;
+                    root.querySelector('#bkStatus').textContent = '🎉 ' + gt('مستوى ', 'Level ') + levelNow + '!';
+                    buildBricks();
+                    resetBall();
+                }
+                if (ball.y - ball.r > H) loseLife();
+            }
+            drawAll();
+            raf = requestAnimationFrame(loop);
+        }
+        function drawAll() {
+            ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
+            ctx.fillRect(0, 0, W, H);
+            for (var i = 0; i < bricks.length; i++) {
+                var b = bricks[i];
+                if (!b.alive) continue;
+                ctx.fillStyle = b.c;
+                ctx.fillRect(b.x, b.y, BR_W, BR_H);
+            }
+            ctx.fillStyle = cssVar('--accent', '#3e8e7e');
+            ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+            ctx.fillStyle = '#e05d5d';
+            ctx.fill();
+        }
+        function start() {
+            if (raf) cancelAnimationFrame(raf);
+            paddle = { x: W / 2 - 35, y: H - 16, w: 70, h: 9 };
+            scoreNow = 0; livesNow = 3; levelNow = 1; running = true;
+            root.querySelector('#bkScore').textContent = '0';
+            root.querySelector('#bkLives').textContent = '3';
+            root.querySelector('#bkStatus').textContent = gt('اضغط الشاشة لإطلاق الكرة 🎯', 'Tap to launch the ball 🎯');
+            root.querySelector('#bkStart').textContent = gt('إعادة', 'Restart');
+            buildBricks();
+            resetBall();
+            raf = requestAnimationFrame(loop);
+        }
+        function movePaddle(clientX) {
+            var rect = cv.getBoundingClientRect();
+            var x = (clientX - rect.left) * (W / rect.width);
+            paddle.x = Math.max(0, Math.min(x - paddle.w / 2, W - paddle.w));
+        }
+        function onMove(e) {
+            if (!running) return;
+            movePaddle(e.clientX);
+        }
+        function onDown(e) {
+            if (!running) return;
+            e.preventDefault();
+            movePaddle(e.clientX);
+            launch();
+        }
+        cv.addEventListener('pointermove', onMove);
+        cv.addEventListener('pointerdown', onDown);
+
+        // static preview
+        paddle = { x: W / 2 - 35, y: H - 16, w: 70, h: 9 };
+        buildBricks();
+        resetBall();
+        drawAll();
+
+        root.querySelector('#bkStart').addEventListener('click', start);
+        return {
+            destroy: function () {
+                running = false;
+                if (raf) cancelAnimationFrame(raf);
+            }
+        };
+    }
+
+    /* ═══════ 13) WHACK-A-MOLE ═══════ */
     function startMole(root) {
         var DURATION = 30;
         var scoreNow, left, moleAt = -1, running = false;
@@ -998,6 +1989,7 @@
                     scoreNow++;
                     root.querySelector('#moScore').textContent = scoreNow;
                     btn.textContent = '💥';
+                    beep(600, 0.05);
                     hideMole();
                     popTimer = setTimeout(popMole, 180);
                 });
@@ -1017,7 +2009,6 @@
             var next = rnd(9);
             moleAt = next;
             holes[next].textContent = '🐹';
-            // stays up for less time as the score grows
             var upFor = Math.max(450, 900 - scoreNow * 18);
             popTimer = setTimeout(function () {
                 hideMole();
@@ -1062,10 +2053,10 @@
         };
     }
 
-    /* ═══════ 10) FLAPPY ═══════ */
+    /* ═══════ 14) FLAPPY ═══════ */
     function startFlappy(root) {
         var W, H, cv, ctx, raf = null, running = false;
-        var bird, pipes, scoreNow, frame;
+        var bird, pipes, scoreNow;
         var GRAV = 0.45, JUMP = -7.4, PIPE_W = 52, GAP = 150, SPEED = 2.6, SPACING = 190;
 
         root.innerHTML =
@@ -1080,7 +2071,7 @@
         cv = root.querySelector('#flCanvas');
         ctx = cv.getContext('2d');
         W = Math.min(340, (root.clientWidth || 320) - 8);
-        H = Math.round(W * 1.25);
+        H = Math.round(W * 1.15);
         cv.width = W;
         cv.height = H;
 
@@ -1088,7 +2079,6 @@
             bird = { x: W * 0.28, y: H * 0.45, vy: 0, r: 11 };
             pipes = [];
             scoreNow = 0;
-            frame = 0;
             root.querySelector('#flScore').textContent = '0';
         }
         function spawnPipe() {
@@ -1099,14 +2089,10 @@
             if (!running) return;
             bird.vy = JUMP;
         }
-        function drawBg() {
+        function drawAll() {
             ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
             ctx.fillRect(0, 0, W, H);
-        }
-        function drawAll() {
-            drawBg();
-            var acc = cssVar('--accent', '#3e8e7e');
-            ctx.fillStyle = acc;
+            ctx.fillStyle = cssVar('--accent', '#3e8e7e');
             for (var i = 0; i < pipes.length; i++) {
                 var p = pipes[i];
                 ctx.fillRect(p.x, 0, PIPE_W, p.top);
@@ -1127,7 +2113,6 @@
         }
         function loop() {
             if (!running) return;
-            frame++;
             bird.vy += GRAV;
             bird.y += bird.vy;
             if (!pipes.length || (W + 10) - pipes[pipes.length - 1].x >= SPACING) spawnPipe();
@@ -1141,7 +2126,6 @@
                 }
                 if (p.x + PIPE_W < -20) pipes.splice(i, 1);
             }
-            // collisions: floor/ceiling + pipes
             if (bird.y + bird.r > H || bird.y - bird.r < 0) return gameOver();
             for (var j = 0; j < pipes.length; j++) {
                 var q = pipes[j];
@@ -1161,7 +2145,9 @@
             raf = requestAnimationFrame(loop);
         }
         function onKey(e) {
-            if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); flap(); }
+            if (e.key === ' ' || e.key === 'ArrowUp') {
+                if (running) { e.preventDefault(); flap(); }
+            }
         }
         function onTap(e) { e.preventDefault(); flap(); }
         document.addEventListener('keydown', onKey);
@@ -1179,7 +2165,7 @@
         };
     }
 
-    /* ═══════ 11) MINESWEEPER ═══════ */
+    /* ═══════ 15) MINESWEEPER ═══════ */
     function startMines(root) {
         var N = 9, MINES = 10;
         var cells, opened, flagMode, started, over, secs, timer = null;
@@ -1215,7 +2201,6 @@
             return out;
         }
         function plant(safeAt) {
-            // first click is always safe (and clears its neighborhood)
             var banned = {};
             banned[safeAt] = true;
             neighbors(safeAt).forEach(function (n) { banned[n] = true; });
@@ -1242,7 +2227,6 @@
         }
         function paintAll() { for (var i = 0; i < N * N; i++) paintCell(i); }
         function reveal(i) {
-            // iterative flood fill for zero-cells
             var stack = [i];
             while (stack.length) {
                 var at = stack.pop();
@@ -1263,6 +2247,7 @@
             for (var i = 0; i < N * N; i++) if (cells[i].mine) cells[i].open = true;
             paintAll();
             gridEl.children[atIdx].classList.add('hit');
+            beep(110, 0.4, 'square');
             statusEl.textContent = '💥 ' + gt('لغم! حظ أوفر المرة الجاية', 'Boom! Better luck next time');
         }
         function checkWin() {
@@ -1282,7 +2267,7 @@
             if (over) return;
             var c = cells[i];
             if (!started) {
-                if (wantFlag) return; // no flagging before the board exists
+                if (wantFlag) return;
                 started = true;
                 plant(i);
                 timer = setInterval(function () {
@@ -1331,13 +2316,17 @@
     /* ═══════ REGISTRY & EXPORT ═══════ */
     var STARTERS = {
         xo: startXO,
+        c4: startC4,
         rps: startRPS,
         memory: startMemory,
         simon: startSimon,
+        digits: startDigits,
         reaction: startReaction,
         math: startMath,
         snake: startSnake,
         '2048': start2048,
+        tetris: startTetris,
+        breakout: startBreakout,
         mole: startMole,
         flappy: startFlappy,
         mines: startMines
@@ -1345,7 +2334,21 @@
 
     window.LordGames = {
         list: GAMES,
-        open: open,
-        match: matchGame
+        match: matchGame,
+        mount: mount,
+        mountJoin: mountJoin,
+        sweep: sweep,
+        hubFrameHTML: hubFrameHTML,
+        posterFrameHTML: posterFrameHTML,
+        joinFrameHTML: joinFrameHTML,
+        normalizeCode: normalizeCode,
+        hasNet: function () { return !!netDb(); },
+        copyCode: function (code) {
+            try {
+                navigator.clipboard.writeText(code).then(function () {
+                    gToast('✓ ' + gt('اتنسخ — ابعته لصاحبك', 'Copied — send it to your friend'));
+                });
+            } catch (e) { }
+        }
     };
 })();

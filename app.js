@@ -373,7 +373,7 @@
     /* Media detection — heavy catalogs are attached only when relevant */
     var MUSIC_RE = /أغنيه|أغنية|اغنية|أغاني|اغاني|غنوة|موسيقى|مزيكا|اسمع|سمعني|بلايليست|بلاي ليست|طرب|مهرجان|شغل|كايروكي|مسار اجباري|مسار إجباري|وسط البلد|رامي صبري|حماقي|فيروز|كلثوم|منير|شيرين|حليم|وسوف|داليدا|بلطي|تووليت|زفير|عامر منيب|music|song|playlist|listen|cairokee|massar|fairuz/i;
     var MOVIE_RE = /فيلم|فلم|أفلام|افلام|اتفرج|أتفرج|تفرج|مشاهدة|شاهد|سينما|movie|film|watch|cinema/i;
-    var GAME_RE = /لعبة|لعبه|ألعاب|العاب|العب|نلعب|اتسلى|أتسلى|تسلية|تسليه|زهقان|زهقانه|زهقانة|ملل|مليت|مملل|بردان قاعد|game|games|play something|bored/i;
+    var GAME_RE = /لعبة|لعبه|ألعاب|العاب|العب|نلعب|اتسلى|أتسلى|تسلية|تسليه|زهقان|زهقانه|زهقانة|ملل|مليت|مملل|روم|اونلاين|أونلاين|مع صاحبي|مع صديقي|مع اصحابي|game|games|play something|bored|multiplayer|online/i;
 
     var _musicGuide = null;
     function musicGuide() {
@@ -429,20 +429,22 @@
     /* Games guide — generated from the LordGames catalog (games.js) */
     function gamesGuide() {
         if (!window.LordGames) return '';
-        var names = [];
+        var names = [], netNames = [];
         var list = window.LordGames.list;
         for (var i = 0; i < list.length; i++) {
             names.push(list[i].name + ' (' + list[i].desc + ')');
+            if (list[i].net) netNames.push(list[i].name);
         }
         return [
             '',
-            '## الألعاب المتاحة داخل الموقع (الوصف بين قوسين):',
+            '## الألعاب — تعمل داخل الشات مباشرة (الوصف بين قوسين):',
             names.join(' | '),
             '',
             '## قواعد الألعاب (صارمة):',
-            '- عند طلب اللعب أو التسلية اكتب جملة قصيرة ثم التاج: [GAME:اسم اللعبة كما في القائمة] — التاج إلزامي وهو ما يفتح اللعبة.',
-            '- مثال صحيح: يلا نلعب! [GAME:إكس أو]',
-            '- لو المستخدم زهقان أو طلب تسلية عامة اقترح لعبة أو اثنتين مناسبتين.',
+            '- طلب لعبة محددة: جملة قصيرة ثم [GAME:اسم اللعبة كما في القائمة] — التاج يفتح اللعبة داخل الشات نفسه. مثال: يلا نلعب! [GAME:إكس أو]',
+            '- طلب تسلية عامة أو "عايز ألعب" أو استعراض الألعاب: جملة قصيرة ثم [GAMEHUB] في سطر مستقل — يعرض كل الألعاب داخل الشات.',
+            '- اللعب أونلاين مع صديق (المتاح: ' + netNames.join('، ') + '): وجّهه أن يفتح [GAMEHUB] ويختار من قسم الأونلاين، ينشئ روم ويبعت الكود لصاحبه، وصاحبه يكتب الكود (شكله G-ABCD) في شات LORD AI عنده فينضم فوراً.',
+            '- لا تخترع أكواد روم أبداً — الأكواد يولّدها الموقع فقط.',
             '- لعبة غير متوفرة؟ اقترح الأقرب من القائمة، وأضف في نهاية ردك: [NOTFOUND:game:الاسم المطلوب] — تاج داخلي لن يظهر للمستخدم.'
         ].join('\n');
     }
@@ -490,7 +492,7 @@
             } else {
                 if (!wantMusic && (txt.indexOf('[MUSIC:') !== -1 || txt.indexOf('[PLAYLIST:') !== -1)) wantMusic = true;
                 if (!wantMovie && txt.indexOf('[MOVIE:') !== -1) wantMovie = true;
-                if (!wantGame && txt.indexOf('[GAME:') !== -1) wantGame = true;
+                if (!wantGame && txt.indexOf('[GAME') !== -1) wantGame = true; // matches [GAME:], [GAMEHUB], [GAMEJOIN:]
             }
             if (wantMusic && wantMovie && wantGame) break;
         }
@@ -954,17 +956,6 @@
         return s;
     }
 
-    /* Game launch card rendered from a [GAME:] tag */
-    function gameInviteHTML(g) {
-        var nm = LANG === 'en' ? g.en : g.name;
-        var ds = LANG === 'en' ? g.descEn : g.desc;
-        return '<button class="game-invite" onclick="LORD.openGame(\'' + g.id + '\')">'
-            + '<span class="gi-emoji">' + g.emoji + '</span>'
-            + '<span class="gi-info"><span class="gi-name">' + esc(nm) + '</span><span class="gi-sub">' + esc(ds) + '</span></span>'
-            + '<span class="gi-play">' + t('playWord') + '</span>'
-            + '</button>';
-    }
-
     function md(text) {
         if (!text) return '';
 
@@ -986,12 +977,22 @@
         // hide a partially-streamed suggest tag at the end of the text
         text = text.replace(/\[SUGGEST:[^\]]*$/, '').trim();
 
-        // Preserve game tags
+        // Game tags — playable frames inline in the chat
         var gameBlocks = [];
+        text = text.replace(/\[GAMEHUB\]/g, function () {
+            var idx = gameBlocks.length;
+            gameBlocks.push(window.LordGames ? window.LordGames.hubFrameHTML() : '<p>🎮</p>');
+            return '%%GAME_' + idx + '%%';
+        });
+        text = text.replace(/\[GAMEJOIN:([A-Z0-9-]+)\]/gi, function (_, code) {
+            var idx = gameBlocks.length;
+            gameBlocks.push(window.LordGames ? window.LordGames.joinFrameHTML(code.toUpperCase()) : '<p>🌐 ' + esc(code) + '</p>');
+            return '%%GAME_' + idx + '%%';
+        });
         text = text.replace(/\[GAME:([^\]]+)\]/g, function (_, name) {
             var idx = gameBlocks.length;
             var g = window.LordGames ? window.LordGames.match(name) : null;
-            gameBlocks.push(g ? gameInviteHTML(g) : '<p>🎮 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
+            gameBlocks.push(g && window.LordGames ? window.LordGames.posterFrameHTML(g) : '<p>🎮 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%GAME_' + idx + '%%';
         });
 
@@ -1238,7 +1239,7 @@
         copyMsg: function (btn) {
             var body = btn.closest('.body') || btn.closest('.msg').querySelector('.body');
             var clone = body.cloneNode(true);
-            clone.querySelectorAll('.msg-acts,.suggest-row,.game-invite').forEach(function (n) { n.remove(); });
+            clone.querySelectorAll('.msg-acts,.suggest-row,.game-frame').forEach(function (n) { n.remove(); });
             var text = clone.innerText.trim();
             navigator.clipboard.writeText(text).then(function () {
                 toast(t('copied'));
@@ -1652,7 +1653,7 @@
             if (speaking) speaking.classList.remove('speaking');
             var body = btn.closest('.body');
             var clone = body.cloneNode(true);
-            clone.querySelectorAll('.msg-acts,pre,.music-player,.movie-player,.chat-playlist,.suggest-row,.game-invite').forEach(function (n) { n.remove(); });
+            clone.querySelectorAll('.msg-acts,pre,.music-player,.movie-player,.chat-playlist,.suggest-row,.game-frame').forEach(function (n) { n.remove(); });
             var text = clone.innerText.trim();
             if (!text) return;
             var u = new SpeechSynthesisUtterance(text);
@@ -1670,9 +1671,6 @@
             btn.parentElement.querySelectorAll('.rated').forEach(function (b) { b.classList.remove('rated'); });
             btn.classList.add('rated');
             toast(t('thanks'));
-        },
-        openGame: function (id) {
-            if (window.LordGames) window.LordGames.open(id);
         },
         trackGame: function (name) {
             if (!name) return;
@@ -1877,6 +1875,21 @@
         el.input.focus();
     }
 
+    /* Games hub — inserted as a local message inside the chat itself */
+    function openGamesHub() {
+        if (!window.LordGames) return;
+        var c = active();
+        if (!c) { newConv(); c = active(); }
+        var m = { role: 'assistant', content: '[GAMEHUB]', ts: Date.now(), local: true };
+        c.msgs.push(m);
+        if (c.msgs.length === 1) { c.title = t('actGames'); renderList(); }
+        saveAll();
+        addMsg(m);
+        stickBottom = true;
+        scrollBottom(true);
+        closeSB();
+    }
+
     /* Temporary (incognito) chat — lives only until the page is closed */
     function newTempConv() {
         var cur = active();
@@ -2067,6 +2080,7 @@
     }
 
     function renderChat() {
+        if (window.LordGames) window.LordGames.sweep(); // stop games whose frames are about to be wiped
         var c = active();
         paintTempState(c);
         if (!c || !c.msgs.length) {
@@ -2107,7 +2121,8 @@
                 + '</div>';
             inner = '<div class="body" dir="auto">' + content + '</div>' + uActs;
         } else {
-            inner = '<div class="body" dir="auto">' + content + aiActsHTML(isLastAI) + '</div>';
+            // local system messages (games hub / room join) get no copy/regen/rate bar
+            inner = '<div class="body" dir="auto">' + content + (m.local ? '' : aiActsHTML(isLastAI)) + '</div>';
         }
         return '<div class="msg ' + (isU ? 'msg-u' : 'msg-a') + '"' + timeAttr + '>'
             + '<div class="msg-in">'
@@ -2163,6 +2178,8 @@
         for (var i = 0; i < recent.length; i++) {
             var m = recent[i];
             if (!m.content) continue;
+            // Local UI messages (games hub / room join) are not conversation content
+            if (m.local) continue;
             // Stored error toasts (⚠️/⏳) waste tokens and confuse the model — skip them
             if (m.role === 'assistant' && /^[⚠⏳]/.test(m.content)) continue;
             contents.push({
@@ -2292,6 +2309,33 @@
 
         var c = active();
         if (!c) { newConv(); c = active(); }
+
+        // Smart room-code handling: typing a game code (G-ABCD) joins the room
+        // right inside the chat — no API call needed.
+        // The dash is required so normal words (e.g. "games") never match.
+        var joinM = /^(?:انضم\s*|ادخل\s*|join\s*)?(G-[A-Z2-9]{4})$/i.exec(text);
+        if (joinM && window.LordGames) {
+            var code = window.LordGames.normalizeCode(joinM[1]);
+            if (code) {
+                var uMsg = { role: 'user', content: text, ts: Date.now() };
+                c.msgs.push(uMsg);
+                addMsg(uMsg);
+                var jMsg = { role: 'assistant', content: '[GAMEJOIN:' + code + ']', ts: Date.now(), local: true };
+                c.msgs.push(jMsg);
+                if (c.msgs.length === 2) { c.title = '🎮 ' + code; renderList(); }
+                saveAll();
+                var jNode = addMsg(jMsg);
+                el.input.value = '';
+                resizeInput();
+                updateSend();
+                stickBottom = true;
+                scrollBottom(true);
+                // the user explicitly asked to join — mount immediately
+                var fr = jNode.querySelector('.game-frame');
+                if (fr) window.LordGames.mountJoin(fr, code);
+                return;
+            }
+        }
 
         var userMsg = { role: 'user', content: text, ts: Date.now() };
         c.msgs.push(userMsg);
@@ -2423,7 +2467,7 @@
         return [
             { label: t('newChat'), run: newConv },
             { label: t('actTemp'), run: newTempConv },
-            { label: t('actGames'), run: function () { if (window.LordGames) window.LordGames.open(); } },
+            { label: t('actGames'), run: openGamesHub },
             { label: t('actTheme'), run: toggleTheme },
             { label: t('actLang'), run: toggleLang },
             { label: t('actFont'), run: cycleFontSize },
@@ -2636,11 +2680,9 @@
         el.clearBtn.addEventListener('click', clearAll);
         el.themeBtn.addEventListener('click', toggleTheme);
 
-        // Games hub
+        // Games hub — opens inline inside the chat
         var gamesBtn = $('gamesBtn');
-        if (gamesBtn) gamesBtn.addEventListener('click', function () {
-            if (window.LordGames) window.LordGames.open();
-        });
+        if (gamesBtn) gamesBtn.addEventListener('click', openGamesHub);
 
         // "More" overflow menu (temp chat / personalize / lang / font / export / shortcuts)
         var moreBtn = $('moreBtn'), moreMenu = $('moreMenu');
@@ -2761,7 +2803,7 @@
         for (var i = 0; i < cards.length; i++) {
             cards[i].addEventListener('click', function () {
                 if (this.hasAttribute('data-game')) {
-                    if (window.LordGames) window.LordGames.open();
+                    openGamesHub();
                     return;
                 }
                 var q = this.getAttribute('data-q');
@@ -2783,7 +2825,7 @@
             if (e.ctrlKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); ckToggle(); return; }
             if (e.ctrlKey && (e.key === 'g' || e.key === 'G')) {
                 e.preventDefault();
-                if (window.LordGames) window.LordGames.open();
+                openGamesHub();
                 return;
             }
             if (e.ctrlKey && e.key === '/') { e.preventDefault(); toggleShortcuts(); return; }

@@ -2298,70 +2298,84 @@ html.fs-sm .body{font-size:.84rem;line-height:1.75}
 html.fs-lg .body{font-size:1.03rem;line-height:1.9}
 
 /* ═══════════════════════════════════════════════════
-   GAMES HUB 🎮
+   GAMES 🎮 — inline frames inside chat messages
    ═══════════════════════════════════════════════════ */
-.gm-modal{
-    position:fixed;
-    inset:0;
-    z-index:3000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(14,16,15,.5);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    animation:fadeIn .2s var(--ease);
-    padding:16px;
-}
-.gm-box{
-    width:min(460px,100%);
-    max-height:92vh;
-    display:flex;
-    flex-direction:column;
+.game-frame{
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:20px;
-    box-shadow:var(--sh3);
+    border-radius:18px;
+    box-shadow:var(--sh1);
+    margin:10px 0;
+    max-width:560px;
     overflow:hidden;
-    animation:plSlideUp .3s var(--ease);
+    contain:content;
 }
-.gm-head{
+.gf-head{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:8px;
-    padding:13px 16px;
+    padding:9px 14px;
     border-bottom:1px solid var(--line2);
-    font-weight:700;
-    font-size:.95rem;
-    color:var(--c1);
+    background:var(--surface);
 }
-.gm-title{flex:1;text-align:center}
-.gm-close,.gm-back{
-    width:30px;height:30px;
+.gf-title{font-weight:700;font-size:.86rem;color:var(--c1)}
+.gf-acts{display:flex;gap:4px}
+.gf-hbtn{
+    width:27px;height:27px;
     display:flex;align-items:center;justify-content:center;
-    background:none;border:none;border-radius:9px;
-    color:var(--c3);font-size:1rem;cursor:pointer;
+    background:none;border:none;border-radius:8px;
+    color:var(--c3);font-size:.85rem;cursor:pointer;
     transition:all .15s;
 }
-.gm-back{font-size:1.4rem;padding-bottom:3px}
-[dir="ltr"] .gm-back{transform:scaleX(-1)}
-.gm-close:hover,.gm-back:hover{background:var(--sidebar-hover);color:var(--c1)}
-.gm-back.hid{visibility:hidden}
-.gm-body{
-    padding:16px;
-    overflow-y:auto;
+.gf-hbtn:hover{background:var(--sidebar-hover);color:var(--c1)}
+.gf-body{
+    padding:14px;
     display:flex;
     flex-direction:column;
     align-items:center;
     gap:12px;
 }
 
-/* hub grid */
+/* poster (unopened game) */
+.gf-poster{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    background:none;
+    border:none;
+    padding:13px 16px;
+    cursor:pointer;
+    font-family:var(--sans);
+    text-align:start;
+    transition:background .15s;
+}
+.gf-poster:hover{background:var(--sidebar-hover)}
+.gf-emoji{font-size:1.7rem}
+.gf-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.gf-name{font-weight:700;font-size:.88rem;color:var(--c1)}
+.gf-sub{font-size:.72rem;color:var(--c3)}
+.gf-play{
+    background:var(--accent);
+    color:#fff;
+    border-radius:99px;
+    font:600 .74rem var(--sans);
+    padding:6px 15px;
+    white-space:nowrap;
+}
+
+/* hub inside a frame */
+.gf-hubframe{padding:12px 14px 14px}
+.gf-sec{
+    font:700 .8rem var(--sans);
+    color:var(--c2);
+    padding:8px 2px 8px;
+}
 .gm-grid{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+    grid-template-columns:repeat(auto-fill,minmax(112px,1fr));
+    gap:8px;
     width:100%;
 }
 .gm-card{
@@ -2603,36 +2617,89 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
 .rc-pad.go{background:#2f9e6e;border-color:#2f9e6e;color:#fff}
 .rc-pad.early{background:#e8a33d;border-color:#e8a33d;color:#fff}
 
-/* game launch card inside chat (from [GAME:] tag) */
-.game-invite{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    background:var(--card);
+/* Connect 4 */
+.c4-grid{
+    display:grid;
+    grid-template-columns:repeat(7,42px);
+    grid-template-rows:repeat(6,42px);
+    gap:5px;
+    background:var(--surface);
     border:1px solid var(--line);
     border-radius:16px;
-    padding:12px 16px;
-    margin:10px 0;
-    max-width:340px;
+    padding:8px;
+}
+.c4-cell{
+    border:none;
+    border-radius:50%;
+    background:var(--sidebar-active);
     cursor:pointer;
-    box-shadow:var(--sh1);
-    transition:all .18s var(--ease);
-    font-family:var(--sans);
-    text-align:start;
+    padding:0;
+    transition:background .12s,box-shadow .12s;
+    -webkit-tap-highlight-color:transparent;
 }
-.game-invite:hover{border-color:rgba(var(--accent-rgb),.45);box-shadow:var(--sh2);transform:translateY(-1px)}
-.game-invite .gi-emoji{font-size:1.7rem}
-.game-invite .gi-info{flex:1;display:flex;flex-direction:column;gap:2px}
-.game-invite .gi-name{font-weight:700;font-size:.88rem;color:var(--c1)}
-.game-invite .gi-sub{font-size:.72rem;color:var(--c3)}
-.game-invite .gi-play{
-    background:var(--accent);
-    color:#fff;
-    border-radius:99px;
-    font:600 .74rem var(--sans);
-    padding:6px 15px;
-    white-space:nowrap;
+.c4-cell:hover{box-shadow:inset 0 0 0 2px rgba(var(--accent-rgb),.35)}
+.c4-cell.red{background:#d9534f;cursor:default}
+.c4-cell.yel{background:#e8b93d;cursor:default}
+.c4-cell.win{box-shadow:0 0 0 3px var(--accent)}
+
+/* Tetris */
+.tz-wrap{display:flex;align-items:flex-start;gap:10px}
+.tz-next{
+    border-radius:10px;
+    border:1px solid var(--line);
 }
+.tz-controls{display:flex;gap:6px}
+.tz-controls button{
+    width:48px;height:42px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    font-size:1rem;
+    color:var(--c2);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+.tz-controls button:active{background:var(--accent);color:#fff}
+
+/* Number memory */
+.dg-display{
+    font:700 2.3rem var(--mono);
+    letter-spacing:.12em;
+    color:var(--c1);
+    min-height:56px;
+    display:flex;
+    align-items:center;
+}
+
+/* Online (rooms) */
+.net-code{
+    font:700 1.9rem var(--mono);
+    letter-spacing:.14em;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px dashed rgba(var(--accent-rgb),.4);
+    border-radius:14px;
+    padding:10px 22px;
+    user-select:all;
+}
+.net-wait{display:flex;flex-direction:column;align-items:center;gap:12px}
+.net-hint{max-width:320px;line-height:1.8;font-weight:500}
+.net-or{font-size:.75rem;color:var(--c4)}
+.net-row{display:flex;gap:8px;align-items:center}
+.net-input{
+    width:130px;
+    background:var(--surface);
+    border:1px solid var(--inp-border);
+    border-radius:12px;
+    padding:9px 12px;
+    font:600 .95rem var(--mono);
+    color:var(--c1);
+    text-align:center;
+    text-transform:uppercase;
+    outline:none;
+    transition:border-color .15s;
+}
+.net-input:focus{border-color:var(--inp-focus)}
 
 /* Simon */
 .si-grid{
@@ -2747,6 +2814,7 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     .mo-grid{grid-template-columns:repeat(3,78px);grid-template-rows:repeat(3,78px)}
     .mn-grid{grid-template-columns:repeat(9,29px);grid-template-rows:repeat(9,29px)}
     .ma-grid{grid-template-columns:repeat(2,118px)}
+    .c4-grid{grid-template-columns:repeat(7,36px);grid-template-rows:repeat(6,36px);gap:4px}
 }
 
 /* ═══════════════════════════════════════════════════
