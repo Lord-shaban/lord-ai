@@ -363,12 +363,14 @@
         '- الأكواد: نظيفة وكاملة وقابلة للتشغيل مباشرة، مع تعليقات قصيرة للأجزاء المهمة فقط.',
         '- إذا كان الطلب غامضاً اسأل سؤال توضيح واحداً قصيراً بدل التخمين.',
         '- في الحساب والمنطق راجع خطواتك قبل إعطاء النتيجة النهائية.',
-        '- لديك مكتبة أغانٍ وأفلام يمكنك تشغيلها داخل الشات عندما يطلب المستخدم موسيقى أو فيلماً.'
+        '- لديك مكتبة أغانٍ وأفلام يمكنك تشغيلها داخل الشات عندما يطلب المستخدم موسيقى أو فيلماً، وألعاب مصغّرة داخل الموقع عندما يطلب اللعب أو التسلية.',
+        '- عندما يكون مفيداً، اختم إجابتك بأسئلة متابعة قصيرة (3 كحد أقصى) بصيغة التاج: [SUGGEST:سؤال1|سؤال2|سؤال3] — تاج داخلي يظهر كأزرار.'
     ].join('\n');
 
     /* Media detection — heavy catalogs are attached only when relevant */
     var MUSIC_RE = /أغنيه|أغنية|اغنية|أغاني|اغاني|غنوة|موسيقى|مزيكا|اسمع|سمعني|بلايليست|بلاي ليست|طرب|مهرجان|شغل|كايروكي|مسار اجباري|مسار إجباري|وسط البلد|رامي صبري|حماقي|فيروز|كلثوم|منير|شيرين|حليم|وسوف|داليدا|بلطي|تووليت|زفير|عامر منيب|music|song|playlist|listen|cairokee|massar|fairuz/i;
     var MOVIE_RE = /فيلم|فلم|أفلام|افلام|اتفرج|أتفرج|تفرج|مشاهدة|شاهد|سينما|movie|film|watch|cinema/i;
+    var GAME_RE = /لعبة|لعبه|ألعاب|العاب|العب|نلعب|اتسلى|أتسلى|تسلية|تسليه|زهقان|زهقانه|زهقانة|ملل|مليت|مملل|بردان قاعد|game|games|play something|bored/i;
 
     var _musicGuide = null;
     function musicGuide() {
@@ -421,6 +423,27 @@
         return _movieGuide;
     }
 
+    /* Games guide — generated from the LordGames catalog (games.js) */
+    function gamesGuide() {
+        if (!window.LordGames) return '';
+        var names = [];
+        var list = window.LordGames.list;
+        for (var i = 0; i < list.length; i++) {
+            names.push(list[i].name + ' (' + list[i].desc + ')');
+        }
+        return [
+            '',
+            '## الألعاب المتاحة داخل الموقع (الوصف بين قوسين):',
+            names.join(' | '),
+            '',
+            '## قواعد الألعاب (صارمة):',
+            '- عند طلب اللعب أو التسلية اكتب جملة قصيرة ثم التاج: [GAME:اسم اللعبة كما في القائمة] — التاج إلزامي وهو ما يفتح اللعبة.',
+            '- مثال صحيح: يلا نلعب! [GAME:إكس أو]',
+            '- لو المستخدم زهقان أو طلب تسلية عامة اقترح لعبة أو اثنتين مناسبتين.',
+            '- لعبة غير متوفرة؟ اقترح الأقرب من القائمة، وأضف في نهاية ردك: [NOTFOUND:game:الاسم المطلوب] — تاج داخلي لن يظهر للمستخدم.'
+        ].join('\n');
+    }
+
     /* ═══════ STATE ═══════ */
     var convs = [];
     var activeId = null;
@@ -446,21 +469,24 @@
 
         // Attach the heavy media guides only when the recent conversation needs them:
         // user keywords, or media tags in previous assistant replies (covers follow-ups)
-        var wantMusic = false, wantMovie = false;
+        var wantMusic = false, wantMovie = false, wantGame = false;
         var tail = (recent || []).slice(-6);
         for (var i = 0; i < tail.length; i++) {
             var txt = tail[i].content || '';
             if (tail[i].role === 'user') {
                 if (!wantMusic && MUSIC_RE.test(txt)) wantMusic = true;
                 if (!wantMovie && MOVIE_RE.test(txt)) wantMovie = true;
+                if (!wantGame && GAME_RE.test(txt)) wantGame = true;
             } else {
                 if (!wantMusic && (txt.indexOf('[MUSIC:') !== -1 || txt.indexOf('[PLAYLIST:') !== -1)) wantMusic = true;
                 if (!wantMovie && txt.indexOf('[MOVIE:') !== -1) wantMovie = true;
+                if (!wantGame && txt.indexOf('[GAME:') !== -1) wantGame = true;
             }
-            if (wantMusic && wantMovie) break;
+            if (wantMusic && wantMovie && wantGame) break;
         }
         if (wantMusic) p += '\n' + musicGuide();
         if (wantMovie) p += '\n' + movieGuide();
+        if (wantGame) p += '\n' + gamesGuide();
         return p;
     }
 
@@ -475,7 +501,14 @@
     /* ═══════ STORAGE ═══════ */
     function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
     function get(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
-    function saveAll() { save('lord_convs', convs); save('lord_active', activeId); }
+    function saveAll() {
+        // Temporary (incognito) chats are never persisted
+        var persist = [];
+        for (var i = 0; i < convs.length; i++) if (!convs[i].temp) persist.push(convs[i]);
+        save('lord_convs', persist);
+        var a = active();
+        save('lord_active', (a && a.temp) ? null : activeId);
+    }
 
     /* ═══════ FIREBASE ANALYTICS ═══════ */
     var db = null;
@@ -562,12 +595,16 @@
             fbLog('missing', { kind: kind, q: q });
         }
         var m;
-        var reNF = /\[NOTFOUND:(music|movie)\s*:\s*([^\]]+)\]/gi;
+        var reNF = /\[NOTFOUND:(music|movie|game)\s*:\s*([^\]]+)\]/gi;
         while ((m = reNF.exec(txt))) report(m[1].toLowerCase(), m[2]);
         var reMu = /\[MUSIC:([^\]]+)\]/g;
         while ((m = reMu.exec(txt))) { if (!matchMusic(m[1])) report('music', m[1]); }
         var reMv = /\[MOVIE:([^\]]+)\]/g;
         while ((m = reMv.exec(txt))) { if (!matchMovie(m[1])) report('movie', m[1]); }
+        var reGm = /\[GAME:([^\]]+)\]/g;
+        while ((m = reGm.exec(txt))) {
+            if (!window.LordGames || !window.LordGames.match(m[1])) report('game', m[1]);
+        }
         var rePl = /\[PLAYLIST:([^\]]+)\]/g;
         while ((m = rePl.exec(txt))) {
             var parts = m[1].split('|');
@@ -667,7 +704,18 @@
             quote: 'اقتباس',
             styleToast: { concise: '⚡ أسلوب الرد: مختصر', normal: '⚖️ أسلوب الرد: متوازن', detailed: '📖 أسلوب الرد: مفصّل' },
             ciSaved: '✓ تم حفظ التخصيص',
-            ciClearedT: 'تم مسح التخصيص'
+            ciClearedT: 'تم مسح التخصيص',
+            playWord: 'العب',
+            actGames: 'الألعاب 🎮',
+            actTemp: 'محادثة مؤقتة',
+            tempOn: '👻 محادثة مؤقتة — لن يتم حفظها',
+            tempAlready: 'أنت بالفعل في محادثة مؤقتة',
+            tempBanner: 'محادثة مؤقتة — تُحذف عند إغلاق الصفحة ولا تُحفظ في السجل',
+            actFont: 'تغيير حجم الخط',
+            fontToast: { normal: '🔤 حجم الخط: عادي', lg: '🔤 حجم الخط: كبير', sm: '🔤 حجم الخط: صغير' },
+            actDupe: 'إنشاء نسخة من المحادثة',
+            copyWord: 'نسخة',
+            duped: '✓ تم إنشاء نسخة من المحادثة'
         },
         en: {
             newChat: 'New chat',
@@ -746,7 +794,18 @@
             quote: 'Quote',
             styleToast: { concise: '⚡ Reply style: concise', normal: '⚖️ Reply style: balanced', detailed: '📖 Reply style: detailed' },
             ciSaved: '✓ Personalization saved',
-            ciClearedT: 'Personalization cleared'
+            ciClearedT: 'Personalization cleared',
+            playWord: 'Play',
+            actGames: 'Games 🎮',
+            actTemp: 'Temporary chat',
+            tempOn: '👻 Temporary chat — it won\'t be saved',
+            tempAlready: 'You are already in a temporary chat',
+            tempBanner: 'Temporary chat — deleted when you close the page, never saved to history',
+            actFont: 'Change font size',
+            fontToast: { normal: '🔤 Font size: normal', lg: '🔤 Font size: large', sm: '🔤 Font size: small' },
+            actDupe: 'Duplicate this chat',
+            copyWord: 'copy',
+            duped: '✓ Chat duplicated'
         }
     };
 
@@ -841,12 +900,90 @@
     }
 
     /* ═══════ MARKDOWN PARSER ═══════ */
+    /* ═══════ SYNTAX HIGHLIGHTING ═══════
+       Tiny tokenizer: comments/strings are extracted first (placeholders)
+       so keywords inside them never get styled. Works on esc()-ed code. */
+    var HL_KW = {
+        c: 'var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|implements|interface|import|export|from|default|try|catch|finally|throw|typeof|instanceof|in|of|this|super|async|await|yield|delete|void|null|undefined|true|false|public|private|protected|static|int|float|double|char|bool|boolean|long|struct|enum|namespace|using|package|func|fn|mut|pub',
+        hash: 'def|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|import|from|as|class|try|except|finally|raise|with|pass|break|continue|lambda|yield|global|nonlocal|assert|del|self|print|echo|fi|then|do|done|esac|local|export|function',
+        sql: 'SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|SET|DELETE|JOIN|LEFT|RIGHT|INNER|OUTER|ON|AS|AND|OR|NOT|NULL|CREATE|TABLE|DROP|ALTER|INDEX|PRIMARY|KEY|FOREIGN|GROUP|BY|ORDER|HAVING|LIMIT|OFFSET|DISTINCT|COUNT|SUM|AVG|MIN|MAX|LIKE|BETWEEN|EXISTS|UNION'
+    };
+    function hlFamily(lang) {
+        if (/^(js|javascript|ts|typescript|jsx|tsx|json|java|c|cpp|c\+\+|cs|csharp|go|rust|php|swift|kotlin|dart)$/.test(lang)) return 'c';
+        if (/^(py|python|rb|ruby|sh|bash|shell|zsh|yaml|yml)$/.test(lang)) return 'hash';
+        if (/^sql$/.test(lang)) return 'sql';
+        if (/^(html|xml)$/.test(lang)) return 'html';
+        if (/^css$/.test(lang)) return 'css';
+        return null;
+    }
+    function hl(code, lang) {
+        var s = esc(code);
+        var fam = hlFamily((lang || '').toLowerCase());
+        if (!fam) return s;
+        var toks = [];
+        function hold(cls) {
+            return function (m2) {
+                toks.push('<span class="' + cls + '">' + m2 + '</span>');
+                return '%%T' + (toks.length - 1) + '%%';
+            };
+        }
+        // comments first, then strings, so quotes inside comments stay comments
+        if (fam === 'c' || fam === 'css') s = s.replace(/\/\*[\s\S]*?\*\//g, hold('tok-c'));
+        if (fam === 'c') s = s.replace(/\/\/[^\n]*/g, hold('tok-c'));
+        if (fam === 'hash') s = s.replace(/#[^\n]*/g, hold('tok-c'));
+        if (fam === 'sql') s = s.replace(/--[^\n]*/g, hold('tok-c'));
+        if (fam === 'html') s = s.replace(/&lt;!--[\s\S]*?--&gt;/g, hold('tok-c'));
+        s = s.replace(/(["'`])(?:\\.|(?!\1)[^\\\n])*\1/g, hold('tok-s'));
+        s = s.replace(/\b\d+(\.\d+)?\b/g, hold('tok-n'));
+        if (HL_KW[fam]) {
+            s = s.replace(new RegExp('\\b(' + HL_KW[fam] + ')\\b', fam === 'sql' ? 'gi' : 'g'), hold('tok-k'));
+        }
+        if (fam === 'c' || fam === 'hash') s = s.replace(/\b([A-Za-z_]\w*)(?=\()/g, hold('tok-f'));
+        if (fam === 'html') s = s.replace(/(&lt;\/?)([\w-]+)/g, function (_, p, tag) { return p + hold('tok-k')(tag); });
+        for (var i = toks.length - 1; i >= 0; i--) s = s.replace('%%T' + i + '%%', toks[i]);
+        return s;
+    }
+
+    /* Game launch card rendered from a [GAME:] tag */
+    function gameInviteHTML(g) {
+        var nm = LANG === 'en' ? g.en : g.name;
+        var ds = LANG === 'en' ? g.descEn : g.desc;
+        return '<button class="game-invite" onclick="LORD.openGame(\'' + g.id + '\')">'
+            + '<span class="gi-emoji">' + g.emoji + '</span>'
+            + '<span class="gi-info"><span class="gi-name">' + esc(nm) + '</span><span class="gi-sub">' + esc(ds) + '</span></span>'
+            + '<span class="gi-play">' + t('playWord') + '</span>'
+            + '</button>';
+    }
+
     function md(text) {
         if (!text) return '';
 
         // [NOTFOUND:kind:name] is an internal reporting tag — never displayed
         // (\]? also hides a partially-streamed tag at the end of the text)
         text = text.replace(/\[NOTFOUND:[^\]]*\]?/g, '').trim();
+
+        // [SUGGEST:q1|q2|q3] → follow-up chips appended after the message body
+        var suggestHtml = '';
+        text = text.replace(/\[SUGGEST:([^\]]+)\]/g, function (_, content) {
+            var parts = content.split('|').map(function (s) { return s.trim(); }).filter(function (s) { return s; }).slice(0, 3);
+            if (parts.length) {
+                suggestHtml = '<div class="suggest-row">' + parts.map(function (s) {
+                    return '<button class="suggest-chip" onclick="LORD.suggest(this)">' + esc(s) + '</button>';
+                }).join('') + '</div>';
+            }
+            return '';
+        });
+        // hide a partially-streamed suggest tag at the end of the text
+        text = text.replace(/\[SUGGEST:[^\]]*$/, '').trim();
+
+        // Preserve game tags
+        var gameBlocks = [];
+        text = text.replace(/\[GAME:([^\]]+)\]/g, function (_, name) {
+            var idx = gameBlocks.length;
+            var g = window.LordGames ? window.LordGames.match(name) : null;
+            gameBlocks.push(g ? gameInviteHTML(g) : '<p>🎮 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
+            return '%%GAME_' + idx + '%%';
+        });
 
         // Preserve music tags
         var musicBlocks = [];
@@ -905,7 +1042,7 @@
                 '<pre><div class="code-h"><span>' + esc(l) + '</span>'
                 + '<button class="copy-btn" onclick="LORD.copyCode(this)">'
                 + COPY_SVG + ' ' + t('copy') + '</button></div>'
-                + '<code>' + esc(code.trim()) + '</code></pre>'
+                + '<code>' + hl(code.trim(), lang) + '</code></pre>'
             );
             return '%%CODE_BLOCK_' + idx + '%%';
         });
@@ -974,7 +1111,12 @@
             text = text.replace('%%PLAYLIST_' + pl + '%%', playlistBlocks[pl]);
         }
 
-        return text;
+        // Restore game blocks
+        for (var gb = 0; gb < gameBlocks.length; gb++) {
+            text = text.replace('%%GAME_' + gb + '%%', gameBlocks[gb]);
+        }
+
+        return text + suggestHtml;
     }
 
     /* ═══════ ICONS ═══════ */
@@ -1081,7 +1223,9 @@
         },
         copyMsg: function (btn) {
             var body = btn.closest('.body') || btn.closest('.msg').querySelector('.body');
-            var text = body.innerText.replace(/^(نسخ|إعادة توليد|Copy|Regenerate)$/gm, '').trim();
+            var clone = body.cloneNode(true);
+            clone.querySelectorAll('.msg-acts,.suggest-row,.game-invite').forEach(function (n) { n.remove(); });
+            var text = clone.innerText.trim();
             navigator.clipboard.writeText(text).then(function () {
                 toast(t('copied'));
             });
@@ -1494,7 +1638,7 @@
             if (speaking) speaking.classList.remove('speaking');
             var body = btn.closest('.body');
             var clone = body.cloneNode(true);
-            clone.querySelectorAll('.msg-acts,pre,.music-player,.movie-player,.chat-playlist').forEach(function (n) { n.remove(); });
+            clone.querySelectorAll('.msg-acts,pre,.music-player,.movie-player,.chat-playlist,.suggest-row,.game-invite').forEach(function (n) { n.remove(); });
             var text = clone.innerText.trim();
             if (!text) return;
             var u = new SpeechSynthesisUtterance(text);
@@ -1512,6 +1656,17 @@
             btn.parentElement.querySelectorAll('.rated').forEach(function (b) { b.classList.remove('rated'); });
             btn.classList.add('rated');
             toast(t('thanks'));
+        },
+        openGame: function (id) {
+            if (window.LordGames) window.LordGames.open(id);
+        },
+        trackGame: function (name) {
+            if (!name) return;
+            fbLog('game', { name: ('' + name).trim().slice(0, 60) });
+        },
+        suggest: function (btn) {
+            if (busy) return;
+            send(btn.textContent);
         }
     };
 
@@ -1621,6 +1776,39 @@
     }
 
 
+    /* ═══════ FONT SIZE (normal / large / small) ═══════ */
+    var fontSize = 'normal';
+    function applyFontSize(fs) {
+        fontSize = (fs === 'sm' || fs === 'lg') ? fs : 'normal';
+        save('lord_fontsize', fontSize);
+        var root = document.documentElement;
+        root.classList.toggle('fs-sm', fontSize === 'sm');
+        root.classList.toggle('fs-lg', fontSize === 'lg');
+    }
+    function cycleFontSize() {
+        var next = fontSize === 'normal' ? 'lg' : (fontSize === 'lg' ? 'sm' : 'normal');
+        applyFontSize(next);
+        toast(t('fontToast')[next]);
+    }
+
+    /* ═══════ DUPLICATE CONVERSATION ═══════ */
+    function duplicateConv() {
+        var c = active();
+        if (!c || !c.msgs.length) { toast(t('noChat')); return; }
+        var copy = {
+            id: genId(),
+            title: c.title + ' • ' + t('copyWord'),
+            msgs: JSON.parse(JSON.stringify(c.msgs)),
+            ts: Date.now()
+        };
+        convs.unshift(copy);
+        activeId = copy.id;
+        saveAll();
+        renderList();
+        renderChat();
+        toast(t('duped'));
+    }
+
     /* ═══════ THEME ═══════ */
     function initTheme() {
         var t = get('lord_theme', 'dark');
@@ -1673,6 +1861,18 @@
         renderChat();
         closeSB();
         el.input.focus();
+    }
+
+    /* Temporary (incognito) chat — lives only until the page is closed */
+    function newTempConv() {
+        var cur = active();
+        if (cur && cur.temp && !cur.msgs.length) { toast(t('tempAlready')); return; }
+        newConv();
+        active().temp = true;
+        saveAll();
+        renderList();
+        renderChat();
+        toast(t('tempOn'));
     }
 
     function switchConv(id) {
@@ -1802,8 +2002,8 @@
             var pinIco = c.pin
                 ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></svg>'
                 : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></svg>';
-            return '<div class="conv' + (c.id === activeId ? ' on' : '') + '" data-cid="' + c.id + '" onclick="LORD.sw(\'' + c.id + '\')">'
-                + '<span class="conv-t">' + esc(c.title) + '</span>'
+            return '<div class="conv' + (c.id === activeId ? ' on' : '') + (c.temp ? ' conv-ghost' : '') + '" data-cid="' + c.id + '" onclick="LORD.sw(\'' + c.id + '\')">'
+                + '<span class="conv-t">' + (c.temp ? '👻 ' : '') + esc(c.title) + '</span>'
                 + '<button class="conv-pin' + (c.pin ? ' pinned' : '') + '" onclick="LORD.pin(\'' + c.id + '\',event)" title="' + pinTitle + '">' + pinIco + '</button>'
                 + '<button class="conv-ren" onclick="LORD.ren(\'' + c.id + '\',event)" title="' + t('rename') + '">'
                 + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'
@@ -1854,20 +2054,30 @@
 
     function renderChat() {
         var c = active();
+        paintTempState(c);
         if (!c || !c.msgs.length) {
             el.welcome.style.display = '';
             el.welcome.classList.remove('none');
-            el.messages.innerHTML = '';
+            el.messages.innerHTML = (c && c.temp) ? tempBannerHTML() : '';
             return;
         }
         el.welcome.style.display = 'none';
-        var h = '';
+        var h = c.temp ? tempBannerHTML() : '';
         for (var i = 0; i < c.msgs.length; i++) {
             h += msgHTML(c.msgs[i], i === c.msgs.length - 1 && c.msgs[i].role === 'assistant');
         }
         el.messages.innerHTML = h;
         stickBottom = true;
         scrollBottom(true);
+    }
+
+    function tempBannerHTML() {
+        return '<div class="temp-banner">👻 ' + t('tempBanner') + '</div>';
+    }
+
+    function paintTempState(c) {
+        var b = $('tempBtn');
+        if (b) b.classList.toggle('on', !!(c && c.temp));
     }
 
     function msgHTML(m, isLastAI) {
@@ -2198,9 +2408,13 @@
     function ckActionList() {
         return [
             { label: t('newChat'), run: newConv },
+            { label: t('actTemp'), run: newTempConv },
+            { label: t('actGames'), run: function () { if (window.LordGames) window.LordGames.open(); } },
             { label: t('actTheme'), run: toggleTheme },
             { label: t('actLang'), run: toggleLang },
+            { label: t('actFont'), run: cycleFontSize },
             { label: t('actExport'), run: exportChat },
+            { label: t('actDupe'), run: duplicateConv },
             { label: t('actPersonalize'), run: function () { toggleCi(true); } },
             { label: t('actShortcuts'), run: function () { toggleShortcuts(true); } },
             { label: t('actClearAll'), run: clearAll, danger: true }
@@ -2416,6 +2630,16 @@
         var exportBtn = $('exportBtn');
         if (exportBtn) exportBtn.addEventListener('click', exportChat);
 
+        // Games hub
+        var gamesBtn = $('gamesBtn');
+        if (gamesBtn) gamesBtn.addEventListener('click', function () {
+            if (window.LordGames) window.LordGames.open();
+        });
+
+        // Temporary chat
+        var tempBtn = $('tempBtn');
+        if (tempBtn) tempBtn.addEventListener('click', newTempConv);
+
         // Shortcuts modal
         var helpBtn = $('helpBtn');
         if (helpBtn) helpBtn.addEventListener('click', function () { toggleShortcuts(true); });
@@ -2504,10 +2728,14 @@
             }
         });
 
-        // Prompt cards
+        // Prompt cards (a data-game card opens the games hub instead of sending)
         var cards = document.querySelectorAll('.prompt-card');
         for (var i = 0; i < cards.length; i++) {
             cards[i].addEventListener('click', function () {
+                if (this.hasAttribute('data-game')) {
+                    if (window.LordGames) window.LordGames.open();
+                    return;
+                }
                 var q = this.getAttribute('data-q');
                 if (q) { el.input.value = q; send(q); }
             });
@@ -2524,6 +2752,11 @@
             }
             if (e.ctrlKey && e.shiftKey && e.key === 'N') { e.preventDefault(); newConv(); }
             if (e.ctrlKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); ckToggle(); return; }
+            if (e.ctrlKey && (e.key === 'g' || e.key === 'G')) {
+                e.preventDefault();
+                if (window.LordGames) window.LordGames.open();
+                return;
+            }
             if (e.ctrlKey && e.key === '/') { e.preventDefault(); toggleShortcuts(); return; }
             if (e.key === '/' && document.activeElement !== el.input && !busy) {
                 var typing = document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
@@ -2542,6 +2775,7 @@
         cacheDom();
         applyLang(get('lord_lang', 'ar'));
         initTheme();
+        applyFontSize(get('lord_fontsize', 'normal'));
         initFirebase();
         loadConvs();
         customCfg = get('lord_custom', { name: '', about: '', extra: '' });

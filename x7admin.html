@@ -165,7 +165,9 @@
         <div class="sc"><div class="sh"><span>🎵 الأغاني الأكثر تشغيلاً</span></div><div class="sb" id="topMusic"><div class="ld">⏳</div></div></div>
         <div class="sc"><div class="sh"><span>🎬 الأفلام الأكثر مشاهدة</span></div><div class="sb" id="topMovies"><div class="ld">⏳</div></div></div>
 
+        <div class="sc"><div class="sh"><span>🎮 الألعاب الأكثر لعباً</span></div><div class="sb" id="topGames"><div class="ld">⏳</div></div></div>
         <div class="sc"><div class="sh"><span>🕐 ساعات النشاط <small>بتوقيتك المحلي</small></span></div><div class="sb"><div class="brs" id="hourly" style="height:90px"><div class="ld">⏳</div></div></div></div>
+
         <div class="sc"><div class="sh"><span>🚀 الأداء</span></div><div class="sb" id="perf"><div class="ld">⏳</div></div></div>
 
         <div class="sc"><div class="sh"><span>👍 تقييمات الردود</span></div><div class="sb" id="fback"><div class="ld">⏳</div></div></div>
@@ -398,7 +400,7 @@ function renderAll(){
 
     var visits=0,uMsgs=0,aMsgs=0,uWords=0,aWords=0;
     var visitors={},arC=0,enC=0,rts=[],loads=[],nets={},devs={},scrs={},refs={},hours=[];
-    var fbUp=0,fbDown=0,errors=[],missing={},playedMusic={},playedMovies={},mediaPlays=0;
+    var fbUp=0,fbDown=0,errors=[],missing={},playedMusic={},playedMovies={},mediaPlays=0,playedGames={},gamePlays=0;
     for(var h=0;h<24;h++)hours.push(0);
     var daily={};
     for(var i=13;i>=0;i--){var dt=new Date();dt.setDate(dt.getDate()-i);daily[dt.toISOString().split('T')[0]]={v:0,m:0}}
@@ -444,6 +446,10 @@ function renderAll(){
             var pool=(L.kind==='movie')?playedMovies:playedMusic;
             var nm=(L.name||'?').trim();
             pool[nm]=(pool[nm]||0)+1;
+        }else if(L.type==='game'){
+            gamePlays++;
+            var gnm=(L.name||'?').trim();
+            playedGames[gnm]=(playedGames[gnm]||0)+1;
         }
     }
 
@@ -471,7 +477,7 @@ function renderAll(){
         {l:'متوسط الرد',v:avgRT?(avgRT/1000).toFixed(1)+'s':'—',e:'⚡',c:'c',s:'زمن استجابة AI'},
         {l:'رضا المستخدمين',v:satisfaction===null?'—':satisfaction+'%',e:'👍',c:satisfaction!==null&&satisfaction<60?'o':'g',s:'👍 '+fbUp+' · 👎 '+fbDown},
         {l:'طلبات ناقصة',v:fN(missTotal),e:'🎯',c:missTotal?'r':'g',s:missArr.length+' عنصر مختلف'},
-        {l:'تشغيلات ميديا',v:fN(mediaPlays),e:'▶️',c:'k',s:'أغانٍ وأفلام'},
+        {l:'تشغيلات ميديا',v:fN(mediaPlays),e:'▶️',c:'k',s:'أغانٍ وأفلام · 🎮 ألعاب '+fN(gamePlays)},
         {l:'الأخطاء',v:fN(errors.length),e:'⚠️',c:errors.length?'r':'g',s:errors.length?'راجع السجل':'لا أخطاء ✓'},
         {l:'تحميل الصفحة',v:avgLoad?(avgLoad/1000).toFixed(1)+'s':'—',e:'🚀',c:'o',s:'متوسط زمن التحميل'}
     ];
@@ -482,6 +488,7 @@ function renderAll(){
     renderChart(daily);
     renderTop('topMusic',playedMusic,'🎵');
     renderTop('topMovies',playedMovies,'🎬');
+    renderTop('topGames',playedGames,'🎮');
     renderHourly(hours);
     renderPerf(avgRT,rts,msgs,errors.length,avgLoad,nets);
     renderFeedback(fbUp,fbDown);
@@ -505,7 +512,7 @@ function renderMissing(arr){
     for(var i=0;i<Math.min(rows.length,40);i++){
         var m=rows[i];
         var pr=m.count>=5?'<span class="bg bg-r">عالية 🔥</span>':m.count>=2?'<span class="bg bg-o">متوسطة</span>':'<span class="bg bg-b">منخفضة</span>';
-        tb+='<tr><td>'+(i+1)+'</td><td style="color:var(--t1);font-weight:600">'+esc(m.q)+'</td><td>'+(m.kind==='movie'?'🎬 فيلم':'🎵 أغنية')+'</td><td><b style="font-family:var(--m)">'+m.count+'</b></td><td style="font-size:10px">'+tAgo(m.last)+'</td><td>'+pr+'</td></tr>';
+        tb+='<tr><td>'+(i+1)+'</td><td style="color:var(--t1);font-weight:600">'+esc(m.q)+'</td><td>'+(m.kind==='movie'?'🎬 فيلم':m.kind==='game'?'🎮 لعبة':'🎵 أغنية')+'</td><td><b style="font-family:var(--m)">'+m.count+'</b></td><td style="font-size:10px">'+tAgo(m.last)+'</td><td>'+pr+'</td></tr>';
     }
     tb+='</tbody></table>';
     document.getElementById('missTbl').innerHTML=tb;
@@ -616,8 +623,9 @@ function renderFeed(logs){
         else if(F.type==='msg')desc=F.role==='user'?'🟢 سؤال ('+fN(F.words||0)+' كلمة)':'🟣 رد AI ('+fN(F.words||0)+' كلمة'+(F.rt?' · '+(F.rt/1000).toFixed(1)+'s':'')+')';
         else if(F.type==='error')desc='🔴 خطأ: '+esc((F.err||'').slice(0,40));
         else if(F.type==='feedback')desc=F.val===1?'👍 تقييم إيجابي':'👎 تقييم سلبي';
-        else if(F.type==='missing')desc='🎯 طلب ناقص: '+esc((F.q||'').slice(0,40))+' ('+(F.kind==='movie'?'فيلم':'أغنية')+')';
+        else if(F.type==='missing')desc='🎯 طلب ناقص: '+esc((F.q||'').slice(0,40))+' ('+(F.kind==='movie'?'فيلم':F.kind==='game'?'لعبة':'أغنية')+')';
         else if(F.type==='media')desc='▶️ تشغيل '+(F.kind==='movie'?'فيلم':'أغنية')+': '+esc((F.name||'').slice(0,40));
+        else if(F.type==='game')desc='🎮 لعب: '+esc((F.name||'').slice(0,40));
         else continue;
         if(!hit(desc)&&!hit(F.vid))continue;
         fh+='<div class="fi"><span>'+desc+'</span><small>'+tAgo(F.t)+' · '+esc((F.vid||'').slice(0,8))+'</small></div>';

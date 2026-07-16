@@ -59,6 +59,12 @@
                 <button class="icon-btn" id="searchBtn" data-ar-title="بحث وأوامر (Ctrl+K)" data-en-title="Search &amp; commands (Ctrl+K)" title="بحث وأوامر (Ctrl+K)">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </button>
+                <button class="icon-btn" id="gamesBtn" data-ar-title="الألعاب (Ctrl+G)" data-en-title="Games (Ctrl+G)" title="الألعاب (Ctrl+G)">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
+                </button>
+                <button class="icon-btn" id="tempBtn" data-ar-title="محادثة مؤقتة" data-en-title="Temporary chat" title="محادثة مؤقتة">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/></svg>
+                </button>
                 <button class="icon-btn" id="personalizeBtn" data-ar-title="تخصيص LORD AI" data-en-title="Personalize LORD AI" title="تخصيص LORD AI">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
                 </button>
@@ -115,6 +121,12 @@
                         </div>
                         <div class="prompt-text"><strong data-ar="شاهد فيلم" data-en="Watch a movie">شاهد فيلم</strong><span data-ar="تفرج على أفلام مصرية" data-en="watch Egyptian movies">تفرج على أفلام مصرية</span></div>
                     </button>
+                    <button class="prompt-card" data-game="1">
+                        <div class="prompt-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
+                        </div>
+                        <div class="prompt-text"><strong data-ar="العب لعبة" data-en="Play a game">العب لعبة</strong><span data-ar="٦ ألعاب داخل الموقع" data-en="6 built-in mini games">٦ ألعاب داخل الموقع</span></div>
+                    </button>
                 </div>
             </div>
             <!-- Messages -->
@@ -166,6 +178,7 @@
             <div class="sc-row"><span data-ar="سطر جديد" data-en="New line">سطر جديد</span><span class="keys"><kbd>Shift</kbd><kbd>Enter</kbd></span></div>
             <div class="sc-row"><span data-ar="محادثة جديدة" data-en="New chat">محادثة جديدة</span><span class="keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>N</kbd></span></div>
         <div class="sc-row"><span data-ar="بحث وأوامر" data-en="Search &amp; commands">بحث وأوامر</span><span class="keys"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
+            <div class="sc-row"><span data-ar="فتح الألعاب" data-en="Open games">فتح الألعاب</span><span class="keys"><kbd>Ctrl</kbd><kbd>G</kbd></span></div>
             <div class="sc-row"><span data-ar="التركيز على صندوق الكتابة" data-en="Focus the composer">التركيز على صندوق الكتابة</span><span class="keys"><kbd>/</kbd></span></div>
             <div class="sc-row"><span data-ar="إظهار الاختصارات" data-en="Show shortcuts">إظهار الاختصارات</span><span class="keys"><kbd>Ctrl</kbd><kbd>/</kbd></span></div>
             <div class="sc-row"><span data-ar="إغلاق / رجوع" data-en="Close / back">إغلاق / رجوع</span><span class="keys"><kbd>Esc</kbd></span></div>
@@ -211,6 +224,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="games.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
