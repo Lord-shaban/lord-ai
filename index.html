@@ -8,7 +8,11 @@
     <meta name="theme-color" content="#191b1a">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://generativelanguage.googleapis.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://pub-2021705f66434f5da4babc84df1667a7.r2.dev">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%233e8e7e'/><text x='50' y='68' font-size='50' font-weight='bold' fill='white' text-anchor='middle' font-family='Inter,sans-serif'>L</text></svg>">
 </head>
@@ -62,22 +66,23 @@
                 <button class="icon-btn" id="gamesBtn" data-ar-title="الألعاب (Ctrl+G)" data-en-title="Games (Ctrl+G)" title="الألعاب (Ctrl+G)">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
                 </button>
-                <button class="icon-btn" id="tempBtn" data-ar-title="محادثة مؤقتة" data-en-title="Temporary chat" title="محادثة مؤقتة">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/></svg>
-                </button>
-                <button class="icon-btn" id="personalizeBtn" data-ar-title="تخصيص LORD AI" data-en-title="Personalize LORD AI" title="تخصيص LORD AI">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-                </button>
-                <button class="icon-btn" id="exportBtn" data-ar-title="تصدير المحادثة" data-en-title="Export chat" title="تصدير المحادثة">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                </button>
-                <button class="icon-btn" id="helpBtn" data-ar-title="اختصارات لوحة المفاتيح (Ctrl+/)" data-en-title="Keyboard shortcuts (Ctrl+/)" title="اختصارات لوحة المفاتيح (Ctrl+/)">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </button>
-                <button class="icon-btn lang-btn" id="langBtn" data-ar-title="English" data-en-title="العربية" title="English">EN</button>
                 <button class="icon-btn" id="themeBtn" data-ar-title="تبديل المظهر" data-en-title="Toggle theme" title="تبديل المظهر">
                     <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
+                <div class="more-wrap">
+                    <button class="icon-btn" id="moreBtn" data-ar-title="المزيد" data-en-title="More" title="المزيد">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg>
+                    </button>
+                    <div class="more-menu none" id="moreMenu">
+                        <button class="mi" id="miTemp"><span class="mi-ico">👻</span><span data-ar="محادثة مؤقتة" data-en="Temporary chat">محادثة مؤقتة</span></button>
+                        <button class="mi" id="miPersonalize"><span class="mi-ico">🎨</span><span data-ar="تخصيص LORD AI" data-en="Personalize LORD AI">تخصيص LORD AI</span></button>
+                        <button class="mi" id="miLang"><span class="mi-ico">🌐</span><span data-ar="English" data-en="العربية">English</span></button>
+                        <button class="mi" id="miFont"><span class="mi-ico">🔤</span><span data-ar="حجم الخط" data-en="Font size">حجم الخط</span></button>
+                        <div class="more-sep"></div>
+                        <button class="mi" id="miExport"><span class="mi-ico">📤</span><span data-ar="تصدير المحادثة" data-en="Export chat">تصدير المحادثة</span></button>
+                        <button class="mi" id="miShortcuts"><span class="mi-ico">⌨️</span><span data-ar="الاختصارات" data-en="Shortcuts">الاختصارات</span><small>Ctrl+/</small></button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -221,10 +226,11 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="games.js"></script>
-    <script src="app.js"></script>
+    <!-- defer: HTML parses and paints without waiting for scripts; order is preserved -->
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script defer src="firebase-config.js"></script>
+    <script defer src="games.js"></script>
+    <script defer src="app.js"></script>
 </body>
 </html>

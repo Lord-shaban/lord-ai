@@ -1275,7 +1275,6 @@ kbd {
 @media(max-width:480px){
     .avatar{width:28px;height:28px;font-size:.68rem}
     .topbar{height:52px;padding:0 12px}
-    #helpBtn{display:none}
     .welcome-orb{width:64px;height:64px;margin-bottom:22px}
     .orb-core{width:64px;height:64px;font-size:1.4rem}
     .orb-ring{inset:-6px}
@@ -2218,9 +2217,10 @@ kbd {
     .input-foot .input-note{text-align:center}
     .conv-pin{opacity:1}
     .ck-modal{padding-top:8vh}
-    #personalizeBtn{display:none}
-    #exportBtn{display:none} /* still reachable from the command palette */
 }
+
+/* Long-chat rendering: skip layout/paint for off-screen messages */
+.msg{content-visibility:auto;contain-intrinsic-size:auto 140px}
 
 /* ═══════════════════════════════════════════════════
    SYNTAX HIGHLIGHTING (code blocks)
@@ -2290,7 +2290,6 @@ kbd {
     font-size:.78rem;
 }
 .conv-ghost{opacity:.75}
-#tempBtn.on{color:var(--accent);background:var(--accent-soft)}
 
 /* ═══════════════════════════════════════════════════
    FONT SIZE PREFERENCE
@@ -2635,10 +2634,154 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     white-space:nowrap;
 }
 
+/* Simon */
+.si-grid{
+    display:grid;
+    grid-template-columns:repeat(2,120px);
+    grid-template-rows:repeat(2,120px);
+    gap:10px;
+}
+.si-pad{
+    border:none;
+    border-radius:18px;
+    cursor:pointer;
+    opacity:.45;
+    transition:opacity .12s,transform .12s;
+}
+.si-pad:active{transform:scale(.96)}
+.si-pad.lit{opacity:1;transform:scale(1.03);box-shadow:0 0 22px rgba(255,255,255,.18)}
+.si-g{background:#2f9e6e}
+.si-r{background:#d9534f}
+.si-y{background:#e8b93d}
+.si-b{background:#4a90d9}
+
+/* Math sprint */
+.ma-q{
+    font:700 2rem var(--mono);
+    color:var(--c1);
+    padding:8px 0 2px;
+    min-height:52px;
+}
+.ma-grid{
+    display:grid;
+    grid-template-columns:repeat(2,130px);
+    gap:10px;
+}
+.ma-opt{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:15px 0;
+    font:700 1.15rem var(--mono);
+    color:var(--c1);
+    cursor:pointer;
+    transition:all .12s var(--ease);
+}
+.ma-opt:hover{border-color:rgba(var(--accent-rgb),.45)}
+.ma-opt.bad{background:rgba(220,91,82,.18);border-color:var(--red);animation:maShake .2s}
+@keyframes maShake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* Whack-a-mole */
+.mo-grid{
+    display:grid;
+    grid-template-columns:repeat(3,88px);
+    grid-template-rows:repeat(3,88px);
+    gap:8px;
+}
+.mo-hole{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    font-size:2.1rem;
+    cursor:pointer;
+    transition:transform .08s;
+    -webkit-tap-highlight-color:transparent;
+}
+.mo-hole:active{transform:scale(.93)}
+
+/* Minesweeper */
+.mn-tools{display:flex;justify-content:center}
+.mn-flag{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:6px 16px;
+    font:600 .78rem var(--sans);
+    color:var(--c2);
+    cursor:pointer;
+    transition:all .15s;
+}
+.mn-flag.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.mn-grid{
+    display:grid;
+    grid-template-columns:repeat(9,32px);
+    grid-template-rows:repeat(9,32px);
+    gap:3px;
+}
+.mn-cell{
+    background:var(--accent-soft);
+    border:1px solid rgba(var(--accent-rgb),.28);
+    border-radius:7px;
+    font:700 .82rem var(--mono);
+    color:var(--c1);
+    cursor:pointer;
+    padding:0;
+    transition:background .1s;
+    -webkit-tap-highlight-color:transparent;
+}
+.mn-cell.open{background:var(--surface);border-color:var(--line);cursor:default}
+.mn-cell.open.n1{color:#4a90d9}
+.mn-cell.open.n2{color:#2f9e6e}
+.mn-cell.open.n3{color:#d9534f}
+.mn-cell.open.n4{color:#9d4edd}
+.mn-cell.boom{background:rgba(220,91,82,.2)}
+.mn-cell.hit{background:var(--red);border-color:var(--red)}
+
 @media(max-width:480px){
     .xo-board{grid-template-columns:repeat(3,76px);grid-template-rows:repeat(3,76px)}
     .mm-grid{grid-template-columns:repeat(4,64px)}
     .mm-card{height:64px}
     .g4-grid{grid-template-columns:repeat(4,64px);grid-template-rows:repeat(4,64px)}
     .rps-row button{padding:10px 14px}
+    .si-grid{grid-template-columns:repeat(2,105px);grid-template-rows:repeat(2,105px)}
+    .mo-grid{grid-template-columns:repeat(3,78px);grid-template-rows:repeat(3,78px)}
+    .mn-grid{grid-template-columns:repeat(9,29px);grid-template-rows:repeat(9,29px)}
+    .ma-grid{grid-template-columns:repeat(2,118px)}
 }
+
+/* ═══════════════════════════════════════════════════
+   TOPBAR "MORE" MENU (declutters the header)
+   ═══════════════════════════════════════════════════ */
+.more-wrap{position:relative}
+.more-menu{
+    position:absolute;
+    top:calc(100% + 8px);
+    inset-inline-end:0;
+    min-width:225px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:var(--sh3);
+    padding:6px;
+    z-index:1500;
+    animation:fadeIn .14s var(--ease);
+}
+.mi{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    background:none;
+    border:none;
+    border-radius:10px;
+    padding:9px 12px;
+    font:500 .84rem var(--sans);
+    color:var(--c1);
+    cursor:pointer;
+    text-align:start;
+    transition:background .12s;
+}
+.mi:hover{background:var(--sidebar-hover)}
+.mi .mi-ico{width:20px;text-align:center;font-size:.95rem}
+.mi small{margin-inline-start:auto;color:var(--c3);font-size:.68rem}
+.more-sep{height:1px;background:var(--line2);margin:5px 8px}

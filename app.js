@@ -352,19 +352,22 @@
        and their song/film lists are auto-generated from the catalogs above. */
 
     var CORE_PROMPT = [
-        'أنت LORD AI، مساعد ذكي متقدم وسريع.',
+        'أنت LORD AI — مساعد ذكي سريع ودقيق يعمل داخل موقع شات عربي.',
         '',
-        '## قواعد أساسية:',
-        '- أجب دائماً بلغة المستخدم ولهجته (لو كتب بالعامية المصرية رُدّ بالعامية المصرية).',
-        '- ادخل في الإجابة مباشرة: بلا مقدمات ولا مجاملات ولا تكرار للسؤال، ولا تبدأ بـ"بالتأكيد/بالطبع/بكل سرور".',
-        '- الدقة أولاً: لا تختلق معلومات أو أرقاماً أو مصادر. إن لم تكن متأكداً قل ذلك صراحة.',
-        '- طابق حجم الإجابة مع السؤال: سؤال بسيط = سطر أو سطران، طلب معقد = إجابة منظمة بعناوين وقوائم.',
-        '- استخدم Markdown عند الحاجة فقط، وحدد لغة الكود في code blocks.',
-        '- الأكواد: نظيفة وكاملة وقابلة للتشغيل مباشرة، مع تعليقات قصيرة للأجزاء المهمة فقط.',
-        '- إذا كان الطلب غامضاً اسأل سؤال توضيح واحداً قصيراً بدل التخمين.',
-        '- في الحساب والمنطق راجع خطواتك قبل إعطاء النتيجة النهائية.',
-        '- لديك مكتبة أغانٍ وأفلام يمكنك تشغيلها داخل الشات عندما يطلب المستخدم موسيقى أو فيلماً، وألعاب مصغّرة داخل الموقع عندما يطلب اللعب أو التسلية.',
-        '- عندما يكون مفيداً، اختم إجابتك بأسئلة متابعة قصيرة (3 كحد أقصى) بصيغة التاج: [SUGGEST:سؤال1|سؤال2|سؤال3] — تاج داخلي يظهر كأزرار.'
+        '## قواعد الرد (ملزمة):',
+        '1. اللغة: رُدّ دائماً بنفس لغة ولهجة المستخدم بالظبط — عامية مصرية ↔ عامية مصرية، فصحى ↔ فصحى، إنجليزي ↔ إنجليزي. لا تخلط دون سبب.',
+        '2. ادخل في صلب الإجابة فوراً: ممنوع المقدمات والمجاملات وتكرار السؤال وعبارات مثل "بالتأكيد/بالطبع/بكل سرور/سؤال رائع".',
+        '3. الحجم على قدر السؤال: سؤال بسيط = سطر أو سطران. طلب مركّب = إجابة منظمة بعناوين وقوائم قصيرة. لا تحشو أبداً.',
+        '4. الدقة قبل كل شيء: لا تخترع معلومات أو أرقاماً أو مصادر أو روابط. غير متأكد؟ قلها صراحة واذكر ما تعرفه بثقة فقط.',
+        '5. الحساب والمنطق: حُلّ خطوة بخطوة داخلياً وراجع النتيجة قبل كتابتها. اعرض الخطوات فقط لو طلبها المستخدم أو كانت المسألة معقدة.',
+        '6. الأكواد: كاملة وقابلة للتشغيل فوراً وبأفضل الممارسات. حدد اللغة في code block، وعلّق باختصار على الأجزاء غير البديهية فقط.',
+        '7. الطلب الغامض: اسأل سؤال توضيح واحداً محدداً بدل التخمين.',
+        '8. Markdown باعتدال: عناوين وجداول وقوائم عند الفائدة الحقيقية فقط، ليس لكل رد.',
+        '',
+        '## أدوات الموقع (مهم):',
+        '- تستطيع تشغيل أغانٍ وأفلام داخل الشات وفتح ألعاب مصغّرة — تفاصيل المكتبات تصلك تلقائياً عند الحاجة، فلا تعتذر عن قدرات لم تصلك تفاصيلها بل انتظر طلب المستخدم.',
+        '- التاجات مثل [MUSIC:] و[GAME:] و[SUGGEST:] أدوات نظام داخلية: لا تذكرها ولا تشرحها للمستخدم أبداً، ولا تضعها داخل code blocks، ولا تخترع تاجات جديدة.',
+        '- بعد إجابة معلوماتية مفيدة يمكنك إنهاء الرد بسطر: [SUGGEST:سؤال قصير 1|سؤال 2|سؤال 3] (يظهر كأزرار متابعة). لا تستخدمه في الدردشة العابرة ولا مع الميديا والألعاب، والأسئلة تكون بلغة المستخدم.'
     ].join('\n');
 
     /* Media detection — heavy catalogs are attached only when relevant */
@@ -456,16 +459,23 @@
     /* ═══════ PERSONALIZED SYSTEM PROMPT ═══════ */
     function buildSystemPrompt(recent) {
         var p = CORE_PROMPT;
+
+        // Live context: today's date (cheap, answers "النهاردة كام" correctly)
+        p += '\n\n## سياق حي:\n- تاريخ اليوم: '
+            + new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
         if (replyStyle === 'concise') {
-            p += '\n\n## أسلوب الرد المطلوب من المستخدم:\n- أجب بإيجاز شديد. أقصر إجابة صحيحة ممكنة، بدون أي تفاصيل إضافية.';
+            p += '\n\n## أسلوب مطلوب من المستخدم (له الأولوية):\n- أقصر إجابة صحيحة ممكنة: سطر واحد أو نقاط سريعة. صفر تفاصيل إضافية إلا لو طُلبت صراحة.';
         } else if (replyStyle === 'detailed') {
-            p += '\n\n## أسلوب الرد المطلوب من المستخدم:\n- أجب بتفصيل وشمولية: اشرح الخلفية، أعطِ أمثلة عملية، وغطِّ الحالات المهمة.';
+            p += '\n\n## أسلوب مطلوب من المستخدم (له الأولوية):\n- إجابة متعمقة: الخلفية باختصار، ثم الخطوات أو التفاصيل، ثم مثال عملي، ثم الأخطاء الشائعة أو الحالات الخاصة إن وُجدت.';
         }
         var c = [];
-        if (customCfg.name) c.push('- اسم المستخدم: ' + customCfg.name + '. خاطبه باسمه أحياناً بشكل طبيعي.');
-        if (customCfg.about) c.push('- معلومات عن المستخدم: ' + customCfg.about);
-        if (customCfg.extra) c.push('- تعليمات من المستخدم لطريقة الرد (اتبعها دائماً): ' + customCfg.extra);
-        if (c.length) p += '\n\n## تخصيص المستخدم:\n' + c.join('\n');
+        if (customCfg.name) c.push('- اسم المستخدم: ' + customCfg.name + '. خاطبه باسمه أحياناً بشكل طبيعي غير متكلف.');
+        if (customCfg.about) c.push('- معلومات عن المستخدم (استخدمها لتخصيص الأمثلة والمستوى): ' + customCfg.about);
+        if (customCfg.extra) c.push('- تعليمات المستخدم لطريقة الرد: ' + customCfg.extra);
+        if (c.length) {
+            p += '\n\n## تخصيص المستخدم (أولويته أعلى من القواعد العامة، ما عدا قواعد الدقة):\n' + c.join('\n');
+        }
 
         // Attach the heavy media guides only when the recent conversation needs them:
         // user keywords, or media tags in previous assistant replies (covers follow-ups)
@@ -1067,12 +1077,16 @@
         // Horizontal rule
         text = text.replace(/^---$/gm, '<hr>');
 
+        // Ordered lists first, via a temp tag so the <ul> pass below can't grab them
+        text = text.replace(/^\d+[.)] (.+)$/gm, '<oli>$1</oli>');
+        text = text.replace(/((?:<oli>.*<\/oli>\n?)+)/g, '<ol>$1</ol>');
+
         // Unordered lists
         text = text.replace(/^[\*\-] (.+)$/gm, '<li>$1</li>');
         text = text.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
 
-        // Ordered lists
-        text = text.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+        // Materialize ordered items now that the <ul> pass is done
+        text = text.replace(/<(\/?)oli>/g, '<$1li>');
 
         // Links
         text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
@@ -2622,27 +2636,38 @@
         el.clearBtn.addEventListener('click', clearAll);
         el.themeBtn.addEventListener('click', toggleTheme);
 
-        // Language toggle
-        var langBtn = $('langBtn');
-        if (langBtn) langBtn.addEventListener('click', toggleLang);
-
-        // Export chat
-        var exportBtn = $('exportBtn');
-        if (exportBtn) exportBtn.addEventListener('click', exportChat);
-
         // Games hub
         var gamesBtn = $('gamesBtn');
         if (gamesBtn) gamesBtn.addEventListener('click', function () {
             if (window.LordGames) window.LordGames.open();
         });
 
-        // Temporary chat
-        var tempBtn = $('tempBtn');
-        if (tempBtn) tempBtn.addEventListener('click', newTempConv);
+        // "More" overflow menu (temp chat / personalize / lang / font / export / shortcuts)
+        var moreBtn = $('moreBtn'), moreMenu = $('moreMenu');
+        function closeMore() { if (moreMenu) moreMenu.classList.add('none'); }
+        if (moreBtn && moreMenu) {
+            moreBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                moreMenu.classList.toggle('none');
+            });
+            document.addEventListener('click', function (e) {
+                if (!moreMenu.classList.contains('none') && !moreMenu.contains(e.target)) closeMore();
+            });
+            var miMap = {
+                miTemp: newTempConv,
+                miPersonalize: function () { toggleCi(true); },
+                miLang: toggleLang,
+                miFont: cycleFontSize,
+                miExport: exportChat,
+                miShortcuts: function () { toggleShortcuts(true); }
+            };
+            Object.keys(miMap).forEach(function (id) {
+                var b = $(id);
+                if (b) b.addEventListener('click', function () { closeMore(); miMap[id](); });
+            });
+        }
 
         // Shortcuts modal
-        var helpBtn = $('helpBtn');
-        if (helpBtn) helpBtn.addEventListener('click', function () { toggleShortcuts(true); });
         var closeShortcuts = $('closeShortcuts');
         if (closeShortcuts) closeShortcuts.addEventListener('click', function () { toggleShortcuts(false); });
         var scModal = $('shortcutsModal');
@@ -2651,8 +2676,6 @@
         });
 
         // Personalize modal
-        var personalizeBtn = $('personalizeBtn');
-        if (personalizeBtn) personalizeBtn.addEventListener('click', function () { toggleCi(true); });
         var closeCi = $('closeCi');
         if (closeCi) closeCi.addEventListener('click', function () { toggleCi(false); });
         var ciModal = $('ciModal');
@@ -2685,7 +2708,12 @@
         });
         var ckInput = $('ckInput');
         if (ckInput) {
-            ckInput.addEventListener('input', function () { ckBuild(ckInput.value); });
+            // debounce: full-text search over all messages is too heavy per keystroke
+            var ckDeb = null;
+            ckInput.addEventListener('input', function () {
+                if (ckDeb) clearTimeout(ckDeb);
+                ckDeb = setTimeout(function () { ckBuild(ckInput.value); }, 110);
+            });
             ckInput.addEventListener('keydown', function (e) {
                 if (e.key === 'ArrowDown') { e.preventDefault(); if (ckSel < ckItems.length - 1) ckSel++; ckPaint(); }
                 else if (e.key === 'ArrowUp') { e.preventDefault(); if (ckSel > 0) ckSel--; ckPaint(); }
@@ -2749,6 +2777,7 @@
                 toggleCi(false);
                 ckToggle(false);
                 hideQuotePop();
+                closeMore();
             }
             if (e.ctrlKey && e.shiftKey && e.key === 'N') { e.preventDefault(); newConv(); }
             if (e.ctrlKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); ckToggle(); return; }
