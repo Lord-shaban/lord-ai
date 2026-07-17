@@ -2,40 +2,39 @@
 
 <br>
 
-<img src="assets/banner.png" alt="LORD AI" width="100%">
+<img src="assets/banner.svg" alt="LORD AI" width="100%">
 
 <br><br>
 
 <a href="https://lord-ai.pages.dev">
-<img src="https://img.shields.io/badge/🌐_Live_Demo-lord--ai.pages.dev-6366f1?style=for-the-badge&labelColor=09090b" alt="Live Demo" height="32">
+<img src="https://img.shields.io/badge/الموقع_المباشر-lord--ai.pages.dev-2f7e6c?style=for-the-badge&labelColor=0b0f0e" alt="Live Demo" height="34">
 </a>
 
 <br><br>
 
 <p>
-<img src="https://img.shields.io/github/v/release/Lord-shaban/lord-ai?style=flat-square&color=6366f1&labelColor=09090b&label=RELEASE" alt="Release">
-<img src="https://img.shields.io/badge/Live-22c55e?style=flat-square&labelColor=09090b&label=STATUS" alt="Status">
-<img src="https://img.shields.io/badge/Llama_3.3_70B-a855f7?style=flat-square&labelColor=09090b&label=MODEL" alt="Model">
-<img src="https://img.shields.io/badge/Groq_LPU-f59e0b?style=flat-square&labelColor=09090b&label=PROVIDER" alt="Provider">
-<img src="https://img.shields.io/badge/Cloudflare_Pages-3b82f6?style=flat-square&labelColor=09090b&label=HOSTED" alt="Hosting">
-<img src="https://img.shields.io/github/license/Lord-shaban/lord-ai?style=flat-square&color=22c55e&labelColor=09090b" alt="License">
-<img src="https://img.shields.io/github/repo-size/Lord-shaban/lord-ai?style=flat-square&color=f59e0b&labelColor=09090b" alt="Repo Size">
-<img src="https://img.shields.io/github/last-commit/Lord-shaban/lord-ai?style=flat-square&color=3b82f6&labelColor=09090b" alt="Last Commit">
+<img src="https://img.shields.io/github/v/release/Lord-shaban/lord-ai?style=flat-square&color=2f7e6c&labelColor=0b0f0e&label=RELEASE" alt="Release">
+<img src="https://img.shields.io/badge/LIVE-2f9e6e?style=flat-square&labelColor=0b0f0e&label=STATUS" alt="Status">
+<img src="https://img.shields.io/badge/Gemini_3.1_Flash-4285F4?style=flat-square&labelColor=0b0f0e&label=MODEL" alt="Model">
+<img src="https://img.shields.io/badge/Vanilla_JS-f0b429?style=flat-square&labelColor=0b0f0e&label=STACK" alt="Stack">
+<img src="https://img.shields.io/badge/Zero_Build-9d6ee0?style=flat-square&labelColor=0b0f0e&label=TOOLING" alt="Tooling">
+<img src="https://img.shields.io/github/license/Lord-shaban/lord-ai?style=flat-square&color=2f7e6c&labelColor=0b0f0e" alt="License">
+<img src="https://img.shields.io/github/last-commit/Lord-shaban/lord-ai?style=flat-square&color=57c785&labelColor=0b0f0e&label=UPDATED" alt="Last Commit">
 </p>
 
 <br>
 
-<h3>مساعد ذكاء اصطناعي فائق السرعة بتصميم مستقبلي ⚡</h3>
+<h3>مساعد ذكاء اصطناعي عربي — دردشة · موسيقى · أفلام · ١٨ لعبة داخل الشات</h3>
 
 <p>
-واجهة دردشة ذكية مبنية من الصفر بتقنيات الويب الأساسية فقط — بدون أي مكتبات أو أطر عمل
+واجهة RTL أنيقة مبنية من الصفر بتقنيات الويب الأساسية فقط — <b>بدون أي مكتبة أو أداة بناء</b>.
 <br>
-مستوحاة من أحدث واجهات ChatGPT و Claude مع هوية بصرية فريدة
+هوية «Calm Sage» بثيمين فاتح/غامق، وكل حاجة بتشتغل جوه الشات نفسه.
 </p>
 
 <br>
 
-[🌐 الموقع المباشر](https://lord-ai.pages.dev) &nbsp;·&nbsp; [🐛 الإبلاغ عن مشكلة](https://github.com/Lord-shaban/lord-ai/issues) &nbsp;·&nbsp; [💡 اقتراح ميزة](https://github.com/Lord-shaban/lord-ai/issues)
+[الموقع المباشر](https://lord-ai.pages.dev) &nbsp;·&nbsp; [الإبلاغ عن مشكلة](https://github.com/Lord-shaban/lord-ai/issues) &nbsp;·&nbsp; [اقتراح ميزة](https://github.com/Lord-shaban/lord-ai/issues) &nbsp;·&nbsp; [سجل التغييرات](CHANGELOG.md)
 
 <br>
 
@@ -45,88 +44,89 @@
 
 <br>
 
-## 📸 &nbsp; لقطات الشاشة
+## <img src="https://img.shields.io/badge/01-0b0f0e?style=flat-square"> &nbsp; لقطات الشاشة
 
 <div align="center">
 
 <table>
 <tr>
 <td align="center" width="50%">
-<img src="assets/screenshots/01-landing.png" alt="Landing Page - Dark Mode" width="100%">
-<br>
-<sub><b>🌙 الواجهة الرئيسية</b> — الوضع الداكن مع بطاقات الاقتراحات</sub>
+<img src="assets/shots/01-welcome-dark.png" alt="الوضع الداكن" width="100%">
+<br><sub><b>الوضع الداكن</b> — شاشة الترحيب وبطاقات البدء</sub>
 </td>
 <td align="center" width="50%">
-<img src="assets/screenshots/02-light-mode.png" alt="Landing Page - Light Mode" width="100%">
-<br>
-<sub><b>☀️ الوضع الفاتح</b> — انتقال سلس بين الأوضاع</sub>
+<img src="assets/shots/02-welcome-light.png" alt="الوضع الفاتح" width="100%">
+<br><sub><b>الوضع الفاتح</b> — نفس الهوية بروح فاتحة</sub>
 </td>
 </tr>
 <tr>
 <td align="center" width="50%">
-<img src="assets/screenshots/03-code.png" alt="Code Response" width="100%">
-<br>
-<sub><b>💻 عرض الأكواد</b> — Syntax Highlighting مع زر نسخ</sub>
+<img src="assets/shots/03-chat-code-dark.png" alt="عرض الأكواد" width="100%">
+<br><sub><b>الأكواد</b> — تلوين صياغة + زر نسخ + Markdown كامل</sub>
 </td>
 <td align="center" width="50%">
-<img src="assets/screenshots/04-music.png" alt="Music Player" width="100%">
-<br>
-<sub><b>🎵 مشغل الموسيقى</b> — تشغيل مدمج مع التحميل</sub>
+<img src="assets/shots/05-music-dark.png" alt="مشغل الموسيقى" width="100%">
+<br><sub><b>مشغل الموسيقى</b> — تشغيل وتحميل داخل الرسالة</sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<img src="assets/shots/06-games-hub-dark.png" alt="هَب الألعاب" width="100%">
+<br><sub><b>هَب الألعاب</b> — ١٥ لعبة سولو + ٣ أونلاين</sub>
+</td>
+<td align="center" width="50%">
+<img src="assets/shots/07-game-connect4-dark.png" alt="لعبة أربعة في صف" width="100%">
+<br><sub><b>ألعاب احترافية</b> — قطع لامعة تُلعب جوه الشات</sub>
 </td>
 </tr>
 </table>
+
+<img src="assets/shots/11-games-gallery.png" alt="كل الألعاب" width="88%">
+<br><sub><b>مكتبة الألعاب كاملة</b> — أيقونات SVG مخصصة بدون أي إيموجي</sub>
+
+<br><br>
+
+<img src="assets/shots/09-mobile-welcome.png" alt="موبايل - ترحيب" width="26%">
+&nbsp;&nbsp;
+<img src="assets/shots/10-mobile-chat.png" alt="موبايل - شات" width="26%">
+&nbsp;&nbsp;
+<img src="assets/shots/08-palette-dark.png" alt="لوحة الأوامر" width="42%">
+<br><sub><b>متجاوب بالكامل</b> — درج جانبي وأهداف لمس مريحة &nbsp;·&nbsp; <b>لوحة أوامر</b> (Ctrl + K)</sub>
 
 </div>
 
 <br>
 
-## <img src="https://img.shields.io/badge/01-18181b?style=flat-square"> &nbsp; نظرة عامة
+## <img src="https://img.shields.io/badge/02-0b0f0e?style=flat-square"> &nbsp; نظرة عامة
 
 <br>
 
-> **LORD AI** ليس مجرد واجهة دردشة — بل تجربة متكاملة صُممت لتكون سريعة، أنيقة، وقوية.
-> كل سطر كود كُتب بعناية لتقديم تفاعل سلس مع الذكاء الاصطناعي بأداء يفوق التوقعات.
+> **LORD AI** مش مجرد واجهة دردشة — ده مساعد متكامل عربي أولًا، بيرد بالعامية المصرية، بيشغّل موسيقى وأفلام، وبيلعب معاك ألعاب حقيقية جوه الشات. كل ده في تطبيق ويب ثابت (Static) بدون سيرفر خلفي وبدون أي مكتبة خارجية.
 
 <br>
 
 <div align="center">
 <table>
 <tr>
-<td align="center" width="25%">
-<br>
-<img src="https://img.shields.io/badge/0-6366f1?style=for-the-badge&labelColor=09090b&label=FRAMEWORKS" height="28">
-<br><br>
-<b>صفر تبعيات</b>
-<br>
-<sub>Vanilla JS/CSS فقط</sub>
-<br><br>
+<td align="center" width="20%">
+<br><img src="https://img.shields.io/badge/0-2f7e6c?style=for-the-badge&labelColor=0b0f0e&label=DEPS" height="28"><br><br>
+<b>صفر تبعيات</b><br><sub>Vanilla JS/CSS</sub><br><br>
 </td>
-<td align="center" width="25%">
-<br>
-<img src="https://img.shields.io/badge/70B-a855f7?style=for-the-badge&labelColor=09090b&label=PARAMS" height="28">
-<br><br>
-<b>نموذج ضخم</b>
-<br>
-<sub>Llama 3.3 70B</sub>
-<br><br>
+<td align="center" width="20%">
+<br><img src="https://img.shields.io/badge/88-3b82f6?style=for-the-badge&labelColor=0b0f0e&label=MUSIC" height="28"><br><br>
+<b>أغنية</b><br><sub>عربي + إنجليزي</sub><br><br>
 </td>
-<td align="center" width="25%">
-<br>
-<img src="https://img.shields.io/badge/<1s-22c55e?style=for-the-badge&labelColor=09090b&label=RESPONSE" height="28">
-<br><br>
-<b>استجابة فورية</b>
-<br>
-<sub>Groq LPU Engine</sub>
-<br><br>
+<td align="center" width="20%">
+<br><img src="https://img.shields.io/badge/56-f0a92e?style=for-the-badge&labelColor=0b0f0e&label=MOVIES" height="28"><br><br>
+<b>فيلم</b><br><sub>مشغّل مدمج</sub><br><br>
 </td>
-<td align="center" width="25%">
-<br>
-<img src="https://img.shields.io/badge/18_🎵-3b82f6?style=for-the-badge&labelColor=09090b&label=MUSIC" height="28">
-<br><br>
-<b>مكتبة موسيقية</b>
-<br>
-<sub>عربي + إنجليزي</sub>
-<br><br>
+<td align="center" width="20%">
+<br><img src="https://img.shields.io/badge/18-9d6ee0?style=for-the-badge&labelColor=0b0f0e&label=GAMES" height="28"><br><br>
+<b>لعبة</b><br><sub>١٥ سولو + ٣ أونلاين</sub><br><br>
+</td>
+<td align="center" width="20%">
+<br><img src="https://img.shields.io/badge/2-57c785?style=for-the-badge&labelColor=0b0f0e&label=THEMES" height="28"><br><br>
+<b>ثيم</b><br><sub>فاتح + غامق</sub><br><br>
 </td>
 </tr>
 </table>
@@ -134,7 +134,7 @@
 
 <br>
 
-## <img src="https://img.shields.io/badge/02-18181b?style=flat-square"> &nbsp; المميزات
+## <img src="https://img.shields.io/badge/03-0b0f0e?style=flat-square"> &nbsp; المميزات
 
 <br>
 
@@ -142,77 +142,51 @@
 <tr>
 <td width="50%" valign="top">
 
-#### 🧠 &nbsp; الذكاء الاصطناعي
+#### الذكاء الاصطناعي
 
-- نموذج **Llama 3.3 70B** — أحد أقوى النماذج المفتوحة عالمياً
-- **بث الردود** بالوقت الحقيقي كلمة بكلمة (Streaming)
-- **اكتشاف تلقائي للغة** — يرد بالعربية أو الإنجليزية تلقائياً
-- **System Prompt احترافي** — ردود منظمة مع Markdown كامل
-- **معالجة أخطاء ذكية** — رسائل واضحة عند تجاوز الحدود
-- **اقتراحات ذكية** بناءً على المزاج والسياق
-
-</td>
-<td width="50%" valign="top">
-
-#### 🎨 &nbsp; التصميم والواجهة
-
-- تصميم **رمادي داكن عصري** بهوية بصرية فريدة
-- **وضعان للعرض** — داكن وفاتح مع انتقال سلس بالألوان
-- **أنيميشن متقدمة** — Orb متحرك، تأثيرات حركية، micro-interactions
-- **بطاقات اقتراحات** — نقاط بداية سريعة للمحادثات
-- **خطوط احترافية** — Inter, Noto Sans Arabic, JetBrains Mono
-- **متجاوب بالكامل** — يعمل على جميع الأجهزة والشاشات
-
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-
-#### 🎵 &nbsp; مشغل الموسيقى المدمج
-
-- **18 أغنية** — عربية كلاسيكية وحديثة + إنجليزية
-- **محرك بحث ذكي** — Weighted Scoring System للاختيار الدقيق
-- **اقتراح بالمزاج** — حب، حزن، حماس، طرب، هدوء
-- **تشغيل متكامل** — Play/Pause, Seek, Progress bar, Timer
-- **تحميل مباشر** — زر تنزيل لكل أغنية
-- أسماء الفنانين: **أم كلثوم · فيروز · عبد الحليم · Ed Sheeran** والمزيد
+- نموذج **Gemini 3.1 Flash Lite** عبر واجهة متوافقة مع OpenAI
+- **بث الردود** لحظيًا كلمة بكلمة (SSE Streaming)
+- **عربي أولًا** — يرد بالعامية المصرية ويكتشف اللغة تلقائيًا
+- **برومبت مُوفِّر للتوكنز** — أدلة الموسيقى/الأفلام تُلحق عند الحاجة فقط
+- **اقتراحات متابعة** ذكية تحت كل رد
+- **عناوين محادثات ذكية** تُولَّد تلقائيًا بعد أول رد
 
 </td>
 <td width="50%" valign="top">
 
-#### 📊 &nbsp; الإدارة والتحليلات
+#### التصميم والواجهة
 
-- **لوحة تحكم أدمن** — مراقبة نشاط جميع المستخدمين
-- **تتبع شامل** — زيارات، رسائل، أجهزة، لغات، أداء
-- **رسوم بيانية تفاعلية** — نشاط يومي، توزيع اللغات، الأجهزة
-- **جدول المستخدمين** — بيانات كل زائر وحالة الاتصال
-- **تصدير البيانات** — تحميل كل التحليلات كـ JSON
-- **Firebase Firestore** — قاعدة بيانات لحظية سحابية
+- هوية **«Calm Sage»** خضراء عميقة بثيمين فاتح/غامق
+- **زجاجية وعمق** — توب بار شفاف، ظلال غنية، تدرجات
+- **بدون أي إيموجي في الواجهة** — أيقونات SVG مخصوصة بالكامل
+- **RTL/LTR** كامل بخصائص منطقية (logical properties)
+- دعم **safe-area** للآيفون (النوتش والهوم)
+- **micro-interactions** ونقلات ناعمة في كل مكان
 
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 
-#### ⚡ &nbsp; الأداء والتجربة
+#### موسيقى وأفلام داخل الشات
 
-- **صفر مكتبات خارجية** — كل سطر مكتوب يدوياً
-- **حفظ تلقائي** — جميع المحادثات محفوظة في `localStorage`
-- **محادثات متعددة** — إنشاء، تسمية، وإدارة بلا حدود
-- **نسخ فوري** — نسخ الردود والأكواد بضغطة واحدة
-- **اختصارات لوحة المفاتيح** — تنقل وإرسال سريع
-- **Markdown Parser مدمج** — أكواد، قوائم، جداول، روابط
+- **٨٨ أغنية** — كلاسيك وحديث، عربي وإنجليزي (تُستضاف على R2)
+- **٥٦ فيلم** — مشغّل مدمج (Google Drive / YouTube)
+- مشغّل موسيقى مدمج: تشغيل/إيقاف، Seek، تحميل مباشر
+- **بلايليست عائمة** مع تكرار وتشغيل الكل
+- مطابقة ذكية بالاسم أو المزاج (حب/حزن/حماس/طرب/هدوء)
 
 </td>
 <td width="50%" valign="top">
 
-#### 🔒 &nbsp; الأمان والخصوصية
+#### تجربة استخدام 2026
 
-- **لا خوادم خلفية** — تطبيق ويب ثابت بالكامل (Static)
-- **تخزين محلي** — المحادثات في المتصفح فقط
-- **API مباشر** — الاتصال بـ Groq بدون وسيط
-- **بدون تسجيل حسابات** — استخدام فوري بدون بيانات شخصية
-- **كود مفتوح المصدر** — شفافية كاملة ورخصة MIT
+- **لوحة أوامر** (Ctrl + K) — بحث نصي كامل داخل الرسائل
+- **تخصيص LORD AI** — اسمك ومعلوماتك وأسلوب الرد
+- **أنماط رد** (مختصر/متوازن/مفصّل) وحجم خط قابل للتعديل
+- **محادثة مؤقتة** (Incognito) لا تُحفظ أبدًا
+- تثبيت، إعادة تسمية، تراجع عن الحذف، تصدير، اقتباس النص
+- إدخال صوتي (Web Speech) وقراءة الردود صوتيًا
 
 </td>
 </tr>
@@ -220,7 +194,51 @@
 
 <br>
 
-## <img src="https://img.shields.io/badge/03-18181b?style=flat-square"> &nbsp; التقنيات المستخدمة
+## <img src="https://img.shields.io/badge/04-0b0f0e?style=flat-square"> &nbsp; الألعاب
+
+<br>
+
+كل لعبة بتترندر **جوه رسالة في الشات** (زي مشغّل الموسيقى) — من غير أي مودال. أيقونات SVG مخصوصة، لوحات بتدرجات ولمعة، وأنيميشن احتفالي عند الفوز.
+
+<div align="center">
+
+| العب لوحدك (١٥) | | | |
+|:---|:---|:---|:---|
+| إكس أو *(ذكاء لا يُهزم)* | أربعة في صف | حجر ورقة مقص | الذاكرة |
+| سلسلة الألوان *(بأصوات)* | ذاكرة الأرقام | رد الفعل | سباق الحساب |
+| الثعبان | 2048 | تتريس *(بـ ghost piece)* | كسر الطوب |
+| اضرب الخلد | الطير النطاط | كاسحة الألغام | |
+
+</div>
+
+> **أونلاين مع صاحبك:** إكس أو · أربعة في صف · حجر ورقة مقص — يعمل روم بكود شكله `G-ABCD`، صاحبك يكتب الكود في شاته، واللعبة تتزامن لحظيًا عبر Firestore.
+
+<br>
+
+## <img src="https://img.shields.io/badge/05-0b0f0e?style=flat-square"> &nbsp; الموثوقية وتوفير الحدود
+
+<br>
+
+المفتاح المجاني لـ Gemini مشترك بين كل الزوار، فالمشروع بيحمي نفسه على مستويين:
+
+- **ليميتر لكل مستخدم** (محفوظ محليًا، يتصفّر بعد منتصف الليل): سقف بالدقيقة وسقف يومي لكل متصفح، مع تحذير مبكر قبل النهاية والنص بيفضل في الصندوق لو اتحظر.
+- **مجمع مفاتيح مع Failover تلقائي**: أي خطأ 429/quota على مفتاح → إعادة المحاولة فورًا بالمفتاح التالي بشفافية، وآخر مفتاح شغال يُحفظ للجلسات الجاية.
+
+```mermaid
+flowchart LR
+    U([User]) --> G{Per-user<br/>rate gate}
+    G -- blocked --> T[Toast notice]
+    G -- allowed --> P[Key pool]
+    P -- key 1 --> API[Gemini 3.1 Flash Lite]
+    API -- 429 / quota --> P
+    P -- key 2 / 3 --> API
+    API -- SSE stream --> M[Markdown parser]
+    M --> R[Bubbles · players · game frames]
+```
+
+<br>
+
+## <img src="https://img.shields.io/badge/06-0b0f0e?style=flat-square"> &nbsp; التقنيات
 
 <br>
 
@@ -229,71 +247,86 @@
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JS">
+<img src="https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Gemini">
 <img src="https://img.shields.io/badge/Firebase-DD2C00?style=for-the-badge&logo=firebase&logoColor=white" alt="Firebase">
-<img src="https://img.shields.io/badge/Cloudflare_Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare">
-<img src="https://img.shields.io/badge/Groq-000000?style=for-the-badge" alt="Groq">
-<img src="https://img.shields.io/badge/Llama_3.3-0467DF?style=for-the-badge&logo=meta&logoColor=white" alt="Llama">
+<img src="https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare">
 
 </div>
 
 <br>
 
-| التقنية | الدور | التفاصيل |
+| الطبقة | التقنية | التفاصيل |
 |:---:|:---|:---|
-| **HTML5** | الهيكل | بنية دلالية حديثة مع SEO مُحسّن |
-| **CSS3** | التصميم | CSS Variables, Grid, Flexbox, Animations, Dark/Light |
-| **JavaScript** | المنطق | Vanilla JS — Fetch API, Streaming, Markdown, Music Engine |
-| **Firebase** | البيانات | Firestore لتحليلات المستخدمين في الوقت الحقيقي |
-| **Groq** | الذكاء | Llama 3.3 70B عبر LPU — استجابة بأجزاء من الثانية |
-| **Cloudflare** | الاستضافة | Pages CDN — توزيع عالمي فائق السرعة |
+| الواجهة | **HTML5 + CSS3** | نظام تصميم مبني على CSS Variables · Grid/Flex · ثيمين · RTL منطقي |
+| المنطق | **Vanilla JS** | IIFE واحد، بدون build — Fetch/SSE، Markdown، محرك موسيقى/ألعاب |
+| الذكاء | **Gemini 3.1 Flash Lite** | Google AI عبر endpoint متوافق مع OpenAI |
+| البيانات | **Firebase Firestore** | تحليلات لحظية + غرف الألعاب الأونلاين (`lord_rooms`) |
+| الميديا | **Cloudflare R2** | استضافة ملفات MP3 بأسماء نظيفة |
+| الاستضافة | **Cloudflare Pages** | CDN عالمي فائق السرعة، نشر مباشر من GitHub |
 
 <br>
 
-## <img src="https://img.shields.io/badge/04-18181b?style=flat-square"> &nbsp; التشغيل المحلي
+## <img src="https://img.shields.io/badge/07-0b0f0e?style=flat-square"> &nbsp; بنية المشروع
 
 <br>
 
-### المتطلبات
+```
+lord-ai/
+│
+├── index.html            ← واجهة الشات (RTL) — Firebase + games.js + app.js
+├── app.js                ← كل منطق الشات (IIFE واحد، ~2900 سطر)
+├── games.js              ← موديول الألعاب داخل الشات (18 لعبة، window.LordGames)
+├── style.css             ← نظام التصميم الكامل "Calm Sage Evolved"
+├── x7admin.html          ← لوحة الأدمن والتحليلات (مستقلة تمامًا)
+├── firebase-config.js    ← إعدادات Firebase
+│
+├── assets/
+│   ├── banner.svg        ← البانر (بستايل التيرمنال)
+│   ├── shots/            ← لقطات الشاشة
+│   └── music/            ← ملفات MP3
+│
+├── README.md · CHANGELOG.md · CONTRIBUTING.md · SECURITY.md · LICENSE
+└── .github/              ← قوالب Issues و PR
+```
 
-- متصفح ويب حديث (Chrome, Firefox, Safari, Edge)
-- مفتاح API من [Groq](https://console.groq.com) *(مجاني)*
-- *(اختياري)* مشروع [Firebase](https://console.firebase.google.com) للتحليلات
+<br>
 
-### التثبيت
+## <img src="https://img.shields.io/badge/08-0b0f0e?style=flat-square"> &nbsp; التشغيل المحلي
+
+<br>
+
+المشروع ملفات ثابتة — تقدر تفتح `index.html` مباشرة، أو تشغّل خادم بسيط:
 
 ```bash
-# استنساخ المستودع
 git clone https://github.com/Lord-shaban/lord-ai.git
 cd lord-ai
 
-# تشغيل خادم محلي (اختر أي طريقة)
+# أي خادم ثابت (اختر واحد)
 python -m http.server 8080     # Python
 npx serve .                    # Node.js
-# أو استخدم VS Code Live Server
-
-# افتح المتصفح
 # → http://localhost:8080
 ```
 
-### الإعداد
+**الإعداد** — ضع مفاتيحك في `app.js` (يدعم أكثر من مفتاح لتوزيع الحدث):
 
 ```javascript
-// app.js — ضع مفتاح Groq الخاص بك
-var API_KEY = 'gsk_YOUR_API_KEY_HERE';
+// app.js — مجمع مفاتيح Gemini (يفضّل أن تكون من مشاريع Google مختلفة)
+var API_KEYS = [
+    'YOUR_GEMINI_KEY_1',
+    'YOUR_GEMINI_KEY_2'
+];
 ```
 
 ```javascript
-// firebase-config.js — (اختياري) للتحليلات
-var FIREBASE_CONFIG = {
-    apiKey: "YOUR_KEY",
-    projectId: "your-project-id",
-    // ...
-};
+// firebase-config.js — (اختياري) للتحليلات والألعاب الأونلاين
+var FIREBASE_CONFIG = { apiKey: "…", projectId: "…" /* … */ };
 ```
+
+> **بعد أي تعديل:** `node --check app.js` و `node --check games.js` للتأكد من سلامة الصياغة.
 
 <br>
 
-## <img src="https://img.shields.io/badge/05-18181b?style=flat-square"> &nbsp; النشر
+## <img src="https://img.shields.io/badge/09-0b0f0e?style=flat-square"> &nbsp; النشر على Cloudflare Pages
 
 <br>
 
@@ -302,124 +335,68 @@ var FIREBASE_CONFIG = {
 | الخطوة | التفاصيل |
 |:---:|:---|
 | **1** | ارفع المشروع إلى GitHub |
-| **2** | اذهب إلى **Cloudflare Dashboard** → **Pages** |
+| **2** | **Cloudflare Dashboard** → **Workers & Pages** → **Create** → **Pages** |
 | **3** | اربط مستودع GitHub |
-| **4** | Build command: *(اتركه فارغاً)* &nbsp;&nbsp;·&nbsp;&nbsp; Output: `/` |
-| **5** | **انشر!** 🚀 |
+| **4** | Build command: *(فارغ)* &nbsp;·&nbsp; Output directory: `/` |
+| **5** | **Deploy** — ومبروك الموقع أونلاين |
 
 </div>
 
 <br>
 
-## <img src="https://img.shields.io/badge/06-18181b?style=flat-square"> &nbsp; اختصارات لوحة المفاتيح
+## <img src="https://img.shields.io/badge/10-0b0f0e?style=flat-square"> &nbsp; اختصارات لوحة المفاتيح
 
 <br>
 
 <div align="center">
 
-| الرمز | الاختصار | الوظيفة |
-|:---:|:---:|:---|
-| ⏎ | `Enter` | إرسال الرسالة |
-| ↵ | `Shift + Enter` | سطر جديد بدون إرسال |
-| ✦ | `Ctrl + Shift + N` | فتح محادثة جديدة |
-| ⌕ | `/` | تركيز حقل الكتابة |
-| ✕ | `Escape` | إغلاق القائمة الجانبية |
+| الاختصار | الوظيفة | | الاختصار | الوظيفة |
+|:---:|:---|:---:|:---:|:---|
+| `Enter` | إرسال الرسالة | | `Ctrl + K` | لوحة الأوامر والبحث |
+| `Shift + Enter` | سطر جديد | | `Ctrl + G` | فتح الألعاب |
+| `Ctrl + Shift + N` | محادثة جديدة | | `Ctrl + /` | عرض الاختصارات |
+| `/` | التركيز على الكتابة | | `Esc` | إغلاق / رجوع |
 
 </div>
 
 <br>
 
-## <img src="https://img.shields.io/badge/07-18181b?style=flat-square"> &nbsp; 🎵 المكتبة الموسيقية
+## <img src="https://img.shields.io/badge/11-0b0f0e?style=flat-square"> &nbsp; المكتبة الموسيقية
 
 <br>
 
 <details>
-<summary><b>عرض قائمة الأغاني الـ 18 كاملة</b></summary>
+<summary><b>عيّنة من الكتالوج (٨٨ أغنية كاملة داخل التطبيق)</b></summary>
 
 <br>
 
-<div align="center">
+| الأغنية | الفنان | | الأغنية | الفنان |
+|:---|:---|:---:|:---|:---|
+| Perfect | Ed Sheeran | | انساك | أم كلثوم |
+| The Winner Takes It All | ABBA | | أول مرة | عبد الحليم حافظ |
+| Never Say Never | Justin Bieber | | كيفك إنت | فيروز |
+| يا الميدان | كايروكي وعايدة | | عيناك | صباح فخري |
+| جيت على بالي | عامر منيب | | حلف القمر | جورج وسوف |
+| فاكرة | مسار إجباري | | إن كنت غالي | عايدة الأيوبي |
 
-| # | الأغنية | الفنان | النوع |
-|:---:|:---|:---|:---:|
-| 1 | Perfect | Ed Sheeran | 🇬🇧 Pop |
-| 2 | Never Say Never | Justin Bieber ft. Jaden | 🇬🇧 Motivational |
-| 3 | The Winner Takes It All | ABBA | 🇬🇧 Classic |
-| 4 | انساك | أم كلثوم | 🇪🇬 طرب |
-| 5 | أول مرة | عبد الحليم حافظ | 🇪🇬 طرب |
-| 6 | كيفك إنت | فيروز | 🇱🇧 كلاسيك |
-| 7 | عيناك | صباح فخري | 🇸🇾 طرب |
-| 8 | حلف القمر | جورج وسوف | 🇸🇾 كلاسيك |
-| 9 | قمر الزمان | وديع مراد | 🇱🇧 كلاسيك |
-| 10 | جيت على بالي | عامر منيب | 🇪🇬 بوب |
-| 11 | إن كنت غالي | عايدة الأيوبي | 🇪🇬 عربي |
-| 12 | يا الميدان | كايروكي | 🇪🇬 روك |
-| 13 | فاكرة | مسار إجباري | 🇪🇬 بديل |
-| 14 | تايه في الأماكن | نبيل | 🇪🇬 بوب |
-| 15 | حسيني | TUL8TE | 🇪🇬 بوب |
-| 16 | كده كفاية | — | 🇪🇬 عربي |
-| 17 | اسمعيني بكلمة | — | 🇪🇬 عربي |
-| 18 | تشرين | زين عبيد | 🇸🇾 عربي |
-
-</div>
+<sub>الكتالوج الكامل معرّف في أول `app.js` (مصفوفة `MUSIC`)، وكل الملفات على Cloudflare R2.</sub>
 
 </details>
 
 <br>
 
-## <img src="https://img.shields.io/badge/08-18181b?style=flat-square"> &nbsp; بنية المشروع
+## <img src="https://img.shields.io/badge/12-0b0f0e?style=flat-square"> &nbsp; المساهمة والرخصة
 
 <br>
 
-```
-lord-ai/
-│
-├── 📄 index.html              ← الواجهة الرئيسية
-├── 🎨 style.css               ← نظام التصميم الكامل
-├── ⚡ app.js                  ← المحرك الأساسي
-├── 🔥 firebase-config.js      ← إعدادات Firebase
-│
-├── 📁 assets/
-│   ├── 🖼️ banner.png          ← بانر المشروع
-│   ├── 📁 screenshots/        ← لقطات الشاشة
-│   └── 🎵 music/              ← 18 ملف MP3
-│
-├── 📁 .github/
-│   ├── 📁 ISSUE_TEMPLATE/     ← قوالب Issues
-│   └── 📋 PULL_REQUEST_TEMPLATE.md
-│
-├── 📖 README.md               ← أنت هنا ✨
-├── 📋 CONTRIBUTING.md         ← دليل المساهمة
-├── 🔄 CHANGELOG.md            ← سجل التغييرات
-├── 🛡️ SECURITY.md             ← سياسة الأمان
-├── 🤝 CODE_OF_CONDUCT.md      ← قواعد السلوك
-├── 📜 LICENSE                 ← رخصة MIT
-└── 🔒 .gitignore
-```
-
-<br>
-
-## <img src="https://img.shields.io/badge/09-18181b?style=flat-square"> &nbsp; المساهمة
-
-<br>
-
-نرحب بجميع المساهمات! اقرأ [دليل المساهمة](CONTRIBUTING.md) للبدء.
+المساهمات مرحّب بيها — اقرأ [دليل المساهمة](CONTRIBUTING.md) و [قواعد السلوك](CODE_OF_CONDUCT.md).
 
 ```bash
-# 1. Fork المشروع
-# 2. أنشئ فرع: git checkout -b feature/awesome
-# 3. Commit: git commit -m 'feat: add awesome feature'
-# 4. Push: git push origin feature/awesome
-# 5. افتح Pull Request
+# 1. Fork  →  2. فرع جديد: git checkout -b feature/awesome
+# 3. Commit  →  4. Push  →  5. افتح Pull Request
 ```
 
-<br>
-
-## <img src="https://img.shields.io/badge/10-18181b?style=flat-square"> &nbsp; الرخصة
-
-<br>
-
-هذا المشروع مرخص بموجب **[رخصة MIT](LICENSE)** — يمكنك استخدامه، تعديله، وتوزيعه بحرية.
+هذا المشروع مرخّص تحت **[رخصة MIT](LICENSE)** — استخدمه وعدّله ووزّعه بحرية.
 
 <br>
 
@@ -429,22 +406,22 @@ lord-ai/
 
 <br>
 
-### 👨‍💻 المطور
+### المطوّر
 
 <a href="https://github.com/Lord-shaban">
-<img src="https://avatars.githubusercontent.com/u/189514970?v=4" width="100" height="100" style="border-radius: 50%;" alt="Ahmed Sha'ban">
+<img src="https://avatars.githubusercontent.com/u/189514970?v=4" width="96" height="96" style="border-radius:50%" alt="Ahmed Sha'ban">
 </a>
 
 <br><br>
 
 **[Ahmed Sha'ban](https://github.com/Lord-shaban)**
 
-<sub>Software Engineer · Nile University Student · Flutter & Firebase Developer</sub>
+<sub>Software Engineer · Nile University · Flutter &amp; Firebase Developer</sub>
 
 <br><br>
 
 <a href="https://github.com/Lord-shaban">
-<img src="https://img.shields.io/badge/GitHub-Lord--shaban-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+<img src="https://img.shields.io/badge/GitHub-Lord--shaban-0b0f0e?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
 </a>
 
 <br><br>
@@ -453,19 +430,11 @@ lord-ai/
 
 <br>
 
-<img src="https://img.shields.io/badge/LORD_AI-صُنع_بإتقان_⚡-6366f1?style=for-the-badge&labelColor=09090b" alt="LORD AI" height="36">
-
-<br><br>
-
-<sub>
-
-Powered by **Llama 3.3 70B** · Accelerated by **Groq LPU** · Hosted on **Cloudflare Pages** · © 2026
-
-</sub>
+<sub>مبني بـ **Vanilla JS** · مدعوم بـ **Gemini 3.1 Flash Lite** · مستضاف على **Cloudflare Pages** · © 2026</sub>
 
 <br>
 
-⭐ **إذا أعجبك المشروع، لا تنسَ تعطيه نجمة!** ⭐
+**لو المشروع عجبك، متنساش تديله نجمة ⭐**
 
 <br><br>
 

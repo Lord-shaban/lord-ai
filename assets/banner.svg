@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="1200" height="360" font-family="'JetBrains Mono','SFMono-Regular','SF Mono',ui-monospace,Menlo,Consolas,monospace" role="img" aria-label="LORD AI terminal banner">
+  <defs>
+    <linearGradient id="sage" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7ff0d2"/>
+      <stop offset="0.5" stop-color="#5cb8a0"/>
+      <stop offset="1" stop-color="#2f7e6c"/>
+    </linearGradient>
+    <linearGradient id="win" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12181a"/>
+      <stop offset="1" stop-color="#0a0e0d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.3" cy="0.55" r="0.6">
+      <stop offset="0" stop-color="#5cb8a0" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#5cb8a0" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M26 0H0V26" fill="none" stroke="#ffffff" stroke-opacity="0.022"/>
+    </pattern>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="22" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- window -->
+  <rect x="6" y="6" width="1188" height="348" rx="18" fill="url(#win)" stroke="#ffffff" stroke-opacity="0.09" filter="url(#soft)"/>
+  <rect x="6" y="6" width="1188" height="348" rx="18" fill="url(#grid)"/>
+  <ellipse cx="360" cy="230" rx="520" ry="220" fill="url(#glow)"/>
+
+  <!-- title bar -->
+  <circle cx="38" cy="40" r="7" fill="#ff5f57"/>
+  <circle cx="64" cy="40" r="7" fill="#febc2e"/>
+  <circle cx="90" cy="40" r="7" fill="#28c840"/>
+  <text x="600" y="45" text-anchor="middle" font-size="14.5" fill="#5c6b64" letter-spacing="0.5">lord-ai — bash — 128 × 34</text>
+  <line x1="6" y1="70" x2="1194" y2="70" stroke="#ffffff" stroke-opacity="0.06"/>
+
+  <!-- prompt -->
+  <text x="46" y="118" font-size="18">
+    <tspan fill="#5cb8a0" font-weight="700">➜</tspan><tspan fill="#7b847e">  ~/lord-ai </tspan><tspan fill="#eef0ec"> ./lord --start</tspan>
+  </text>
+
+  <!-- wordmark -->
+  <text x="44" y="220" font-size="96" font-weight="800" letter-spacing="4" fill="url(#sage)">LORD AI</text>
+
+  <!-- tagline -->
+  <text x="48" y="266" font-size="18.5" fill="#c2cbc5">Arabic-first AI companion<tspan fill="#4d5a54">  ·  </tspan>chat<tspan fill="#4d5a54">  ·  </tspan>music<tspan fill="#4d5a54">  ·  </tspan>movies<tspan fill="#4d5a54">  ·  </tspan>15 games</text>
+
+  <!-- status -->
+  <text x="48" y="308" font-size="16.5" fill="#8b948e">
+    <tspan fill="#28c840" font-weight="700">✓</tspan> RTL / LTR<tspan>     </tspan><tspan fill="#28c840" font-weight="700">✓</tspan> light + dark<tspan>     </tspan><tspan fill="#28c840" font-weight="700">✓</tspan> zero-build<tspan>     </tspan><tspan fill="#28c840" font-weight="700">✓</tspan> works offline
+  </text>
+
+  <!-- next prompt + cursor -->
+  <text x="46" y="340" font-size="18"><tspan fill="#5cb8a0" font-weight="700">➜</tspan><tspan fill="#7b847e">  ~ </tspan></text>
+  <rect x="92" y="326" width="11" height="20" rx="1.5" fill="#5cb8a0">
+    <animate attributeName="opacity" values="1;1;0;0;1" dur="1.15s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- corner meta -->
+  <text x="1150" y="118" text-anchor="end" font-size="14" fill="#4d5a54">v3.0</text>
+</svg>
