@@ -2352,31 +2352,53 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     transition:background .15s;
 }
 .gf-poster:hover{background:var(--sidebar-hover)}
-.gf-emoji{font-size:1.7rem}
+.gf-ico{
+    width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border-radius:14px;
+    flex-shrink:0;
+}
 .gf-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
 .gf-name{font-weight:700;font-size:.88rem;color:var(--c1)}
 .gf-sub{font-size:.72rem;color:var(--c3)}
 .gf-play{
+    display:flex;align-items:center;gap:5px;
     background:var(--accent);
     color:#fff;
     border-radius:99px;
     font:600 .74rem var(--sans);
-    padding:6px 15px;
+    padding:7px 15px;
     white-space:nowrap;
 }
+.gf-title{display:flex;align-items:center;gap:7px}
+.gf-title svg{color:var(--accent)}
 
 /* hub inside a frame */
 .gf-hubframe{padding:12px 14px 14px}
 .gf-sec{
+    display:flex;
+    align-items:center;
+    gap:6px;
     font:700 .8rem var(--sans);
     color:var(--c2);
     padding:8px 2px 8px;
 }
+.gf-sec svg{color:var(--accent)}
 .gm-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(112px,1fr));
     gap:8px;
     width:100%;
+}
+.gm-ico{
+    width:40px;height:40px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border-radius:12px;
+    margin-bottom:2px;
 }
 .gm-card{
     display:flex;
@@ -2396,21 +2418,36 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     box-shadow:var(--sh2);
     transform:translateY(-2px);
 }
-.gm-emoji{font-size:1.9rem;line-height:1.2}
 .gm-name{font-weight:700;font-size:.88rem;color:var(--c1)}
 .gm-desc{font-size:.71rem;color:var(--c3);line-height:1.5}
 .gm-best{
+    display:flex;
+    align-items:center;
+    gap:4px;
     margin-top:4px;
     font:600 .68rem var(--mono);
     color:var(--accent);
     background:var(--accent-soft);
     border-radius:99px;
-    padding:2px 9px;
+    padding:2.5px 9px;
     direction:ltr;
 }
 
+/* ── RTL fix: boards & control pads are always laid out LTR
+      so ◀ is really left and ▶ is really right ── */
+.xo-board,.c4-grid,.mm-grid,.si-grid,.mo-grid,.mn-grid,.g4-grid,
+.ma-grid,.sn-pad,.tz-controls,.tz-wrap,.rps-arena,.rps-row,.net-row{direction:ltr}
+
+/* games are click-driven — stray text selection feels broken */
+.gf-body{user-select:none;-webkit-user-select:none}
+.gf-body input{user-select:text;-webkit-user-select:text}
+
 /* shared game widgets */
 .gm-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    justify-content:center;
     background:var(--accent);
     color:#fff;
     border:none;
@@ -2428,7 +2465,10 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     font-weight:600;
     color:var(--c2);
     text-align:center;
+    transition:color .15s;
 }
+.gm-status.ok{color:var(--green)}
+.gm-status.bad{color:var(--red)}
 .gm-score,.gm-score-row{
     display:flex;
     gap:14px;
@@ -2437,6 +2477,10 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
 }
 .gm-score b,.gm-score-row b{color:var(--c1);font-family:var(--mono)}
 .gm-score-row{width:100%;justify-content:space-between;padding:0 4px}
+.sr{display:flex;align-items:center;gap:5px}
+.sr svg{color:var(--c4);flex-shrink:0}
+.sr-l{font-size:.72rem}
+.sr b{font-size:.82rem}
 .gm-seg{
     display:flex;
     background:var(--surface);
@@ -2482,17 +2526,19 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     touch-action:none;
     max-width:100%;
 }
-.sn-pad{display:none;flex-direction:column;align-items:center;gap:6px}
-.sn-pad div{display:flex;gap:6px}
+.sn-pad{display:none;flex-direction:column;align-items:center;gap:7px}
+.sn-pad div{display:flex;gap:7px}
 .sn-pad button{
-    width:52px;height:44px;
+    width:62px;height:50px;
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:12px;
-    font-size:1rem;color:var(--c2);
+    border-radius:14px;
+    font-size:1.05rem;color:var(--c2);
     cursor:pointer;
+    touch-action:none;
+    -webkit-tap-highlight-color:transparent;
 }
-.sn-pad button:active{background:var(--accent);color:#fff}
+.sn-pad button:active{background:var(--accent);border-color:var(--accent);color:#fff}
 @media(hover:none) and (pointer:coarse){.sn-pad{display:flex}}
 
 /* Memory */
@@ -2532,6 +2578,7 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     border:1px solid var(--line);
     transform:rotateY(180deg);
 }
+.mm-back svg{display:block}
 .mm-card.open .mm-front,.mm-card.ok .mm-front{transform:rotateY(180deg)}
 .mm-card.open .mm-back,.mm-card.ok .mm-back{transform:rotateY(0)}
 .mm-card.ok .mm-back{border-color:var(--accent);background:var(--accent-soft)}
@@ -2577,27 +2624,63 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     display:flex;
     align-items:center;
     gap:26px;
-    font-size:3rem;
-    padding:14px 0 4px;
-    direction:ltr;
+    padding:10px 0 2px;
 }
 .rps-vs{font:700 .8rem var(--mono);color:var(--c4)}
+.rps-side{
+    width:64px;height:64px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    color:var(--c1);
+}
+.rps-unknown{
+    font:700 1.5rem var(--sans);
+    color:var(--c4);
+}
+.rps-unknown.rps-picked{color:var(--green)}
+.rps-unknown.rps-think{color:var(--c3);animation:rpsThink 1s infinite}
+@keyframes rpsThink{50%{opacity:.35}}
 .rps-row{display:flex;gap:10px}
 .rps-row button{
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:3px;
+    gap:5px;
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:16px;
     padding:12px 20px;
     cursor:pointer;
     transition:all .15s var(--ease);
+    color:var(--c1);
+    -webkit-tap-highlight-color:transparent;
 }
 .rps-row button:hover{border-color:rgba(var(--accent-rgb),.45);transform:translateY(-2px)}
-.rps-row button span{font-size:1.7rem}
+.rps-row button:active{transform:scale(.96)}
+.rps-bico{display:flex;color:var(--accent)}
 .rps-row button small{font:600 .7rem var(--sans);color:var(--c3)}
+
+/* small colored disc used in Connect-4 status text */
+.c4-dot{
+    display:inline-block;
+    width:13px;height:13px;
+    border-radius:50%;
+    vertical-align:-2px;
+}
+.c4-dot.red{background:#d9534f}
+.c4-dot.yel{background:#e8b93d}
+
+/* waiting-room pulse */
+.net-pulse{
+    width:44px;height:5px;
+    border-radius:99px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    background-size:200% 100%;
+    animation:netPulse 1.4s infinite linear;
+}
+@keyframes netPulse{from{background-position:150% 0}to{background-position:-50% 0}}
 
 /* Reaction */
 .rc-pad{
@@ -2648,18 +2731,19 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     border-radius:10px;
     border:1px solid var(--line);
 }
-.tz-controls{display:flex;gap:6px}
+.tz-controls{display:flex;gap:7px}
 .tz-controls button{
-    width:48px;height:42px;
+    width:54px;height:48px;
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:12px;
-    font-size:1rem;
+    border-radius:14px;
+    font-size:1.05rem;
     color:var(--c2);
     cursor:pointer;
+    touch-action:none;
     -webkit-tap-highlight-color:transparent;
 }
-.tz-controls button:active{background:var(--accent);color:#fff}
+.tz-controls button:active{background:var(--accent);border-color:var(--accent);color:#fff}
 
 /* Number memory */
 .dg-display{
@@ -2756,12 +2840,15 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
     gap:8px;
 }
 .mo-hole{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:16px;
-    font-size:2.1rem;
     cursor:pointer;
     transition:transform .08s;
+    touch-action:manipulation;
     -webkit-tap-highlight-color:transparent;
 }
 .mo-hole:active{transform:scale(.93)}
@@ -2769,10 +2856,13 @@ html.fs-lg .body{font-size:1.03rem;line-height:1.9}
 /* Minesweeper */
 .mn-tools{display:flex;justify-content:center}
 .mn-flag{
+    display:flex;
+    align-items:center;
+    gap:6px;
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:99px;
-    padding:6px 16px;
+    padding:7px 16px;
     font:600 .78rem var(--sans);
     color:var(--c2);
     cursor:pointer;

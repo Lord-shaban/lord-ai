@@ -6,6 +6,7 @@
    - [GAMEJOIN:G-X] → joins an online room by code
    Online multiplayer (XO / Connect-4 / RPS) rides on Firestore
    ('lord_rooms' collection, one tiny doc per room, onSnapshot).
+   Visuals: custom SVG icons only (no emojis), LTR boards/controls.
    Exposes window.LordGames — app.js calls it from md()/send().
    ═══════════════════════════════════════════════════════════ */
 (function () {
@@ -46,6 +47,28 @@
         document.body.appendChild(t);
         setTimeout(function () { t.remove(); }, 2000);
     }
+    /* status line with a state color: '' (info) | 'ok' | 'bad' */
+    function stat(el, text, kind) {
+        el.textContent = text;
+        el.className = 'gm-status' + (kind ? ' ' + kind : '');
+    }
+    /* press-and-hold repeat for control buttons (mobile-friendly) */
+    function bindHold(btn, fn, firstDelay, repeatEvery) {
+        var t = null, iv = null;
+        function stop() {
+            if (t) { clearTimeout(t); t = null; }
+            if (iv) { clearInterval(iv); iv = null; }
+        }
+        btn.addEventListener('pointerdown', function (e) {
+            e.preventDefault();
+            fn();
+            stop();
+            t = setTimeout(function () { iv = setInterval(fn, repeatEvery || 85); }, firstDelay || 280);
+        });
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) {
+            btn.addEventListener(ev, stop);
+        });
+    }
 
     /* tiny sfx — WebAudio beeps, no assets needed */
     var audioCtx = null;
@@ -63,6 +86,44 @@
             o.start(t0);
             o.stop(t0 + (dur || 0.15));
         } catch (e) { }
+    }
+
+    /* ═══════ SVG ICON SYSTEM (no emojis) ═══════ */
+    var ICONS = {
+        hub: '<line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15.2" cy="13.2" r=".6" fill="currentColor"/><circle cx="17.8" cy="10.8" r=".6" fill="currentColor"/><path d="M17.3 6H6.7a4 4 0 0 0-4 3.6C2.6 10.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.4-1.4a2 2 0 0 1 1.4-.6h4.4a2 2 0 0 1 1.4.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.5-.6-5.6-.7-6.4a4 4 0 0 0-4-3.6z"/>',
+        xo: '<path d="M4 4l6 6M10 4l-6 6"/><circle cx="17" cy="17" r="3.6"/>',
+        c4: '<circle cx="6" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="18" r="2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2"/>',
+        rps: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>',
+        memory: '<rect x="3" y="3" width="12" height="15" rx="2"/><path d="M9 21h8a2 2 0 0 0 2-2V8"/><path d="M9 8.6a2 2 0 1 1 2.7 1.9c-.4.15-.7.5-.7.9v.1"/><line x1="11" y1="14" x2="11" y2="14.01"/>',
+        simon: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>',
+        digits: '<rect x="3" y="4" width="18" height="16" rx="3"/><text x="12" y="15.5" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor" stroke="none" font-family="monospace">123</text>',
+        reaction: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+        math: '<line x1="7" y1="4" x2="7" y2="10"/><line x1="4" y1="7" x2="10" y2="7"/><line x1="14.5" y1="4.5" x2="19.5" y2="9.5"/><line x1="19.5" y1="4.5" x2="14.5" y2="9.5"/><line x1="4" y1="15.5" x2="10" y2="15.5"/><line x1="4" y1="18.5" x2="10" y2="18.5"/><line x1="14" y1="17" x2="20" y2="17"/><circle cx="17" cy="14" r=".5" fill="currentColor"/><circle cx="17" cy="20" r=".5" fill="currentColor"/>',
+        snake: '<path d="M20 7c0 2.8-3.6 2.8-8 2.8S4 9.8 4 12.6s3.6 2.8 8 2.8 8 0 8 2.8"/><circle cx="20" cy="5.6" r="1.4" fill="currentColor" stroke="none"/>',
+        g2048: '<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor"/>',
+        tetris: '<rect x="4" y="4" width="5.2" height="5.2"/><rect x="9.4" y="4" width="5.2" height="5.2"/><rect x="14.8" y="4" width="5.2" height="5.2"/><rect x="9.4" y="9.4" width="5.2" height="5.2"/><rect x="4" y="14.8" width="5.2" height="5.2" fill="currentColor"/><rect x="14.8" y="14.8" width="5.2" height="5.2" fill="currentColor"/>',
+        breakout: '<line x1="4" y1="4" x2="20" y2="4"/><line x1="4" y1="8" x2="20" y2="8"/><circle cx="12" cy="13.5" r="1.8" fill="currentColor" stroke="none"/><rect x="8" y="18" width="8" height="2.6" rx="1.3" fill="currentColor" stroke="none"/>',
+        mole: '<path d="M15 12l-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9"/><path d="M17.64 15L22 10.64"/><path d="M20.91 11.7l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6A5.56 5.56 0 0 0 12.07 3H9l.92.82A6.18 6.18 0 0 1 12 8.4v.56l2 2h2.47l2.26 1.91"/>',
+        flappy: '<path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="M20 7l2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/>',
+        mines: '<circle cx="11" cy="13" r="7"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/>',
+        globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13.5 13.5 0 0 1 0 18 13.5 13.5 0 0 1 0-18z"/>',
+        play: '<polygon points="7 4 20 12 7 20 7 4" fill="currentColor" stroke="none"/>',
+        trophy: '<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v6a5 5 0 0 1-10 0z"/><path d="M17 5h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/><path d="M7 5H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4"/>',
+        clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        heart: '<path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/>',
+        flag: '<path d="M4 21V4"/><path d="M4 4h12l-2 4 2 4H4"/>',
+        copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+        star: '<polygon points="12 3 14.5 9 21 9.5 16 13.8 17.7 20 12 16.5 6.3 20 8 13.8 3 9.5 9.5 9"/>',
+        move: '<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>'
+    };
+    function ic(name, size) {
+        return '<svg class="gi" width="' + (size || 18) + '" height="' + (size || 18)
+            + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            + (ICONS[name] || ICONS.hub) + '</svg>';
+    }
+    /* one item of a score row: icon + label + <b id> value */
+    function srItem(iconName, label, id, initVal) {
+        return '<span class="sr">' + ic(iconName, 13) + '<span class="sr-l">' + label + '</span><b id="' + id + '">' + initVal + '</b></span>';
     }
 
     /* ═══════ SCORES (localStorage) ═══════ */
@@ -91,30 +152,41 @@
 
     /* ═══════ CATALOG ═══════ */
     var GAMES = [
-        { id: 'xo', name: 'إكس أو', en: 'Tic-Tac-Toe', emoji: '⭕', desc: 'تحدَّ ذكاءً لا يُهزم', descEn: 'Face an unbeatable AI', net: true, aliases: ['اكس او', 'xo', 'x o', 'tic tac', 'تيك تاك'] },
-        { id: 'c4', name: 'أربعة في صف', en: 'Connect 4', emoji: '🔴', desc: 'اصطف أربع قطع قبل الخصم', descEn: 'Line up four before your rival', net: true, aliases: ['كونكت', 'connect', 'اربعة في صف', 'اربعه'] },
-        { id: 'rps', name: 'حجر ورقة مقص', en: 'Rock Paper Scissors', emoji: '✂️', desc: 'الكلاسيكية — ضد الكمبيوتر', descEn: 'The classic vs computer', net: true, aliases: ['حجر', 'ورقة', 'مقص', 'rock', 'rps'] },
-        { id: 'memory', name: 'الذاكرة', en: 'Memory', emoji: '🧠', desc: 'طابق الأزواج بأقل نقلات', descEn: 'Match pairs in fewest moves', aliases: ['ذاكرة', 'memory', 'كوتشينة', 'مطابقة'] },
-        { id: 'simon', name: 'سلسلة الألوان', en: 'Simon', emoji: '🎨', desc: 'احفظ التسلسل وكرّره — بأصوات', descEn: 'Memorize and repeat — with sound', aliases: ['سايمون', 'simon', 'الوان', 'ألوان', 'تسلسل'] },
-        { id: 'digits', name: 'ذاكرة الأرقام', en: 'Number Memory', emoji: '💭', desc: 'كم رقماً تحفظ في نظرة؟', descEn: 'How many digits can you hold?', aliases: ['ارقام', 'أرقام', 'digit', 'رقم'] },
-        { id: 'reaction', name: 'رد الفعل', en: 'Reaction Time', emoji: '⚡', desc: 'قيس سرعتك بالملي ثانية', descEn: 'Measure your speed in ms', aliases: ['رد فعل', 'سرعة', 'reaction', 'رياكشن'] },
-        { id: 'math', name: 'سباق الحساب', en: 'Math Sprint', emoji: '➗', desc: 'أكبر عدد إجابات في 30 ثانية', descEn: 'Solve as many as you can in 30s', aliases: ['حساب', 'رياضيات', 'math', 'جمع', 'ضرب'] },
-        { id: 'snake', name: 'الثعبان', en: 'Snake', emoji: '🐍', desc: 'كُل التفاح واحذر من نفسك', descEn: 'Eat apples, don\'t bite yourself', aliases: ['ثعبان', 'snake', 'سنيك'] },
-        { id: '2048', name: '2048', en: '2048', emoji: '🔢', desc: 'ادمج الأرقام ووصّل لـ 2048', descEn: 'Merge numbers to reach 2048', aliases: ['٢٠٤٨', '2048'] },
-        { id: 'tetris', name: 'تتريس', en: 'Tetris', emoji: '🧩', desc: 'الكلاسيكية الخالدة — رتّب القطع', descEn: 'The timeless classic', aliases: ['tetris', 'مكعبات', 'تترس'] },
-        { id: 'breakout', name: 'كسر الطوب', en: 'Breakout', emoji: '🧱', desc: 'حطّم كل الطوب بالكرة', descEn: 'Smash all the bricks', aliases: ['طوب', 'بريك', 'breakout', 'اركانويد'] },
-        { id: 'mole', name: 'اضرب الخلد', en: 'Whack-a-Mole', emoji: '🐹', desc: 'اضرب أكبر عدد في 30 ثانية', descEn: 'Whack as many as you can in 30s', aliases: ['خلد', 'whack', 'mole', 'اضرب'] },
-        { id: 'flappy', name: 'الطير النطاط', en: 'Flappy Bird', emoji: '🐤', desc: 'اضغط للطيران وتجنب الأعمدة', descEn: 'Tap to fly, dodge the pipes', aliases: ['فلابي', 'flappy', 'طير', 'عصفور', 'العصفورة'] },
-        { id: 'mines', name: 'كاسحة الألغام', en: 'Minesweeper', emoji: '💣', desc: 'اكشف الخانات وتجنب الألغام', descEn: 'Clear the board, avoid the mines', aliases: ['الغام', 'ألغام', 'لغم', 'minesweeper', 'mines'] }
+        { id: 'xo', name: 'إكس أو', en: 'Tic-Tac-Toe', desc: 'تحدَّ ذكاءً لا يُهزم', descEn: 'Face an unbeatable AI', net: true, aliases: ['اكس او', 'xo', 'x o', 'tic tac', 'تيك تاك'] },
+        { id: 'c4', name: 'أربعة في صف', en: 'Connect 4', desc: 'اصطف أربع قطع قبل الخصم', descEn: 'Line up four before your rival', net: true, aliases: ['كونكت', 'connect', 'اربعة في صف', 'اربعه'] },
+        { id: 'rps', name: 'حجر ورقة مقص', en: 'Rock Paper Scissors', desc: 'الكلاسيكية — ضد الكمبيوتر', descEn: 'The classic vs computer', net: true, aliases: ['حجر', 'ورقة', 'مقص', 'rock', 'rps'] },
+        { id: 'memory', name: 'الذاكرة', en: 'Memory', desc: 'طابق الأزواج بأقل نقلات', descEn: 'Match pairs in fewest moves', aliases: ['ذاكرة', 'memory', 'كوتشينة', 'مطابقة'] },
+        { id: 'simon', name: 'سلسلة الألوان', en: 'Simon', desc: 'احفظ التسلسل وكرّره — بأصوات', descEn: 'Memorize and repeat — with sound', aliases: ['سايمون', 'simon', 'الوان', 'ألوان', 'تسلسل'] },
+        { id: 'digits', name: 'ذاكرة الأرقام', en: 'Number Memory', desc: 'كم رقماً تحفظ في نظرة؟', descEn: 'How many digits can you hold?', aliases: ['ارقام', 'أرقام', 'digit', 'رقم'] },
+        { id: 'reaction', name: 'رد الفعل', en: 'Reaction Time', desc: 'قيس سرعتك بالملي ثانية', descEn: 'Measure your speed in ms', aliases: ['رد فعل', 'سرعة', 'reaction', 'رياكشن'] },
+        { id: 'math', name: 'سباق الحساب', en: 'Math Sprint', desc: 'أكبر عدد إجابات في 30 ثانية', descEn: 'Solve as many as you can in 30s', aliases: ['حساب', 'رياضيات', 'math', 'جمع', 'ضرب'] },
+        { id: 'snake', name: 'الثعبان', en: 'Snake', desc: 'كُل التفاح واحذر من نفسك', descEn: 'Eat apples, don\'t bite yourself', aliases: ['ثعبان', 'snake', 'سنيك'] },
+        { id: '2048', name: '2048', en: '2048', ico: 'g2048', desc: 'ادمج الأرقام ووصّل لـ 2048', descEn: 'Merge numbers to reach 2048', aliases: ['٢٠٤٨', '2048'] },
+        { id: 'tetris', name: 'تتريس', en: 'Tetris', desc: 'الكلاسيكية الخالدة — رتّب القطع', descEn: 'The timeless classic', aliases: ['tetris', 'مكعبات', 'تترس'] },
+        { id: 'breakout', name: 'كسر الطوب', en: 'Breakout', desc: 'حطّم كل الطوب بالكرة', descEn: 'Smash all the bricks', aliases: ['طوب', 'بريك', 'breakout', 'اركانويد'] },
+        { id: 'mole', name: 'اضرب الخلد', en: 'Whack-a-Mole', desc: 'اضرب أكبر عدد في 30 ثانية', descEn: 'Whack as many as you can in 30s', aliases: ['خلد', 'whack', 'mole', 'اضرب'] },
+        { id: 'flappy', name: 'الطير النطاط', en: 'Flappy Bird', desc: 'اضغط للطيران وتجنب الأعمدة', descEn: 'Tap to fly, dodge the pipes', aliases: ['فلابي', 'flappy', 'طير', 'عصفور', 'العصفورة'] },
+        { id: 'mines', name: 'كاسحة الألغام', en: 'Minesweeper', desc: 'اكشف الخانات وتجنب الألغام', descEn: 'Clear the board, avoid the mines', aliases: ['الغام', 'ألغام', 'لغم', 'minesweeper', 'mines'] }
     ];
+    function gameIcon(g, size) { return ic(g.ico || g.id, size); }
 
     function matchGame(name) {
         var q = (name || '').trim().toLowerCase();
         if (!q) return null;
-        for (var i = 0; i < GAMES.length; i++) {
-            var g = GAMES[i];
-            var names = [g.name.toLowerCase(), g.en.toLowerCase()].concat(g.aliases || []);
-            for (var j = 0; j < names.length; j++) {
+        var i, j, g, names;
+        // pass 1: exact match wins ("ذاكرة الأرقام" must not fall into "الذاكرة")
+        for (i = 0; i < GAMES.length; i++) {
+            g = GAMES[i];
+            names = [g.name.toLowerCase(), g.en.toLowerCase()].concat(g.aliases || []);
+            for (j = 0; j < names.length; j++) {
+                if (names[j].toLowerCase() === q) return g;
+            }
+        }
+        // pass 2: substring match (both directions)
+        for (i = 0; i < GAMES.length; i++) {
+            g = GAMES[i];
+            names = [g.name.toLowerCase(), g.en.toLowerCase()].concat(g.aliases || []);
+            for (j = 0; j < names.length; j++) {
                 var n = names[j].toLowerCase();
                 if (n.indexOf(q) !== -1 || q.indexOf(n) !== -1) return g;
             }
@@ -180,7 +252,6 @@
             c = order[oi];
             var r = c4DropRow(b, c);
             if (r < 0) continue;
-            // avoid moves that let the opponent win right on top of ours
             b[r * 7 + c] = me;
             var bad = false;
             var r2 = c4DropRow(b, c);
@@ -197,15 +268,25 @@
         return -1;
     }
 
+    /* RPS shared: custom SVG hands (stone / paper / scissors) */
+    var RPS_SVGS = {
+        rock: '<path d="M9 4h6.5L20 9l-1.6 8.6A2 2 0 0 1 16.4 19H7.6a2 2 0 0 1-2-1.4L4 9z"/><path d="M9 4L8 11l3.5 7.5"/>',
+        paper: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="16.5" x2="15" y2="16.5"/>',
+        scissors: ICONS.rps
+    };
     var RPS_OPTS = [
-        { id: 'rock', e: '✊', ar: 'حجر', en: 'Rock' },
-        { id: 'paper', e: '✋', ar: 'ورقة', en: 'Paper' },
-        { id: 'scissors', e: '✌️', ar: 'مقص', en: 'Scissors' }
+        { id: 'rock', ar: 'حجر', en: 'Rock' },
+        { id: 'paper', ar: 'ورقة', en: 'Paper' },
+        { id: 'scissors', ar: 'مقص', en: 'Scissors' }
     ];
     var RPS_BEATS = { rock: 'scissors', paper: 'rock', scissors: 'paper' };
-    function rpsEmoji(id) {
-        for (var i = 0; i < 3; i++) if (RPS_OPTS[i].id === id) return RPS_OPTS[i].e;
-        return '❔';
+    function rpsIcon(id, size) {
+        if (!id || !RPS_SVGS[id]) {
+            return '<span class="rps-unknown">؟</span>';
+        }
+        return '<svg width="' + (size || 34) + '" height="' + (size || 34)
+            + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'
+            + RPS_SVGS[id] + '</svg>';
     }
 
     /* ═══════ FRAME SYSTEM (inline in chat messages) ═══════ */
@@ -235,42 +316,42 @@
         var s = score(g.id);
         if (g.id === 'xo' || g.id === 'rps' || g.id === 'c4') {
             if (s.w === undefined && s.l === undefined) return '';
-            return '🏆 ' + (s.w || 0) + ' — ' + (s.l || 0) + ' 💀';
+            return (s.w || 0) + ' — ' + (s.l || 0);
         }
-        if (g.id === 'reaction') return s.best ? '⚡ ' + s.best + 'ms' : '';
-        if (g.id === 'mines') return s.best ? '⏱ ' + s.best + 's' : '';
-        return s.best ? '🏆 ' + s.best : '';
+        if (g.id === 'reaction') return s.best ? s.best + 'ms' : '';
+        if (g.id === 'mines') return s.best ? s.best + 's' : '';
+        return s.best ? '' + s.best : '';
     }
 
     function posterInner(fid, g) {
         return '<button class="gf-poster" onclick="LordGames.mount(\'' + fid + '\',\'' + g.id + '\',false)">'
-            + '<span class="gf-emoji">' + g.emoji + '</span>'
+            + '<span class="gf-ico">' + gameIcon(g, 22) + '</span>'
             + '<span class="gf-info"><span class="gf-name">' + esc(lang() === 'en' ? g.en : g.name) + '</span>'
             + '<span class="gf-sub">' + esc(lang() === 'en' ? g.descEn : g.desc) + '</span></span>'
-            + '<span class="gf-play">▶ ' + gt('العب', 'Play') + '</span></button>';
+            + '<span class="gf-play">' + ic('play', 11) + ' ' + gt('العب', 'Play') + '</span></button>';
     }
     function joinPosterInner(fid, code) {
         return '<button class="gf-poster" onclick="LordGames.mountJoin(\'' + fid + '\')">'
-            + '<span class="gf-emoji">🌐</span>'
+            + '<span class="gf-ico">' + ic('globe', 22) + '</span>'
             + '<span class="gf-info"><span class="gf-name">' + gt('انضمام لروم ', 'Join room ') + esc(code) + '</span>'
             + '<span class="gf-sub">' + gt('لعب أونلاين مع صاحبك', 'Online multiplayer') + '</span></span>'
-            + '<span class="gf-play">▶</span></button>';
+            + '<span class="gf-play">' + ic('play', 11) + '</span></button>';
     }
     function hubInner(fid) {
         function card(g, net) {
             var best = bestLine(g);
             return '<button class="gm-card" onclick="LordGames.mount(\'' + fid + '\',\'' + g.id + '\',' + (net ? 'true' : 'false') + ')">'
-                + '<span class="gm-emoji">' + g.emoji + '</span>'
-                + '<span class="gm-name">' + esc(lang() === 'en' ? g.en : g.name) + (net ? ' 🌐' : '') + '</span>'
+                + '<span class="gm-ico">' + (net ? ic('globe', 20) : gameIcon(g, 20)) + '</span>'
+                + '<span class="gm-name">' + esc(lang() === 'en' ? g.en : g.name) + '</span>'
                 + '<span class="gm-desc">' + esc(net ? gt('العب مع صاحبك بكود', 'Play a friend via code') : (lang() === 'en' ? g.descEn : g.desc)) + '</span>'
-                + (best && !net ? '<span class="gm-best">' + best + '</span>' : '')
+                + (best && !net ? '<span class="gm-best">' + ic('trophy', 10) + ' ' + best + '</span>' : '')
                 + '</button>';
         }
-        var h = '<div class="gf-sec">🕹 ' + gt('العب لوحدك', 'Play solo') + '</div><div class="gm-grid">';
+        var h = '<div class="gf-sec">' + ic('hub', 14) + ' ' + gt('العب لوحدك', 'Play solo') + '</div><div class="gm-grid">';
         for (var i = 0; i < GAMES.length; i++) h += card(GAMES[i], false);
         h += '</div>';
         if (netDb()) {
-            h += '<div class="gf-sec">🌐 ' + gt('مع صاحبك أونلاين — اعمل روم وابعتله الكود', 'Online with a friend — create a room, share the code') + '</div><div class="gm-grid">';
+            h += '<div class="gf-sec">' + ic('globe', 14) + ' ' + gt('مع صاحبك أونلاين — اعمل روم وابعتله الكود', 'Online with a friend — create a room, share the code') + '</div><div class="gm-grid">';
             for (var j = 0; j < GAMES.length; j++) if (GAMES[j].net) h += card(GAMES[j], true);
             h += '</div>';
         }
@@ -301,11 +382,11 @@
 
     function buildChrome(frame, titleHTML) {
         var isHub = frame.getAttribute('data-gid') === '__hub__';
-        frame.classList.remove('gf-hubframe'); // hub padding is for the grid view only
+        frame.classList.remove('gf-hubframe');
         frame.innerHTML =
             '<div class="gf-head"><span class="gf-title">' + titleHTML + '</span>'
             + '<span class="gf-acts">'
-            + (isHub ? '<button class="gf-hbtn" data-act="hub" title="' + gt('كل الألعاب', 'All games') + '">🎮</button>' : '')
+            + (isHub ? '<button class="gf-hbtn" data-act="hub" title="' + gt('كل الألعاب', 'All games') + '">' + ic('hub', 15) + '</button>' : '')
             + '<button class="gf-hbtn" data-act="close" title="' + gt('إغلاق', 'Close') + '">✕</button>'
             + '</span></div>'
             + '<div class="gf-body"></div>';
@@ -327,7 +408,7 @@
         if (!g) return;
         sweep();
         unmountFrame(frame);
-        buildChrome(frame, g.emoji + ' ' + esc(lang() === 'en' ? g.en : g.name) + (net ? ' 🌐' : ''));
+        buildChrome(frame, (net ? ic('globe', 15) : gameIcon(g, 15)) + ' <span>' + esc(lang() === 'en' ? g.en : g.name) + '</span>');
         var body = frame.querySelector('.gf-body');
         try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame(g.name + (net ? ' أونلاين' : '')); } catch (e) { }
         var inst = net ? startNetGame(body, g, null) : STARTERS[g.id](body);
@@ -340,7 +421,7 @@
         code = code || frame.getAttribute('data-code') || '';
         sweep();
         unmountFrame(frame);
-        buildChrome(frame, '🌐 ' + esc(code));
+        buildChrome(frame, ic('globe', 15) + ' <span>' + esc(code) + '</span>');
         var body = frame.querySelector('.gf-body');
         try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame('انضمام أونلاين'); } catch (e) { }
         var inst = startNetGame(body, null, { code: code });
@@ -386,7 +467,7 @@
             if (!snap.exists) throw new Error(gt('الكود ده مش موجود — اتأكد منه', 'Room not found — check the code'));
             var d = snap.data();
             var me = vid();
-            if (d.host === me || d.guest === me) return d;   // rejoin
+            if (d.host === me || d.guest === me) return d;
             if (d.guest) throw new Error(gt('الروم ده مليان بالفعل', 'This room is already full'));
             return ref.update({ guest: me, t: Date.now() }).then(function () { return d; });
         });
@@ -395,8 +476,9 @@
         return '<div class="net-wait">'
             + '<div class="gm-status">' + gt('ابعت الكود ده لصاحبك:', 'Send this code to your friend:') + '</div>'
             + '<div class="net-code" dir="ltr">' + esc(code) + '</div>'
-            + '<button class="gm-btn" onclick="LordGames.copyCode(\'' + code + '\')">📋 ' + gt('نسخ الكود', 'Copy code') + '</button>'
-            + '<div class="gm-status net-hint">' + gt('صاحبك يكتب الكود في شات LORD AI عنده — اللعبة هتبدأ أول ما يدخل ⏳', 'Your friend types this code in their LORD AI chat — the game starts once they join ⏳') + '</div>'
+            + '<button class="gm-btn" onclick="LordGames.copyCode(\'' + code + '\')">' + ic('copy', 13) + ' ' + gt('نسخ الكود', 'Copy code') + '</button>'
+            + '<div class="gm-status net-hint">' + gt('صاحبك يكتب الكود في شات LORD AI عنده — اللعبة هتبدأ أول ما يدخل', 'Your friend types this code in their LORD AI chat — the game starts once they join') + '</div>'
+            + '<div class="net-pulse"></div>'
             + '</div>';
     }
 
@@ -408,7 +490,7 @@
             if (unsub) { try { unsub(); } catch (e) { } unsub = null; }
         }
         if (!db) {
-            body.innerHTML = '<div class="gm-status">⚠️ ' + gt('الأونلاين غير متاح دلوقتي', 'Online play is unavailable right now') + '</div>';
+            body.innerHTML = '<div class="gm-status bad">' + gt('الأونلاين غير متاح دلوقتي', 'Online play is unavailable right now') + '</div>';
             return { destroy: cleanup };
         }
         function ref() { return db.collection('lord_rooms').doc(code); }
@@ -418,7 +500,7 @@
         }
         function fail(msg) {
             if (!alive) return;
-            body.innerHTML = '<div class="gm-status">⚠️ ' + esc(msg) + '</div>'
+            body.innerHTML = '<div class="gm-status bad">' + esc(msg) + '</div>'
                 + (gid ? '<button class="gm-btn" id="netBack">' + gt('رجوع', 'Back') + '</button>' : '');
             var b = body.querySelector('#netBack');
             if (b) b.addEventListener('click', lobby);
@@ -435,7 +517,7 @@
                     var gg = matchGame(gid);
                     if (frame && gg) {
                         var tt = frame.querySelector('.gf-title');
-                        if (tt) tt.textContent = gg.emoji + ' ' + (lang() === 'en' ? gg.en : gg.name) + ' 🌐';
+                        if (tt) tt.innerHTML = ic('globe', 15) + ' <span>' + esc(lang() === 'en' ? gg.en : gg.name) + '</span>';
                     }
                 }
                 var role = d.host === vid() ? 'h' : 'g';
@@ -447,20 +529,20 @@
         }
         function lobby() {
             body.innerHTML =
-                '<div class="gm-status">' + gt('العب مع صاحبك من أي جهاز 🌍', 'Play with a friend on any device 🌍') + '</div>'
-                + '<button class="gm-btn" id="netCreate">➕ ' + gt('إنشاء روم جديد', 'Create a room') + '</button>'
+                '<div class="gm-status">' + gt('العب مع صاحبك من أي جهاز', 'Play with a friend on any device') + '</div>'
+                + '<button class="gm-btn" id="netCreate">' + gt('إنشاء روم جديد', 'Create a room') + '</button>'
                 + '<div class="net-or">' + gt('— أو —', '— or —') + '</div>'
                 + '<div class="net-row"><input class="net-input" id="netCode" maxlength="6" placeholder="G-ABCD" dir="ltr" autocomplete="off">'
                 + '<button class="gm-btn" id="netJoin">' + gt('انضم', 'Join') + '</button></div>'
                 + '<div class="gm-status" id="netMsg"></div>';
             body.querySelector('#netCreate').addEventListener('click', function () {
-                body.innerHTML = '<div class="gm-status">⏳ ' + gt('جاري إنشاء الروم…', 'Creating room…') + '</div>';
+                body.innerHTML = '<div class="gm-status">' + gt('جاري إنشاء الروم…', 'Creating room…') + '</div>';
                 createRoom(gid).then(begin).catch(function () { fail(gt('معرفناش نعمل الروم — جرب تاني', 'Could not create the room — try again')); });
             });
             function doJoin() {
                 var norm = normalizeCode(body.querySelector('#netCode').value);
                 if (!norm) { body.querySelector('#netMsg').textContent = gt('اكتب كود صحيح زي G-ABCD', 'Enter a valid code like G-ABCD'); return; }
-                body.innerHTML = '<div class="gm-status">⏳ ' + gt('جاري الانضمام…', 'Joining…') + '</div>';
+                body.innerHTML = '<div class="gm-status">' + gt('جاري الانضمام…', 'Joining…') + '</div>';
                 joinRoom(norm).then(function () { begin(norm); }).catch(function (e) { fail(e.message); });
             }
             body.querySelector('#netJoin').addEventListener('click', doJoin);
@@ -469,7 +551,7 @@
         if (pre && pre.code) {
             var norm = normalizeCode(pre.code);
             if (!norm) { fail(gt('كود غير صالح', 'Invalid code')); return { destroy: cleanup }; }
-            body.innerHTML = '<div class="gm-status">⏳ ' + gt('جاري الانضمام…', 'Joining…') + '</div>';
+            body.innerHTML = '<div class="gm-status">' + gt('جاري الانضمام…', 'Joining…') + '</div>';
             joinRoom(norm).then(function () { begin(norm); }).catch(function (e) { fail(e.message); });
         } else {
             lobby();
@@ -492,19 +574,19 @@
             var SYM = { h: 'X', g: 'O' };
             var win = xoWin(st.b);
             var over = win || xoFull(st.b);
-            var h = netScoreRow(st, my) + '<div class="xo-board xo-net">';
+            var h = netScoreRow(st, my) + '<div class="xo-board">';
             for (var i = 0; i < 9; i++) {
                 var cls = 'xo-cell' + (st.b[i] === 'h' ? ' x' : st.b[i] === 'g' ? ' o' : '')
                     + (win && win.line.indexOf(i) !== -1 ? ' win' : '');
                 h += '<button class="' + cls + '" data-i="' + i + '">' + (st.b[i] ? SYM[st.b[i]] : '') + '</button>';
             }
-            h += '</div><div class="gm-status">';
-            if (win) h += win.p === my ? '🎉 ' + gt('كسبت!', 'You win!') : '💀 ' + gt('خصمك كسب!', 'Rival wins!');
-            else if (over) h += '🤝 ' + gt('تعادل!', 'Draw!');
-            else h += st.n === my ? '👆 ' + gt('دورك — أنت ', 'Your turn — you are ') + SYM[my] : '⏳ ' + gt('دور خصمك…', 'Rival\'s turn…');
-            h += '</div>';
-            if (over) h += '<button class="gm-btn" id="netAgain">🔁 ' + gt('جولة جديدة', 'Rematch') + '</button>';
+            h += '</div><div class="gm-status" id="netSt"></div>';
+            if (over) h += '<button class="gm-btn" id="netAgain">' + gt('جولة جديدة', 'Rematch') + '</button>';
             body.innerHTML = h;
+            var stEl = body.querySelector('#netSt');
+            if (win) stat(stEl, win.p === my ? gt('كسبت!', 'You win!') : gt('خصمك كسب!', 'Rival wins!'), win.p === my ? 'ok' : 'bad');
+            else if (over) stat(stEl, gt('تعادل!', 'Draw!'));
+            else stat(stEl, st.n === my ? gt('دورك — أنت ', 'Your turn — you are ') + SYM[my] : gt('دور خصمك…', 'Rival\'s turn…'));
             if (!over && st.n === my) {
                 body.querySelectorAll('.xo-cell').forEach(function (cell) {
                     cell.addEventListener('click', function () {
@@ -534,20 +616,21 @@
             var st = d.st, my = ctx.role, opp = my === 'h' ? 'g' : 'h';
             var win = c4Win(st.b);
             var over = win || c4Full(st.b);
-            var myDisc = my === 'h' ? '🔴' : '🟡';
-            var h = netScoreRow(st, my) + '<div class="c4-grid c4-net" dir="ltr">';
+            var myCls = my === 'h' ? 'red' : 'yel';
+            var h = netScoreRow(st, my) + '<div class="c4-grid">';
             for (var i = 0; i < 42; i++) {
                 var cls = 'c4-cell' + (st.b[i] === 'h' ? ' red' : st.b[i] === 'g' ? ' yel' : '')
                     + (win && win.line.indexOf(i) !== -1 ? ' win' : '');
                 h += '<button class="' + cls + '" data-c="' + (i % 7) + '"></button>';
             }
-            h += '</div><div class="gm-status">';
-            if (win) h += win.p === my ? '🎉 ' + gt('كسبت!', 'You win!') : '💀 ' + gt('خصمك كسب!', 'Rival wins!');
-            else if (over) h += '🤝 ' + gt('تعادل!', 'Draw!');
-            else h += st.n === my ? '👆 ' + gt('دورك — قطعتك ', 'Your turn — your disc ') + myDisc : '⏳ ' + gt('دور خصمك…', 'Rival\'s turn…');
-            h += '</div>';
-            if (over) h += '<button class="gm-btn" id="netAgain">🔁 ' + gt('جولة جديدة', 'Rematch') + '</button>';
+            h += '</div><div class="gm-status" id="netSt"></div>';
+            if (over) h += '<button class="gm-btn" id="netAgain">' + gt('جولة جديدة', 'Rematch') + '</button>';
             body.innerHTML = h;
+            var stEl = body.querySelector('#netSt');
+            if (win) stat(stEl, win.p === my ? gt('كسبت!', 'You win!') : gt('خصمك كسب!', 'Rival wins!'), win.p === my ? 'ok' : 'bad');
+            else if (over) stat(stEl, gt('تعادل!', 'Draw!'));
+            else if (st.n === my) { stEl.innerHTML = gt('دورك — قطعتك ', 'Your turn — your disc ') + '<span class="c4-dot ' + myCls + '"></span>'; stEl.className = 'gm-status'; }
+            else stat(stEl, gt('دور خصمك…', 'Rival\'s turn…'));
             if (!over && st.n === my) {
                 body.querySelectorAll('.c4-cell').forEach(function (cell) {
                     cell.addEventListener('click', function () {
@@ -579,7 +662,6 @@
             var st = d.st, my = ctx.role, opp = my === 'h' ? 'g' : 'h';
             var myPick = st[my], oppPick = st[opp];
             var resolved = st.res === st.rnd;
-            // both picked but round not resolved (simultaneous submit race) → host resolves
             if (myPick && oppPick && !resolved && my === 'h') {
                 var fix = JSON.parse(JSON.stringify(st));
                 if (fix.h !== fix.g) {
@@ -594,26 +676,26 @@
             var h = '<div class="gm-score">' + gt('أنت', 'You') + ' <b>' + myScore + '</b> · '
                 + gt('خصمك', 'Rival') + ' <b>' + oppScore + '</b> · '
                 + gt('الجولة', 'Round') + ' <b>' + st.rnd + '</b></div>';
-            var oppShow = resolved ? rpsEmoji(oppPick) : (oppPick ? '🤔' : '❔');
-            h += '<div class="rps-arena"><span>' + (myPick ? rpsEmoji(myPick) : '❔') + '</span><span class="rps-vs">VS</span><span>' + oppShow + '</span></div>';
-            h += '<div class="gm-status">';
-            if (resolved) {
-                if (myPick === oppPick) h += '🤝 ' + gt('تعادل!', 'Draw!');
-                else if (RPS_BEATS[myPick] === oppPick) h += '🎉 ' + gt('كسبت الجولة!', 'You win the round!');
-                else h += '💀 ' + gt('خصمك كسب الجولة!', 'Rival wins the round!');
-            } else if (myPick) h += '⏳ ' + gt('مستني خصمك يختار…', 'Waiting for your rival…');
-            else h += '👆 ' + gt('اختار سلاحك', 'Pick your weapon');
-            h += '</div>';
+            var oppShow = resolved ? rpsIcon(oppPick) : (oppPick ? '<span class="rps-unknown rps-picked">✓</span>' : rpsIcon(null));
+            h += '<div class="rps-arena"><span class="rps-side">' + rpsIcon(myPick) + '</span><span class="rps-vs">VS</span><span class="rps-side">' + oppShow + '</span></div>';
+            h += '<div class="gm-status" id="netSt"></div>';
             if (!myPick && !resolved) {
                 h += '<div class="rps-row" id="netRps">';
                 for (var i = 0; i < 3; i++) {
                     var o = RPS_OPTS[i];
-                    h += '<button data-id="' + o.id + '"><span>' + o.e + '</span><small>' + gt(o.ar, o.en) + '</small></button>';
+                    h += '<button data-id="' + o.id + '"><span class="rps-bico">' + rpsIcon(o.id, 26) + '</span><small>' + gt(o.ar, o.en) + '</small></button>';
                 }
                 h += '</div>';
             }
-            if (resolved) h += '<button class="gm-btn" id="netAgain">▶ ' + gt('الجولة الجاية', 'Next round') + '</button>';
+            if (resolved) h += '<button class="gm-btn" id="netAgain">' + gt('الجولة الجاية', 'Next round') + '</button>';
             body.innerHTML = h;
+            var stEl = body.querySelector('#netSt');
+            if (resolved) {
+                if (myPick === oppPick) stat(stEl, gt('تعادل!', 'Draw!'));
+                else if (RPS_BEATS[myPick] === oppPick) stat(stEl, gt('كسبت الجولة!', 'You win the round!'), 'ok');
+                else stat(stEl, gt('خصمك كسب الجولة!', 'Rival wins the round!'), 'bad');
+            } else if (myPick) stat(stEl, gt('مستني خصمك يختار…', 'Waiting for your rival…'));
+            else stat(stEl, gt('اختار سلاحك', 'Pick your weapon'));
             var row = body.querySelector('#netRps');
             if (row) row.addEventListener('click', function (e) {
                 var b = e.target.closest('button');
@@ -621,7 +703,7 @@
                 var pick = b.getAttribute('data-id');
                 var ns = JSON.parse(JSON.stringify(st));
                 ns[my] = pick;
-                if (ns[opp]) { // I'm second — resolve in the same write
+                if (ns[opp]) {
                     if (ns.h !== ns.g) {
                         if (RPS_BEATS[ns.h] === ns.g) ns.hs++; else ns.gs++;
                     }
@@ -692,21 +774,21 @@
             paint();
             check();
             lock = false;
-            if (!over) statusEl.textContent = gt('دورك — أنت X', 'Your turn — you are X');
+            if (!over) stat(statusEl, gt('دورك — أنت X', 'Your turn — you are X'));
         }
         function check() {
             var w = xoWin(board);
             if (w) {
                 over = true;
-                if (w.p === HU) { bumpWLD('xo', 'w'); statusEl.textContent = '🎉 ' + gt('مبروك! كسبت', 'You win!'); }
-                else { bumpWLD('xo', 'l'); statusEl.textContent = '💀 ' + gt('الكمبيوتر كسب!', 'Computer wins!'); }
+                if (w.p === HU) { bumpWLD('xo', 'w'); stat(statusEl, gt('مبروك! كسبت', 'You win!'), 'ok'); }
+                else { bumpWLD('xo', 'l'); stat(statusEl, gt('الكمبيوتر كسب!', 'Computer wins!'), 'bad'); }
                 paintScore();
                 w.line.forEach(function (i) { boardEl.children[i].classList.add('win'); });
             } else if (!empties(board).length) {
                 over = true;
                 bumpWLD('xo', 'd');
                 paintScore();
-                statusEl.textContent = '🤝 ' + gt('تعادل!', 'Draw!');
+                stat(statusEl, gt('تعادل!', 'Draw!'));
             }
         }
         function paint() {
@@ -733,7 +815,7 @@
                         check();
                         if (!over) {
                             lock = true;
-                            statusEl.textContent = '🤖 …';
+                            stat(statusEl, gt('الكمبيوتر بيفكر…', 'Computer is thinking…'));
                             setTimeout(aiMove, 250);
                         }
                     });
@@ -741,16 +823,16 @@
                 boardEl.appendChild(c);
             }
             if (humanStarts) {
-                statusEl.textContent = gt('دورك — أنت X تبدأ', 'Your turn — you (X) start');
+                stat(statusEl, gt('دورك — أنت X تبدأ', 'Your turn — you (X) start'));
             } else {
-                statusEl.textContent = gt('الكمبيوتر يبدأ…', 'Computer starts…');
+                stat(statusEl, gt('الكمبيوتر يبدأ…', 'Computer starts…'));
                 lock = true;
                 setTimeout(function () {
                     var opens = [4, 0, 2, 6, 8];
                     board[hard ? opens[rnd(2) === 0 ? 0 : 1 + rnd(4)] : opens[rnd(5)]] = AI;
                     paint();
                     lock = false;
-                    statusEl.textContent = gt('دورك — أنت X', 'Your turn — you are X');
+                    stat(statusEl, gt('دورك — أنت X', 'Your turn — you are X'));
                 }, 350);
             }
             humanStarts = !humanStarts;
@@ -776,13 +858,17 @@
 
         root.innerHTML =
             '<div class="gm-score" id="c4Score"></div>'
-            + '<div class="c4-grid" id="c4Grid" dir="ltr"></div>'
+            + '<div class="c4-grid" id="c4Grid"></div>'
             + '<div class="gm-status" id="c4Status"></div>'
             + '<button class="gm-btn" id="c4Reset">' + gt('جولة جديدة', 'New round') + '</button>';
 
         var gridEl = root.querySelector('#c4Grid');
         var statusEl = root.querySelector('#c4Status');
 
+        function yourTurn() {
+            statusEl.innerHTML = gt('دورك — قطعتك ', 'Your turn — your disc ') + '<span class="c4-dot red"></span>';
+            statusEl.className = 'gm-status';
+        }
         function paintScore() { root.querySelector('#c4Score').innerHTML = wldHTML('c4'); }
         function paint(winLine) {
             for (var i = 0; i < 42; i++) {
@@ -795,12 +881,12 @@
         function finish(w) {
             over = true;
             if (w) {
-                if (w.p === HU) { bumpWLD('c4', 'w'); statusEl.textContent = '🎉 ' + gt('كسبت! 🔴', 'You win! 🔴'); }
-                else { bumpWLD('c4', 'l'); statusEl.textContent = '💀 ' + gt('الكمبيوتر كسب! 🟡', 'Computer wins! 🟡'); }
+                if (w.p === HU) { bumpWLD('c4', 'w'); stat(statusEl, gt('كسبت!', 'You win!'), 'ok'); }
+                else { bumpWLD('c4', 'l'); stat(statusEl, gt('الكمبيوتر كسب!', 'Computer wins!'), 'bad'); }
                 paint(w.line);
             } else {
                 bumpWLD('c4', 'd');
-                statusEl.textContent = '🤝 ' + gt('تعادل!', 'Draw!');
+                stat(statusEl, gt('تعادل!', 'Draw!'));
             }
             paintScore();
         }
@@ -819,7 +905,7 @@
             var col = c4AiPick(board, AI, HU);
             if (col >= 0) drop(col, AI);
             lock = false;
-            if (!over) statusEl.textContent = gt('دورك 🔴', 'Your turn 🔴');
+            if (!over) yourTurn();
         }
         function reset() {
             board = [];
@@ -837,7 +923,7 @@
                         drop(col, HU);
                         if (!over) {
                             lock = true;
-                            statusEl.textContent = '🤖 …';
+                            stat(statusEl, gt('الكمبيوتر بيفكر…', 'Computer is thinking…'));
                             setTimeout(aiTurn, 300);
                         }
                     });
@@ -845,14 +931,14 @@
                 gridEl.appendChild(cell);
             }
             if (humanStarts) {
-                statusEl.textContent = gt('دورك — قطعتك 🔴', 'Your turn — you are 🔴');
+                yourTurn();
             } else {
-                statusEl.textContent = gt('الكمبيوتر يبدأ…', 'Computer starts…');
+                stat(statusEl, gt('الكمبيوتر يبدأ…', 'Computer starts…'));
                 lock = true;
                 setTimeout(function () {
                     drop(3, AI);
                     lock = false;
-                    if (!over) statusEl.textContent = gt('دورك 🔴', 'Your turn 🔴');
+                    if (!over) yourTurn();
                 }, 350);
             }
             humanStarts = !humanStarts;
@@ -869,29 +955,31 @@
 
         root.innerHTML =
             '<div class="gm-score" id="rpsScore"></div>'
-            + '<div class="rps-arena"><span id="rpsYou">❔</span><span class="rps-vs">VS</span><span id="rpsCpu">❔</span></div>'
-            + '<div class="gm-status" id="rpsStatus">' + gt('اختار سلاحك 👇', 'Pick your weapon 👇') + '</div>'
+            + '<div class="rps-arena"><span class="rps-side" id="rpsYou">' + rpsIcon(null) + '</span><span class="rps-vs">VS</span><span class="rps-side" id="rpsCpu">' + rpsIcon(null) + '</span></div>'
+            + '<div class="gm-status" id="rpsStatus"></div>'
             + '<div class="rps-row" id="rpsRow">'
             + RPS_OPTS.map(function (o) {
-                return '<button data-id="' + o.id + '"><span>' + o.e + '</span><small>' + gt(o.ar, o.en) + '</small></button>';
+                return '<button data-id="' + o.id + '"><span class="rps-bico">' + rpsIcon(o.id, 26) + '</span><small>' + gt(o.ar, o.en) + '</small></button>';
             }).join('')
             + '</div>';
+
+        var statusEl = root.querySelector('#rpsStatus');
+        stat(statusEl, gt('اختار سلاحك', 'Pick your weapon'));
 
         function paintScore() { root.querySelector('#rpsScore').innerHTML = wldHTML('rps'); }
         function play(mine) {
             if (revealing) return;
             revealing = true;
             var cpu = RPS_OPTS[rnd(3)];
-            root.querySelector('#rpsYou').textContent = rpsEmoji(mine);
+            root.querySelector('#rpsYou').innerHTML = rpsIcon(mine);
             var cpuEl = root.querySelector('#rpsCpu');
-            cpuEl.textContent = '🤔';
-            var statusEl = root.querySelector('#rpsStatus');
-            statusEl.textContent = '…';
+            cpuEl.innerHTML = '<span class="rps-unknown rps-think">…</span>';
+            stat(statusEl, '…');
             revealTimer = setTimeout(function () {
-                cpuEl.textContent = cpu.e;
-                if (mine === cpu.id) { bumpWLD('rps', 'd'); statusEl.textContent = '🤝 ' + gt('تعادل!', 'Draw!'); }
-                else if (RPS_BEATS[mine] === cpu.id) { bumpWLD('rps', 'w'); statusEl.textContent = '🎉 ' + gt('كسبت!', 'You win!'); }
-                else { bumpWLD('rps', 'l'); statusEl.textContent = '💀 ' + gt('خسرت!', 'You lose!'); }
+                cpuEl.innerHTML = rpsIcon(cpu.id);
+                if (mine === cpu.id) { bumpWLD('rps', 'd'); stat(statusEl, gt('تعادل!', 'Draw!')); }
+                else if (RPS_BEATS[mine] === cpu.id) { bumpWLD('rps', 'w'); stat(statusEl, gt('كسبت!', 'You win!'), 'ok'); }
+                else { bumpWLD('rps', 'l'); stat(statusEl, gt('خسرت!', 'You lose!'), 'bad'); }
                 paintScore();
                 revealing = false;
             }, 550);
@@ -904,37 +992,53 @@
         return { destroy: function () { if (revealTimer) clearTimeout(revealTimer); } };
     }
 
-    /* ═══════ 4) MEMORY MATCH ═══════ */
+    /* ═══════ 4) MEMORY MATCH (SVG shape pairs) ═══════ */
+    var MEM_SHAPES = [
+        { c: '#d9534f', s: '<circle cx="12" cy="12" r="7"/>' },
+        { c: '#4a90d9', s: '<rect x="5" y="5" width="14" height="14" rx="2.5"/>' },
+        { c: '#2f9e6e', s: '<polygon points="12 4.5 20 19 4 19"/>' },
+        { c: '#e8b93d', s: '<polygon points="12 3 14.5 9 21 9.5 16 13.8 17.7 20 12 16.5 6.3 20 8 13.8 3 9.5 9.5 9"/>' },
+        { c: '#9d4edd', s: '<polygon points="12 3.5 20.5 12 12 20.5 3.5 12"/>' },
+        { c: '#f2913d', s: '<path d="M13 2 5 14h6l-1 8 8-12h-6z"/>' },
+        { c: '#e0629a', s: '<path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/>' },
+        { c: '#4ab8c4', s: '<path d="M20 13A8 8 0 1 1 11 4a6.5 6.5 0 0 0 9 9z"/>' }
+    ];
+    function memShapeSVG(i) {
+        var sh = MEM_SHAPES[i];
+        return '<svg width="30" height="30" viewBox="0 0 24 24" fill="' + sh.c + '22" stroke="' + sh.c + '" stroke-width="1.8" stroke-linejoin="round">' + sh.s + '</svg>';
+    }
     function startMemory(root) {
-        var EMOJI = ['🍉', '🚀', '🎸', '🐪', '⚽', '🌙', '🍕', '🎁'];
         var moves, matched, first, lock, secs, timer = null;
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('نقلات', 'Moves') + ': <b id="mmMoves">0</b></span>'
-            + '<span>⏱ <b id="mmTime">0</b>s</span>'
-            + '<span>🏆 <b id="mmBest">' + (score('memory').best || '—') + '</b></span>'
+            + srItem('move', gt('نقلات', 'Moves'), 'mmMoves', '0')
+            + srItem('clock', gt('الوقت', 'Time'), 'mmTime', '0s')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'mmBest', score('memory').best || '—')
             + '</div>'
             + '<div class="mm-grid" id="mmGrid"></div>'
-            + '<div class="gm-status" id="mmStatus">' + gt('طابق كل الأزواج بأقل نقلات', 'Match all pairs in fewest moves') + '</div>'
+            + '<div class="gm-status" id="mmStatus"></div>'
             + '<button class="gm-btn" id="mmReset">' + gt('لعبة جديدة', 'New game') + '</button>';
 
         var grid = root.querySelector('#mmGrid');
+        var statusEl = root.querySelector('#mmStatus');
 
         function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
         function reset() {
             stopTimer();
             moves = 0; matched = 0; first = null; lock = false; secs = 0;
             root.querySelector('#mmMoves').textContent = '0';
-            root.querySelector('#mmTime').textContent = '0';
-            root.querySelector('#mmStatus').textContent = gt('طابق كل الأزواج بأقل نقلات', 'Match all pairs in fewest moves');
-            var deck = shuffle(EMOJI.concat(EMOJI));
+            root.querySelector('#mmTime').textContent = '0s';
+            stat(statusEl, gt('طابق كل الأزواج بأقل نقلات', 'Match all pairs in fewest moves'));
+            var idxs = [];
+            for (var k = 0; k < MEM_SHAPES.length; k++) { idxs.push(k); idxs.push(k); }
+            shuffle(idxs);
             grid.innerHTML = '';
-            deck.forEach(function (em) {
+            idxs.forEach(function (si) {
                 var c = document.createElement('button');
                 c.className = 'mm-card';
-                c.innerHTML = '<span class="mm-front">?</span><span class="mm-back">' + em + '</span>';
-                c.setAttribute('data-e', em);
+                c.innerHTML = '<span class="mm-front">?</span><span class="mm-back">' + memShapeSVG(si) + '</span>';
+                c.setAttribute('data-e', si);
                 c.addEventListener('click', function () { flip(c); });
                 grid.appendChild(c);
             });
@@ -943,7 +1047,7 @@
             if (lock || c === first || c.classList.contains('open') || c.classList.contains('ok')) return;
             if (!timer) timer = setInterval(function () {
                 secs++;
-                root.querySelector('#mmTime').textContent = secs;
+                root.querySelector('#mmTime').textContent = secs + 's';
             }, 1000);
             c.classList.add('open');
             if (!first) { first = c; return; }
@@ -954,11 +1058,11 @@
                 first = null;
                 matched++;
                 beep(520 + matched * 40, 0.08);
-                if (matched === EMOJI.length) {
+                if (matched === MEM_SHAPES.length) {
                     stopTimer();
                     var s = score('memory');
                     if (!s.best || moves < s.best) { s.best = moves; saveScore('memory', s); root.querySelector('#mmBest').textContent = moves; }
-                    root.querySelector('#mmStatus').textContent = '🎉 ' + gt('كسبت في ', 'You won in ') + moves + ' ' + gt('نقلة و', 'moves and ') + secs + 's';
+                    stat(statusEl, gt('كسبت في ', 'You won in ') + moves + ' ' + gt('نقلة خلال ', 'moves in ') + secs + 's', 'ok');
                 }
             } else {
                 lock = true;
@@ -983,8 +1087,8 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('الجولة', 'Round') + ': <b id="siRound">0</b></span>'
-            + '<span>🏆 <b id="siBest">' + (score('simon').best || 0) + '</b></span>'
+            + srItem('star', gt('الجولة', 'Round'), 'siRound', '0')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'siBest', score('simon').best || 0)
             + '</div>'
             + '<div class="si-grid" id="siGrid">'
             + '<button class="si-pad si-g" data-p="0"></button>'
@@ -992,11 +1096,12 @@
             + '<button class="si-pad si-y" data-p="2"></button>'
             + '<button class="si-pad si-b" data-p="3"></button>'
             + '</div>'
-            + '<div class="gm-status" id="siStatus">' + gt('اضغط "ابدأ" واحفظ التسلسل', 'Press "Start" and memorize the sequence') + '</div>'
+            + '<div class="gm-status" id="siStatus"></div>'
             + '<button class="gm-btn" id="siStart">' + gt('ابدأ', 'Start') + '</button>';
 
         var pads = root.querySelectorAll('.si-pad');
         var statusEl = root.querySelector('#siStatus');
+        stat(statusEl, gt('اضغط "ابدأ" واحفظ التسلسل', 'Press "Start" and memorize the sequence'));
 
         function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
         function clearTimers() { timers.forEach(clearTimeout); timers = []; }
@@ -1009,7 +1114,7 @@
         }
         function playback() {
             playing = true;
-            statusEl.textContent = '👀 ' + gt('ركّز…', 'Watch…');
+            stat(statusEl, gt('ركّز واحفظ…', 'Watch closely…'));
             for (var i = 0; i < seq.length; i++) {
                 (function (i2) {
                     later(function () {
@@ -1017,7 +1122,7 @@
                         if (i2 === seq.length - 1) {
                             later(function () {
                                 playing = false;
-                                statusEl.textContent = '👆 ' + gt('كرّر التسلسل', 'Repeat the sequence');
+                                stat(statusEl, gt('دورك — كرّر التسلسل', 'Your turn — repeat the sequence'));
                             }, speed() * 0.7);
                         }
                     }, i2 * speed());
@@ -1039,13 +1144,13 @@
                     var done = seq.length;
                     var s = score('simon');
                     if (done > (s.best || 0)) { s.best = done; saveScore('simon', s); root.querySelector('#siBest').textContent = done; }
-                    statusEl.textContent = '✅ ' + gt('صح! الجولة ', 'Correct! Round ') + (done + 1);
+                    stat(statusEl, gt('صح! الجولة ', 'Correct! Round ') + (done + 1), 'ok');
                     later(nextRound, 800);
                 }
             } else {
                 over = true;
                 beep(110, 0.35, 'square');
-                statusEl.textContent = '💀 ' + gt('غلط! وصلت لجولة ', 'Wrong! You reached round ') + seq.length;
+                stat(statusEl, gt('غلط! وصلت لجولة ', 'Wrong! You reached round ') + seq.length, 'bad');
                 root.querySelector('#siStart').textContent = gt('العب تاني', 'Play again');
             }
         }
@@ -1069,21 +1174,22 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('الأرقام', 'Digits') + ': <b id="dgLvl">—</b></span>'
-            + '<span>🏆 <b id="dgBest">' + (score('digits').best || 0) + '</b></span>'
+            + srItem('digits', gt('الأرقام', 'Digits'), 'dgLvl', '—')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'dgBest', score('digits').best || 0)
             + '</div>'
             + '<div class="dg-display" id="dgDisp" dir="ltr">…</div>'
             + '<div class="net-row none" id="dgRow">'
             + '<input class="net-input" id="dgInput" inputmode="numeric" autocomplete="off" dir="ltr" placeholder="…">'
             + '<button class="gm-btn" id="dgOk">✓</button>'
             + '</div>'
-            + '<div class="gm-status" id="dgStatus">' + gt('هيظهر رقم لثواني — احفظه واكتبه', 'A number flashes for seconds — memorize and type it') + '</div>'
+            + '<div class="gm-status" id="dgStatus"></div>'
             + '<button class="gm-btn" id="dgStart">' + gt('ابدأ', 'Start') + '</button>';
 
         var disp = root.querySelector('#dgDisp');
         var row = root.querySelector('#dgRow');
         var input = root.querySelector('#dgInput');
         var statusEl = root.querySelector('#dgStatus');
+        stat(statusEl, gt('هيظهر رقم لثواني — احفظه واكتبه', 'A number flashes for seconds — memorize and type it'));
 
         function clearShow() { if (showTimer) { clearTimeout(showTimer); showTimer = null; } }
         function genNum(len) {
@@ -1096,17 +1202,16 @@
             num = genNum(level);
             root.querySelector('#dgLvl').textContent = level;
             disp.textContent = num;
-            disp.classList.remove('none');
             row.classList.add('none');
-            statusEl.textContent = '👀 ' + gt('احفظ…', 'Memorize…');
+            stat(statusEl, gt('احفظ…', 'Memorize…'));
             clearShow();
             showTimer = setTimeout(function () {
                 state = 'input';
-                disp.textContent = '❓';
+                disp.textContent = '•'.repeat(Math.min(level, 12));
                 row.classList.remove('none');
                 input.value = '';
                 input.focus();
-                statusEl.textContent = '⌨️ ' + gt('اكتب الرقم', 'Type the number');
+                stat(statusEl, gt('اكتب الرقم اللي شفته', 'Type the number you saw'));
             }, 700 + level * 320);
         }
         function submit() {
@@ -1116,7 +1221,7 @@
             if (v === num) {
                 beep(600, 0.08);
                 level++;
-                statusEl.textContent = '✅ ' + gt('صح!', 'Correct!');
+                stat(statusEl, gt('صح!', 'Correct!'), 'ok');
                 setTimeout(round, 600);
             } else {
                 state = 'over';
@@ -1124,7 +1229,7 @@
                 row.classList.add('none');
                 disp.textContent = num;
                 var reached = level - 1;
-                statusEl.textContent = '💀 ' + gt('غلط — كتبت ', 'Wrong — you typed ') + v + ' · ' + gt('وصلت لـ ', 'you reached ') + reached + ' ' + gt('أرقام', 'digits');
+                stat(statusEl, gt('غلط — كتبت ', 'Wrong — you typed ') + v + ' · ' + gt('وصلت لـ ', 'you reached ') + reached + ' ' + gt('أرقام', 'digits'), 'bad');
                 var s = score('digits');
                 if (reached > (s.best || 0)) { s.best = reached; saveScore('digits', s); root.querySelector('#dgBest').textContent = reached; }
                 root.querySelector('#dgStart').textContent = gt('العب تاني', 'Play again');
@@ -1147,14 +1252,15 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('الجولة', 'Round') + ': <b id="rcRound">—</b></span>'
-            + '<span>⚡ ' + gt('أفضل متوسط', 'Best avg') + ': <b id="rcBest">' + (score('reaction').best ? score('reaction').best + 'ms' : '—') + '</b></span>'
+            + srItem('star', gt('الجولة', 'Round'), 'rcRound', '—')
+            + srItem('trophy', gt('أفضل متوسط', 'Best avg'), 'rcBest', score('reaction').best ? score('reaction').best + 'ms' : '—')
             + '</div>'
             + '<button class="rc-pad" id="rcPad">' + gt('اضغط للبدء', 'Tap to start') + '</button>'
-            + '<div class="gm-status" id="rcStatus">' + gt('لما اللون يبقى أخضر اضغط بأسرع ما يمكن — 5 جولات', 'When it turns green tap as fast as you can — 5 rounds') + '</div>';
+            + '<div class="gm-status" id="rcStatus"></div>';
 
         var pad = root.querySelector('#rcPad');
         var statusEl = root.querySelector('#rcStatus');
+        stat(statusEl, gt('لما اللون يبقى أخضر اضغط بأسرع ما يمكن — 5 جولات', 'When it turns green tap as fast as you can — 5 rounds'));
 
         function clearWait() { if (waitTimer) { clearTimeout(waitTimer); waitTimer = null; } }
         function schedule() {
@@ -1177,14 +1283,14 @@
             } else if (state === 'waiting') {
                 clearWait();
                 pad.className = 'rc-pad early';
-                pad.textContent = gt('بدري أوي! 😅', 'Too soon! 😅');
-                statusEl.textContent = gt('استنى الأخضر — الجولة هتتعاد', 'Wait for green — round restarts');
+                pad.textContent = gt('بدري أوي!', 'Too soon!');
+                stat(statusEl, gt('استنى الأخضر — الجولة هتتعاد', 'Wait for green — round restarts'));
                 state = 'cooldown';
                 waitTimer = setTimeout(schedule, 900);
             } else if (state === 'go') {
                 var ms = Math.round(performance.now() - t0);
                 times.push(ms);
-                statusEl.textContent = '⏱ ' + ms + 'ms';
+                stat(statusEl, ms + 'ms');
                 round++;
                 if (round >= ROUNDS) {
                     state = 'done';
@@ -1198,9 +1304,9 @@
                         s.best = avg;
                         saveScore('reaction', s);
                         root.querySelector('#rcBest').textContent = avg + 'ms';
-                        statusEl.textContent = '🏆 ' + gt('رقم قياسي جديد!', 'New record!');
+                        stat(statusEl, gt('رقم قياسي جديد!', 'New record!'), 'ok');
                     } else {
-                        statusEl.textContent = gt('أفضل متوسط: ', 'Best avg: ') + s.best + 'ms';
+                        stat(statusEl, gt('أفضل متوسط: ', 'Best avg: ') + s.best + 'ms');
                     }
                 } else {
                     schedule();
@@ -1218,18 +1324,19 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="maScore">0</b></span>'
-            + '<span>⏱ <b id="maTime">' + DURATION + '</b>s</span>'
-            + '<span>🏆 <b id="maBest">' + (score('math').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'maScore', '0')
+            + srItem('clock', gt('الوقت', 'Time'), 'maTime', DURATION + 's')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'maBest', score('math').best || 0)
             + '</div>'
             + '<div class="ma-q" id="maQ" dir="ltr">—</div>'
             + '<div class="ma-grid" id="maGrid"></div>'
-            + '<div class="gm-status" id="maStatus">' + gt('30 ثانية — جاوب بأسرع ما يمكن', '30 seconds — answer as fast as you can') + '</div>'
+            + '<div class="gm-status" id="maStatus"></div>'
             + '<button class="gm-btn" id="maStart">' + gt('ابدأ', 'Start') + '</button>';
 
         var qEl = root.querySelector('#maQ');
         var gridEl = root.querySelector('#maGrid');
         var statusEl = root.querySelector('#maStatus');
+        stat(statusEl, gt('30 ثانية — جاوب بأسرع ما يمكن', '30 seconds — answer as fast as you can'));
 
         function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
         function nextQ() {
@@ -1259,6 +1366,7 @@
             if (v === answer) {
                 scoreNow++;
                 root.querySelector('#maScore').textContent = scoreNow;
+                beep(520, 0.05);
                 nextQ();
             } else {
                 btn.classList.add('bad');
@@ -1273,9 +1381,9 @@
             if (scoreNow > (s.best || 0)) {
                 s.best = scoreNow; saveScore('math', s);
                 root.querySelector('#maBest').textContent = scoreNow;
-                statusEl.textContent = '🏆 ' + gt('رقم قياسي: ', 'New record: ') + scoreNow;
+                stat(statusEl, gt('رقم قياسي: ', 'New record: ') + scoreNow, 'ok');
             } else {
-                statusEl.textContent = '⏰ ' + gt('انتهى الوقت! النتيجة: ', 'Time\'s up! Score: ') + scoreNow;
+                stat(statusEl, gt('انتهى الوقت! النتيجة: ', 'Time\'s up! Score: ') + scoreNow);
             }
             root.querySelector('#maStart').textContent = gt('العب تاني', 'Play again');
         }
@@ -1283,12 +1391,12 @@
             stopTimer();
             scoreNow = 0; left = DURATION; running = true;
             root.querySelector('#maScore').textContent = '0';
-            root.querySelector('#maTime').textContent = left;
-            statusEl.textContent = gt('يلا!', 'Go!');
+            root.querySelector('#maTime').textContent = left + 's';
+            stat(statusEl, gt('يلا!', 'Go!'));
             nextQ();
             timer = setInterval(function () {
                 left--;
-                root.querySelector('#maTime').textContent = left;
+                root.querySelector('#maTime').textContent = left + 's';
                 if (left <= 0) finish();
             }, 1000);
         }
@@ -1303,11 +1411,11 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="snScore">0</b></span>'
-            + '<span>🏆 <b id="snBest">' + (score('snake').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'snScore', '0')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'snBest', score('snake').best || 0)
             + '</div>'
             + '<canvas id="snCanvas" class="sn-canvas"></canvas>'
-            + '<div class="gm-status" id="snStatus">' + gt('اضغط "ابدأ" — الأسهم أو السحب للتحكم', 'Press "Start" — arrows or swipe to control') + '</div>'
+            + '<div class="gm-status" id="snStatus"></div>'
             + '<div class="sn-pad" id="snPad">'
             + '<button data-d="up">▲</button>'
             + '<div><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button></div>'
@@ -1320,6 +1428,8 @@
         var cell = Math.floor(size / N);
         cv.width = cell * N;
         cv.height = cell * N;
+        var statusEl = root.querySelector('#snStatus');
+        stat(statusEl, gt('الأسهم أو السحب أو الأزرار للتحكم', 'Arrows, swipe, or buttons to steer'));
 
         var DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
         var OPP = { up: 'down', down: 'up', left: 'right', right: 'left' };
@@ -1339,10 +1449,18 @@
             var acc = cssVar('--accent', '#3e8e7e');
             ctx.fillStyle = bg;
             ctx.fillRect(0, 0, cv.width, cv.height);
+            // apple
             ctx.fillStyle = '#e05d5d';
             ctx.beginPath();
             ctx.arc(food[0] * cell + cell / 2, food[1] * cell + cell / 2, cell / 2 - 2, 0, Math.PI * 2);
             ctx.fill();
+            ctx.strokeStyle = '#2f9e6e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(food[0] * cell + cell / 2, food[1] * cell + 3);
+            ctx.lineTo(food[0] * cell + cell / 2 + 3, food[1] * cell);
+            ctx.stroke();
+            // body
             for (var i = 0; i < snake.length; i++) {
                 ctx.fillStyle = i === 0 ? acc : acc + 'cc';
                 ctx.beginPath();
@@ -1353,13 +1471,22 @@
                     ctx.fillRect(snake[i][0] * cell + 1, snake[i][1] * cell + 1, cell - 2, cell - 2);
                 }
             }
+            // eyes on the head, offset toward the travel direction
+            var hx = snake[0][0] * cell + cell / 2, hy = snake[0][1] * cell + cell / 2;
+            var dv = DIRS[dir] || [1, 0];
+            var px = -dv[1], py = dv[0]; // perpendicular
+            ctx.fillStyle = isDark() ? '#121413' : '#fff';
+            ctx.beginPath();
+            ctx.arc(hx + dv[0] * cell * 0.18 + px * cell * 0.18, hy + dv[1] * cell * 0.18 + py * cell * 0.18, cell * 0.1, 0, Math.PI * 2);
+            ctx.arc(hx + dv[0] * cell * 0.18 - px * cell * 0.18, hy + dv[1] * cell * 0.18 - py * cell * 0.18, cell * 0.1, 0, Math.PI * 2);
+            ctx.fill();
         }
         function gameOver() {
             stopTimer();
             running = false;
             var s = score('snake');
             if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('snake', s); root.querySelector('#snBest').textContent = scoreNow; }
-            root.querySelector('#snStatus').textContent = '💀 ' + gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow;
+            stat(statusEl, gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             root.querySelector('#snStart').textContent = gt('العب تاني', 'Play again');
         }
         function tick() {
@@ -1373,6 +1500,7 @@
             if (head[0] === food[0] && head[1] === food[1]) {
                 scoreNow++;
                 root.querySelector('#snScore').textContent = scoreNow;
+                beep(540, 0.05);
                 food = placeFood();
                 if (speed > 65) { speed -= 3; restartTimer(); }
             } else {
@@ -1388,7 +1516,7 @@
             scoreNow = 0; speed = 140; running = true; paused = false;
             food = placeFood();
             root.querySelector('#snScore').textContent = '0';
-            root.querySelector('#snStatus').textContent = gt('كُل التفاح الأحمر 🍎', 'Eat the red apples 🍎');
+            stat(statusEl, gt('كُل التفاح الأحمر', 'Eat the red apples'));
             root.querySelector('#snStart').textContent = gt('إعادة', 'Restart');
             draw();
             restartTimer();
@@ -1412,10 +1540,10 @@
             if (document.hidden) {
                 paused = true;
                 stopTimer();
-                root.querySelector('#snStatus').textContent = '⏸ ' + gt('إيقاف مؤقت', 'Paused');
+                stat(statusEl, gt('إيقاف مؤقت', 'Paused'));
             } else if (paused) {
                 paused = false;
-                root.querySelector('#snStatus').textContent = gt('كمّل! 🐍', 'Go on! 🐍');
+                stat(statusEl, gt('كمّل!', 'Go on!'));
                 restartTimer();
             }
         }
@@ -1426,20 +1554,24 @@
         function onTE(e) {
             var dx = e.changedTouches[0].clientX - tsX;
             var dy = e.changedTouches[0].clientY - tsY;
-            if (Math.abs(dx) < 18 && Math.abs(dy) < 18) return;
+            if (Math.abs(dx) < 18 && Math.abs(dy) < 18) {
+                if (!running) start(); // tap the board to start
+                return;
+            }
             if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 'right' : 'left');
             else turn(dy > 0 ? 'down' : 'up');
         }
         cv.addEventListener('touchstart', onTS, { passive: true });
         cv.addEventListener('touchend', onTE, { passive: true });
+        cv.addEventListener('click', function () { if (!running) start(); });
 
-        root.querySelector('#snPad').addEventListener('click', function (e) {
-            var b = e.target.closest('button');
-            if (b) turn(b.getAttribute('data-d'));
+        root.querySelectorAll('#snPad button').forEach(function (b) {
+            bindHold(b, function () { turn(b.getAttribute('data-d')); }, 260, 120);
         });
         root.querySelector('#snStart').addEventListener('click', start);
 
         snake = [[9, 9], [8, 9], [7, 9]];
+        dir = 'right';
         food = [13, 9];
         draw();
 
@@ -1458,14 +1590,16 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="g4Score">0</b></span>'
-            + '<span>🏆 <b id="g4Best">' + (score('2048').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'g4Score', '0')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'g4Best', score('2048').best || 0)
             + '</div>'
-            + '<div class="g4-grid" id="g4Grid" dir="ltr"></div>'
-            + '<div class="gm-status" id="g4Status">' + gt('الأسهم أو السحب لدمج الأرقام', 'Arrows or swipe to merge tiles') + '</div>'
+            + '<div class="g4-grid" id="g4Grid"></div>'
+            + '<div class="gm-status" id="g4Status"></div>'
             + '<button class="gm-btn" id="g4Reset">' + gt('لعبة جديدة', 'New game') + '</button>';
 
         var gridEl = root.querySelector('#g4Grid');
+        var statusEl = root.querySelector('#g4Status');
+        stat(statusEl, gt('الأسهم أو السحب لدمج الأرقام', 'Arrows or swipe to merge tiles'));
 
         function addTile() {
             var free = [];
@@ -1530,10 +1664,10 @@
             if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('2048', s); root.querySelector('#g4Best').textContent = scoreNow; }
             if (isStuck()) {
                 over = true;
-                root.querySelector('#g4Status').textContent = '💀 ' + gt('انتهت اللعبة! النقاط: ', 'Game over! Score: ') + scoreNow;
+                stat(statusEl, gt('انتهت اللعبة! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             } else if (won) {
                 won = false;
-                root.querySelector('#g4Status').textContent = '🎉 ' + gt('وصلت 2048! كمّل لو عايز', 'You reached 2048! Keep going');
+                stat(statusEl, gt('وصلت 2048! كمّل لو عايز', 'You reached 2048! Keep going'), 'ok');
             }
         }
         function isStuck() {
@@ -1550,7 +1684,7 @@
             for (var i = 0; i < 16; i++) grid.push(0);
             scoreNow = 0; over = false; won = false;
             addTile(); addTile();
-            root.querySelector('#g4Status').textContent = gt('الأسهم أو السحب لدمج الأرقام', 'Arrows or swipe to merge tiles');
+            stat(statusEl, gt('الأسهم أو السحب لدمج الأرقام', 'Arrows or swipe to merge tiles'));
             paint();
         }
 
@@ -1596,16 +1730,16 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="tzScore">0</b></span>'
-            + '<span>' + gt('صفوف', 'Lines') + ': <b id="tzLines">0</b></span>'
-            + '<span>🏆 <b id="tzBest">' + (score('tetris').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'tzScore', '0')
+            + srItem('g2048', gt('صفوف', 'Lines'), 'tzLines', '0')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'tzBest', score('tetris').best || 0)
             + '</div>'
-            + '<div class="tz-wrap" dir="ltr"><canvas id="tzCanvas" class="sn-canvas"></canvas>'
+            + '<div class="tz-wrap"><canvas id="tzCanvas" class="sn-canvas"></canvas>'
             + '<canvas id="tzNext" class="tz-next"></canvas></div>'
-            + '<div class="gm-status" id="tzStatus">' + gt('الأسهم للتحريك، ⬆ للف، مسطرة للإسقاط', 'Arrows to move, ⬆ rotates, Space drops') + '</div>'
+            + '<div class="gm-status" id="tzStatus"></div>'
             + '<div class="tz-controls" id="tzCtl">'
-            + '<button data-a="left">◀</button><button data-a="rot">🔄</button><button data-a="right">▶</button>'
-            + '<button data-a="down">⬇</button><button data-a="drop">⤓</button>'
+            + '<button data-a="left">◀</button><button data-a="rot">⟳</button><button data-a="right">▶</button>'
+            + '<button data-a="down">▼</button><button data-a="drop">⤓</button>'
             + '</div>'
             + '<button class="gm-btn" id="tzStart">' + gt('ابدأ', 'Start') + '</button>';
 
@@ -1618,6 +1752,8 @@
         cv.height = ROWS * cell;
         ncv.width = 4 * 13;
         ncv.height = 4 * 13;
+        var statusEl = root.querySelector('#tzStatus');
+        stat(statusEl, gt('حرّك بالأزرار أو اسحب على اللوحة — نقرة = لف', 'Use the buttons or swipe the board — tap rotates'));
 
         function randShape() {
             var s = SHAPES[rnd(SHAPES.length)];
@@ -1671,7 +1807,7 @@
                     board.splice(r * COLS, COLS);
                     for (var k = 0; k < COLS; k++) board.unshift('');
                     cleared++;
-                    r++; // recheck the same row index after shifting
+                    r++;
                 }
             }
             if (cleared) {
@@ -1693,7 +1829,7 @@
             stopTimer();
             running = false;
             over = true;
-            root.querySelector('#tzStatus').textContent = '💀 ' + gt('انتهت! النقاط: ', 'Game over! Score: ') + scoreNow;
+            stat(statusEl, gt('انتهت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             root.querySelector('#tzStart').textContent = gt('العب تاني', 'Play again');
         }
         function step() {
@@ -1768,7 +1904,7 @@
             next = null;
             root.querySelector('#tzScore').textContent = '0';
             root.querySelector('#tzLines').textContent = '0';
-            root.querySelector('#tzStatus').textContent = gt('يلا! 🧩', 'Go! 🧩');
+            stat(statusEl, gt('يلا!', 'Go!'));
             root.querySelector('#tzStart').textContent = gt('إعادة', 'Restart');
             spawn();
             draw();
@@ -1781,9 +1917,40 @@
             if (a) { e.preventDefault(); act(a); }
         }
         document.addEventListener('keydown', onKey);
-        root.querySelector('#tzCtl').addEventListener('click', function (e) {
-            var b = e.target.closest('button');
-            if (b) act(b.getAttribute('data-a'));
+
+        // touch gestures on the board: drag horizontally to move,
+        // tap to rotate, fast swipe down to hard-drop
+        var pd = null, movedCols = 0;
+        cv.addEventListener('pointerdown', function (e) {
+            e.preventDefault();
+            if (!running) { start(); pd = null; return; }
+            pd = { x: e.clientX, y: e.clientY, t: Date.now(), lastX: e.clientX };
+            movedCols = 0;
+        });
+        cv.addEventListener('pointermove', function (e) {
+            if (!pd || !running) return;
+            var dx = e.clientX - pd.lastX;
+            var stepPx = 22;
+            while (dx >= stepPx) { act('right'); pd.lastX += stepPx; dx -= stepPx; movedCols++; }
+            while (dx <= -stepPx) { act('left'); pd.lastX -= stepPx; dx += stepPx; movedCols++; }
+        });
+        cv.addEventListener('pointerup', function (e) {
+            if (!pd || !running) { pd = null; return; }
+            var dy = e.clientY - pd.y;
+            var dt = Date.now() - pd.t;
+            var dx = Math.abs(e.clientX - pd.x);
+            if (!movedCols && dx < 12 && Math.abs(dy) < 12) act('rot');       // tap
+            else if (dy > 55 && dt < 300) act('drop');                        // flick down
+            pd = null;
+        });
+
+        root.querySelectorAll('#tzCtl button').forEach(function (b) {
+            var a = b.getAttribute('data-a');
+            if (a === 'left' || a === 'right' || a === 'down') {
+                bindHold(b, function () { act(a); }, 260, 80);
+            } else {
+                b.addEventListener('click', function () { act(a); });
+            }
         });
         root.querySelector('#tzStart').addEventListener('click', start);
         draw();
@@ -1802,12 +1969,12 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="bkScore">0</b></span>'
-            + '<span>❤️ <b id="bkLives">3</b></span>'
-            + '<span>🏆 <b id="bkBest">' + (score('breakout').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'bkScore', '0')
+            + srItem('heart', gt('محاولات', 'Lives'), 'bkLives', '3')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'bkBest', score('breakout').best || 0)
             + '</div>'
             + '<canvas id="bkCanvas" class="sn-canvas"></canvas>'
-            + '<div class="gm-status" id="bkStatus">' + gt('حرّك المضرب بالماوس أو صباعك — اضغط للإطلاق', 'Move the paddle with mouse or finger — tap to launch') + '</div>'
+            + '<div class="gm-status" id="bkStatus"></div>'
             + '<button class="gm-btn" id="bkStart">' + gt('ابدأ', 'Start') + '</button>';
 
         var cv = root.querySelector('#bkCanvas');
@@ -1816,6 +1983,8 @@
         H = Math.round(W * 0.88);
         cv.width = W;
         cv.height = H;
+        var statusEl = root.querySelector('#bkStatus');
+        stat(statusEl, gt('حرّك صباعك أو الماوس في أي مكان باللوحة', 'Slide your finger or mouse anywhere on the board'));
 
         var BR_COLS = 7, BR_ROWS = 5, BR_H = 14, BR_GAP = 5, BR_TOP = 32, BR_PAD = 8;
         var BR_W = (W - BR_PAD * 2 - BR_GAP * (BR_COLS - 1)) / BR_COLS;
@@ -1845,9 +2014,10 @@
             if (livesNow <= 0) {
                 running = false;
                 if (raf) { cancelAnimationFrame(raf); raf = null; }
+                root.style.touchAction = '';
                 var s = score('breakout');
                 if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('breakout', s); root.querySelector('#bkBest').textContent = scoreNow; }
-                root.querySelector('#bkStatus').textContent = '💀 ' + gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow;
+                stat(statusEl, gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
                 root.querySelector('#bkStart').textContent = gt('العب تاني', 'Play again');
             } else {
                 resetBall();
@@ -1864,7 +2034,6 @@
                 if (ball.x - ball.r < 0) { ball.x = ball.r; ball.vx = Math.abs(ball.vx); }
                 if (ball.x + ball.r > W) { ball.x = W - ball.r; ball.vx = -Math.abs(ball.vx); }
                 if (ball.y - ball.r < 0) { ball.y = ball.r; ball.vy = Math.abs(ball.vy); }
-                // paddle
                 if (ball.vy > 0 && ball.y + ball.r >= paddle.y && ball.y + ball.r <= paddle.y + paddle.h + 6
                     && ball.x >= paddle.x - ball.r && ball.x <= paddle.x + paddle.w + ball.r) {
                     var rel = (ball.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2);
@@ -1872,7 +2041,6 @@
                     ball.vx = rel * sp * 0.85;
                     ball.vy = -Math.abs(Math.sqrt(Math.max(sp * sp - ball.vx * ball.vx, 1)));
                 }
-                // bricks
                 var aliveCount = 0;
                 for (var i = 0; i < bricks.length; i++) {
                     var b = bricks[i];
@@ -1891,7 +2059,7 @@
                 }
                 if (!aliveCount) {
                     levelNow++;
-                    root.querySelector('#bkStatus').textContent = '🎉 ' + gt('مستوى ', 'Level ') + levelNow + '!';
+                    stat(statusEl, gt('مستوى ', 'Level ') + levelNow + '!', 'ok');
                     buildBricks();
                     resetBall();
                 }
@@ -1910,7 +2078,9 @@
                 ctx.fillRect(b.x, b.y, BR_W, BR_H);
             }
             ctx.fillStyle = cssVar('--accent', '#3e8e7e');
-            ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+            ctx.beginPath();
+            if (ctx.roundRect) { ctx.roundRect(paddle.x, paddle.y, paddle.w, paddle.h, 5); ctx.fill(); }
+            else ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
             ctx.fillStyle = '#e05d5d';
@@ -1918,11 +2088,12 @@
         }
         function start() {
             if (raf) cancelAnimationFrame(raf);
-            paddle = { x: W / 2 - 35, y: H - 16, w: 70, h: 9 };
+            paddle = { x: W / 2 - 40, y: H - 16, w: 80, h: 9 };
             scoreNow = 0; livesNow = 3; levelNow = 1; running = true;
+            root.style.touchAction = 'none'; // the whole game area steers the paddle
             root.querySelector('#bkScore').textContent = '0';
             root.querySelector('#bkLives').textContent = '3';
-            root.querySelector('#bkStatus').textContent = gt('اضغط الشاشة لإطلاق الكرة 🎯', 'Tap to launch the ball 🎯');
+            stat(statusEl, gt('اضغط في أي مكان لإطلاق الكرة', 'Tap anywhere to launch the ball'));
             root.querySelector('#bkStart').textContent = gt('إعادة', 'Restart');
             buildBricks();
             resetBall();
@@ -1933,21 +2104,22 @@
             var x = (clientX - rect.left) * (W / rect.width);
             paddle.x = Math.max(0, Math.min(x - paddle.w / 2, W - paddle.w));
         }
+        // steer from the whole game body — the finger doesn't cover the paddle
         function onMove(e) {
             if (!running) return;
             movePaddle(e.clientX);
         }
         function onDown(e) {
             if (!running) return;
+            if (e.target.closest('button')) return; // let buttons work
             e.preventDefault();
             movePaddle(e.clientX);
             launch();
         }
-        cv.addEventListener('pointermove', onMove);
-        cv.addEventListener('pointerdown', onDown);
+        root.addEventListener('pointermove', onMove);
+        root.addEventListener('pointerdown', onDown);
 
-        // static preview
-        paddle = { x: W / 2 - 35, y: H - 16, w: 70, h: 9 };
+        paddle = { x: W / 2 - 40, y: H - 16, w: 80, h: 9 };
         buildBricks();
         resetBall();
         drawAll();
@@ -1957,11 +2129,22 @@
             destroy: function () {
                 running = false;
                 if (raf) cancelAnimationFrame(raf);
+                root.style.touchAction = '';
             }
         };
     }
 
-    /* ═══════ 13) WHACK-A-MOLE ═══════ */
+    /* ═══════ 13) WHACK-A-MOLE (custom SVG mole) ═══════ */
+    var MOLE_HOLE_SVG = '<svg width="46" height="46" viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="8.5" ry="3.4" fill="rgba(0,0,0,.28)"/><ellipse cx="12" cy="15.4" rx="8.5" ry="3.4" fill="rgba(0,0,0,.45)"/></svg>';
+    var MOLE_UP_SVG = '<svg width="46" height="46" viewBox="0 0 24 24">'
+        + '<ellipse cx="12" cy="19" rx="8.5" ry="3" fill="rgba(0,0,0,.35)"/>'
+        + '<path d="M5 19v-7a7 7 0 0 1 14 0v7z" fill="#b98a5e" stroke="#8a6544" stroke-width="1"/>'
+        + '<circle cx="9.4" cy="11.5" r="1.1" fill="#33261a"/>'
+        + '<circle cx="14.6" cy="11.5" r="1.1" fill="#33261a"/>'
+        + '<ellipse cx="12" cy="14.8" rx="1.7" ry="1.2" fill="#e8a0a0"/>'
+        + '<path d="M10.6 16.5c.9.7 1.9.7 2.8 0" stroke="#33261a" stroke-width=".9" fill="none" stroke-linecap="round"/>'
+        + '</svg>';
+    var MOLE_HIT_SVG = '<svg width="46" height="46" viewBox="0 0 24 24"><polygon points="12 2 14 8.5 21 6 16.5 11.5 22 15 15 15.5 16 22 12 17 8 22 9 15.5 2 15 7.5 11.5 3 6 10 8.5" fill="#e8b93d" stroke="#c99a1e" stroke-width=".8"/></svg>';
     function startMole(root) {
         var DURATION = 30;
         var scoreNow, left, moleAt = -1, running = false;
@@ -1969,28 +2152,31 @@
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="moScore">0</b></span>'
-            + '<span>⏱ <b id="moTime">' + DURATION + '</b>s</span>'
-            + '<span>🏆 <b id="moBest">' + (score('mole').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'moScore', '0')
+            + srItem('clock', gt('الوقت', 'Time'), 'moTime', DURATION + 's')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'moBest', score('mole').best || 0)
             + '</div>'
             + '<div class="mo-grid" id="moGrid"></div>'
-            + '<div class="gm-status" id="moStatus">' + gt('اضرب الخلد 🐹 قبل ما يختفي', 'Whack the mole 🐹 before it hides') + '</div>'
+            + '<div class="gm-status" id="moStatus"></div>'
             + '<button class="gm-btn" id="moStart">' + gt('ابدأ', 'Start') + '</button>';
 
         var gridEl = root.querySelector('#moGrid');
+        var statusEl = root.querySelector('#moStatus');
+        stat(statusEl, gt('اضرب الخلد قبل ما يختفي', 'Whack the mole before it hides'));
         var holes = [];
         for (var i = 0; i < 9; i++) {
             var b = document.createElement('button');
             b.className = 'mo-hole';
-            b.textContent = '🕳️';
+            b.innerHTML = MOLE_HOLE_SVG;
             (function (idx, btn) {
-                btn.addEventListener('click', function () {
+                btn.addEventListener('pointerdown', function (e) {
+                    e.preventDefault();
                     if (!running || idx !== moleAt) return;
                     scoreNow++;
                     root.querySelector('#moScore').textContent = scoreNow;
-                    btn.textContent = '💥';
+                    btn.innerHTML = MOLE_HIT_SVG;
                     beep(600, 0.05);
-                    hideMole();
+                    hideMole(btn);
                     popTimer = setTimeout(popMole, 180);
                 });
             })(i, b);
@@ -1998,17 +2184,18 @@
             holes.push(b);
         }
 
-        function hideMole() {
-            if (moleAt >= 0) holes[moleAt].textContent = '🕳️';
+        function hideMole(exceptBtn) {
+            if (moleAt >= 0 && holes[moleAt] !== exceptBtn) holes[moleAt].innerHTML = MOLE_HOLE_SVG;
             moleAt = -1;
             if (popTimer) { clearTimeout(popTimer); popTimer = null; }
         }
         function popMole() {
             if (!running) return;
             hideMole();
+            for (var k = 0; k < 9; k++) holes[k].innerHTML = MOLE_HOLE_SVG;
             var next = rnd(9);
             moleAt = next;
-            holes[next].textContent = '🐹';
+            holes[next].innerHTML = MOLE_UP_SVG;
             var upFor = Math.max(450, 900 - scoreNow * 18);
             popTimer = setTimeout(function () {
                 hideMole();
@@ -2023,9 +2210,9 @@
             if (scoreNow > (s.best || 0)) {
                 s.best = scoreNow; saveScore('mole', s);
                 root.querySelector('#moBest').textContent = scoreNow;
-                root.querySelector('#moStatus').textContent = '🏆 ' + gt('رقم قياسي: ', 'New record: ') + scoreNow;
+                stat(statusEl, gt('رقم قياسي: ', 'New record: ') + scoreNow, 'ok');
             } else {
-                root.querySelector('#moStatus').textContent = '⏰ ' + gt('انتهى الوقت! النتيجة: ', 'Time\'s up! Score: ') + scoreNow;
+                stat(statusEl, gt('انتهى الوقت! النتيجة: ', 'Time\'s up! Score: ') + scoreNow);
             }
             root.querySelector('#moStart').textContent = gt('العب تاني', 'Play again');
         }
@@ -2034,12 +2221,12 @@
             hideMole();
             scoreNow = 0; left = DURATION; running = true;
             root.querySelector('#moScore').textContent = '0';
-            root.querySelector('#moTime').textContent = left;
-            root.querySelector('#moStatus').textContent = gt('يلا! 🔨', 'Go! 🔨');
+            root.querySelector('#moTime').textContent = left + 's';
+            stat(statusEl, gt('يلا!', 'Go!'));
             popMole();
             clockTimer = setInterval(function () {
                 left--;
-                root.querySelector('#moTime').textContent = left;
+                root.querySelector('#moTime').textContent = left + 's';
                 if (left <= 0) finish();
             }, 1000);
         }
@@ -2053,19 +2240,19 @@
         };
     }
 
-    /* ═══════ 14) FLAPPY ═══════ */
+    /* ═══════ 14) FLAPPY (custom drawn bird) ═══════ */
     function startFlappy(root) {
         var W, H, cv, ctx, raf = null, running = false;
-        var bird, pipes, scoreNow;
+        var bird, pipes, scoreNow, wingT = 0;
         var GRAV = 0.45, JUMP = -7.4, PIPE_W = 52, GAP = 150, SPEED = 2.6, SPACING = 190;
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>' + gt('النقاط', 'Score') + ': <b id="flScore">0</b></span>'
-            + '<span>🏆 <b id="flBest">' + (score('flappy').best || 0) + '</b></span>'
+            + srItem('star', gt('النقاط', 'Score'), 'flScore', '0')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'flBest', score('flappy').best || 0)
             + '</div>'
             + '<canvas id="flCanvas" class="sn-canvas"></canvas>'
-            + '<div class="gm-status" id="flStatus">' + gt('اضغط الشاشة أو المسطرة للطيران', 'Tap the screen or press Space to fly') + '</div>'
+            + '<div class="gm-status" id="flStatus"></div>'
             + '<button class="gm-btn" id="flStart">' + gt('ابدأ', 'Start') + '</button>';
 
         cv = root.querySelector('#flCanvas');
@@ -2074,6 +2261,8 @@
         H = Math.round(W * 1.15);
         cv.width = W;
         cv.height = H;
+        var statusEl = root.querySelector('#flStatus');
+        stat(statusEl, gt('اضغط الشاشة أو المسطرة للطيران', 'Tap the screen or press Space to fly'));
 
         function reset() {
             bird = { x: W * 0.28, y: H * 0.45, vy: 0, r: 11 };
@@ -2088,27 +2277,66 @@
         function flap() {
             if (!running) return;
             bird.vy = JUMP;
+            wingT = 6;
+        }
+        function drawBird() {
+            var tilt = Math.max(-0.45, Math.min(0.6, bird.vy * 0.06));
+            ctx.save();
+            ctx.translate(bird.x, bird.y);
+            ctx.rotate(tilt);
+            // body
+            ctx.fillStyle = '#e8b93d';
+            ctx.beginPath();
+            ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
+            ctx.fill();
+            // wing (flaps briefly after each tap)
+            ctx.fillStyle = '#d9a52e';
+            ctx.beginPath();
+            ctx.ellipse(-3, wingT > 0 ? -2 : 2, 5.5, 3.4, -0.4, 0, Math.PI * 2);
+            ctx.fill();
+            // eye
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(4.2, -3.4, 2.6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#26221c';
+            ctx.beginPath();
+            ctx.arc(4.9, -3.4, 1.3, 0, Math.PI * 2);
+            ctx.fill();
+            // beak
+            ctx.fillStyle = '#f2913d';
+            ctx.beginPath();
+            ctx.moveTo(bird.r - 2, -1.5);
+            ctx.lineTo(bird.r + 6, 0.5);
+            ctx.lineTo(bird.r - 2, 2.8);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            if (wingT > 0) wingT--;
         }
         function drawAll() {
             ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = cssVar('--accent', '#3e8e7e');
+            var acc = cssVar('--accent', '#3e8e7e');
+            var accDeep = cssVar('--accent2', '#357a6c');
             for (var i = 0; i < pipes.length; i++) {
                 var p = pipes[i];
+                ctx.fillStyle = acc;
                 ctx.fillRect(p.x, 0, PIPE_W, p.top);
                 ctx.fillRect(p.x, p.top + GAP, PIPE_W, H - p.top - GAP);
+                ctx.fillStyle = accDeep;
+                ctx.fillRect(p.x - 3, p.top - 11, PIPE_W + 6, 11);
+                ctx.fillRect(p.x - 3, p.top + GAP, PIPE_W + 6, 11);
             }
-            ctx.font = (bird.r * 2.2) + 'px serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('🐤', bird.x, bird.y);
+            drawBird();
         }
         function gameOver() {
             running = false;
             if (raf) { cancelAnimationFrame(raf); raf = null; }
+            beep(150, 0.25, 'square');
             var s = score('flappy');
             if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('flappy', s); root.querySelector('#flBest').textContent = scoreNow; }
-            root.querySelector('#flStatus').textContent = '💀 ' + gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow;
+            stat(statusEl, gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             root.querySelector('#flStart').textContent = gt('العب تاني', 'Play again');
         }
         function loop() {
@@ -2122,6 +2350,7 @@
                 if (!p.passed && p.x + PIPE_W < bird.x - bird.r) {
                     p.passed = true;
                     scoreNow++;
+                    beep(700, 0.05);
                     root.querySelector('#flScore').textContent = scoreNow;
                 }
                 if (p.x + PIPE_W < -20) pipes.splice(i, 1);
@@ -2140,7 +2369,7 @@
             if (raf) cancelAnimationFrame(raf);
             reset();
             running = true;
-            root.querySelector('#flStatus').textContent = gt('طير! 🐤', 'Fly! 🐤');
+            stat(statusEl, gt('طير!', 'Fly!'));
             root.querySelector('#flStart').textContent = gt('إعادة', 'Restart');
             raf = requestAnimationFrame(loop);
         }
@@ -2149,7 +2378,11 @@
                 if (running) { e.preventDefault(); flap(); }
             }
         }
-        function onTap(e) { e.preventDefault(); flap(); }
+        function onTap(e) {
+            e.preventDefault();
+            if (!running) { start(); return; } // tap the board to start
+            flap();
+        }
         document.addEventListener('keydown', onKey);
         cv.addEventListener('pointerdown', onTap);
 
@@ -2166,26 +2399,30 @@
     }
 
     /* ═══════ 15) MINESWEEPER ═══════ */
+    var MINE_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="6" fill="currentColor"/><line x1="12" y1="3.5" x2="12" y2="7"/><line x1="12" y1="19" x2="12" y2="22.5"/><line x1="2.5" y1="13" x2="6" y2="13"/><line x1="18" y1="13" x2="21.5" y2="13"/><line x1="5.3" y1="6.3" x2="7.8" y2="8.8"/><line x1="16.2" y1="17.2" x2="18.7" y2="19.7"/><line x1="18.7" y1="6.3" x2="16.2" y2="8.8"/><line x1="7.8" y1="17.2" x2="5.3" y2="19.7"/></svg>';
+    var FLAG_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d9534f" stroke-width="2.2" stroke-linecap="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5" fill="#d9534f"/></svg>';
     function startMines(root) {
         var N = 9, MINES = 10;
         var cells, opened, flagMode, started, over, secs, timer = null;
 
         root.innerHTML =
             '<div class="gm-score-row">'
-            + '<span>💣 <b>' + MINES + '</b></span>'
-            + '<span>⏱ <b id="mnTime">0</b>s</span>'
-            + '<span>🏆 <b id="mnBest">' + (score('mines').best ? score('mines').best + 's' : '—') + '</b></span>'
+            + srItem('mines', gt('ألغام', 'Mines'), 'mnMines', MINES)
+            + srItem('clock', gt('الوقت', 'Time'), 'mnTime', '0s')
+            + srItem('trophy', gt('الأفضل', 'Best'), 'mnBest', score('mines').best ? score('mines').best + 's' : '—')
             + '</div>'
             + '<div class="mn-tools">'
-            + '<button class="mn-flag" id="mnFlag">🚩 ' + gt('وضع الأعلام', 'Flag mode') + '</button>'
+            + '<button class="mn-flag" id="mnFlag">' + ic('flag', 13) + ' ' + gt('وضع الأعلام', 'Flag mode') + '</button>'
             + '</div>'
-            + '<div class="mn-grid" id="mnGrid" dir="ltr"></div>'
-            + '<div class="gm-status" id="mnStatus">' + gt('اكشف كل الخانات الآمنة — كليك يمين أو وضع الأعلام للتعليم', 'Clear all safe cells — right-click or flag mode to mark') + '</div>'
+            + '<div class="mn-grid" id="mnGrid"></div>'
+            + '<div class="gm-status" id="mnStatus"></div>'
             + '<button class="gm-btn" id="mnReset">' + gt('لعبة جديدة', 'New game') + '</button>';
 
         var gridEl = root.querySelector('#mnGrid');
         var statusEl = root.querySelector('#mnStatus');
         var flagBtn = root.querySelector('#mnFlag');
+        var HINT = gt('اكشف الخانات الآمنة — ضغطة مطوّلة أو وضع الأعلام للتعليم', 'Clear safe cells — long-press or flag mode to mark');
+        stat(statusEl, HINT);
 
         function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
         function neighbors(i) {
@@ -2222,8 +2459,8 @@
             var c = cells[i];
             var btn = gridEl.children[i];
             btn.className = 'mn-cell' + (c.open ? ' open n' + Math.min(c.n, 4) : '') + (over && c.mine ? ' boom' : '');
-            if (c.open) btn.textContent = c.mine ? '💣' : (c.n || '');
-            else btn.textContent = c.flag ? '🚩' : '';
+            if (c.open) btn.innerHTML = c.mine ? MINE_SVG : (c.n || '');
+            else btn.innerHTML = c.flag ? FLAG_SVG : '';
         }
         function paintAll() { for (var i = 0; i < N * N; i++) paintCell(i); }
         function reveal(i) {
@@ -2248,18 +2485,19 @@
             paintAll();
             gridEl.children[atIdx].classList.add('hit');
             beep(110, 0.4, 'square');
-            statusEl.textContent = '💥 ' + gt('لغم! حظ أوفر المرة الجاية', 'Boom! Better luck next time');
+            stat(statusEl, gt('لغم! حظ أوفر المرة الجاية', 'Boom! Better luck next time'), 'bad');
         }
         function checkWin() {
             if (opened === N * N - MINES) {
                 over = true;
                 stopTimer();
-                statusEl.textContent = '🎉 ' + gt('كسبت في ', 'You won in ') + secs + 's';
                 var s = score('mines');
                 if (!s.best || secs < s.best) {
                     s.best = secs; saveScore('mines', s);
                     root.querySelector('#mnBest').textContent = secs + 's';
-                    statusEl.textContent += ' 🏆';
+                    stat(statusEl, gt('كسبت في ', 'You won in ') + secs + 's — ' + gt('رقم قياسي!', 'new record!'), 'ok');
+                } else {
+                    stat(statusEl, gt('كسبت في ', 'You won in ') + secs + 's', 'ok');
                 }
             }
         }
@@ -2272,7 +2510,7 @@
                 plant(i);
                 timer = setInterval(function () {
                     secs++;
-                    root.querySelector('#mnTime').textContent = secs;
+                    root.querySelector('#mnTime').textContent = secs + 's';
                 }, 1000);
             }
             if (wantFlag) {
@@ -2291,15 +2529,30 @@
             for (var i = 0; i < N * N; i++) cells.push({ mine: false, open: false, flag: false, n: 0 });
             opened = 0; flagMode = false; started = false; over = false; secs = 0;
             flagBtn.classList.remove('on');
-            root.querySelector('#mnTime').textContent = '0';
-            statusEl.textContent = gt('اكشف كل الخانات الآمنة — كليك يمين أو وضع الأعلام للتعليم', 'Clear all safe cells — right-click or flag mode to mark');
+            root.querySelector('#mnTime').textContent = '0s';
+            stat(statusEl, HINT);
             gridEl.innerHTML = '';
             for (var j = 0; j < N * N; j++) {
                 var btn = document.createElement('button');
                 btn.className = 'mn-cell';
                 (function (idx, b) {
-                    b.addEventListener('click', function () { clickCell(idx, flagMode); });
-                    b.addEventListener('contextmenu', function (e) { e.preventDefault(); clickCell(idx, true); });
+                    // long-press = flag (mobile), right-click = flag (desktop)
+                    var lpTimer = null, lpFired = false;
+                    b.addEventListener('pointerdown', function () {
+                        lpFired = false;
+                        lpTimer = setTimeout(function () {
+                            lpFired = true;
+                            clickCell(idx, true);
+                        }, 420);
+                    });
+                    ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) {
+                        b.addEventListener(ev, function () { if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; } });
+                    });
+                    b.addEventListener('click', function () {
+                        if (lpFired) { lpFired = false; return; }
+                        clickCell(idx, flagMode);
+                    });
+                    b.addEventListener('contextmenu', function (e) { e.preventDefault(); });
                 })(j, btn);
                 gridEl.appendChild(btn);
             }
