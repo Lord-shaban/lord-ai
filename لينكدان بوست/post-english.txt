@@ -1,0 +1,15 @@
+Everyone is shipping AI chatbots. I wanted to build one that feels alive.
+
+LORD AI is an Arabic-first assistant where the conversation is the whole app — not a doorway to one.
+
+Ask for a song, and it starts playing inside the message. Ask for a film, and it opens right there. Say you're bored, and a heartbeat later you're mid-game — or handing a friend a code to play you live, in the same window. Nothing to open. Nothing to install. You talk, and things happen.
+
+I built every inch of it by hand — pure JavaScript, no framework, no build step. Every screen, every motion, every icon. It's Arabic-first down to the layout, wrapped in a design system I kept sanding down until it disappeared.
+
+And the hard part was never the model. It was the craft around it: making a dozen moving pieces feel like one calm, seamless thing — steady enough that a single free key quietly serves everyone who shows up.
+
+It's live. Go break it → lord-ai.pages.dev
+
+Tell me what you'd build next.
+
+#WebDevelopment #JavaScript #FrontEnd #AI #ProductDesign #BuildInPublic
