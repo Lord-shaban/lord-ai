@@ -3,9 +3,23 @@
     'use strict';
 
     /* ═══════ CONFIG ═══════ */
-    var API_KEY = 'AQ.Ab' + '8RN6K9TLce5TesKU' + 'QmFENFTSk8zv4h8M-f' + 'Mqs2MgUOjGCvPw';
+    // Key pool: on a 429/quota error the request retries transparently with the
+    // next key (keys must belong to DIFFERENT Google projects — free-tier quota
+    // is per project). Last working key index is remembered in lord_key_i.
+    var API_KEYS = [
+        'AQ.Ab' + '8RN6K9TLce5TesKU' + 'QmFENFTSk8zv4h8M-f' + 'Mqs2MgUOjGCvPw',
+        'AQ.Ab' + '8RN6Kw4l2lRIeHLH' + 'Qx1QxwlOlLc5Uuov0c' + 'b5g5EVoAZNswvA',
+        'AQ.Ab' + '8RN6IopuCcwIXaPYC' + '-8z7PCRDQF_dRZpMM5s' + 'ht4jYn3q8PeA'
+    ];
     var API_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
     var MODEL = 'gemini-3.1-flash-lite';
+    var keyIdx = 0;
+    try { keyIdx = Math.abs(parseInt(JSON.parse(localStorage.getItem('lord_key_i')), 10) || 0) % API_KEYS.length; } catch (e) { }
+    function apiKey() { return API_KEYS[keyIdx]; }
+    function rotateKey() {
+        keyIdx = (keyIdx + 1) % API_KEYS.length;
+        try { localStorage.setItem('lord_key_i', JSON.stringify(keyIdx)); } catch (e) { }
+    }
 
     /* ═══════ MUSIC CATALOG ═══════ */
     // All audio is served from Cloudflare R2 (clean kebab-case names to avoid URL issues).
@@ -727,7 +741,10 @@
             fontToast: { normal: 'حجم الخط: عادي', lg: 'حجم الخط: كبير', sm: 'حجم الخط: صغير' },
             actDupe: 'إنشاء نسخة من المحادثة',
             copyWord: 'نسخة',
-            duped: 'تم إنشاء نسخة من المحادثة'
+            duped: 'تم إنشاء نسخة من المحادثة',
+            rlMin: 'رسائل كتير ورا بعض — استنى {s} ثانية وابعت تاني',
+            rlDay: 'خلّصت رسائل النهارده ({n}) — بترجع بعد منتصف الليل',
+            rlNear: 'فاضل لك {n} رسائل النهارده'
         },
         en: {
             newChat: 'New chat',
@@ -817,7 +834,10 @@
             fontToast: { normal: 'Font size: normal', lg: 'Font size: large', sm: 'Font size: small' },
             actDupe: 'Duplicate this chat',
             copyWord: 'copy',
-            duped: 'Chat duplicated'
+            duped: 'Chat duplicated',
+            rlMin: 'Too many messages at once — wait {s}s and try again',
+            rlDay: 'Daily message limit reached ({n}) — resets after midnight',
+            rlNear: '{n} messages left for today'
         }
     };
 
@@ -1286,6 +1306,7 @@
             if (busy) return;
             var c = active();
             if (!c || c.msgs.length < 2) return;
+            if (!rlGate()) return;
             c.msgs.pop();
             saveAll();
             renderChat();
@@ -2003,12 +2024,15 @@
        After the first exchange, ask the model for a short smart title
        (fire-and-forget: any failure silently keeps the truncated title) */
     function aiAutoTitle(c, userText, aiText) {
+        // nice-to-have request — skip it entirely when the budget is tight
+        if (!rlHeadroom(8)) return;
         try {
+            rlBump();
             fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + API_KEY
+                    'Authorization': 'Bearer ' + apiKey()
                 },
                 body: JSON.stringify({
                     model: MODEL,
@@ -2217,6 +2241,76 @@
         return text.slice(0, 3400) + '\n[…تم اختصار جزء طويل من الرسالة…]\n' + text.slice(-2200);
     }
 
+    /* ── Per-user rate limiting ──
+       The whole site shares ONE Google free-tier key (15 RPM / 500 RPD total),
+       so each browser gets a local budget to keep one heavy user from burning
+       the shared day quota. State in lord_rl, resets at local midnight. */
+    var RL_PER_MIN = 4;    // user requests per rolling minute
+    var RL_PER_DAY = 40;   // user requests per local day
+    var rlCoolUntil = 0;   // hard cooldown after a real 429 from Google
+
+    function rlToday() {
+        var d = new Date();
+        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+    function rlLoad() {
+        var s = get('lord_rl', null);
+        if (!s || s.d !== rlToday()) s = { d: rlToday(), n: 0, m: [] };
+        if (!s.m) s.m = [];
+        return s;
+    }
+    function rlBump() {
+        var s = rlLoad();
+        s.n++;
+        s.m.push(Date.now());
+        while (s.m.length && Date.now() - s.m[0] > 60000) s.m.shift();
+        save('lord_rl', s);
+    }
+    function rlCheck() {
+        var now = Date.now();
+        if (now < rlCoolUntil) return { ok: false, wait: Math.ceil((rlCoolUntil - now) / 1000) };
+        var s = rlLoad();
+        if (s.n >= RL_PER_DAY) return { ok: false, day: true };
+        var recent = [];
+        for (var i = 0; i < s.m.length; i++) if (now - s.m[i] <= 60000) recent.push(s.m[i]);
+        if (recent.length >= RL_PER_MIN) {
+            return { ok: false, wait: Math.max(1, Math.ceil((60000 - (now - recent[0])) / 1000)) };
+        }
+        return { ok: true, left: RL_PER_DAY - s.n };
+    }
+    /* one analytics write per block-kind per day (visible in the admin errors) */
+    function rlLogBlock(kind) {
+        var s = rlLoad();
+        var flag = 'b_' + kind;
+        if (s[flag]) return;
+        s[flag] = 1;
+        save('lord_rl', s);
+        try { trackError('rl_block_' + kind); } catch (e) { }
+    }
+    /* gate user-facing sends: blocked → toast, typed text stays in the box */
+    function rlGate() {
+        var r = rlCheck();
+        if (r.ok) {
+            // heads-up shortly before the daily wall (left counts BEFORE this send)
+            if (r.left === 6) toast(t('rlNear').replace('{n}', '5'), 'warn');
+            return true;
+        }
+        if (r.day) {
+            toast(t('rlDay').replace('{n}', '' + RL_PER_DAY), 'clock');
+            rlLogBlock('day');
+        } else {
+            toast(t('rlMin').replace('{s}', '' + r.wait), 'clock');
+            rlLogBlock('min');
+        }
+        return false;
+    }
+    /* headroom for optional background calls (auto-title) — never spend the
+       user's last messages or the shared quota on nice-to-haves */
+    function rlHeadroom(min) {
+        var r = rlCheck();
+        return !!(r.ok && r.left > (min || 8));
+    }
+
     function callAPI(msgs) {
         var recent = msgs.slice(-MAX_HISTORY);
         var contents = [{ role: 'system', content: buildSystemPrompt(recent) }];
@@ -2233,32 +2327,44 @@
             });
         }
 
-        ctrl = new AbortController();
+        rlBump(); // one user action = one budget unit (key-failover retries are free)
 
-        return fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + API_KEY
-            },
-            signal: ctrl.signal,
-            body: JSON.stringify({
-                model: MODEL,
-                messages: contents,
-                stream: true,
-                temperature: 0.6,
-                max_tokens: 2048,
-                top_p: 0.85
-            })
-        }).then(function (res) {
-            if (!res.ok) {
-                return res.json().catch(function () { return {}; }).then(function (err) {
-                    var msg = err && err.error ? err.error.message : t('errConn') + ' (HTTP ' + res.status + ')';
-                    throw new Error(msg);
-                });
-            }
-            return res;
-        });
+        var triedKeys = 0;
+        function attempt() {
+            ctrl = new AbortController();
+            return fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + apiKey()
+                },
+                signal: ctrl.signal,
+                body: JSON.stringify({
+                    model: MODEL,
+                    messages: contents,
+                    stream: true,
+                    temperature: 0.6,
+                    max_tokens: 2048,
+                    top_p: 0.85
+                })
+            }).then(function (res) {
+                if (!res.ok) {
+                    return res.json().catch(function () { return {}; }).then(function (err) {
+                        var msg = err && err.error ? err.error.message : t('errConn') + ' (HTTP ' + res.status + ')';
+                        // quota hit on this key → fail over to the next key transparently
+                        if (triedKeys < API_KEYS.length - 1
+                            && (res.status === 429 || /rate|quota|exhaust/i.test(msg))) {
+                            triedKeys++;
+                            rotateKey();
+                            return attempt();
+                        }
+                        throw new Error(msg);
+                    });
+                }
+                return res;
+            });
+        }
+        return attempt();
     }
 
     function readStream(res, msgEl) {
@@ -2330,8 +2436,11 @@
     /* ═══════ ERROR HANDLING ═══════ */
     function handleError(err, c) {
         var errText = '⚠️ ' + (err.message || t('errUnknown'));
-        if (err.message && err.message.indexOf('rate') !== -1) {
+        // Google rate/quota errors → friendly message + 30s local cooldown so
+        // rapid retries don't keep burning the shared key
+        if (err.message && /rate|429|quota|exhaust/i.test(err.message)) {
             errText = t('errRate');
+            rlCoolUntil = Date.now() + 30000;
         }
         var aiMsg = { role: 'assistant', content: errText };
         c.msgs.push(aiMsg);
@@ -2381,6 +2490,9 @@
                 return;
             }
         }
+
+        // per-user budget: blocked → toast only, the typed text stays in the box
+        if (!rlGate()) return;
 
         var userMsg = { role: 'user', content: text, ts: Date.now() };
         c.msgs.push(userMsg);

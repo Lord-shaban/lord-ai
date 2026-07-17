@@ -1324,7 +1324,7 @@ button{font-family:inherit}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast .toast-ic{display:flex;flex-shrink:0;color:var(--accent-hi)}
-.toast .toast-tx{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.toast .toast-tx{min-width:0;line-height:1.55}
 
 /* ═══════════════════════════════════════════════════
    SHORTCUTS MODAL
