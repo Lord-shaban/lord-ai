@@ -88,6 +88,84 @@
         } catch (e) { }
     }
 
+    /* ═══════ VISUAL HELPERS (premium canvas + celebrations) ═══════ */
+    /* lighten (amt>0) or darken (amt<0) a hex color, amt in -1..1 */
+    function shade(hex, amt) {
+        hex = ('' + hex).replace('#', '');
+        if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        var n = parseInt(hex, 16);
+        var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+        function c(x) { return Math.max(0, Math.min(255, Math.round(x + amt * 255))); }
+        return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
+    }
+    /* rounded-rect path (works everywhere; ctx.roundRect isn't universal) */
+    function rr(ctx, x, y, w, h, r) {
+        r = Math.max(0, Math.min(r, w / 2, h / 2));
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+    }
+    /* device-pixel-ratio aware canvas sizing (crisp on retina/mobile) */
+    function fitCanvas(cv, ctx, cssW, cssH) {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        cv.style.width = cssW + 'px';
+        cv.style.height = cssH + 'px';
+        cv.width = Math.round(cssW * dpr);
+        cv.height = Math.round(cssH * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return dpr;
+    }
+    /* confetti celebration burst inside a host element */
+    var BURST_COLORS = ['#f2b134', '#e8544a', '#3fb0c9', '#57c785', '#9d6ee0', '#f47ea0', '#ffd166'];
+    function burst(host, count) {
+        if (!host) return;
+        var layer = document.createElement('div');
+        layer.className = 'gm-burst';
+        var n = count || 28;
+        for (var i = 0; i < n; i++) {
+            var p = document.createElement('i');
+            var ang = Math.random() * Math.PI * 2;
+            var dist = 46 + Math.random() * 78;
+            p.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+            p.style.setProperty('--dy', (Math.sin(ang) * dist - 46).toFixed(1) + 'px');
+            p.style.setProperty('--rot', (Math.random() * 720 - 360).toFixed(0) + 'deg');
+            p.style.background = BURST_COLORS[i % BURST_COLORS.length];
+            p.style.animationDelay = (Math.random() * 0.09).toFixed(2) + 's';
+            if (i % 3 === 0) p.style.borderRadius = '50%';
+            layer.appendChild(p);
+        }
+        host.appendChild(layer);
+        setTimeout(function () { if (layer.parentNode) layer.parentNode.removeChild(layer); }, 1300);
+    }
+    /* best-effort real photo background (hybrid look) — degrades to the
+       CSS gradient/texture if the image is slow or the link ever dies */
+    var PHOTO_OK = {};
+    function preloadBg(frame, key, url) {
+        if (!frame || !url) return;
+        if (PHOTO_OK[key] === false) return;
+        if (PHOTO_OK[key]) { frame.style.setProperty('--photo', 'url("' + url + '")'); frame.classList.add('has-photo'); return; }
+        var img = new Image();
+        img.onload = function () {
+            PHOTO_OK[key] = true;
+            if (document.contains(frame)) { frame.style.setProperty('--photo', 'url("' + url + '")'); frame.classList.add('has-photo'); }
+        };
+        img.onerror = function () { PHOTO_OK[key] = false; };
+        img.src = url;
+    }
+    /* themed frame backdrops — a soft real-photo wash behind board games.
+       Picsum is reliable + CORS-friendly; grayscale+blur makes any image read
+       as a tasteful neutral texture. Always degrades to the CSS gradient veil.
+       Swap these URLs for your own (e.g. R2-hosted) art anytime. */
+    var GAME_PHOTOS = {
+        xo: 'https://picsum.photos/seed/lordxo/600/400?grayscale&blur=2',
+        c4: 'https://picsum.photos/seed/lordc4/600/400?grayscale&blur=2',
+        memory: 'https://picsum.photos/seed/lordmem/600/400?grayscale&blur=2'
+    };
+
     /* ═══════ SVG ICON SYSTEM (no emojis) ═══════ */
     var ICONS = {
         hub: '<line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15.2" cy="13.2" r=".6" fill="currentColor"/><circle cx="17.8" cy="10.8" r=".6" fill="currentColor"/><path d="M17.3 6H6.7a4 4 0 0 0-4 3.6C2.6 10.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.4-1.4a2 2 0 0 1 1.4-.6h4.4a2 2 0 0 1 1.4.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.5-.6-5.6-.7-6.4a4 4 0 0 0-4-3.6z"/>',
@@ -114,7 +192,14 @@
         flag: '<path d="M4 21V4"/><path d="M4 4h12l-2 4 2 4H4"/>',
         copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
         star: '<polygon points="12 3 14.5 9 21 9.5 16 13.8 17.7 20 12 16.5 6.3 20 8 13.8 3 9.5 9.5 9"/>',
-        move: '<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>'
+        move: '<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>',
+        chevUp: '<polyline points="6 15 12 9 18 15"/>',
+        chevDown: '<polyline points="6 9 12 15 18 9"/>',
+        chevLeft: '<polyline points="15 6 9 12 15 18"/>',
+        chevRight: '<polyline points="9 6 15 12 9 18"/>',
+        rotate: '<path d="M21 12a9 9 0 1 1-2.6-6.3"/><polyline points="21 3.5 21 9 15.5 9"/>',
+        drop: '<polyline points="6 4 12 10 18 4"/><polyline points="6 11 12 17 18 11"/>',
+        close: '<line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/>'
     };
     function ic(name, size) {
         return '<svg class="gi" width="' + (size || 18) + '" height="' + (size || 18)
@@ -174,6 +259,11 @@
         var q = (name || '').trim().toLowerCase();
         if (!q) return null;
         var i, j, g, names;
+        // pass 0: internal id is always an exact hit (hub/poster pass g.id;
+        // e.g. 'c4' isn't in Connect-4's name/aliases, so this must catch it)
+        for (i = 0; i < GAMES.length; i++) {
+            if (GAMES[i].id.toLowerCase() === q) return GAMES[i];
+        }
         // pass 1: exact match wins ("ذاكرة الأرقام" must not fall into "الذاكرة")
         for (i = 0; i < GAMES.length; i++) {
             g = GAMES[i];
@@ -387,13 +477,16 @@
             '<div class="gf-head"><span class="gf-title">' + titleHTML + '</span>'
             + '<span class="gf-acts">'
             + (isHub ? '<button class="gf-hbtn" data-act="hub" title="' + gt('كل الألعاب', 'All games') + '">' + ic('hub', 15) + '</button>' : '')
-            + '<button class="gf-hbtn" data-act="close" title="' + gt('إغلاق', 'Close') + '">✕</button>'
+            + '<button class="gf-hbtn" data-act="close" title="' + gt('إغلاق', 'Close') + '">' + ic('close', 15) + '</button>'
             + '</span></div>'
             + '<div class="gf-body"></div>';
         frame.querySelector('.gf-acts').addEventListener('click', function (e) {
             var b = e.target.closest('button');
             if (!b) return;
             unmountFrame(frame);
+            frame.removeAttribute('data-active');
+            frame.classList.remove('has-photo');
+            frame.style.removeProperty('--photo');
             if (b.getAttribute('data-act') === 'hub') {
                 frame.classList.add('gf-hubframe');
                 frame.innerHTML = hubInner(frame.id);
@@ -409,6 +502,8 @@
         sweep();
         unmountFrame(frame);
         buildChrome(frame, (net ? ic('globe', 15) : gameIcon(g, 15)) + ' <span>' + esc(lang() === 'en' ? g.en : g.name) + '</span>');
+        frame.setAttribute('data-active', net ? 'net-' + g.id : g.id);
+        if (GAME_PHOTOS[g.id]) preloadBg(frame, g.id, GAME_PHOTOS[g.id]);
         var body = frame.querySelector('.gf-body');
         try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame(g.name + (net ? ' أونلاين' : '')); } catch (e) { }
         var inst = net ? startNetGame(body, g, null) : STARTERS[g.id](body);
@@ -422,6 +517,7 @@
         sweep();
         unmountFrame(frame);
         buildChrome(frame, ic('globe', 15) + ' <span>' + esc(code) + '</span>');
+        frame.setAttribute('data-active', 'net');
         var body = frame.querySelector('.gf-body');
         try { if (window.LORD && window.LORD.trackGame) window.LORD.trackGame('انضمام أونلاين'); } catch (e) { }
         var inst = startNetGame(body, null, { code: code });
@@ -516,6 +612,7 @@
                     var frame = body.closest('.game-frame');
                     var gg = matchGame(gid);
                     if (frame && gg) {
+                        frame.setAttribute('data-active', 'net-' + gid);
                         var tt = frame.querySelector('.gf-title');
                         if (tt) tt.innerHTML = ic('globe', 15) + ' <span>' + esc(lang() === 'en' ? gg.en : gg.name) + '</span>';
                     }
@@ -780,8 +877,8 @@
             var w = xoWin(board);
             if (w) {
                 over = true;
-                if (w.p === HU) { bumpWLD('xo', 'w'); stat(statusEl, gt('مبروك! كسبت', 'You win!'), 'ok'); }
-                else { bumpWLD('xo', 'l'); stat(statusEl, gt('الكمبيوتر كسب!', 'Computer wins!'), 'bad'); }
+                if (w.p === HU) { bumpWLD('xo', 'w'); stat(statusEl, gt('مبروك! كسبت', 'You win!'), 'ok'); beep(660, 0.12); beep(880, 0.14); burst(root); }
+                else { bumpWLD('xo', 'l'); stat(statusEl, gt('الكمبيوتر كسب!', 'Computer wins!'), 'bad'); beep(160, 0.3, 'square'); }
                 paintScore();
                 w.line.forEach(function (i) { boardEl.children[i].classList.add('win'); });
             } else if (!empties(board).length) {
@@ -881,8 +978,8 @@
         function finish(w) {
             over = true;
             if (w) {
-                if (w.p === HU) { bumpWLD('c4', 'w'); stat(statusEl, gt('كسبت!', 'You win!'), 'ok'); }
-                else { bumpWLD('c4', 'l'); stat(statusEl, gt('الكمبيوتر كسب!', 'Computer wins!'), 'bad'); }
+                if (w.p === HU) { bumpWLD('c4', 'w'); stat(statusEl, gt('كسبت!', 'You win!'), 'ok'); beep(660, 0.12); beep(880, 0.14); burst(root); }
+                else { bumpWLD('c4', 'l'); stat(statusEl, gt('الكمبيوتر كسب!', 'Computer wins!'), 'bad'); beep(160, 0.3, 'square'); }
                 paint(w.line);
             } else {
                 bumpWLD('c4', 'd');
@@ -978,8 +1075,8 @@
             revealTimer = setTimeout(function () {
                 cpuEl.innerHTML = rpsIcon(cpu.id);
                 if (mine === cpu.id) { bumpWLD('rps', 'd'); stat(statusEl, gt('تعادل!', 'Draw!')); }
-                else if (RPS_BEATS[mine] === cpu.id) { bumpWLD('rps', 'w'); stat(statusEl, gt('كسبت!', 'You win!'), 'ok'); }
-                else { bumpWLD('rps', 'l'); stat(statusEl, gt('خسرت!', 'You lose!'), 'bad'); }
+                else if (RPS_BEATS[mine] === cpu.id) { bumpWLD('rps', 'w'); stat(statusEl, gt('كسبت!', 'You win!'), 'ok'); beep(660, 0.1); beep(880, 0.12); burst(root, 16); }
+                else { bumpWLD('rps', 'l'); stat(statusEl, gt('خسرت!', 'You lose!'), 'bad'); beep(160, 0.25, 'square'); }
                 paintScore();
                 revealing = false;
             }, 550);
@@ -1063,6 +1160,7 @@
                     var s = score('memory');
                     if (!s.best || moves < s.best) { s.best = moves; saveScore('memory', s); root.querySelector('#mmBest').textContent = moves; }
                     stat(statusEl, gt('كسبت في ', 'You won in ') + moves + ' ' + gt('نقلة خلال ', 'moves in ') + secs + 's', 'ok');
+                    beep(660, 0.12); beep(880, 0.14); burst(root);
                 }
             } else {
                 lock = true;
@@ -1305,6 +1403,7 @@
                         saveScore('reaction', s);
                         root.querySelector('#rcBest').textContent = avg + 'ms';
                         stat(statusEl, gt('رقم قياسي جديد!', 'New record!'), 'ok');
+                        beep(660, 0.12); beep(880, 0.14); burst(root);
                     } else {
                         stat(statusEl, gt('أفضل متوسط: ', 'Best avg: ') + s.best + 'ms');
                     }
@@ -1382,6 +1481,7 @@
                 s.best = scoreNow; saveScore('math', s);
                 root.querySelector('#maBest').textContent = scoreNow;
                 stat(statusEl, gt('رقم قياسي: ', 'New record: ') + scoreNow, 'ok');
+                burst(root);
             } else {
                 stat(statusEl, gt('انتهى الوقت! النتيجة: ', 'Time\'s up! Score: ') + scoreNow);
             }
@@ -1417,8 +1517,8 @@
             + '<canvas id="snCanvas" class="sn-canvas"></canvas>'
             + '<div class="gm-status" id="snStatus"></div>'
             + '<div class="sn-pad" id="snPad">'
-            + '<button data-d="up">▲</button>'
-            + '<div><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button></div>'
+            + '<button data-d="up">' + ic('chevUp', 20) + '</button>'
+            + '<div><button data-d="left">' + ic('chevLeft', 20) + '</button><button data-d="down">' + ic('chevDown', 20) + '</button><button data-d="right">' + ic('chevRight', 20) + '</button></div>'
             + '</div>'
             + '<button class="gm-btn" id="snStart">' + gt('ابدأ', 'Start') + '</button>';
 
@@ -1426,8 +1526,8 @@
         var ctx = cv.getContext('2d');
         var size = Math.min(340, (root.clientWidth || 320) - 8);
         var cell = Math.floor(size / N);
-        cv.width = cell * N;
-        cv.height = cell * N;
+        var CW = cell * N, CH = cell * N;
+        fitCanvas(cv, ctx, CW, CH);
         var statusEl = root.querySelector('#snStatus');
         stat(statusEl, gt('الأسهم أو السحب أو الأزرار للتحكم', 'Arrows, swipe, or buttons to steer'));
 
@@ -1445,47 +1545,51 @@
             }
         }
         function draw() {
-            var bg = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
             var acc = cssVar('--accent', '#3e8e7e');
-            ctx.fillStyle = bg;
-            ctx.fillRect(0, 0, cv.width, cv.height);
-            // apple
-            ctx.fillStyle = '#e05d5d';
-            ctx.beginPath();
-            ctx.arc(food[0] * cell + cell / 2, food[1] * cell + cell / 2, cell / 2 - 2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = '#2f9e6e';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(food[0] * cell + cell / 2, food[1] * cell + 3);
-            ctx.lineTo(food[0] * cell + cell / 2 + 3, food[1] * cell);
-            ctx.stroke();
-            // body
-            for (var i = 0; i < snake.length; i++) {
-                ctx.fillStyle = i === 0 ? acc : acc + 'cc';
-                ctx.beginPath();
-                if (ctx.roundRect) {
-                    ctx.roundRect(snake[i][0] * cell + 1, snake[i][1] * cell + 1, cell - 2, cell - 2, 4);
-                    ctx.fill();
-                } else {
-                    ctx.fillRect(snake[i][0] * cell + 1, snake[i][1] * cell + 1, cell - 2, cell - 2);
-                }
+            // board + subtle checker grid
+            ctx.fillStyle = isDark() ? '#11241d' : '#e6f1eb';
+            ctx.fillRect(0, 0, CW, CH);
+            ctx.fillStyle = isDark() ? 'rgba(255,255,255,.022)' : 'rgba(0,0,0,.028)';
+            for (var gy = 0; gy < N; gy++) for (var gx = 0; gx < N; gx++) {
+                if ((gx + gy) % 2 === 0) ctx.fillRect(gx * cell, gy * cell, cell, cell);
             }
-            // eyes on the head, offset toward the travel direction
+            // apple with glow + highlight
+            var ax = food[0] * cell + cell / 2, ay = food[1] * cell + cell / 2, arad = cell / 2 - 2;
+            ctx.save();
+            ctx.shadowColor = 'rgba(224,69,63,.55)'; ctx.shadowBlur = 12;
+            var ag = ctx.createRadialGradient(ax - arad * 0.3, ay - arad * 0.3, 1, ax, ay, arad);
+            ag.addColorStop(0, '#ff8f80'); ag.addColorStop(1, '#d9453f');
+            ctx.fillStyle = ag;
+            ctx.beginPath(); ctx.arc(ax, ay, arad, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+            ctx.fillStyle = '#3fae78';
+            ctx.beginPath(); ctx.ellipse(ax + 2, ay - arad - 0.5, 2.6, 1.5, -0.7, 0, Math.PI * 2); ctx.fill();
+            // snake body — rounded, gradient darkening toward the tail
+            for (var i = snake.length - 1; i >= 0; i--) {
+                ctx.fillStyle = i === 0 ? shade(acc, 0.16) : shade(acc, -0.04 - (i / snake.length) * 0.14);
+                rr(ctx, snake[i][0] * cell + 1, snake[i][1] * cell + 1, cell - 2, cell - 2, i === 0 ? 6 : 4);
+                ctx.fill();
+            }
+            // eyes on the head, offset toward travel direction
             var hx = snake[0][0] * cell + cell / 2, hy = snake[0][1] * cell + cell / 2;
             var dv = DIRS[dir] || [1, 0];
-            var px = -dv[1], py = dv[0]; // perpendicular
-            ctx.fillStyle = isDark() ? '#121413' : '#fff';
+            var px = -dv[1], py = dv[0];
+            ctx.fillStyle = '#fff';
             ctx.beginPath();
-            ctx.arc(hx + dv[0] * cell * 0.18 + px * cell * 0.18, hy + dv[1] * cell * 0.18 + py * cell * 0.18, cell * 0.1, 0, Math.PI * 2);
-            ctx.arc(hx + dv[0] * cell * 0.18 - px * cell * 0.18, hy + dv[1] * cell * 0.18 - py * cell * 0.18, cell * 0.1, 0, Math.PI * 2);
+            ctx.arc(hx + dv[0] * cell * 0.15 + px * cell * 0.2, hy + dv[1] * cell * 0.15 + py * cell * 0.2, cell * 0.12, 0, Math.PI * 2);
+            ctx.arc(hx + dv[0] * cell * 0.15 - px * cell * 0.2, hy + dv[1] * cell * 0.15 - py * cell * 0.2, cell * 0.12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#10231b';
+            ctx.beginPath();
+            ctx.arc(hx + dv[0] * cell * 0.22 + px * cell * 0.2, hy + dv[1] * cell * 0.22 + py * cell * 0.2, cell * 0.06, 0, Math.PI * 2);
+            ctx.arc(hx + dv[0] * cell * 0.22 - px * cell * 0.2, hy + dv[1] * cell * 0.22 - py * cell * 0.2, cell * 0.06, 0, Math.PI * 2);
             ctx.fill();
         }
         function gameOver() {
             stopTimer();
             running = false;
             var s = score('snake');
-            if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('snake', s); root.querySelector('#snBest').textContent = scoreNow; }
+            if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('snake', s); root.querySelector('#snBest').textContent = scoreNow; if (scoreNow > 0) burst(root); }
             stat(statusEl, gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             root.querySelector('#snStart').textContent = gt('العب تاني', 'Play again');
         }
@@ -1668,6 +1772,7 @@
             } else if (won) {
                 won = false;
                 stat(statusEl, gt('وصلت 2048! كمّل لو عايز', 'You reached 2048! Keep going'), 'ok');
+                beep(660, 0.12); beep(990, 0.16); burst(root, 40);
             }
         }
         function isStuck() {
@@ -1738,8 +1843,8 @@
             + '<canvas id="tzNext" class="tz-next"></canvas></div>'
             + '<div class="gm-status" id="tzStatus"></div>'
             + '<div class="tz-controls" id="tzCtl">'
-            + '<button data-a="left">◀</button><button data-a="rot">⟳</button><button data-a="right">▶</button>'
-            + '<button data-a="down">▼</button><button data-a="drop">⤓</button>'
+            + '<button data-a="left">' + ic('chevLeft', 20) + '</button><button data-a="rot">' + ic('rotate', 20) + '</button><button data-a="right">' + ic('chevRight', 20) + '</button>'
+            + '<button data-a="down">' + ic('chevDown', 20) + '</button><button data-a="drop">' + ic('drop', 20) + '</button>'
             + '</div>'
             + '<button class="gm-btn" id="tzStart">' + gt('ابدأ', 'Start') + '</button>';
 
@@ -1747,11 +1852,13 @@
         var ctx = cv.getContext('2d');
         var ncv = root.querySelector('#tzNext');
         var nctx = ncv.getContext('2d');
-        var cell = 19;
-        cv.width = COLS * cell;
-        cv.height = ROWS * cell;
-        ncv.width = 4 * 13;
-        ncv.height = 4 * 13;
+        var cell = 20, ncell = 15;
+        var BW = COLS * cell, BH = ROWS * cell, NW = 4 * ncell, NH = 4 * ncell;
+        fitCanvas(cv, ctx, BW, BH);
+        fitCanvas(ncv, nctx, NW, NH);
+        // start with an empty grid so the idle board renders (fixes crash-on-mount)
+        board = [];
+        for (var _b = 0; _b < COLS * ROWS; _b++) board.push('');
         var statusEl = root.querySelector('#tzStatus');
         stat(statusEl, gt('حرّك بالأزرار أو اسحب على اللوحة — نقرة = لف', 'Use the buttons or swipe the board — tap rotates'));
 
@@ -1829,6 +1936,8 @@
             stopTimer();
             running = false;
             over = true;
+            var s = score('tetris');
+            if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('tetris', s); root.querySelector('#tzBest').textContent = scoreNow; if (scoreNow > 0) burst(root); }
             stat(statusEl, gt('انتهت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             root.querySelector('#tzStart').textContent = gt('العب تاني', 'Play again');
         }
@@ -1864,36 +1973,53 @@
             }
             draw();
         }
+        function blockCell(c, px, py, sz, color, ghost) {
+            if (ghost) {
+                c.strokeStyle = color;
+                c.globalAlpha = 0.32;
+                rr(c, px + 2, py + 2, sz - 4, sz - 4, 4);
+                c.lineWidth = 2; c.stroke();
+                c.globalAlpha = 1;
+                return;
+            }
+            var grad = c.createLinearGradient(px, py, px, py + sz);
+            grad.addColorStop(0, shade(color, 0.18));
+            grad.addColorStop(1, shade(color, -0.16));
+            c.fillStyle = grad;
+            rr(c, px + 1, py + 1, sz - 2, sz - 2, 4); c.fill();
+            c.fillStyle = 'rgba(255,255,255,.30)';
+            rr(c, px + 3, py + 3, sz - 6, (sz - 6) * 0.4, 3); c.fill();
+            c.fillStyle = 'rgba(0,0,0,.14)';
+            rr(c, px + 3, py + sz * 0.62, sz - 6, sz * 0.3, 3); c.fill();
+        }
         function draw() {
-            ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
-            ctx.fillRect(0, 0, cv.width, cv.height);
+            ctx.fillStyle = '#0f131b';
+            ctx.fillRect(0, 0, BW, BH);
+            ctx.strokeStyle = 'rgba(255,255,255,.045)';
+            ctx.lineWidth = 1;
+            for (var gx = 1; gx < COLS; gx++) { ctx.beginPath(); ctx.moveTo(gx * cell + 0.5, 0); ctx.lineTo(gx * cell + 0.5, BH); ctx.stroke(); }
+            for (var gy = 1; gy < ROWS; gy++) { ctx.beginPath(); ctx.moveTo(0, gy * cell + 0.5); ctx.lineTo(BW, gy * cell + 0.5); ctx.stroke(); }
             for (var i = 0; i < board.length; i++) {
-                if (board[i]) {
-                    ctx.fillStyle = board[i];
-                    ctx.fillRect((i % COLS) * cell + 1, Math.floor(i / COLS) * cell + 1, cell - 2, cell - 2);
-                }
+                if (board[i]) blockCell(ctx, (i % COLS) * cell, Math.floor(i / COLS) * cell, cell, board[i]);
             }
             if (cur && running) {
-                ctx.fillStyle = cur.c;
-                for (var y = 0; y < cur.m.length; y++) {
-                    for (var x = 0; x < cur.m[y].length; x++) {
-                        if (cur.m[y][x] && cur.y + y >= 0) {
-                            ctx.fillRect((cur.x + x) * cell + 1, (cur.y + y) * cell + 1, cell - 2, cell - 2);
-                        }
-                    }
-                }
+                var gy2 = cur.y;
+                while (!collide(cur.x, gy2 + 1, cur.m)) gy2++;
+                var y, x;
+                for (y = 0; y < cur.m.length; y++) for (x = 0; x < cur.m[y].length; x++)
+                    if (cur.m[y][x] && gy2 + y >= 0 && gy2 !== cur.y) blockCell(ctx, (cur.x + x) * cell, (gy2 + y) * cell, cell, cur.c, true);
+                for (y = 0; y < cur.m.length; y++) for (x = 0; x < cur.m[y].length; x++)
+                    if (cur.m[y][x] && cur.y + y >= 0) blockCell(ctx, (cur.x + x) * cell, (cur.y + y) * cell, cell, cur.c);
             }
         }
         function drawNext() {
-            nctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
-            nctx.fillRect(0, 0, ncv.width, ncv.height);
+            nctx.clearRect(0, 0, NW, NH);
             if (!next) return;
-            nctx.fillStyle = next.c;
             var offX = Math.floor((4 - next.m[0].length) / 2);
             var offY = Math.floor((4 - next.m.length) / 2);
             for (var y = 0; y < next.m.length; y++) {
                 for (var x = 0; x < next.m[y].length; x++) {
-                    if (next.m[y][x]) nctx.fillRect((offX + x) * 13 + 1, (offY + y) * 13 + 1, 11, 11);
+                    if (next.m[y][x]) blockCell(nctx, (offX + x) * ncell, (offY + y) * ncell, ncell, next.c);
                 }
             }
         }
@@ -1981,8 +2107,7 @@
         var ctx = cv.getContext('2d');
         W = Math.min(340, (root.clientWidth || 320) - 8);
         H = Math.round(W * 0.88);
-        cv.width = W;
-        cv.height = H;
+        fitCanvas(cv, ctx, W, H);
         var statusEl = root.querySelector('#bkStatus');
         stat(statusEl, gt('حرّك صباعك أو الماوس في أي مكان باللوحة', 'Slide your finger or mouse anywhere on the board'));
 
@@ -2060,6 +2185,7 @@
                 if (!aliveCount) {
                     levelNow++;
                     stat(statusEl, gt('مستوى ', 'Level ') + levelNow + '!', 'ok');
+                    beep(660, 0.1); beep(880, 0.12); burst(root);
                     buildBricks();
                     resetBall();
                 }
@@ -2069,22 +2195,35 @@
             raf = requestAnimationFrame(loop);
         }
         function drawAll() {
-            ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
+            var bg = ctx.createLinearGradient(0, 0, 0, H);
+            bg.addColorStop(0, '#151b2d'); bg.addColorStop(1, '#0c0f1a');
+            ctx.fillStyle = bg;
             ctx.fillRect(0, 0, W, H);
             for (var i = 0; i < bricks.length; i++) {
                 var b = bricks[i];
                 if (!b.alive) continue;
-                ctx.fillStyle = b.c;
-                ctx.fillRect(b.x, b.y, BR_W, BR_H);
+                var g = ctx.createLinearGradient(b.x, b.y, b.x, b.y + BR_H);
+                g.addColorStop(0, shade(b.c, 0.18)); g.addColorStop(1, shade(b.c, -0.16));
+                ctx.fillStyle = g;
+                rr(ctx, b.x, b.y, BR_W, BR_H, 3); ctx.fill();
+                ctx.fillStyle = 'rgba(255,255,255,.26)';
+                rr(ctx, b.x + 2, b.y + 2, BR_W - 4, BR_H * 0.36, 2); ctx.fill();
             }
-            ctx.fillStyle = cssVar('--accent', '#3e8e7e');
-            ctx.beginPath();
-            if (ctx.roundRect) { ctx.roundRect(paddle.x, paddle.y, paddle.w, paddle.h, 5); ctx.fill(); }
-            else ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
-            ctx.beginPath();
-            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
-            ctx.fillStyle = '#e05d5d';
-            ctx.fill();
+            var acc = cssVar('--accent', '#3e8e7e');
+            var pg = ctx.createLinearGradient(0, paddle.y, 0, paddle.y + paddle.h);
+            pg.addColorStop(0, shade(acc, 0.22)); pg.addColorStop(1, shade(acc, -0.12));
+            ctx.save();
+            ctx.shadowColor = 'rgba(0,0,0,.45)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+            ctx.fillStyle = pg;
+            rr(ctx, paddle.x, paddle.y, paddle.w, paddle.h, paddle.h / 2); ctx.fill();
+            ctx.restore();
+            ctx.save();
+            ctx.shadowColor = 'rgba(255,224,140,.85)'; ctx.shadowBlur = 12;
+            var bgr = ctx.createRadialGradient(ball.x - ball.r * 0.3, ball.y - ball.r * 0.3, 0.5, ball.x, ball.y, ball.r);
+            bgr.addColorStop(0, '#fff6d8'); bgr.addColorStop(1, '#f4c04e');
+            ctx.fillStyle = bgr;
+            ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
         }
         function start() {
             if (raf) cancelAnimationFrame(raf);
@@ -2243,8 +2382,8 @@
     /* ═══════ 14) FLAPPY (custom drawn bird) ═══════ */
     function startFlappy(root) {
         var W, H, cv, ctx, raf = null, running = false;
-        var bird, pipes, scoreNow, wingT = 0;
-        var GRAV = 0.45, JUMP = -7.4, PIPE_W = 52, GAP = 150, SPEED = 2.6, SPACING = 190;
+        var bird, pipes, scoreNow, wingT = 0, clouds = [], groundX = 0;
+        var GRAV = 0.45, JUMP = -7.4, PIPE_W = 52, GAP = 150, SPEED = 2.6, SPACING = 190, GROUND = 26;
 
         root.innerHTML =
             '<div class="gm-score-row">'
@@ -2259,8 +2398,7 @@
         ctx = cv.getContext('2d');
         W = Math.min(340, (root.clientWidth || 320) - 8);
         H = Math.round(W * 1.15);
-        cv.width = W;
-        cv.height = H;
+        fitCanvas(cv, ctx, W, H);
         var statusEl = root.querySelector('#flStatus');
         stat(statusEl, gt('اضغط الشاشة أو المسطرة للطيران', 'Tap the screen or press Space to fly'));
 
@@ -2268,11 +2406,34 @@
             bird = { x: W * 0.28, y: H * 0.45, vy: 0, r: 11 };
             pipes = [];
             scoreNow = 0;
+            clouds = [];
+            for (var i = 0; i < 4; i++) clouds.push({ x: rnd(W), y: 24 + rnd(H * 0.5), s: 0.7 + Math.random() * 0.9, v: 0.25 + Math.random() * 0.35 });
             root.querySelector('#flScore').textContent = '0';
         }
         function spawnPipe() {
-            var top = 40 + rnd(H - GAP - 120);
+            var maxTop = H - GAP - GROUND - 46;
+            var top = 40 + rnd(Math.max(20, maxTop - 40));
             pipes.push({ x: W + 10, top: top, passed: false });
+        }
+        function cloudShape(x, y, s) {
+            ctx.beginPath();
+            ctx.arc(x, y, 7 * s, 0, Math.PI * 2);
+            ctx.arc(x + 8 * s, y + 2 * s, 9 * s, 0, Math.PI * 2);
+            ctx.arc(x + 18 * s, y, 7 * s, 0, Math.PI * 2);
+            ctx.arc(x + 9 * s, y - 4 * s, 7 * s, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        function drawPipe(x, y, h, isTop) {
+            if (h < 0) h = 0;
+            var g = ctx.createLinearGradient(x, 0, x + PIPE_W, 0);
+            g.addColorStop(0, '#4e9e4a'); g.addColorStop(0.5, '#74c964'); g.addColorStop(1, '#3d8639');
+            ctx.fillStyle = g;
+            ctx.fillRect(x, y, PIPE_W, h);
+            var capY = isTop ? y + h - 13 : y;
+            var cg = ctx.createLinearGradient(x - 3, 0, x + PIPE_W + 3, 0);
+            cg.addColorStop(0, '#4e9e4a'); cg.addColorStop(0.5, '#82d871'); cg.addColorStop(1, '#3d8639');
+            ctx.fillStyle = cg;
+            rr(ctx, x - 3, capY, PIPE_W + 6, 13, 3); ctx.fill();
         }
         function flap() {
             if (!running) return;
@@ -2315,19 +2476,28 @@
             if (wingT > 0) wingT--;
         }
         function drawAll() {
-            ctx.fillStyle = cssVar('--code-bg', isDark() ? '#121413' : '#f3f3ee');
-            ctx.fillRect(0, 0, W, H);
-            var acc = cssVar('--accent', '#3e8e7e');
-            var accDeep = cssVar('--accent2', '#357a6c');
-            for (var i = 0; i < pipes.length; i++) {
-                var p = pipes[i];
-                ctx.fillStyle = acc;
-                ctx.fillRect(p.x, 0, PIPE_W, p.top);
-                ctx.fillRect(p.x, p.top + GAP, PIPE_W, H - p.top - GAP);
-                ctx.fillStyle = accDeep;
-                ctx.fillRect(p.x - 3, p.top - 11, PIPE_W + 6, 11);
-                ctx.fillRect(p.x - 3, p.top + GAP, PIPE_W + 6, 11);
+            var sky = ctx.createLinearGradient(0, 0, 0, H);
+            if (isDark()) { sky.addColorStop(0, '#1b2740'); sky.addColorStop(1, '#31445f'); }
+            else { sky.addColorStop(0, '#78c6e6'); sky.addColorStop(1, '#c3e7f1'); }
+            ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+            ctx.save();
+            ctx.globalAlpha = isDark() ? 0.55 : 0.9;
+            ctx.fillStyle = isDark() ? '#e6ecf5' : '#fff3c4';
+            ctx.beginPath(); ctx.arc(W * 0.78, H * 0.15, 19, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+            ctx.fillStyle = isDark() ? 'rgba(255,255,255,.09)' : 'rgba(255,255,255,.8)';
+            for (var i = 0; i < clouds.length; i++) cloudShape(clouds[i].x, clouds[i].y, clouds[i].s);
+            for (var j = 0; j < pipes.length; j++) {
+                var p = pipes[j];
+                drawPipe(p.x, 0, p.top, true);
+                drawPipe(p.x, p.top + GAP, H - GROUND - (p.top + GAP), false);
             }
+            var gg = ctx.createLinearGradient(0, H - GROUND, 0, H);
+            gg.addColorStop(0, '#cca471'); gg.addColorStop(1, '#a5793f');
+            ctx.fillStyle = gg; ctx.fillRect(0, H - GROUND, W, GROUND);
+            ctx.fillStyle = '#78b246'; ctx.fillRect(0, H - GROUND, W, 6);
+            ctx.fillStyle = 'rgba(0,0,0,.08)';
+            for (var gx = ((groundX % 16) - 16); gx < W; gx += 16) ctx.fillRect(gx, H - GROUND + 6, 8, GROUND - 6);
             drawBird();
         }
         function gameOver() {
@@ -2335,7 +2505,7 @@
             if (raf) { cancelAnimationFrame(raf); raf = null; }
             beep(150, 0.25, 'square');
             var s = score('flappy');
-            if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('flappy', s); root.querySelector('#flBest').textContent = scoreNow; }
+            if (scoreNow > (s.best || 0)) { s.best = scoreNow; saveScore('flappy', s); root.querySelector('#flBest').textContent = scoreNow; if (scoreNow > 0) burst(root); }
             stat(statusEl, gt('خسرت! النقاط: ', 'Game over! Score: ') + scoreNow, 'bad');
             root.querySelector('#flStart').textContent = gt('العب تاني', 'Play again');
         }
@@ -2343,6 +2513,11 @@
             if (!running) return;
             bird.vy += GRAV;
             bird.y += bird.vy;
+            groundX -= SPEED;
+            for (var ci = 0; ci < clouds.length; ci++) {
+                clouds[ci].x -= clouds[ci].v;
+                if (clouds[ci].x < -30) { clouds[ci].x = W + 20; clouds[ci].y = 24 + rnd(H * 0.5); }
+            }
             if (!pipes.length || (W + 10) - pipes[pipes.length - 1].x >= SPACING) spawnPipe();
             for (var i = pipes.length - 1; i >= 0; i--) {
                 var p = pipes[i];
@@ -2355,7 +2530,7 @@
                 }
                 if (p.x + PIPE_W < -20) pipes.splice(i, 1);
             }
-            if (bird.y + bird.r > H || bird.y - bird.r < 0) return gameOver();
+            if (bird.y + bird.r > H - GROUND || bird.y - bird.r < 0) return gameOver();
             for (var j = 0; j < pipes.length; j++) {
                 var q = pipes[j];
                 if (bird.x + bird.r > q.x && bird.x - bird.r < q.x + PIPE_W) {
@@ -2491,6 +2666,7 @@
             if (opened === N * N - MINES) {
                 over = true;
                 stopTimer();
+                beep(660, 0.12); beep(880, 0.14); burst(root);
                 var s = score('mines');
                 if (!s.best || secs < s.best) {
                     s.best = secs; saveScore('mines', s);
