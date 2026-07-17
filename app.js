@@ -645,7 +645,7 @@
             cleared: 'تم حذف جميع المحادثات',
             del: 'حذف',
             copy: 'نسخ',
-            copied: '✓ تم النسخ',
+            copied: 'تم النسخ',
             done: 'تم!',
             regen: 'إعادة توليد',
             stopped: '*(تم الإيقاف)*',
@@ -666,19 +666,19 @@
             openTab: 'فتح في تاب جديد',
             fullscreen: 'ملء الشاشة',
             songsWord: 'أغنية',
-            plExists: '🎵 الأغنية موجودة بالفعل في البلايليست',
-            plAdded: '🎵 تمت الإضافة: ',
-            plCleared: '🗑 تم مسح البلايليست',
-            plFail: '⚠️ تعذر تشغيل: ',
-            addedPre: '🎵 تمت إضافة ',
+            plExists: 'الأغنية موجودة بالفعل في البلايليست',
+            plAdded: 'تمت الإضافة: ',
+            plCleared: 'تم مسح البلايليست',
+            plFail: 'تعذر تشغيل: ',
+            addedPre: 'تمت إضافة ',
             addedPost: ' أغنية',
-            plAllExist: '🎵 جميع الأغاني موجودة بالفعل',
-            plStarted: '🎵 تم تشغيل البلايليست',
+            plAllExist: 'جميع الأغاني موجودة بالفعل',
+            plStarted: 'تم تشغيل البلايليست',
             notAvail: 'غير متوفر',
             plNoMatch: 'لا توجد أغاني مطابقة',
             noVideo: 'المتصفح لا يدعم تشغيل الفيديو',
             repeatT: { none: 'تكرار', all: 'تكرار الكل', one: 'تكرار واحدة' },
-            repeatToast: { none: '🔁 تكرار: مغلق', all: '🔁 تكرار: الكل', one: '🔂 تكرار: أغنية واحدة' },
+            repeatToast: { none: 'تكرار: مغلق', all: 'تكرار: الكل', one: 'تكرار: أغنية واحدة' },
             langToast: 'اللغة: العربية',
             grpToday: 'اليوم',
             grpYest: 'أمس',
@@ -689,18 +689,18 @@
             speak: 'استماع',
             good: 'رد مفيد',
             bad: 'رد غير مفيد',
-            thanks: '✓ شكراً على تقييمك',
-            exported: '✓ تم تصدير المحادثة',
+            thanks: 'شكراً على تقييمك',
+            exported: 'تم تصدير المحادثة',
             noChat: 'لا توجد محادثة للتصدير',
-            listening: '🎤 جاري الاستماع… تحدث الآن',
-            editHint: '✏️ عدّل رسالتك ثم أرسلها',
+            listening: 'جاري الاستماع… تحدث الآن',
+            editHint: 'عدّل رسالتك ثم أرسلها',
             saveSend: 'إرسال',
             cancel: 'إلغاء',
             youWord: 'أنت',
             grpPinned: 'مثبتة',
             pin: 'تثبيت',
             unpin: 'إلغاء التثبيت',
-            pinned: '📌 تم تثبيت المحادثة',
+            pinned: 'تم تثبيت المحادثة',
             unpinned: 'تم إلغاء التثبيت',
             undo: 'تراجع',
             convDeleted: 'تم حذف المحادثة',
@@ -714,20 +714,20 @@
             actShortcuts: 'اختصارات لوحة المفاتيح',
             actClearAll: 'حذف جميع المحادثات',
             quote: 'اقتباس',
-            styleToast: { concise: '⚡ أسلوب الرد: مختصر', normal: '⚖️ أسلوب الرد: متوازن', detailed: '📖 أسلوب الرد: مفصّل' },
-            ciSaved: '✓ تم حفظ التخصيص',
+            styleToast: { concise: 'أسلوب الرد: مختصر', normal: 'أسلوب الرد: متوازن', detailed: 'أسلوب الرد: مفصّل' },
+            ciSaved: 'تم حفظ التخصيص',
             ciClearedT: 'تم مسح التخصيص',
             playWord: 'العب',
-            actGames: 'الألعاب 🎮',
+            actGames: 'الألعاب',
             actTemp: 'محادثة مؤقتة',
-            tempOn: '👻 محادثة مؤقتة — لن يتم حفظها',
+            tempOn: 'محادثة مؤقتة — لن يتم حفظها',
             tempAlready: 'أنت بالفعل في محادثة مؤقتة',
             tempBanner: 'محادثة مؤقتة — تُحذف عند إغلاق الصفحة ولا تُحفظ في السجل',
             actFont: 'تغيير حجم الخط',
-            fontToast: { normal: '🔤 حجم الخط: عادي', lg: '🔤 حجم الخط: كبير', sm: '🔤 حجم الخط: صغير' },
+            fontToast: { normal: 'حجم الخط: عادي', lg: 'حجم الخط: كبير', sm: 'حجم الخط: صغير' },
             actDupe: 'إنشاء نسخة من المحادثة',
             copyWord: 'نسخة',
-            duped: '✓ تم إنشاء نسخة من المحادثة'
+            duped: 'تم إنشاء نسخة من المحادثة'
         },
         en: {
             newChat: 'New chat',
@@ -735,7 +735,7 @@
             cleared: 'All chats deleted',
             del: 'Delete',
             copy: 'Copy',
-            copied: '✓ Copied',
+            copied: 'Copied',
             done: 'Done!',
             regen: 'Regenerate',
             stopped: '*(Stopped)*',
@@ -756,19 +756,19 @@
             openTab: 'Open in new tab',
             fullscreen: 'Fullscreen',
             songsWord: 'songs',
-            plExists: '🎵 Song is already in the playlist',
-            plAdded: '🎵 Added: ',
-            plCleared: '🗑 Playlist cleared',
-            plFail: '⚠️ Could not play: ',
-            addedPre: '🎵 Added ',
+            plExists: 'Song is already in the playlist',
+            plAdded: 'Added: ',
+            plCleared: 'Playlist cleared',
+            plFail: 'Could not play: ',
+            addedPre: 'Added ',
             addedPost: ' songs',
-            plAllExist: '🎵 All songs are already added',
-            plStarted: '🎵 Playlist started',
+            plAllExist: 'All songs are already added',
+            plStarted: 'Playlist started',
             notAvail: 'not available',
             plNoMatch: 'no matching songs',
             noVideo: 'Your browser does not support video playback',
             repeatT: { none: 'Repeat', all: 'Repeat all', one: 'Repeat one' },
-            repeatToast: { none: '🔁 Repeat: off', all: '🔁 Repeat: all', one: '🔂 Repeat: one' },
+            repeatToast: { none: 'Repeat: off', all: 'Repeat: all', one: 'Repeat: one' },
             langToast: 'Language: English',
             grpToday: 'Today',
             grpYest: 'Yesterday',
@@ -779,18 +779,18 @@
             speak: 'Read aloud',
             good: 'Good response',
             bad: 'Bad response',
-            thanks: '✓ Thanks for your feedback',
-            exported: '✓ Chat exported',
+            thanks: 'Thanks for your feedback',
+            exported: 'Chat exported',
             noChat: 'No chat to export',
-            listening: '🎤 Listening… speak now',
-            editHint: '✏️ Edit your message and send',
+            listening: 'Listening… speak now',
+            editHint: 'Edit your message and send',
             saveSend: 'Send',
             cancel: 'Cancel',
             youWord: 'You',
             grpPinned: 'Pinned',
             pin: 'Pin',
             unpin: 'Unpin',
-            pinned: '📌 Chat pinned',
+            pinned: 'Chat pinned',
             unpinned: 'Chat unpinned',
             undo: 'Undo',
             convDeleted: 'Chat deleted',
@@ -804,20 +804,20 @@
             actShortcuts: 'Keyboard shortcuts',
             actClearAll: 'Delete all chats',
             quote: 'Quote',
-            styleToast: { concise: '⚡ Reply style: concise', normal: '⚖️ Reply style: balanced', detailed: '📖 Reply style: detailed' },
-            ciSaved: '✓ Personalization saved',
+            styleToast: { concise: 'Reply style: concise', normal: 'Reply style: balanced', detailed: 'Reply style: detailed' },
+            ciSaved: 'Personalization saved',
             ciClearedT: 'Personalization cleared',
             playWord: 'Play',
-            actGames: 'Games 🎮',
+            actGames: 'Games',
             actTemp: 'Temporary chat',
-            tempOn: '👻 Temporary chat — it won\'t be saved',
+            tempOn: 'Temporary chat — it won\'t be saved',
             tempAlready: 'You are already in a temporary chat',
             tempBanner: 'Temporary chat — deleted when you close the page, never saved to history',
             actFont: 'Change font size',
-            fontToast: { normal: '🔤 Font size: normal', lg: '🔤 Font size: large', sm: '🔤 Font size: small' },
+            fontToast: { normal: 'Font size: normal', lg: 'Font size: large', sm: 'Font size: small' },
             actDupe: 'Duplicate this chat',
             copyWord: 'copy',
-            duped: '✓ Chat duplicated'
+            duped: 'Chat duplicated'
         }
     };
 
@@ -870,12 +870,22 @@
     }
 
     /* ═══════ TOAST ═══════ */
-    function toast(msg) {
+    /* toast(msg[, iconName]) — icon is a trusted ICONS key; msg stays textContent (XSS-safe) */
+    function toast(msg, iconName) {
         var old = document.querySelector('.toast');
         if (old) old.remove();
         var t = document.createElement('div');
         t.className = 'toast';
-        t.textContent = msg;
+        if (iconName) {
+            var ic = document.createElement('span');
+            ic.className = 'toast-ic';
+            ic.innerHTML = icon(iconName, 15);
+            t.appendChild(ic);
+        }
+        var tx = document.createElement('span');
+        tx.className = 'toast-tx';
+        tx.textContent = msg;
+        t.appendChild(tx);
         document.body.appendChild(t);
         requestAnimationFrame(function () { t.classList.add('show'); });
         setTimeout(function () {
@@ -981,18 +991,18 @@
         var gameBlocks = [];
         text = text.replace(/\[GAMEHUB\]/g, function () {
             var idx = gameBlocks.length;
-            gameBlocks.push(window.LordGames ? window.LordGames.hubFrameHTML() : '<p>🎮</p>');
+            gameBlocks.push(window.LordGames ? window.LordGames.hubFrameHTML() : '<p>' + icon('gamepad') + '</p>');
             return '%%GAME_' + idx + '%%';
         });
         text = text.replace(/\[GAMEJOIN:([A-Z0-9-]+)\]/gi, function (_, code) {
             var idx = gameBlocks.length;
-            gameBlocks.push(window.LordGames ? window.LordGames.joinFrameHTML(code.toUpperCase()) : '<p>🌐 ' + esc(code) + '</p>');
+            gameBlocks.push(window.LordGames ? window.LordGames.joinFrameHTML(code.toUpperCase()) : '<p>' + icon('globe') + ' ' + esc(code) + '</p>');
             return '%%GAME_' + idx + '%%';
         });
         text = text.replace(/\[GAME:([^\]]+)\]/g, function (_, name) {
             var idx = gameBlocks.length;
             var g = window.LordGames ? window.LordGames.match(name) : null;
-            gameBlocks.push(g && window.LordGames ? window.LordGames.posterFrameHTML(g) : '<p>🎮 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
+            gameBlocks.push(g && window.LordGames ? window.LordGames.posterFrameHTML(g) : '<p>' + icon('gamepad') + ' ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%GAME_' + idx + '%%';
         });
 
@@ -1001,7 +1011,7 @@
         text = text.replace(/\[MUSIC:([^\]]+)\]/g, function (_, name) {
             var idx = musicBlocks.length;
             var found = matchMusic(name);
-            musicBlocks.push(found ? musicPlayerHTML(found) : '<p>🎵 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
+            musicBlocks.push(found ? musicPlayerHTML(found) : '<p>' + icon('music') + ' ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%MUSIC_' + idx + '%%';
         });
 
@@ -1010,7 +1020,7 @@
         text = text.replace(/\[MOVIE:([^\]]+)\]/g, function (_, name) {
             var idx = movieBlocks.length;
             var found = matchMovie(name);
-            movieBlocks.push(found ? moviePlayerHTML(found) : '<p>🎬 ' + esc(name) + ' (' + t('notAvail') + ')</p>');
+            movieBlocks.push(found ? moviePlayerHTML(found) : '<p>' + icon('film') + ' ' + esc(name) + ' (' + t('notAvail') + ')</p>');
             return '%%MOVIE_' + idx + '%%';
         });
 
@@ -1143,6 +1153,33 @@
     var DISLIKE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>';
     var EDIT_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
 
+    /* Named icon map (no emojis in UI) — Feather-style strokes, currentColor */
+    var ICONS = {
+        check: '<polyline points="20 6 9 17 4 12"/>',
+        ghost: '<path d="M12 2a8 8 0 0 0-8 8v11l3-2.4 2.5 2.4L12 18.6 14.5 21l2.5-2.4 3 2.4V10a8 8 0 0 0-8-8z"/><circle cx="9" cy="10" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r=".8" fill="currentColor" stroke="none"/>',
+        gamepad: '<line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>',
+        globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+        music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+        film: '<rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/>',
+        warn: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+        clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+        trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+        repeat: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+        repeat1: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/><text x="12" y="14.5" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor" stroke="none">1</text>',
+        mic: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+        pencil: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+        pin: '<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24z"/>',
+        bolt: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+        scale: '<line x1="12" y1="3" x2="12" y2="21"/><path d="M5 7l7-4 7 4"/><path d="M2 13l3-6 3 6a3.5 3.5 0 0 1-6 0z"/><path d="M16 13l3-6 3 6a3.5 3.5 0 0 1-6 0z"/>',
+        book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+        type: '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>'
+    };
+    function icon(n, s) {
+        return '<svg width="' + (s || 14) + '" height="' + (s || 14)
+            + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            + (ICONS[n] || '') + '</svg>';
+    }
+
     /* Shared action bar for assistant messages */
     var speaking = null;
     function aiActsHTML(includeRegen) {
@@ -1242,7 +1279,7 @@
             clone.querySelectorAll('.msg-acts,.suggest-row,.game-frame').forEach(function (n) { n.remove(); });
             var text = clone.innerText.trim();
             navigator.clipboard.writeText(text).then(function () {
-                toast(t('copied'));
+                toast(t('copied'), 'check');
             });
         },
         regen: function (btn) {
@@ -1309,7 +1346,7 @@
         plAdd: function (musicId) {
             // Check if already in playlist
             for (var i = 0; i < playlist.length; i++) {
-                if (playlist[i].id === musicId) { toast(t('plExists')); return; }
+                if (playlist[i].id === musicId) { toast(t('plExists'), 'music'); return; }
             }
             // Find song
             var song = null;
@@ -1319,7 +1356,7 @@
             if (!song) return;
             playlist.push({ id: song.id, name: song.name, artist: song.artist, file: song.file });
             save('lord_playlist', playlist);
-            toast(t('plAdded') + song.name);
+            toast(t('plAdded') + song.name, 'music');
             if (!plPanelOpen) { plPanelOpen = true; }
             renderPlaylistPanel();
         },
@@ -1347,7 +1384,7 @@
             playlist = []; plIdx = -1; plActive = false;
             save('lord_playlist', playlist);
             renderPlaylistPanel();
-            toast(t('plCleared'));
+            toast(t('plCleared'), 'trash');
         },
         plPlay: function (idx) {
             if (idx < 0 || idx >= playlist.length) return;
@@ -1381,9 +1418,9 @@
                     plHiddenAudio.currentTime = 0;
                     plHiddenAudio.play().catch(function(e) {
                         console.error('[LORD] Hidden audio play error:', e);
-                        toast(t('plFail') + song.name);
+                        toast(t('plFail') + song.name, 'warn');
                     });
-                    toast('🎵 ' + song.name);
+                    toast(song.name, 'music');
                 }
             }
             renderPlaylistPanel();
@@ -1406,7 +1443,7 @@
             else plRepeat = 'none';
             save('lord_pl_repeat', plRepeat);
             renderPlaylistPanel();
-            toast(t('repeatToast')[plRepeat]);
+            toast(t('repeatToast')[plRepeat], plRepeat === 'one' ? 'repeat1' : 'repeat');
         },
         plTogglePanel: function () {
             plPanelOpen = !plPanelOpen;
@@ -1426,10 +1463,10 @@
             }
             if (added > 0) {
                 save('lord_playlist', playlist);
-                toast(t('addedPre') + added + t('addedPost'));
+                toast(t('addedPre') + added + t('addedPost'), 'music');
                 if (!plPanelOpen) plPanelOpen = true;
                 renderPlaylistPanel();
-            } else { toast(t('plAllExist')); }
+            } else { toast(t('plAllExist'), 'music'); }
         },
         plPlayInline: function (plId) {
             var panel = document.getElementById(plId);
@@ -1461,7 +1498,7 @@
             }
             if (firstIdx >= 0) this.plPlay(firstIdx);
             renderPlaylistPanel();
-            if (added > 0) toast(t('plStarted'));
+            if (added > 0) toast(t('plStarted'), 'music');
         },
         plPlayInlineSong: function (plId, idx) {
             var panel = document.getElementById(plId);
@@ -1512,9 +1549,9 @@
             }
             save('lord_playlist', playlist);
             if (added > 0) {
-                toast(t('addedPre') + added + t('addedPost'));
+                toast(t('addedPre') + added + t('addedPost'), 'music');
                 plPanelOpen = true;
-            } else { toast(t('plAllExist')); }
+            } else { toast(t('plAllExist'), 'music'); }
             renderPlaylistPanel();
         },
         sw: function (id) { switchConv(id); },
@@ -1524,7 +1561,7 @@
             for (var i = 0; i < convs.length; i++) {
                 if (convs[i].id === id) {
                     convs[i].pin = !convs[i].pin;
-                    toast(convs[i].pin ? t('pinned') : t('unpinned'));
+                    toast(convs[i].pin ? t('pinned') : t('unpinned'), convs[i].pin ? 'pin' : null);
                     break;
                 }
             }
@@ -1670,7 +1707,7 @@
             fbLog('feedback', { val: v });
             btn.parentElement.querySelectorAll('.rated').forEach(function (b) { b.classList.remove('rated'); });
             btn.classList.add('rated');
-            toast(t('thanks'));
+            toast(t('thanks'), 'check');
         },
         trackGame: function (name) {
             if (!name) return;
@@ -1800,7 +1837,7 @@
     function cycleFontSize() {
         var next = fontSize === 'normal' ? 'lg' : (fontSize === 'lg' ? 'sm' : 'normal');
         applyFontSize(next);
-        toast(t('fontToast')[next]);
+        toast(t('fontToast')[next], 'type');
     }
 
     /* ═══════ DUPLICATE CONVERSATION ═══════ */
@@ -1818,7 +1855,7 @@
         saveAll();
         renderList();
         renderChat();
-        toast(t('duped'));
+        toast(t('duped'), 'check');
     }
 
     /* ═══════ THEME ═══════ */
@@ -1837,6 +1874,9 @@
     }
 
     function setThemeIcon(t) {
+        // keep the browser chrome color in sync with the JS-controlled theme
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', t === 'light' ? '#f7f8f4' : '#101413');
         if (!el.themeIcon) return;
         el.themeIcon.innerHTML = t === 'light'
             ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
@@ -1899,7 +1939,7 @@
         saveAll();
         renderList();
         renderChat();
-        toast(t('tempOn'));
+        toast(t('tempOn'), 'ghost');
     }
 
     function switchConv(id) {
@@ -2030,7 +2070,7 @@
                 ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></svg>'
                 : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></svg>';
             return '<div class="conv' + (c.id === activeId ? ' on' : '') + (c.temp ? ' conv-ghost' : '') + '" data-cid="' + c.id + '" onclick="LORD.sw(\'' + c.id + '\')">'
-                + '<span class="conv-t">' + (c.temp ? '👻 ' : '') + esc(c.title) + '</span>'
+                + '<span class="conv-t">' + (c.temp ? icon('ghost', 12) + ' ' : '') + esc(String(c.title).replace(/^(🎮|👻|📌)\s*/, '')) + '</span>'
                 + '<button class="conv-pin' + (c.pin ? ' pinned' : '') + '" onclick="LORD.pin(\'' + c.id + '\',event)" title="' + pinTitle + '">' + pinIco + '</button>'
                 + '<button class="conv-ren" onclick="LORD.ren(\'' + c.id + '\',event)" title="' + t('rename') + '">'
                 + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'
@@ -2046,7 +2086,7 @@
         }
         var h = '';
         if (pinned.length) {
-            h += '<div class="conv-group">📌 ' + t('grpPinned') + '</div>';
+            h += '<div class="conv-group">' + icon('pin', 11) + ' ' + t('grpPinned') + '</div>';
             for (var p = 0; p < pinned.length; p++) h += itemHTML(pinned[p]);
         }
         var lastGrp = -1;
@@ -2100,7 +2140,7 @@
     }
 
     function tempBannerHTML() {
-        return '<div class="temp-banner">👻 ' + t('tempBanner') + '</div>';
+        return '<div class="temp-banner">' + icon('ghost', 14) + ' ' + t('tempBanner') + '</div>';
     }
 
     function paintTempState(c) {
@@ -2120,6 +2160,11 @@
                 + '<button class="act-btn" onclick="LORD.editMsg(this)" title="' + t('edit') + '">' + EDIT_SVG + '</button>'
                 + '</div>';
             inner = '<div class="body" dir="auto">' + content + '</div>' + uActs;
+        } else if (/^[⚠⏳]/.test(m.content)) {
+            // stored error toasts keep their prefix in storage (API-filter contract) but render clean
+            var isRate = m.content.charAt(0) === '⏳';
+            inner = '<div class="body" dir="auto"><div class="msg-error">' + icon(isRate ? 'clock' : 'warn', 16)
+                + '<span>' + esc(m.content.replace(/^[⚠⏳]\uFE0F?\s*/, '')) + '</span></div></div>';
         } else {
             // local system messages (games hub / room join) get no copy/regen/rate bar
             inner = '<div class="body" dir="auto">' + content + (m.local ? '' : aiActsHTML(isLastAI)) + '</div>';
@@ -2322,7 +2367,7 @@
                 addMsg(uMsg);
                 var jMsg = { role: 'assistant', content: '[GAMEJOIN:' + code + ']', ts: Date.now(), local: true };
                 c.msgs.push(jMsg);
-                if (c.msgs.length === 2) { c.title = '🎮 ' + code; renderList(); }
+                if (c.msgs.length === 2) { c.title = code; renderList(); }
                 saveAll();
                 var jNode = addMsg(jMsg);
                 el.input.value = '';
@@ -2406,7 +2451,7 @@
         a.download = 'lord-chat-' + new Date().toISOString().slice(0, 10) + '.md';
         a.click();
         setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-        toast(t('exported'));
+        toast(t('exported'), 'check');
     }
 
     /* ═══════ SHORTCUTS MODAL ═══════ */
@@ -2439,7 +2484,7 @@
         };
         save('lord_custom', customCfg);
         toggleCi(false);
-        toast(t('ciSaved'));
+        toast(t('ciSaved'), 'check');
     }
 
     /* ═══════ REPLY STYLE (concise / balanced / detailed) ═══════ */
@@ -2453,7 +2498,7 @@
         replyStyle = s;
         save('lord_style', s);
         paintStyleChips();
-        toast(t('styleToast')[s]);
+        toast(t('styleToast')[s], s === 'concise' ? 'bolt' : s === 'detailed' ? 'book' : 'scale');
     }
 
     /* ═══════ COMMAND PALETTE (Ctrl+K) ═══════ */
@@ -2611,7 +2656,7 @@
         var cb = document.createElement('button');
         cb.innerHTML = COPY_SVG + ' ' + t('copy');
         cb.addEventListener('click', function () {
-            navigator.clipboard.writeText(txt).then(function () { toast(t('copied')); });
+            navigator.clipboard.writeText(txt).then(function () { toast(t('copied'), 'check'); });
             hideQuotePop();
             window.getSelection().removeAllRanges();
         });
@@ -2666,7 +2711,7 @@
                 recog.start();
                 recActive = true;
                 micBtn.classList.add('rec');
-                toast(t('listening'));
+                toast(t('listening'), 'mic');
             } catch (e) { }
         });
     }
