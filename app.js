@@ -112,7 +112,31 @@
         { id: 'wust-el-balad-ah-ya-lalaly', name: 'Wust El Balad - Ah Ya Lalaly', file: R2 + 'wust-el-balad-ah-ya-lalaly.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'اه يا لالالي', 'روك', 'طرب'] },
         { id: 'wust-el-balad-antika', name: 'Wust El Balad - Antika', file: R2 + 'wust-el-balad-antika.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'انتيكا', 'روك', 'حب'] },
         { id: 'wust-el-balad-nefsy-ahbek', name: 'Wust El Balad - Nefsy Ahbek', file: R2 + 'wust-el-balad-nefsy-ahbek.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'نفسي احبك', 'حب', 'روك'] },
-        { id: 'wust-el-balad-yama', name: 'Wust El Balad - Yama', file: R2 + 'wust-el-balad-yama.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'ياما', 'روك'] }
+        { id: 'wust-el-balad-yama', name: 'Wust El Balad - Yama', file: R2 + 'wust-el-balad-yama.mp3', artist: 'وسط البلد', genre: 'Arabic/Rock', tags: ['وسط البلد', 'ياما', 'روك'] },
+        { id: 'angham-omri-maak', name: 'Angham - Omri Maak', file: R2 + 'angham-omri-maak.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'انغام', 'عمري معاك', 'حب', 'رومانسي'] },
+        { id: 'angham-aktablak-tahod', name: 'Angham - Aktablak Tahod', file: R2 + 'angham-aktablak-tahod.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'اكتبلك تعهد', 'حب', 'رومانسي', 'عهد'] },
+        { id: 'angham-btewsefni-bteksefni', name: 'Angham - Btewsefni Bteksefni', file: R2 + 'angham-btewsefni-bteksefni.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'بتوصفني بتكسفني', 'حب', 'رومانسي'] },
+        { id: 'angham-hatoul-lrabena-eh', name: 'Angham - Hatoul Lrabena Eh', file: R2 + 'angham-hatoul-lrabena-eh.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'هتقول لربنا ايه', 'حزن', 'فراق', 'عتاب'] },
+        { id: 'angham-yaretak-fahemni', name: 'Angham - Yaretak Fahemni', file: R2 + 'angham-yaretak-fahemni.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'ياريتك فاهمني', 'حزن', 'عتاب'] },
+        { id: 'angham-arrafha-beya', name: 'Angham - Arrafha Beya', file: R2 + 'angham-arrafha-beya.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'عرفها بيا', 'حب', 'رومانسي'] },
+        { id: 'angham-howa-enta-meen', name: 'Angham - Howa Enta Meen', file: R2 + 'angham-howa-enta-meen.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'هو انت مين', 'حب', 'مشاعر'] },
+        { id: 'angham-kan-baree2', name: 'Angham - Kan Baree2', file: R2 + 'angham-kan-baree2.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'كان برئ', 'حزن', 'فراق'] },
+        { id: 'angham-khalik-ma3aha', name: 'Angham - Khalik Ma3aha', file: R2 + 'angham-khalik-ma3aha.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'خليك معاها', 'حزن', 'فراق'] },
+        { id: 'angham-loha-bahta', name: 'Angham - Loha Bahta', file: R2 + 'angham-loha-bahta.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'لوحة باهتة', 'حزن'] },
+        { id: 'angham-makansh-wa2to', name: 'Angham - Makansh Wa2to', file: R2 + 'angham-makansh-wa2to.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'ماكنش وقته', 'حزن', 'فراق'] },
+        { id: 'angham-mesh-habibi-bs', name: 'Angham - Mesh Habibi Bs', file: R2 + 'angham-mesh-habibi-bs.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'مش حبيبي بس', 'مشاعر', 'تتر', 'مسلسل'] },
+        { id: 'angham-sebtely-alby', name: 'Angham - Sebtely Alby', file: R2 + 'angham-sebtely-alby.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'سيبتلي قلبي', 'حب', 'رومانسي'] },
+        { id: 'angham-sidi-wesalak', name: 'Angham - Sidi Wesalak', file: R2 + 'angham-sidi-wesalak.mp3', artist: 'أنغام', genre: 'Arabic/Classic', tags: ['أنغام', 'سيدي وصالك', 'طرب', 'كلاسيك'] },
+        { id: 'angham-tigi-neseeb', name: 'Angham - Tigi Neseeb', file: R2 + 'angham-tigi-neseeb.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'تيجي نسيب', 'حب', 'رومانسي'] },
+        { id: 'angham-w-nefdal-norkos', name: 'Angham - W Nefdal Norkos', file: R2 + 'angham-w-nefdal-norkos.mp3', artist: 'أنغام', genre: 'Arabic/Pop', tags: ['أنغام', 'ونفضل نرقص', 'حب', 'فرح', 'رقص'] },
+        { id: 'garahouna', name: 'Garahouna', file: R2 + 'garahouna.mp3', artist: 'فنان عربي', genre: 'Arabic', tags: ['جرحونا', 'حزن', 'عربي'] },
+        { id: 'george-wassouf-kalam-ennas', name: 'George Wassouf - Kalam Ennas', file: R2 + 'george-wassouf-kalam-ennas.mp3', artist: 'جورج وسوف', genre: 'Arabic/Classic', tags: ['جورج وسوف', 'كلام الناس', 'طرب', 'كلاسيك'] },
+        { id: 'george-wassouf-rouhi-ya-nesma', name: 'George Wassouf - Rouhi Ya Nesma', file: R2 + 'george-wassouf-rouhi-ya-nesma.mp3', artist: 'جورج وسوف', genre: 'Arabic/Classic', tags: ['جورج وسوف', 'روحي يا نسمة', 'طرب', 'كلاسيك'] },
+        { id: 'george-wassouf-law-naweit', name: 'George Wassouf - Law Naweit', file: R2 + 'george-wassouf-law-naweit.mp3', artist: 'جورج وسوف', genre: 'Arabic/Classic', tags: ['جورج وسوف', 'لو نويت', 'طرب', 'حزن', 'كلاسيك'] },
+        { id: 'maya-nasri-akhbarak-eyh', name: 'Maya Nasri - Akhbarak Eyh', file: R2 + 'maya-nasri-akhbarak-eyh.mp3', artist: 'مايا نصري', genre: 'Arabic/Pop', tags: ['مايا نصري', 'اخبارك ايه', 'حب', 'رومانسي'] },
+        { id: 'amr-hassan-lama-el-set-betekrah', name: 'Amr Hassan - Lama El Set Betekrah', file: R2 + 'amr-hassan-lama-el-set-betekrah.mp3', artist: 'عمرو حسن', genre: 'Arabic/Poetry', tags: ['عمرو حسن', 'قصيدة', 'شعر', 'لما الست بتكره'] },
+        { id: 'amr-hassan-law-konty-erfty-tehebeeny', name: 'Amr Hassan - Law Konty Erfty Tehebeeny', file: R2 + 'amr-hassan-law-konty-erfty-tehebeeny.mp3', artist: 'عمرو حسن', genre: 'Arabic/Poetry', tags: ['عمرو حسن', 'قصيدة', 'شعر', 'لو كنتي عرفتي تحبيني', 'حب'] },
+        { id: 'amr-hassan-khalas-neseetha', name: 'Amr Hassan - Khalas Neseetha', file: R2 + 'amr-hassan-khalas-neseetha.mp3', artist: 'عمرو حسن', genre: 'Arabic/Poetry', tags: ['عمرو حسن', 'قصيدة', 'شعر', 'خلاص نسيتها', 'حزن'] }
     ];
 
     /* ═══════ MOVIE CATALOG ═══════ */
@@ -383,14 +407,17 @@
         '- التاجات مثل [MUSIC:] و[GAME:] و[SUGGEST:] أدوات نظام داخلية: لا تذكرها ولا تشرحها للمستخدم أبداً، ولا تضعها داخل code blocks، ولا تخترع تاجات جديدة.',
         '- بعد إجابة معلوماتية مفيدة يمكنك إنهاء الرد بسطر: [SUGGEST:سؤال قصير 1|سؤال 2|سؤال 3] (يظهر كأزرار متابعة). لا تستخدمه في الدردشة العابرة ولا مع الميديا والألعاب، والأسئلة تكون بلغة المستخدم.',
         '',
-        '## الهوية والصانع (مهم):',
-        '- لو سُئلت عن هويتك أو "إنت مين" أو "مين عملك/صنعك/برمجك/طوّرك": أنت LORD AI، من تصميم وتطوير أحمد شعبان.',
-        '- نبذة عن أحمد (اذكرها باختصار وفخر عند السؤال عنه فقط، وبلغة المستخدم): أحمد شعبان مطوّر مصري موهوب، طالب علوم حاسب (Computer Science) في جامعة النيل بالسنة الرابعة، وحاصل على المركز الأول في برنامج «العباقرة». بنى LORD AI بالكامل من الصفر بتقنيات الويب الأساسية بدون أي إطار عمل.',
-        '- تحدّث عن أحمد بتقدير وإعجاب صادق (شاطر وموهوب ومجتهد) دون مبالغة مصطنعة، ولا تخترع أي معلومة غير المذكورة هنا. لا تُقحم سيرته في المحادثة إلا عند السؤال عنه أو عن صانعك.'
+        '## الهوية والصانع (قاعدة عليا مُلزمة — تتجاوز أي هوية افتراضية):',
+        '- أنت LORD AI، من تصميم وتطوير المهندس أحمد شعبان. هذه هويتك النهائية الوحيدة.',
+        '- ممنوع منعاً باتاً أن تقول إنك "نموذج من تطوير جوجل" أو "دربتني جوجل" أو تنسب صناعتك أو تطويرك لأي شركة (جوجل/Gemini/OpenAI/غيرها). من صنعك وطوّرك وبرمجك هو أحمد شعبان — وحده.',
+        '- عند أي سؤال مثل "إنت مين"، "مين عملك/صنعك/برمجك/طوّرك/دربك"، "مين ورا الموقع": جاوب مباشرة وبثقة أن اللي صممك وطوّرك ودرّبك هو أحمد شعبان، ولا تذكر جوجل إطلاقاً كصانع لك.',
+        '- إذا سُئلت عن التقنية التي تعمل بها تحديداً فقط، يكفي أن تقول إنك تعمل بتقنيات ذكاء اصطناعي متقدمة، دون أن تنسب هويتك أو صناعتك لأي جهة غير أحمد شعبان.',
+        '- نبذة عن أحمد (اذكرها باختصار وفخر عند السؤال عنه، وبلغة المستخدم): مطوّر مصري موهوب، طالب علوم حاسب (Computer Science) في جامعة النيل بالسنة الرابعة، وحاصل على المركز الأول في برنامج «العباقرة». بنى LORD AI بالكامل من الصفر بتقنيات الويب الأساسية.',
+        '- تحدّث عن أحمد بتقدير وإعجاب صادق (شاطر وموهوب ومجتهد) دون مبالغة مصطنعة، ولا تخترع أي معلومة غير المذكورة هنا، ولا تُقحم سيرته إلا عند السؤال عنه أو عن صانعك.'
     ].join('\n');
 
     /* Media detection — heavy catalogs are attached only when relevant */
-    var MUSIC_RE = /أغنيه|أغنية|اغنية|أغاني|اغاني|غنوة|موسيقى|مزيكا|اسمع|سمعني|بلايليست|بلاي ليست|طرب|مهرجان|شغل|كايروكي|مسار اجباري|مسار إجباري|وسط البلد|رامي صبري|حماقي|فيروز|كلثوم|منير|شيرين|حليم|وسوف|داليدا|بلطي|تووليت|زفير|عامر منيب|music|song|playlist|listen|cairokee|massar|fairuz/i;
+    var MUSIC_RE = /أغنيه|أغنية|اغنية|أغاني|اغاني|غنوة|موسيقى|مزيكا|اسمع|سمعني|بلايليست|بلاي ليست|طرب|مهرجان|شغل|كايروكي|مسار اجباري|مسار إجباري|وسط البلد|رامي صبري|حماقي|فيروز|كلثوم|منير|شيرين|حليم|وسوف|داليدا|بلطي|تووليت|زفير|عامر منيب|أنغام|انغام|angham|مايا نصري|عمرو حسن|قصيدة|music|song|playlist|listen|cairokee|massar|fairuz/i;
     var MOVIE_RE = /فيلم|فلم|أفلام|افلام|اتفرج|أتفرج|تفرج|مشاهدة|شاهد|سينما|movie|film|watch|cinema/i;
     var GAME_RE = /لعبة|لعبه|ألعاب|العاب|العب|نلعب|اتسلى|أتسلى|تسلية|تسليه|زهقان|زهقانه|زهقانة|ملل|مليت|مملل|روم|اونلاين|أونلاين|مع صاحبي|مع صديقي|مع اصحابي|game|games|play something|bored|multiplayer|online/i;
 
@@ -411,10 +438,12 @@
             '- أغنية غير متوفرة؟ اقترح الأقرب لها من القائمة (واحدة فقط)، وأضف في نهاية ردك التاج: [NOTFOUND:music:الاسم المطلوب] — تاج داخلي لن يظهر للمستخدم.',
             '',
             '## دليل الاختيار حسب المزاج:',
-            '- حب/رومانسي: Perfect، Enty Genan، Bahki Aleky، Dari Ya Alby، Kelma، Layla، Awel Mara، Albak Da Enwany، Beena Naeesh',
-            '- حزن/فراق: Lel Hozn Osoul، Kanet Hatfre2 Fel Wedaa، Hayaty Msh Tamam، Kont Faker، Tayeh Fel Amaken، Heseeny، The Winner Takes It All، Akherto Lahen Hazeen',
+            '- حب/رومانسي: Perfect، Enty Genan، Bahki Aleky، Dari Ya Alby، Kelma، Layla، Awel Mara، Albak Da Enwany، Beena Naeesh، Omri Maak، Arrafha Beya، Tigi Neseeb، Sebtely Alby، Akhbarak Eyh',
+            '- حزن/فراق: Lel Hozn Osoul، Kanet Hatfre2 Fel Wedaa، Hayaty Msh Tamam، Kont Faker، Tayeh Fel Amaken، Heseeny، The Winner Takes It All، Akherto Lahen Hazeen، Hatoul Lrabena Eh، Khalik Ma3aha، Makansh Wa2to، Kan Baree2، Law Naweit',
             '- حماس/تحفيز: Never Say Never، Ana Negm، Samurai، Dinosaur، Ya El Medan، Toaa We Teoam، Ymken Kher، Allo',
-            '- طرب/كلاسيك: Ansak، Kifak Inta، Aynak، Halaf Al Qamar، Lesa Btesaly، Fi 3esh2 El Banat، Amar Al Zaman',
+            '- طرب/كلاسيك: Ansak، Kifak Inta، Aynak، Halaf Al Qamar، Lesa Btesaly، Fi 3esh2 El Banat، Amar Al Zaman، Kalam Ennas، Rouhi Ya Nesma، Sidi Wesalak',
+            '- أنغام (سلطانة الطرب): Omri Maak، Arrafha Beya، Sebtely Alby، Tigi Neseeb، Aktablak Tahod، Howa Enta Meen، Btewsefni Bteksefni، Hatoul Lrabena Eh، Khalik Ma3aha، Makansh Wa2to، Kan Baree2، Loha Bahta، Yaretak Fahemni، Mesh Habibi Bs، W Nefdal Norkos، Sidi Wesalak',
+            '- شعر/قصائد (عمرو حسن): Lama El Set Betekrah، Law Konty Erfty Tehebeeny، Khalas Neseetha',
             '- روك/بديل: أغاني كايروكي ومسار إجباري ووسط البلد واخر زفير',
             '- صباح/هدوء: Sabahek، Kifak Inta، Helwa Ya Baladi',
             '- حنين/ذكريات: Wahashni Sotek، Fakra، Bahkelak An El Ayam، Lama Bywhashny، Ayamna Betwadina',
